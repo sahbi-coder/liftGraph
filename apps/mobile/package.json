@@ -1,0 +1,49 @@
+{
+  "name": "@liftgraph/mobile",
+  "main": "index.tsx",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "start": "expo start --clear",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "build": "tsc"
+  },
+  "workspaceDependencies": {
+    "@liftgraph/common": "*"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^14.1.0",
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@tamagui/config": "^1.117.1",
+    "@tamagui/lucide-icons": "^1.117.1",
+    "expo": "~53.0.0",
+    "expo-constants": "~17.1.7",
+    "expo-font": "~13.3.2",
+    "expo-linking": "~7.1.7",
+    "expo-router": "~5.1.4",
+    "expo-splash-screen": "~0.30.10",
+    "expo-status-bar": "~2.2.3",
+    "expo-system-ui": "~5.0.10",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.5",
+    "react-native-gesture-handler": "~2.24.0",
+    "react-native-reanimated": "~3.17.5",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1",
+    "react-native-svg": "15.11.2",
+    "react-native-web": "^0.21.1",
+    "tamagui": "^1.117.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "@tamagui/babel-plugin": "^1.117.1",
+    "@types/react": "~19.0.10",
+    "babel-preset-expo": "^12.0.4",
+    "jest-expo": "~53.0.9",
+    "typescript": "~5.4.0"
+  }
+}
+

@@ -1,0 +1,8 @@
+# Cursor ignore file
+node_modules/
+build/
+dist/
+.expo/
+coverage/
+*.tsbuildinfo
+

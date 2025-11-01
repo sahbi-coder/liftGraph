@@ -1,0 +1,53 @@
+{
+  "name": "@liftgraph/root",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "mobile": "yarn workspace @liftgraph/mobile",
+    "mobile:start": "yarn workspace @liftgraph/mobile start --clear",
+    "mobile:test": "yarn workspace @liftgraph/mobile jest",
+    "build": "yarn workspaces run build",
+    "lint": "node --max-old-space-size=4096 ./node_modules/.bin/eslint .",
+    "format": "prettier . -w",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@tsconfig/recommended": "^1.0.7",
+    "@types/jest": "^29.5.13",
+    "@types/node": "^22.7.5",
+    "eslint": "^8.57.1",
+    "eslint-config-universe": "^13.0.0",
+    "eslint-plugin-react": "^7.36.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.3",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript-eslint": "^7.18.0"
+  },
+  "resolutions": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-test-renderer": "19.0.0",
+    "@types/react": "~19.0.10",
+    "@types/react-dom": "~19.0.6",
+    "typescript": "~5.4.0",
+    "expo-image": "2.4.0",
+    "react-native": "0.79.5",
+    "react-native-safe-area-context": "5.4.0"
+  },
+  "peerDependencies": {
+    "typescript": "*"
+  },
+  "packageManager": "yarn@1.22.22"
+}
+
