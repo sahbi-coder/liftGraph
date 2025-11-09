@@ -3,11 +3,13 @@ import { YStack, XStack, Text, H1, Button } from 'tamagui';
 import { StatusBar } from 'expo-status-bar';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
-import { firestoreService } from '@/services/firestore';
+import { useDependencies } from '@/dependencies/provider';
 
 export default function IndexRoute() {
   const { user, loading, signOut } = useAuth();
   const router = useRouter();
+  const { services } = useDependencies();
+  const firestoreService = services.firestore;
 
   useEffect(() => {
     if (!loading && !user) {
@@ -30,7 +32,7 @@ export default function IndexRoute() {
     };
 
     loadExercises();
-  }, [user]);
+  }, [firestoreService, user]);
 
   if (loading) {
     return (

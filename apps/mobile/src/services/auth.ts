@@ -1,58 +1,51 @@
 import {
+  Auth,
+  User,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
-  sendPasswordResetEmail,
   updateProfile,
-  User,
 } from 'firebase/auth';
-import { auth } from '@/config/firebase';
 
 export type AuthUser = {
   uid: string;
-  email: string | null;
-  displayName: string | null;
+  email: string;
+  displayName: string;
 };
 
-export const authService = {
-  // Sign up with email and password
-  signUpWithEmail: async (email: string, password: string, displayName?: string) => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+export class AuthService {
+  constructor(private readonly client: Auth) {}
 
-    if (displayName && userCredential.user) {
-      await updateProfile(userCredential.user, { displayName });
-    }
+  async signUpWithEmail(email: string, password: string, displayName: string) {
+    const userCredential = await createUserWithEmailAndPassword(this.client, email, password);
+    await updateProfile(userCredential.user, { displayName });
 
     return userCredential;
-  },
+  }
 
-  // Sign in with email and password
-  signInWithEmail: async (email: string, password: string) => {
-    return await signInWithEmailAndPassword(auth, email, password);
-  },
+  async signInWithEmail(email: string, password: string) {
+    return await signInWithEmailAndPassword(this.client, email, password);
+  }
 
-  // Sign out
-  signOut: async () => {
-    return await firebaseSignOut(auth);
-  },
+  async signOut() {
+    return await firebaseSignOut(this.client);
+  }
 
-  // Send password reset email
-  resetPassword: async (email: string) => {
-    return await sendPasswordResetEmail(auth, email);
-  },
+  async resetPassword(email: string) {
+    return await sendPasswordResetEmail(this.client, email);
+  }
 
-  // Get current user
-  getCurrentUser: (): User | null => {
-    return auth.currentUser;
-  },
+  getCurrentUser(): User | null {
+    return this.client.currentUser;
+  }
 
-  // Convert Firebase User to AuthUser
-  toAuthUser: (user: User | null): AuthUser | null => {
+  toAuthUser(user: User | null): AuthUser | null {
     if (!user) return null;
     return {
       uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
+      email: user.email ?? '',
+      displayName: user.displayName ?? '',
     };
-  },
-};
+  }
+}

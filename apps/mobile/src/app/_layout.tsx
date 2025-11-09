@@ -8,8 +8,26 @@ import { Text } from 'react-native';
 import { TamaguiProvider } from 'tamagui';
 import { tamaguiConfig } from 'tamagui.config';
 
+import { createClients } from '@/clients/createClients';
+import { DependenciesProvider } from '@/dependencies/provider';
+import { createDependencies } from '@/dependencies/createDependencies';
+import { createConfig } from '@/config';
 import { useThemeFonts } from '@/theme/fonts';
 import { AuthProvider } from '@/contexts/AuthContext';
+
+const config = createConfig({
+  firebase: {
+    apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
+  },
+});
+
+const clients = createClients(config);
+const dependencies = createDependencies(clients);
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync().catch(console.error);
@@ -48,11 +66,13 @@ function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <Theme>
-        <Screen />
-      </Theme>
-    </AuthProvider>
+    <DependenciesProvider dependencies={dependencies}>
+      <AuthProvider>
+        <Theme>
+          <Screen />
+        </Theme>
+      </AuthProvider>
+    </DependenciesProvider>
   );
 }
 

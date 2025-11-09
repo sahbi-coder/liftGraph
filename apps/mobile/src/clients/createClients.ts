@@ -1,16 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FirebaseApp, getApp, getApps, initializeApp, type FirebaseOptions } from 'firebase/app';
-import { getAuth, getReactNativePersistence, initializeAuth, type Auth } from 'firebase/auth';
-import { initializeFirestore, type Firestore } from 'firebase/firestore';
+import { FirebaseApp, getApp, getApps, initializeApp } from 'firebase/app';
+import { Auth, getAuth, getReactNativePersistence, initializeAuth } from 'firebase/auth';
+import { Firestore, initializeFirestore } from 'firebase/firestore';
 
-const firebaseConfig: FirebaseOptions = {
-  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
-};
+import type { Config } from '@/config';
+import type { Clients } from '@/clients';
 
 declare global {
   // eslint-disable-next-line no-var
@@ -21,34 +15,28 @@ declare global {
   var liftGraphFirebaseFirestore: Firestore | undefined;
 }
 
-type FirebaseClients = {
-  app: FirebaseApp;
-  auth: Auth;
-  firestore: Firestore;
+type Options = {
+  asyncStorage?: typeof AsyncStorage;
 };
 
-export type Clients = {
-  firebase: FirebaseClients;
-};
-
-function getFirebaseApp(): FirebaseApp {
+function getFirebaseApp(config: Config): FirebaseApp {
   if (globalThis.liftGraphFirebaseApp) {
     return globalThis.liftGraphFirebaseApp;
   }
 
-  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  const app = getApps().length ? getApp() : initializeApp(config.firebase);
   globalThis.liftGraphFirebaseApp = app;
   return app;
 }
 
-function getFirebaseAuth(app: FirebaseApp): Auth {
+function getFirebaseAuth(app: FirebaseApp, asyncStorage: typeof AsyncStorage): Auth {
   if (globalThis.liftGraphFirebaseAuth) {
     return globalThis.liftGraphFirebaseAuth;
   }
 
   try {
     globalThis.liftGraphFirebaseAuth = initializeAuth(app, {
-      persistence: getReactNativePersistence(AsyncStorage),
+      persistence: getReactNativePersistence(asyncStorage),
     });
   } catch {
     globalThis.liftGraphFirebaseAuth = getAuth(app);
@@ -70,12 +58,15 @@ function getFirebaseFirestore(app: FirebaseApp): Firestore {
   return globalThis.liftGraphFirebaseFirestore;
 }
 
-export function createClients(): Clients {
-  const app = getFirebaseApp();
-  const auth = getFirebaseAuth(app);
+export function createClients(config: Config, options: Options = {}): Clients {
+  const asyncStorage = options.asyncStorage ?? AsyncStorage;
+
+  const app = getFirebaseApp(config);
+  const auth = getFirebaseAuth(app, asyncStorage);
   const firestore = getFirebaseFirestore(app);
 
   return {
+    config,
     firebase: {
       app,
       auth,

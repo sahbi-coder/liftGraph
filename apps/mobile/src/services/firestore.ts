@@ -1,16 +1,13 @@
 import {
+  Firestore,
+  Timestamp,
   collection,
   doc,
   getDoc,
+  getDocs,
   setDoc,
   updateDoc,
-  deleteDoc,
-  query,
-  orderBy,
-  getDocs,
-  Timestamp,
 } from 'firebase/firestore';
-import { db } from '@/config/firebase';
 
 export type UserProfile = {
   uid: string;
@@ -39,13 +36,11 @@ type ExerciseFirestoreData = {
   [key: string]: unknown;
 };
 
-export const firestoreService = {
-  // User profile operations
-  createUserProfile: async (
-    uid: string,
-    data: Omit<UserProfile, 'uid' | 'createdAt' | 'updatedAt'>,
-  ) => {
-    const userRef = doc(db, 'users', uid);
+export class FirestoreService {
+  constructor(private readonly db: Firestore) {}
+
+  async createUserProfile(uid: string, data: Omit<UserProfile, 'uid' | 'createdAt' | 'updatedAt'>) {
+    const userRef = doc(this.db, 'users', uid);
     const now = Timestamp.now().toDate();
 
     await setDoc(userRef, {
@@ -54,10 +49,10 @@ export const firestoreService = {
       createdAt: now,
       updatedAt: now,
     });
-  },
+  }
 
-  getUserProfile: async (uid: string): Promise<UserProfile | null> => {
-    const userRef = doc(db, 'users', uid);
+  async getUserProfile(uid: string): Promise<UserProfile | null> {
+    const userRef = doc(this.db, 'users', uid);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) {
@@ -70,18 +65,18 @@ export const firestoreService = {
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
     } as UserProfile;
-  },
+  }
 
-  updateUserProfile: async (uid: string, data: Partial<UserProfile>) => {
-    const userRef = doc(db, 'users', uid);
+  async updateUserProfile(uid: string, data: Partial<UserProfile>) {
+    const userRef = doc(this.db, 'users', uid);
     await updateDoc(userRef, {
       ...data,
       updatedAt: Timestamp.now().toDate(),
     });
-  },
+  }
 
-  getExercisesWithLibrary: async (userId: string): Promise<Exercise[]> => {
-    const librarySnapshot = await getDocs(collection(db, 'exercisesLibrary'));
+  async getExercisesWithLibrary(userId: string): Promise<Exercise[]> {
+    const librarySnapshot = await getDocs(collection(this.db, 'exercisesLibrary'));
     const libraryExercises: Exercise[] = librarySnapshot.docs.map((docSnap) => {
       const data = docSnap.data() as ExerciseFirestoreData;
       return {
@@ -94,7 +89,7 @@ export const firestoreService = {
       };
     });
 
-    const userSnapshot = await getDocs(collection(db, `users/${userId}/exercises`));
+    const userSnapshot = await getDocs(collection(this.db, `users/${userId}/exercises`));
     const userExercises: Exercise[] = userSnapshot.docs.map((docSnap) => {
       const data = docSnap.data() as ExerciseFirestoreData;
       const createdAtValue = data.createdAt;
@@ -114,5 +109,5 @@ export const firestoreService = {
     });
 
     return [...libraryExercises, ...userExercises];
-  },
-};
+  }
+}

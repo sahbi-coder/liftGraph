@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/config/firebase';
-import { authService, AuthUser } from '@/services/auth';
-import { firestoreService } from '@/services/firestore';
+
+import { useDependencies } from '@/dependencies/provider';
+import { AuthUser } from '@/services/auth';
 
 type AuthContextType = {
   user: AuthUser | null;
@@ -18,9 +18,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const { services, clients } = useDependencies();
+  const authService = services.auth;
+  const firestoreService = services.firestore;
+  const firebaseAuth = clients.firebase.auth;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, async (firebaseUser) => {
       setLoading(true);
 
       try {
@@ -53,7 +57,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     });
 
     return unsubscribe;
-  }, []);
+  }, [authService, firestoreService, firebaseAuth]);
 
   const signIn = async (email: string, password: string) => {
     await authService.signInWithEmail(email, password);
