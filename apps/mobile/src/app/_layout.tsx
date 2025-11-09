@@ -1,4 +1,5 @@
 import 'react-native-reanimated';
+import 'react-native-get-random-values';
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -8,6 +9,7 @@ import { TamaguiProvider } from 'tamagui';
 import { tamaguiConfig } from 'tamagui.config';
 
 import { useThemeFonts } from '@/theme/fonts';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync().catch(console.error);
@@ -26,10 +28,9 @@ function Screen() {
       screenOptions={{
         headerTitle: '',
         headerShadowVisible: false,
+        headerShown: false,
       }}
-    >
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-    </Stack>
+    />
   );
 }
 
@@ -47,9 +48,11 @@ function RootLayout() {
   }
 
   return (
-    <Theme>
-      <Screen />
-    </Theme>
+    <AuthProvider>
+      <Theme>
+        <Screen />
+      </Theme>
+    </AuthProvider>
   );
 }
 

@@ -3,10 +3,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "firebase/auth": ["../../node_modules/@firebase/auth/dist/rn/index.rn.d.ts"]
     },
-    "composite": true,
-    "noEmit": false
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts"]
 }

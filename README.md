@@ -1,12 +1,22 @@
 # LiftGraph - Powerlifting Progress Tracker
 
-A React Native app for tracking powerlifting progress.
+A React Native app for tracking powerlifting progress, built with Expo, Firebase, and Tamagui.
+
+## Features
+
+- 🔐 **Authentication** - Email/password login and signup
+- 🏋️ **Workout Tracking** - Log exercises, sets, reps, and weight (coming soon)
+- 📊 **Progress Analytics** - Visualize your strength gains (coming soon)
+- 📱 **Cross-platform** - iOS and Android support
+- 🔥 **Firebase Backend** - Real-time database and authentication
+- 🎨 **Modern UI** - Built with Tamagui design system
 
 ## Getting Started
 
 ### Project Structure
 
-- `apps/mobile` - React Native app
+- `apps/mobile` - React Native app with authentication
+- `apps/backend` - Firebase Functions and Firestore configuration
 - `packages/common` - Shared code between apps
 
 ### Prerequisites
@@ -22,16 +32,36 @@ nvm install
 
 # install the dependencies
 yarn
+
+# set up Firebase (see FIREBASE_SETUP.md for detailed instructions)
+firebase login
+
+# create .env file for mobile app
+cp apps/mobile/env.example apps/mobile/.env
+# Edit .env and add your Firebase configuration
 ```
 
 ### Development
 
-#### Mobile
+#### Quick Start
+
+**Terminal 1 - Start Firebase Emulators:**
 
 ```bash
-# start the mobile app
+yarn backend:emulators:start
+```
+
+**Terminal 2 - Start Mobile App:**
+
+```bash
 yarn mobile:start
 ```
+
+Then press `i` for iOS or `a` for Android.
+
+#### Detailed Setup
+
+See [`FIREBASE_SETUP.md`](FIREBASE_SETUP.md) for complete Firebase setup instructions.
 
 ### Installing dependencies
 
@@ -57,4 +87,3 @@ yarn lint
 # testing with jest
 yarn test
 ```
-

@@ -11,8 +11,13 @@
     "node": "22"
   },
   "scripts": {
+    "backend": "yarn workspace @liftgraph/backend",
+    "backend:emulators:start": "yarn build && yarn workspace @liftgraph/backend emulators:start",
+    "backend:functions:watch": "yarn workspace @liftgraph/backend build:watch",
+    "backend:functions:deploy": "yarn workspace @liftgraph/backend deploy",
     "mobile": "yarn workspace @liftgraph/mobile",
-    "mobile:start": "yarn workspace @liftgraph/mobile start --clear",
+    "mobile:start": "EXPO_PUBLIC_USE_FIREBASE_EMULATORS=true yarn workspace @liftgraph/mobile start --clear",
+    "mobile:start:prod": "EXPO_PUBLIC_USE_FIREBASE_EMULATORS=false yarn workspace @liftgraph/mobile start --clear",
     "mobile:test": "yarn workspace @liftgraph/mobile jest",
     "build": "yarn workspaces run build",
     "lint": "node --max-old-space-size=4096 ./node_modules/.bin/eslint .",
@@ -50,4 +55,3 @@
   },
   "packageManager": "yarn@1.22.22"
 }
-

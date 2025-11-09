@@ -13,4 +13,10 @@ config.resolver.nodeModulesPaths = [
   path.resolve(workspaceRoot, 'node_modules'),
 ];
 
+// Add 'cjs' to source extensions for Firebase compatibility
+config.resolver.sourceExts.push('cjs');
+
+// Disable unstable package exports to prevent Firebase Auth registration issues
+config.resolver.unstable_enablePackageExports = false;
+
 module.exports = config;

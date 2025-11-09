@@ -2,6 +2,8 @@ import { config } from '@tamagui/config/v3';
 import { createInterFont } from '@tamagui/font-inter';
 import { createTamagui } from 'tamagui';
 
+import { colors } from './src/theme/colors';
+
 const interFont = createInterFont();
 
 export const tamaguiConfig = createTamagui({
@@ -12,32 +14,48 @@ export const tamaguiConfig = createTamagui({
   },
   themes: {
     light: {
-      background: '#FFFFFF',
-      primaryButton: '#FF5722',
-      primaryButtonText: '#FFFFFF',
+      background: colors.darkerGray,
+      secondarybackground: colors.darkGray,
+      primaryButton: colors.niceOrange,
+      primaryButtonText: colors.white,
       primaryButtonDisabled: '#F4F4F4',
       primaryButtonDisabledText: '#C6C6C6',
-      inputFieldBorder: '#C6C6C6',
-      inputFieldPlaceholderText: '#706F74',
-      inputFieldText: '#484848',
+      secondaryButton: colors.midGray,
+      secondaryButtonText: colors.white,
+      secondaryButtonDisabled: '#2C2C2C',
+      secondaryButtonDisabledText: '#666666',
+      inputFieldBorder: colors.midGray,
+      inputFieldBackground: colors.midGray,
+      inputFieldPlaceholderText: colors.lightGray,
+      inputFieldText: colors.white,
+      inputFieldFocusBorder: colors.niceOrange,
       errorColor: '#FF5A56',
       accentColor: '#FF5722',
-      textPrimary: '#000000',
+      textPrimary: colors.white,
       textSecondary: '#706F74',
+      textTertiary: colors.niceOrange,
     },
     dark: {
-      background: '#121212',
-      primaryButton: '#FF5722',
-      primaryButtonText: '#FFFFFF',
+      background: colors.darkerGray,
+      secondarybackground: colors.darkGray,
+      primaryButton: colors.niceOrange,
+      primaryButtonText: colors.white,
       primaryButtonDisabled: '#2C2C2C',
       primaryButtonDisabledText: '#666666',
-      inputFieldBorder: '#444444',
-      inputFieldPlaceholderText: '#888888',
-      inputFieldText: '#FFFFFF',
+      secondaryButton: colors.midGray,
+      secondaryButtonText: colors.white,
+      secondaryButtonDisabled: '#2C2C2C',
+      secondaryButtonDisabledText: '#666666',
+      inputFieldBorder: colors.midGray,
+      inputFieldBackground: colors.midGray,
+      inputFieldPlaceholderText: colors.lightGray,
+      inputFieldText: colors.white,
+      inputFieldFocusBorder: colors.niceOrange,
       errorColor: '#FF5A56',
       accentColor: '#FF5722',
-      textPrimary: '#FFFFFF',
+      textPrimary: colors.white,
       textSecondary: '#888888',
+      textTertiary: colors.niceOrange,
     },
   },
 });

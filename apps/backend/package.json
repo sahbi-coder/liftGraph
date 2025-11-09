@@ -1,0 +1,26 @@
+{
+  "name": "@liftgraph/backend",
+  "version": "1.0.0",
+  "private": true,
+  "main": "build/index.js",
+  "scripts": {
+    "build": "node esbuild.config.js",
+    "build:watch": "node esbuild.config.js --watch",
+    "deploy": "yarn build && firebase deploy --only functions",
+    "emulators:start": "firebase emulators:start --import ./seed/dev",
+    "emulators:export": "firebase emulators:export ./seed/dev",
+    "test": "jest"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "esbuild": "^0.24.0",
+    "typescript": "~5.4.0"
+  }
+}

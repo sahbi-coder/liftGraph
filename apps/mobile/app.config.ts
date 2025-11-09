@@ -20,6 +20,7 @@ const config: ExpoConfig = {
     supportsTablet: true,
     requireFullScreen: true,
     bundleIdentifier: 'com.liftgraph.app',
+    googleServicesFile: './GoogleService-Info.plist',
   },
   android: {
     adaptiveIcon: {
@@ -27,6 +28,7 @@ const config: ExpoConfig = {
       backgroundColor: '#ffffff',
     },
     package: 'com.liftgraph.app',
+    googleServicesFile: './google-services.json',
   },
   web: {
     bundler: 'metro',
@@ -34,9 +36,10 @@ const config: ExpoConfig = {
     favicon: './assets/favicon.png',
   },
   plugins: ['expo-router', 'expo-font'],
-  experiments: {
-    typedRoutes: true,
-  },
+  // Temporarily disable typedRoutes experiment to fix route discovery
+  // experiments: {
+  //   typedRoutes: true,
+  // },
   extra: {
     router: {
       origin: false,
