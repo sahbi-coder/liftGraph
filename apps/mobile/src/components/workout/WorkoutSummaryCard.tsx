@@ -1,0 +1,102 @@
+import React, { useMemo } from 'react';
+import dayjs from 'dayjs';
+import _ from 'lodash';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { Button, Text, XStack, YStack } from 'tamagui';
+import { Calendar, Clock3, Dumbbell } from '@tamagui/lucide-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
+import { colors } from '@/theme/colors';
+
+dayjs.extend(relativeTime);
+
+type WorkoutSummaryCardProps = {
+  date: Date;
+  exerciseCount: number;
+  onPress: () => void;
+  isLoading?: boolean;
+  setCount: number;
+  averageRir: number;
+};
+
+export function WorkoutSummaryCard({
+  date,
+  exerciseCount,
+  onPress,
+  isLoading = false,
+  setCount,
+  averageRir,
+}: WorkoutSummaryCardProps) {
+  const timeAgo = _.upperFirst(useMemo(() => dayjs(date).fromNow(), [date]));
+  const exerciseLabel = exerciseCount === 1 ? 'Exercise' : 'Exercises';
+  const setLabel = setCount === 1 ? 'Set' : 'Sets';
+  const formattedAverageRir =
+    typeof averageRir === 'number' && Number.isFinite(averageRir) ? averageRir.toFixed(1) : '--';
+
+  return (
+    <YStack
+      backgroundColor={colors.midGray}
+      padding="$4"
+      borderRadius="$4"
+      space="$3"
+      gap="$3"
+      alignSelf="stretch"
+    >
+      <YStack space="$1">
+        <XStack alignItems="center" justifyContent="space-between">
+          <Text color="$textTertiary" fontSize="$6">
+            Previous workout
+          </Text>
+          <YStack
+            padding="$2"
+            borderRadius="$3"
+            backgroundColor="rgba(249, 115, 22, 0.15)"
+            alignItems="center"
+            justifyContent="center"
+            space="$1"
+          >
+            <Calendar size={24} color={colors.niceOrange} />
+          </YStack>
+        </XStack>
+        <XStack alignItems="center" space="$2">
+          <Text color="$textPrimary" fontSize="$4" fontWeight="700">
+            {timeAgo}
+          </Text>
+          <Clock3 size={18} color={colors.niceOrange} />
+        </XStack>
+        <XStack alignItems="center" space="$2">
+          <Text color="$textPrimary" fontSize="$4" fontWeight="600">
+            {exerciseCount} {exerciseLabel}
+          </Text>
+          <Ionicons name="barbell" size={24} color={colors.niceOrange} />
+        </XStack>
+        <XStack alignItems="center" space="$2" justifyContent="space-between">
+          <XStack alignItems="center" space="$2">
+            <Text color="$textPrimary" fontSize="$3">
+              {setCount} {setLabel}
+            </Text>
+            <Dumbbell size={18} color={colors.niceOrange} />
+          </XStack>
+          <XStack alignItems="center" space="$2">
+            <Text color="$textSecondary" fontSize="$3" fontWeight="600">
+              Avg RIR {formattedAverageRir}
+            </Text>
+          </XStack>
+        </XStack>
+      </YStack>
+      <Button
+        backgroundColor="$primaryButton"
+        color="$primaryButtonText"
+        fontWeight="600"
+        borderRadius="$4"
+        onPress={onPress}
+        pressStyle={{ opacity: 0.85 }}
+        disabled={isLoading}
+        opacity={isLoading ? 0.6 : 1}
+        alignSelf="stretch"
+      >
+        {isLoading ? 'Opening...' : 'Review Workout'}
+      </Button>
+    </YStack>
+  );
+}

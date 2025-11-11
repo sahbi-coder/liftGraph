@@ -1,10 +1,14 @@
 import {
   Firestore,
   Timestamp,
+  addDoc,
   collection,
   doc,
   getDoc,
   getDocs,
+  limit,
+  orderBy,
+  query,
   setDoc,
   updateDoc,
 } from 'firebase/firestore';
@@ -20,8 +24,8 @@ export type UserProfile = {
 export type Exercise = {
   id: string;
   name: string;
-  category?: string;
-  bodyPart?: string;
+  category: string;
+  bodyPart: string;
   description?: string;
   createdAt?: Date;
   source: 'library' | 'user';
@@ -29,11 +33,48 @@ export type Exercise = {
 
 type ExerciseFirestoreData = {
   name: string;
-  category?: string;
-  bodyPart?: string;
+  category: string;
+  bodyPart: string;
   description?: string;
   createdAt?: Timestamp | Date;
   [key: string]: unknown;
+};
+
+export type WorkoutSet = {
+  weight: number;
+  reps: number;
+  rir: number;
+};
+
+export type WorkoutExercise = {
+  exerciseId: string;
+  exerciseOwnerId: string | null;
+  name: string;
+  order: number;
+  sets: WorkoutSet[];
+};
+
+export type WorkoutInput = {
+  date: Date | string;
+  notes?: string;
+  exercises: WorkoutExercise[];
+};
+
+export type Workout = {
+  id: string;
+  date: Date;
+  notes: string;
+  exercises: WorkoutExercise[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type WorkoutFirestoreData = {
+  date: Timestamp;
+  notes: string;
+  exercises: WorkoutExercise[];
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
 };
 
 export class FirestoreService {
@@ -109,5 +150,101 @@ export class FirestoreService {
     });
 
     return [...libraryExercises, ...userExercises];
+  }
+
+  async createWorkout(userId: string, workout: WorkoutInput): Promise<string> {
+    const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
+    const now = Timestamp.now();
+    const serialized = this.serializeWorkout(workout);
+    const docRef = await addDoc(workoutsCollection, {
+      ...serialized,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    return docRef.id;
+  }
+
+  async updateWorkout(userId: string, workoutId: string, workout: WorkoutInput): Promise<void> {
+    const workoutRef = doc(this.db, `users/${userId}/workouts/${workoutId}`);
+    const existingWorkout = await getDoc(workoutRef);
+
+    if (!existingWorkout.exists()) {
+      throw new Error('Workout not found');
+    }
+
+    const existingData = existingWorkout.data() as Partial<WorkoutFirestoreData>;
+    const createdAt =
+      existingData?.createdAt instanceof Timestamp ? existingData.createdAt : Timestamp.now();
+
+    const serialized = this.serializeWorkout(workout);
+
+    await setDoc(workoutRef, {
+      ...serialized,
+      createdAt,
+      updatedAt: Timestamp.now(),
+    });
+  }
+
+  async getLatestWorkout(userId: string): Promise<Workout | null> {
+    const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
+    const latestWorkoutQuery = query(workoutsCollection, orderBy('date', 'desc'), limit(1));
+    const snapshot = await getDocs(latestWorkoutQuery);
+
+    if (snapshot.empty) {
+      return null;
+    }
+
+    const latestDoc = snapshot.docs[0];
+    const data = latestDoc.data() as WorkoutFirestoreData;
+
+    return {
+      id: latestDoc.id,
+      date: data.date.toDate(),
+      notes: data.notes,
+      exercises: data.exercises,
+      createdAt: data.createdAt.toDate(),
+      updatedAt: data.updatedAt.toDate(),
+    };
+  }
+
+  async getWorkout(userId: string, workoutId: string): Promise<Workout | null> {
+    const workoutRef = doc(this.db, `users/${userId}/workouts/${workoutId}`);
+    const snapshot = await getDoc(workoutRef);
+
+    if (!snapshot.exists()) {
+      return null;
+    }
+
+    const data = snapshot.data() as WorkoutFirestoreData;
+
+    return {
+      id: snapshot.id,
+      date: data.date.toDate(),
+      notes: data.notes,
+      exercises: data.exercises,
+      createdAt: data.createdAt.toDate(),
+      updatedAt: data.updatedAt.toDate(),
+    };
+  }
+
+  private serializeWorkout(workout: WorkoutInput) {
+    const date = typeof workout.date === 'string' ? new Date(workout.date) : workout.date;
+
+    return {
+      date: Timestamp.fromDate(date),
+      notes: workout.notes ?? '',
+      exercises: workout.exercises.map((exercise) => ({
+        exerciseId: exercise.exerciseId,
+        exerciseOwnerId: exercise.exerciseOwnerId ?? null,
+        name: exercise.name,
+        order: exercise.order,
+        sets: exercise.sets.map((set) => ({
+          weight: set.weight,
+          reps: set.reps,
+          rir: set.rir,
+        })),
+      })),
+    };
   }
 }
