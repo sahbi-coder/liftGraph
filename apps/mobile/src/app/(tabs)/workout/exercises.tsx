@@ -36,6 +36,7 @@ export default function ExercisePickerScreen() {
 
   const [search, setSearch] = useState('');
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [filter, setFilter] = useState<'all' | 'library' | 'custom'>('all');
   const [isLoading, setIsLoading] = useState(false);
   const onSelect = route.params?.onSelect;
 
@@ -69,13 +70,16 @@ export default function ExercisePickerScreen() {
   }, [services.firestore, user]);
 
   const filteredExercises = useMemo(() => {
-    if (!search.trim()) {
-      return exercises;
-    }
-
     const query = search.trim().toLowerCase();
-    return exercises.filter((exercise) => exercise.name.toLowerCase().includes(query));
-  }, [exercises, search]);
+    return exercises.filter((exercise) => {
+      const matchesSearch = !query || exercise.name.toLowerCase().includes(query);
+      const matchesFilter =
+        filter === 'all' ||
+        (filter === 'library' && exercise.source === 'library') ||
+        (filter === 'custom' && exercise.source === 'user');
+      return matchesSearch && matchesFilter;
+    });
+  }, [exercises, filter, search]);
 
   const handleSelect = useCallback(
     (exercise: ExerciseSelection) => {
@@ -109,9 +113,6 @@ export default function ExercisePickerScreen() {
           <Text color={colors.white} fontWeight="600">
             {item.name}
           </Text>
-          <Text color={colors.niceOrange} fontSize="$2">
-            Source: {item.source === 'library' ? 'Library' : 'My Exercises'}
-          </Text>
         </YStack>
       </Button>
     ),
@@ -125,6 +126,7 @@ export default function ExercisePickerScreen() {
       <XStack space="$3" alignItems="center">
         <Input
           flex={1}
+          height={40}
           value={search}
           onChangeText={setSearch}
           placeholder="Search exercises"
@@ -137,12 +139,46 @@ export default function ExercisePickerScreen() {
         />
         <Button
           size="$3"
-          variant="outlined"
+          height={40}
+          backgroundColor="$primaryButton"
           color={colors.white}
           onPress={() => setSearch('')}
           disabled={!search}
         >
           Clear
+        </Button>
+      </XStack>
+
+      <XStack space="$2" justifyContent="center">
+        <Button
+          flex={1}
+          size="$3"
+          height={36}
+          backgroundColor={filter === 'all' ? '$primaryButton' : colors.midGray}
+          color={colors.white}
+          onPress={() => setFilter('all')}
+        >
+          All
+        </Button>
+        <Button
+          flex={1}
+          size="$3"
+          height={36}
+          backgroundColor={filter === 'library' ? '$primaryButton' : colors.midGray}
+          color={colors.white}
+          onPress={() => setFilter('library')}
+        >
+          Library
+        </Button>
+        <Button
+          flex={1}
+          size="$3"
+          height={36}
+          backgroundColor={filter === 'custom' ? '$primaryButton' : colors.midGray}
+          color={colors.white}
+          onPress={() => setFilter('custom')}
+        >
+          Custom
         </Button>
       </XStack>
 
