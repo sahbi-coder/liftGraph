@@ -18,8 +18,11 @@ type WorkoutFormProps = {
     date?: Date | string;
     notes?: string;
     exercises?: WorkoutExercise[];
+    validated?: boolean;
   };
   onSubmit: (payload: WorkoutInput) => Promise<void> | void;
+  onValidateWorkout?: () => Promise<void> | void;
+  onUnvalidateWorkout?: () => Promise<void> | void;
   isSubmitting?: boolean;
   submitLabel: string;
 };
@@ -75,6 +78,7 @@ type ExerciseCardProps = {
     field: keyof Omit<SetForm, 'id'>,
     value: string,
   ) => void;
+  disabled?: boolean;
 };
 
 const ExerciseCard = ({
@@ -84,6 +88,7 @@ const ExerciseCard = ({
   onAddSet,
   onRemoveSet,
   onUpdateSetField,
+  disabled = false,
 }: ExerciseCardProps) => {
   return (
     <YStack
@@ -102,6 +107,8 @@ const ExerciseCard = ({
           variant="outlined"
           color={colors.white}
           onPress={() => onRemoveExercise(exercise.id)}
+          disabled={disabled}
+          opacity={disabled ? 0.5 : 1}
         >
           <Entypo name="circle-with-cross" size={24} color={colors.niceOrange} />
         </Button>
@@ -127,6 +134,8 @@ const ExerciseCard = ({
               borderColor="$inputFieldBorder"
               backgroundColor="$background"
               color="$textPrimary"
+              editable={!disabled}
+              opacity={disabled ? 0.6 : 1}
             />
             <Text color={colors.white}>Kg</Text>
 
@@ -140,6 +149,8 @@ const ExerciseCard = ({
               borderColor="$inputFieldBorder"
               backgroundColor="$background"
               color="$textPrimary"
+              editable={!disabled}
+              opacity={disabled ? 0.6 : 1}
             />
             <Text color={colors.white}>R</Text>
 
@@ -153,6 +164,8 @@ const ExerciseCard = ({
               borderColor="$inputFieldBorder"
               backgroundColor="$background"
               color="$textPrimary"
+              editable={!disabled}
+              opacity={disabled ? 0.6 : 1}
             />
             <Text color={colors.white}>RIR</Text>
             <Button
@@ -160,6 +173,8 @@ const ExerciseCard = ({
               variant="outlined"
               color={colors.white}
               onPress={() => onRemoveSet(exercise.id, set.id)}
+              disabled={disabled}
+              opacity={disabled ? 0.5 : 1}
             >
               <AntDesign name="delete" size={24} color={colors.white} />
             </Button>
@@ -174,6 +189,8 @@ const ExerciseCard = ({
         fontWeight="600"
         borderRadius="$4"
         onPress={() => onAddSet(exercise.id)}
+        disabled={disabled}
+        opacity={disabled ? 0.6 : 1}
       >
         <Entypo name="circle-with-plus" size={22} color={colors.white} /> Add Set
       </Button>
@@ -184,6 +201,8 @@ const ExerciseCard = ({
 export function WorkoutForm({
   initialValues,
   onSubmit,
+  onValidateWorkout,
+  onUnvalidateWorkout,
   isSubmitting = false,
   submitLabel,
 }: WorkoutFormProps) {
@@ -200,6 +219,31 @@ export function WorkoutForm({
 
     return initialValues.date;
   });
+
+  const validated = initialValues?.validated ?? false;
+  const [isUnvalidateModalVisible, setIsUnvalidateModalVisible] = useState(false);
+
+  // Check if validate button should be shown
+  const shouldShowValidateButton = useMemo(() => {
+    if (!onValidateWorkout) {
+      return false; // Not in edit mode
+    }
+
+    if (validated) {
+      return false; // Already validated
+    }
+
+    const workoutDate = new Date(date);
+    if (Number.isNaN(workoutDate.getTime())) {
+      return false;
+    }
+
+    const isToday = dayjs(workoutDate).isSame(dayjs(), 'day');
+    const isBeforeToday = dayjs(workoutDate).isBefore(dayjs(), 'day');
+
+    // Show if date is today or prior
+    return isToday || isBeforeToday;
+  }, [onValidateWorkout, validated, date]);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const selectedDateKey = useMemo(() => {
     const parsedDate = new Date(date);
@@ -237,50 +281,68 @@ export function WorkoutForm({
     initialValues?.exercises ? mapExercisesToForm(initialValues.exercises) : [],
   );
 
-  const handleSelectExercise = useCallback((exercise: ExerciseSelection) => {
-    setExercises((prev) => [...prev, createExerciseForm(exercise)]);
-  }, []);
+  const handleSelectExercise = useCallback(
+    (exercise: ExerciseSelection) => {
+      if (validated) return;
+      setExercises((prev) => [...prev, createExerciseForm(exercise)]);
+    },
+    [validated],
+  );
 
   const handleOpenExercisePicker = useCallback(() => {
+    if (validated) return;
     navigation.navigate('exercises', { onSelect: handleSelectExercise });
-  }, [handleSelectExercise, navigation]);
+  }, [handleSelectExercise, navigation, validated]);
 
-  const handleRemoveExercise = useCallback((exerciseId: string) => {
-    setExercises((prev) => prev.filter((exercise) => exercise.id !== exerciseId));
-  }, []);
+  const handleRemoveExercise = useCallback(
+    (exerciseId: string) => {
+      if (validated) return;
+      setExercises((prev) => prev.filter((exercise) => exercise.id !== exerciseId));
+    },
+    [validated],
+  );
 
-  const handleAddSet = useCallback((exerciseId: string) => {
-    setExercises((prev) =>
-      prev.map((exercise) =>
-        exercise.id === exerciseId
-          ? { ...exercise, sets: [...exercise.sets, createSetForm()] }
-          : exercise,
-      ),
-    );
-  }, []);
+  const handleAddSet = useCallback(
+    (exerciseId: string) => {
+      if (validated) return;
+      setExercises((prev) =>
+        prev.map((exercise) =>
+          exercise.id === exerciseId
+            ? { ...exercise, sets: [...exercise.sets, createSetForm()] }
+            : exercise,
+        ),
+      );
+    },
+    [validated],
+  );
 
-  const handleRemoveSet = useCallback((exerciseId: string, setId: string) => {
-    setExercises((prev) =>
-      prev.map((exercise) => {
-        if (exercise.id !== exerciseId) {
-          return exercise;
-        }
+  const handleRemoveSet = useCallback(
+    (exerciseId: string, setId: string) => {
+      if (validated) return;
+      setExercises((prev) =>
+        prev.map((exercise) => {
+          if (exercise.id !== exerciseId) {
+            return exercise;
+          }
 
-        if (exercise.sets.length === 1) {
-          Alert.alert('Cannot remove set', 'Each exercise must have at least one set.');
-          return exercise;
-        }
+          if (exercise.sets.length === 1) {
+            Alert.alert('Cannot remove set', 'Each exercise must have at least one set.');
+            return exercise;
+          }
 
-        return {
-          ...exercise,
-          sets: exercise.sets.filter((set) => set.id !== setId),
-        };
-      }),
-    );
-  }, []);
+          return {
+            ...exercise,
+            sets: exercise.sets.filter((set) => set.id !== setId),
+          };
+        }),
+      );
+    },
+    [validated],
+  );
 
   const handleUpdateSetField = useCallback(
     (exerciseId: string, setId: string, field: keyof Omit<SetForm, 'id'>, value: string) => {
+      if (validated) return;
       setExercises((prev) =>
         prev.map((exercise) => {
           if (exercise.id !== exerciseId) {
@@ -301,7 +363,7 @@ export function WorkoutForm({
         }),
       );
     },
-    [],
+    [validated],
   );
 
   const buildWorkoutPayload = useCallback((): WorkoutInput => {
@@ -356,6 +418,14 @@ export function WorkoutForm({
   }, [date, exercises, notes]);
 
   const handleSubmit = useCallback(async () => {
+    if (validated) {
+      Alert.alert(
+        'Workout is validated',
+        'This workout has been validated and cannot be modified.',
+      );
+      return;
+    }
+
     let workoutPayload: WorkoutInput;
 
     try {
@@ -372,7 +442,7 @@ export function WorkoutForm({
       const message = error instanceof Error ? error.message : 'Unable to save workout.';
       Alert.alert('Failed to save workout', message);
     }
-  }, [buildWorkoutPayload, onSubmit]);
+  }, [buildWorkoutPayload, onSubmit, validated]);
 
   return (
     <>
@@ -391,6 +461,8 @@ export function WorkoutForm({
             fontWeight="600"
             borderRadius="$4"
             onPress={handleOpenExercisePicker}
+            disabled={validated}
+            opacity={validated ? 0.6 : 1}
           >
             <Entypo name="circle-with-plus" size={22} color={colors.white} />
             Add Exercise
@@ -418,6 +490,8 @@ export function WorkoutForm({
               borderRadius="$4"
               onPress={() => setIsCalendarVisible(true)}
               pressStyle={{ opacity: 0.85 }}
+              disabled={validated}
+              opacity={validated ? 0.6 : 1}
             >
               <CalendarIcon size={22} color={colors.white} />
             </Button>
@@ -441,6 +515,7 @@ export function WorkoutForm({
                 onAddSet={handleAddSet}
                 onRemoveSet={handleRemoveSet}
                 onUpdateSetField={handleUpdateSetField}
+                disabled={validated}
               />
             ))
           )}
@@ -458,6 +533,8 @@ export function WorkoutForm({
               placeholderTextColor="$inputFieldPlaceholderText"
               minHeight={120}
               autoCapitalize="sentences"
+              editable={!validated}
+              opacity={validated ? 0.6 : 1}
             />
           </YStack>
           <Button
@@ -466,11 +543,42 @@ export function WorkoutForm({
             fontWeight="600"
             borderRadius="$4"
             onPress={handleSubmit}
-            disabled={isSubmitting}
-            opacity={isSubmitting ? 0.6 : 1}
+            disabled={isSubmitting || validated}
+            opacity={isSubmitting || validated ? 0.6 : 1}
           >
             {isSubmitting ? 'Saving...' : submitLabel}
           </Button>
+          {shouldShowValidateButton && onValidateWorkout && (
+            <Button
+              alignSelf="center"
+              width="50%"
+              backgroundColor="#22c55e"
+              color={colors.white}
+              fontWeight="600"
+              borderRadius="$4"
+              onPress={onValidateWorkout}
+              disabled={isSubmitting}
+              opacity={isSubmitting ? 0.6 : 1}
+            >
+              Validate Workout
+            </Button>
+          )}
+
+          {validated && onUnvalidateWorkout && (
+            <Button
+              alignSelf="center"
+              width="50%"
+              backgroundColor="#ef4444"
+              color={colors.white}
+              fontWeight="600"
+              borderRadius="$4"
+              onPress={() => setIsUnvalidateModalVisible(true)}
+              disabled={isSubmitting}
+              opacity={isSubmitting ? 0.6 : 1}
+            >
+              Mark as Incomplete
+            </Button>
+          )}
         </YStack>
       </ScrollView>
 
@@ -522,6 +630,64 @@ export function WorkoutForm({
               }}
               hideExtraDays
             />
+          </YStack>
+        </YStack>
+      </Modal>
+
+      <Modal
+        visible={isUnvalidateModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setIsUnvalidateModalVisible(false)}
+      >
+        <YStack
+          flex={1}
+          backgroundColor="rgba(0, 0, 0, 0.6)"
+          justifyContent="center"
+          alignItems="center"
+          padding="$4"
+        >
+          <YStack
+            width="90%"
+            maxWidth={420}
+            backgroundColor={colors.midGray}
+            borderRadius="$4"
+            padding="$4"
+            space="$4"
+          >
+            <Text color={colors.white} fontSize="$6" fontWeight="600">
+              Mark Workout as Incomplete?
+            </Text>
+            <Text color="$textSecondary" fontSize="$4">
+              This will allow you to edit the workout again. Are you sure you want to mark this
+              workout as incomplete?
+            </Text>
+            <XStack space="$3" justifyContent="flex-end">
+              <Button
+                backgroundColor={colors.midGray}
+                color={colors.white}
+                borderWidth={1}
+                borderColor={colors.white}
+                onPress={() => setIsUnvalidateModalVisible(false)}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button
+                backgroundColor="#ef4444"
+                color={colors.white}
+                onPress={async () => {
+                  setIsUnvalidateModalVisible(false);
+                  if (onUnvalidateWorkout) {
+                    await onUnvalidateWorkout();
+                  }
+                }}
+                disabled={isSubmitting}
+                opacity={isSubmitting ? 0.6 : 1}
+              >
+                {isSubmitting ? 'Processing...' : 'Mark as Incomplete'}
+              </Button>
+            </XStack>
           </YStack>
         </YStack>
       </Modal>

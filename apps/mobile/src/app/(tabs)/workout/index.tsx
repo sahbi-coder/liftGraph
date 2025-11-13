@@ -116,6 +116,7 @@ export default function WorkoutHomeScreen() {
           title="Upcoming workout"
           buttonLabel="Start Scheduled Workout"
           date={earliestFutureWorkout.date}
+          validated={earliestFutureWorkout.validated}
           exerciseCount={earliestFutureWorkout.exercises.length}
           setCount={earliestFutureWorkout.exercises.reduce(
             (sum, exercise) => sum + exercise.sets.length,
@@ -141,6 +142,7 @@ export default function WorkoutHomeScreen() {
           title="Previous workout"
           buttonLabel="Review Workout"
           date={latestWorkout.date}
+          validated={latestWorkout.validated}
           exerciseCount={latestWorkout.exercises.length}
           setCount={latestWorkout.exercises.reduce(
             (sum, exercise) => sum + exercise.sets.length,

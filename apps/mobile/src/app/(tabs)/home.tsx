@@ -85,8 +85,9 @@ export default function HomeScreen() {
       {todaysWorkout && (
         <WorkoutSummaryCard
           title="Today's workout"
-          buttonLabel="Start Today's Workout"
+          buttonLabel={`${todaysWorkout.validated ? 'Review' : 'Start'} Today's Workout`}
           date={todaysWorkout.date}
+          validated={todaysWorkout.validated}
           exerciseCount={todaysWorkout.exercises.length}
           setCount={todaysWorkout.exercises.reduce(
             (sum, exercise) => sum + exercise.sets.length,

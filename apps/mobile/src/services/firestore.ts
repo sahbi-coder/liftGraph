@@ -55,7 +55,7 @@ export type WorkoutExercise = {
 };
 
 export type WorkoutInput = {
-  date: Date | string;
+  date: Date;
   notes?: string;
   exercises: WorkoutExercise[];
 };
@@ -187,6 +187,34 @@ export class FirestoreService {
       ...serialized,
       validated,
       createdAt,
+      updatedAt: Timestamp.now(),
+    });
+  }
+
+  async validateWorkout(userId: string, workoutId: string): Promise<void> {
+    const workoutRef = doc(this.db, `users/${userId}/workouts/${workoutId}`);
+    const existingWorkout = await getDoc(workoutRef);
+
+    if (!existingWorkout.exists()) {
+      throw new Error('Workout not found');
+    }
+
+    await updateDoc(workoutRef, {
+      validated: true,
+      updatedAt: Timestamp.now(),
+    });
+  }
+
+  async unvalidateWorkout(userId: string, workoutId: string): Promise<void> {
+    const workoutRef = doc(this.db, `users/${userId}/workouts/${workoutId}`);
+    const existingWorkout = await getDoc(workoutRef);
+
+    if (!existingWorkout.exists()) {
+      throw new Error('Workout not found');
+    }
+
+    await updateDoc(workoutRef, {
+      validated: false,
       updatedAt: Timestamp.now(),
     });
   }

@@ -25,6 +25,7 @@ export default function EditWorkoutScreen() {
   const [initialWorkout, setInitialWorkout] = useState<Workout | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
 
   useEffect(() => {
     if (!workoutId) {
@@ -100,6 +101,52 @@ export default function EditWorkoutScreen() {
     [router, services.firestore, user, workoutId],
   );
 
+  const handleValidateWorkout = useCallback(async () => {
+    if (!user || !workoutId) {
+      Alert.alert('Not signed in', 'Please sign in to validate workouts.');
+      return;
+    }
+
+    setIsValidating(true);
+    try {
+      await services.firestore.validateWorkout(user.uid, workoutId);
+      Alert.alert('Workout validated', 'Your workout has been marked as complete.');
+      // Refresh the workout data
+      const updatedWorkout = await services.firestore.getWorkout(user.uid, workoutId);
+      if (updatedWorkout) {
+        setInitialWorkout(updatedWorkout);
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Something went wrong.';
+      Alert.alert('Failed to validate workout', message);
+    } finally {
+      setIsValidating(false);
+    }
+  }, [services.firestore, user, workoutId]);
+
+  const handleUnvalidateWorkout = useCallback(async () => {
+    if (!user || !workoutId) {
+      Alert.alert('Not signed in', 'Please sign in to unvalidate workouts.');
+      return;
+    }
+
+    setIsValidating(true);
+    try {
+      await services.firestore.unvalidateWorkout(user.uid, workoutId);
+      Alert.alert('Workout marked as incomplete', 'You can now edit this workout.');
+      // Refresh the workout data
+      const updatedWorkout = await services.firestore.getWorkout(user.uid, workoutId);
+      if (updatedWorkout) {
+        setInitialWorkout(updatedWorkout);
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Something went wrong.';
+      Alert.alert('Failed to unvalidate workout', message);
+    } finally {
+      setIsValidating(false);
+    }
+  }, [services.firestore, user, workoutId]);
+
   if (!user) {
     return (
       <YStack
@@ -151,9 +198,12 @@ export default function EditWorkoutScreen() {
         date: initialWorkout.date,
         notes: initialWorkout.notes,
         exercises: initialWorkout.exercises,
+        validated: initialWorkout.validated,
       }}
       onSubmit={handleUpdateWorkout}
-      isSubmitting={isSaving}
+      onValidateWorkout={handleValidateWorkout}
+      onUnvalidateWorkout={handleUnvalidateWorkout}
+      isSubmitting={isSaving || isValidating}
       submitLabel="Update Workout"
     />
   );
