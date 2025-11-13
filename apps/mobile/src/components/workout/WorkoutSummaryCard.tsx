@@ -11,12 +11,14 @@ import { colors } from '@/theme/colors';
 dayjs.extend(relativeTime);
 
 type WorkoutSummaryCardProps = {
+  title: string;
   date: Date;
   exerciseCount: number;
   onPress: () => void;
   isLoading?: boolean;
   setCount: number;
   averageRir: number;
+  buttonLabel: string;
 };
 
 export function WorkoutSummaryCard({
@@ -26,12 +28,16 @@ export function WorkoutSummaryCard({
   isLoading = false,
   setCount,
   averageRir,
+  title,
+  buttonLabel,
 }: WorkoutSummaryCardProps) {
-  const timeAgo = _.upperFirst(useMemo(() => dayjs(date).fromNow(), [date]));
+  const isToday = dayjs(date).isSame(dayjs(), 'day');
+  const timeFromNow = _.upperFirst(useMemo(() => dayjs(date).fromNow(), [date]));
   const exerciseLabel = exerciseCount === 1 ? 'Exercise' : 'Exercises';
   const setLabel = setCount === 1 ? 'Set' : 'Sets';
   const formattedAverageRir =
     typeof averageRir === 'number' && Number.isFinite(averageRir) ? averageRir.toFixed(1) : '--';
+  const timeFromNowLabel = isToday ? 'Today' : timeFromNow;
 
   return (
     <YStack
@@ -45,7 +51,7 @@ export function WorkoutSummaryCard({
       <YStack space="$1">
         <XStack alignItems="center" justifyContent="space-between">
           <Text color="$textTertiary" fontSize="$6">
-            Previous workout
+            {title}
           </Text>
           <YStack
             padding="$2"
@@ -60,7 +66,7 @@ export function WorkoutSummaryCard({
         </XStack>
         <XStack alignItems="center" space="$2">
           <Text color="$textPrimary" fontSize="$4" fontWeight="700">
-            {timeAgo}
+            {timeFromNowLabel}
           </Text>
           <Clock3 size={18} color={colors.niceOrange} />
         </XStack>
@@ -95,7 +101,7 @@ export function WorkoutSummaryCard({
         opacity={isLoading ? 0.6 : 1}
         alignSelf="stretch"
       >
-        {isLoading ? 'Opening...' : 'Review Workout'}
+        {isLoading ? 'Opening...' : buttonLabel}
       </Button>
     </YStack>
   );

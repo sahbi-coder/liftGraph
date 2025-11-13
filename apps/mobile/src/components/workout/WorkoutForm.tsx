@@ -191,11 +191,11 @@ export function WorkoutForm({
 
   const [date, setDate] = useState(() => {
     if (!initialValues?.date) {
-      return new Date().toISOString();
+      return new Date().toUTCString();
     }
 
     if (initialValues.date instanceof Date) {
-      return initialValues.date.toISOString();
+      return initialValues.date.toUTCString();
     }
 
     return initialValues.date;
@@ -512,7 +512,7 @@ export function WorkoutForm({
               current={selectedDateKey}
               onDayPress={(day) => {
                 const nextDate = new Date(day.dateString);
-                setDate(nextDate.toISOString());
+                setDate(nextDate.toUTCString());
                 setIsCalendarVisible(false);
               }}
               markedDates={markedDates}

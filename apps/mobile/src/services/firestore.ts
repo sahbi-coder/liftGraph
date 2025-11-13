@@ -6,11 +6,11 @@ import {
   doc,
   getDoc,
   getDocs,
-  limit,
   orderBy,
   query,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 
 export type UserProfile = {
@@ -65,6 +65,7 @@ export type Workout = {
   date: Date;
   notes: string;
   exercises: WorkoutExercise[];
+  validated: boolean;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -73,6 +74,7 @@ type WorkoutFirestoreData = {
   date: Timestamp;
   notes: string;
   exercises: WorkoutExercise[];
+  validated: boolean;
   createdAt: Timestamp;
   updatedAt: Timestamp;
 };
@@ -158,6 +160,7 @@ export class FirestoreService {
     const serialized = this.serializeWorkout(workout);
     const docRef = await addDoc(workoutsCollection, {
       ...serialized,
+      validated: false,
       createdAt: now,
       updatedAt: now,
     });
@@ -176,33 +179,171 @@ export class FirestoreService {
     const existingData = existingWorkout.data() as Partial<WorkoutFirestoreData>;
     const createdAt =
       existingData?.createdAt instanceof Timestamp ? existingData.createdAt : Timestamp.now();
+    const validated = existingData?.validated ?? false;
 
     const serialized = this.serializeWorkout(workout);
 
     await setDoc(workoutRef, {
       ...serialized,
+      validated,
       createdAt,
       updatedAt: Timestamp.now(),
     });
   }
 
-  async getLatestWorkout(userId: string): Promise<Workout | null> {
+  async getLatestValidatedWorkout(userId: string): Promise<Workout | null> {
     const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
-    const latestWorkoutQuery = query(workoutsCollection, orderBy('date', 'desc'), limit(1));
+
+    // Query validated workouts without orderBy to avoid composite index requirement
+    // We'll sort in memory instead
+    const latestWorkoutQuery = query(workoutsCollection, where('validated', '==', true));
     const snapshot = await getDocs(latestWorkoutQuery);
 
     if (snapshot.empty) {
       return null;
     }
 
-    const latestDoc = snapshot.docs[0];
-    const data = latestDoc.data() as WorkoutFirestoreData;
+    // Sort by date descending in memory and get the latest one
+    const sortedDocs = snapshot.docs.sort((a, b) => {
+      const aData = a.data();
+      const bData = b.data();
+      // Compare Timestamps - descending order (newest first)
+      return bData.date.toMillis() - aData.date.toMillis();
+    });
+
+    const latestDoc = sortedDocs[0];
+    const data = latestDoc.data();
 
     return {
       id: latestDoc.id,
       date: data.date.toDate(),
       notes: data.notes,
       exercises: data.exercises,
+      validated: data.validated ?? false,
+      createdAt: data.createdAt.toDate(),
+      updatedAt: data.updatedAt.toDate(),
+    };
+  }
+
+  async getEarliestNonValidatedFutureWorkout(userId: string): Promise<Workout | null> {
+    const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
+    // Get today at midnight in UTC
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+
+    console.log('Today UTC midnight:', today.toISOString());
+
+    // Query all workouts, then filter in memory
+    const futureWorkoutQuery = query(workoutsCollection, orderBy('date', 'asc'));
+    const snapshot = await getDocs(futureWorkoutQuery);
+
+    console.log('Query results count:', snapshot.size);
+
+    // Filter results to only include non-validated workouts dated today or in the future
+    // Compare at day level using UTC time
+    const filteredDocs = snapshot.docs.filter((doc) => {
+      const data = doc.data() as WorkoutFirestoreData;
+
+      // Skip validated workouts
+      if (data.validated === true) {
+        return false;
+      }
+
+      const workoutDate = data.date.toDate();
+      // Normalize workout date to UTC midnight for day-level comparison
+      const workoutDateUTC = new Date(
+        workoutDate.getFullYear(),
+        workoutDate.getMonth(),
+        workoutDate.getDate(),
+        0,
+        0,
+        0,
+        0,
+      );
+      console.log('Workout date UTC:', workoutDateUTC.toISOString());
+      console.log('Today:', today.toISOString());
+      const isTodayOrFuture = workoutDateUTC >= today;
+
+      console.log('Workout date check:', {
+        id: doc.id,
+        workoutDate: workoutDate.toISOString(),
+        workoutDateUTC: workoutDateUTC.toISOString(),
+        todayUTC: today.toISOString(),
+        isTodayOrFuture,
+        validated: data.validated,
+      });
+
+      return isTodayOrFuture;
+    });
+
+    if (filteredDocs.length === 0) {
+      console.log('No non-validated workouts found that are today or in the future');
+      return null;
+    }
+
+    // Get the earliest one (first in the filtered array since query is ordered)
+    const earliestDoc = filteredDocs[0];
+    const data = earliestDoc.data() as WorkoutFirestoreData;
+
+    return {
+      id: earliestDoc.id,
+      date: data.date.toDate(),
+      notes: data.notes,
+      exercises: data.exercises,
+      validated: data.validated ?? false,
+      createdAt: data.createdAt.toDate(),
+      updatedAt: data.updatedAt.toDate(),
+    };
+  }
+
+  async getTodaysWorkout(userId: string): Promise<Workout | null> {
+    const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
+    // Get today at midnight in local time
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    // Query all workouts, then filter in memory
+    const workoutsQuery = query(workoutsCollection);
+    const snapshot = await getDocs(workoutsQuery);
+
+    // Filter to find workouts dated today
+    const todaysWorkouts = snapshot.docs.filter((doc) => {
+      const data = doc.data() as WorkoutFirestoreData;
+      const workoutDate = data.date.toDate();
+      // Normalize workout date to local midnight for day-level comparison
+      const workoutDateLocal = new Date(
+        workoutDate.getFullYear(),
+        workoutDate.getMonth(),
+        workoutDate.getDate(),
+        0,
+        0,
+        0,
+        0,
+      );
+      return workoutDateLocal >= today && workoutDateLocal < tomorrow;
+    });
+
+    if (todaysWorkouts.length === 0) {
+      return null;
+    }
+
+    // Prioritize non-validated workouts (scheduled for today), otherwise return validated
+    const nonValidated = todaysWorkouts.find((doc) => {
+      const data = doc.data() as WorkoutFirestoreData;
+      return data.validated === false;
+    });
+
+    const workoutDoc = nonValidated || todaysWorkouts[0];
+    const data = workoutDoc.data() as WorkoutFirestoreData;
+
+    return {
+      id: workoutDoc.id,
+      date: data.date.toDate(),
+      notes: data.notes,
+      exercises: data.exercises,
+      validated: data.validated ?? false,
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
     };
@@ -223,6 +364,7 @@ export class FirestoreService {
       date: data.date.toDate(),
       notes: data.notes,
       exercises: data.exercises,
+      validated: data.validated ?? false,
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
     };
@@ -231,8 +373,10 @@ export class FirestoreService {
   private serializeWorkout(workout: WorkoutInput) {
     const date = typeof workout.date === 'string' ? new Date(workout.date) : workout.date;
 
+    const utcMidnight = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+
     return {
-      date: Timestamp.fromDate(date),
+      date: Timestamp.fromDate(utcMidnight),
       notes: workout.notes ?? '',
       exercises: workout.exercises.map((exercise) => ({
         exerciseId: exercise.exerciseId,

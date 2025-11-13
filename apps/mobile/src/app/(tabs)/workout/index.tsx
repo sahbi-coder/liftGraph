@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
 import { YStack, Text, Button } from 'tamagui';
@@ -16,6 +16,8 @@ export default function WorkoutHomeScreen() {
   const { user } = useAuth();
   const [latestWorkout, setLatestWorkout] = useState<Workout | null>(null);
   const [isLoadingLatest, setIsLoadingLatest] = useState(false);
+  const [earliestFutureWorkout, setEarliestFutureWorkout] = useState<Workout | null>(null);
+  const [isLoadingFuture, setIsLoadingFuture] = useState(false);
 
   const fetchLatestWorkout = useCallback(async () => {
     if (!user) {
@@ -25,17 +27,35 @@ export default function WorkoutHomeScreen() {
 
     setIsLoadingLatest(true);
     try {
-      const workout = await services.firestore.getLatestWorkout(user.uid);
+      const workout = await services.firestore.getLatestValidatedWorkout(user.uid);
       setLatestWorkout(workout);
     } finally {
       setIsLoadingLatest(false);
     }
   }, [services.firestore, user]);
 
+  const fetchEarliestFutureWorkout = useCallback(async () => {
+    if (!user) {
+      setEarliestFutureWorkout(null);
+      return;
+    }
+
+    setIsLoadingFuture(true);
+    try {
+      const workout = await services.firestore.getEarliestNonValidatedFutureWorkout(user.uid);
+      setEarliestFutureWorkout(workout);
+    } finally {
+      setIsLoadingFuture(false);
+    }
+  }, [services.firestore, user]);
+
   useFocusEffect(
     useCallback(() => {
-      fetchLatestWorkout();
-    }, [fetchLatestWorkout]),
+      console.log('fetching latest and future workouts');
+      const latest = fetchLatestWorkout();
+      console.log('latest', latest);
+      fetchEarliestFutureWorkout();
+    }, [fetchLatestWorkout, fetchEarliestFutureWorkout]),
   );
 
   const handleCreateWorkout = useCallback(() => {
@@ -60,14 +80,27 @@ export default function WorkoutHomeScreen() {
     });
   }, [latestWorkout, router, user]);
 
+  const handleEditFutureWorkout = useCallback(() => {
+    if (!user) {
+      Alert.alert('Not signed in', 'Please sign in to edit workouts.');
+      return;
+    }
+
+    if (!earliestFutureWorkout) {
+      Alert.alert('No future workouts', 'No upcoming workouts to edit.');
+      return;
+    }
+
+    router.push({
+      pathname: '/(tabs)/workout/edit',
+      params: { workoutId: earliestFutureWorkout.id },
+    });
+  }, [earliestFutureWorkout, router, user]);
+
   return (
-    <YStack
-      flex={1}
-      justifyContent="flex-start"
-      alignItems="stretch"
-      backgroundColor={colors.darkerGray}
-      padding="$4"
-      space="$4"
+    <ScrollView
+      style={{ flex: 1, backgroundColor: colors.darkerGray }}
+      contentContainerStyle={{ padding: 16, gap: 16, paddingBottom: 32 }}
     >
       <YStack space="$2" alignItems="flex-start">
         <Text color="$textPrimary" fontSize="$9" fontWeight="700">
@@ -78,8 +111,35 @@ export default function WorkoutHomeScreen() {
         </Text>
       </YStack>
 
+      {earliestFutureWorkout && (
+        <WorkoutSummaryCard
+          title="Upcoming workout"
+          buttonLabel="Start Scheduled Workout"
+          date={earliestFutureWorkout.date}
+          exerciseCount={earliestFutureWorkout.exercises.length}
+          setCount={earliestFutureWorkout.exercises.reduce(
+            (sum, exercise) => sum + exercise.sets.length,
+            0,
+          )}
+          averageRir={(() => {
+            const { totalSets, totalRir } = earliestFutureWorkout.exercises.reduce(
+              (acc, exercise) => {
+                acc.totalSets += exercise.sets.length;
+                acc.totalRir += exercise.sets.reduce((setSum, set) => setSum + set.rir, 0);
+                return acc;
+              },
+              { totalSets: 0, totalRir: 0 },
+            );
+            return totalSets > 0 ? totalRir / totalSets : 0;
+          })()}
+          onPress={handleEditFutureWorkout}
+          isLoading={isLoadingFuture}
+        />
+      )}
       {latestWorkout && (
         <WorkoutSummaryCard
+          title="Previous workout"
+          buttonLabel="Review Workout"
           date={latestWorkout.date}
           exerciseCount={latestWorkout.exercises.length}
           setCount={latestWorkout.exercises.reduce(
@@ -111,8 +171,8 @@ export default function WorkoutHomeScreen() {
         pressStyle={{ opacity: 0.85 }}
         alignSelf="stretch"
       >
-        Start Workout
+        Schedule Workout
       </Button>
-    </YStack>
+    </ScrollView>
   );
 }
