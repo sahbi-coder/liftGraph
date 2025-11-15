@@ -4,6 +4,12 @@ export type ExerciseSelection = {
   source: 'library' | 'user';
 };
 
+export type ExerciseSelectionContext = {
+  weekId?: string;
+  phaseId?: string;
+  [key: string]: string | undefined;
+};
+
 export type WorkoutStackParamList = {
   index: undefined;
   create: undefined;

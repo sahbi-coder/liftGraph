@@ -84,7 +84,7 @@ export default function LoginScreen() {
             placeholder="Password"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            // secureTextEntry
             borderColor="$inputFieldBorder"
             backgroundColor="$inputFieldBackground"
             placeholderTextColor="$inputFieldPlaceholderText"

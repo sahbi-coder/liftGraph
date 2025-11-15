@@ -43,13 +43,6 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, size }) => <Feather name="home" size={size ?? 24} color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="workout"
         options={{
           title: 'Workout',
@@ -57,6 +50,14 @@ export default function TabsLayout() {
             <Feather name="activity" size={size ?? 24} color={color} />
           ),
           headerShown: false,
+        }}
+      />
+      <Tabs.Screen
+        name="program"
+        options={{
+          headerShown: false,
+          title: 'Program',
+          tabBarIcon: ({ color, size }) => <Feather name="list" size={size ?? 24} color={color} />,
         }}
       />
       <Tabs.Screen

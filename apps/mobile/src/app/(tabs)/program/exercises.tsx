@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
-import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { Button, Input, Text, XStack, YStack } from 'tamagui';
 
@@ -8,24 +7,14 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { Exercise } from '@/services/firestore';
 import { colors } from '@/theme/colors';
-import { ExerciseSelection } from './types';
+import { ExerciseSelection } from '@/app/(tabs)/workout/types';
+import {
+  getExercisePickerCallback,
+  clearExercisePickerCallback,
+} from '@/app/(tabs)/workout/exercisePickerContext';
 
-type ExercisePickerParams = {
-  onSelect?: (exercise: ExerciseSelection) => void;
-};
-
-type WorkoutStackParamList = {
-  index: undefined;
-  create: undefined;
-  exercises: ExercisePickerParams;
-};
-
-type RouteParams = RouteProp<WorkoutStackParamList, 'exercises'>;
-
-export default function ExercisePickerScreen() {
-  const navigation = useNavigation<NavigationProp<WorkoutStackParamList>>();
+export default function ProgramExercisePickerScreen() {
   const router = useRouter();
-  const route = useRoute<RouteParams>();
   const { user } = useAuth();
   const { services } = useDependencies();
 
@@ -33,7 +22,6 @@ export default function ExercisePickerScreen() {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [filter, setFilter] = useState<'all' | 'library' | 'custom'>('all');
   const [isLoading, setIsLoading] = useState(false);
-  const onSelect = route.params?.onSelect;
 
   useEffect(() => {
     if (!user) {
@@ -78,14 +66,37 @@ export default function ExercisePickerScreen() {
 
   const handleSelect = useCallback(
     (exercise: ExerciseSelection) => {
-      if (onSelect) {
-        onSelect(exercise);
+      // Get fresh callback and context from the context module
+      const contextCallback = getExercisePickerCallback();
+      const effectiveOnSelect = contextCallback.callback;
+      const effectiveContext = contextCallback.context;
+
+      console.log('Exercise selected:', exercise);
+      console.log('Callback exists:', !!effectiveOnSelect);
+      console.log('Context:', effectiveContext);
+
+      if (effectiveOnSelect) {
+        try {
+          effectiveOnSelect(exercise, effectiveContext || undefined);
+          console.log('Callback executed successfully');
+        } catch (error) {
+          console.error('Error executing callback:', error);
+        }
+        clearExercisePickerCallback();
+        // Always use router.back() to return to the previous screen
+        // This ensures we return to the same instance, not a new one
+        router.back();
       } else {
-        console.log('Selected exercise:', exercise.id, exercise.name, exercise.source);
+        console.log(
+          'No callback found. Selected exercise:',
+          exercise.id,
+          exercise.name,
+          exercise.source,
+        );
+        router.back();
       }
-      router.back();
     },
-    [onSelect, router],
+    [router],
   );
 
   const renderItem: ListRenderItem<Exercise> = useCallback(
@@ -195,7 +206,10 @@ export default function ExercisePickerScreen() {
       <Button
         backgroundColor={colors.midGray}
         color={colors.white}
-        onPress={() => navigation.goBack()}
+        onPress={() => {
+          clearExercisePickerCallback();
+          router.back();
+        }}
       >
         Cancel
       </Button>

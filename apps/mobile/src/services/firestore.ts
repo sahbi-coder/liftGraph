@@ -79,6 +79,82 @@ type WorkoutFirestoreData = {
   updatedAt: Timestamp;
 };
 
+export type ProgramSet = {
+  reps: number;
+  rpe: number;
+};
+
+export type ProgramExercise = {
+  name: string;
+  id: string;
+  isGlobal: boolean;
+  sets: ProgramSet[];
+};
+
+export type ProgramDay = {
+  name: string;
+  exercises: ProgramExercise[];
+};
+
+export type ProgramWeek = {
+  name: string;
+  exercises: (ProgramExercise | null)[];
+};
+
+export type ProgramPhase = {
+  name: string;
+  description: string;
+  weeks: ProgramWeek[];
+};
+
+export type SimpleProgramInput = {
+  name: string;
+  description: string;
+  type: 'simple';
+  weeks: ProgramWeek[];
+};
+
+export type AdvancedProgramInput = {
+  name: string;
+  description: string;
+  type: 'advanced';
+  phases: ProgramPhase[];
+};
+
+export type ProgramInput = SimpleProgramInput | AdvancedProgramInput;
+
+export type SimpleProgram = {
+  id: string;
+  name: string;
+  description: string;
+  type: 'simple';
+  weeks: ProgramWeek[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type AdvancedProgram = {
+  id: string;
+  name: string;
+  description: string;
+  type: 'advanced';
+  phases: ProgramPhase[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type Program = SimpleProgram | AdvancedProgram;
+
+type ProgramFirestoreData = {
+  name: string;
+  description: string;
+  type: 'simple' | 'advanced';
+  weeks?: ProgramWeek[];
+  phases?: ProgramPhase[];
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+};
+
 export class FirestoreService {
   constructor(private readonly db: Firestore) {}
 
@@ -164,6 +240,29 @@ export class FirestoreService {
       createdAt: now,
       updatedAt: now,
     });
+
+    return docRef.id;
+  }
+
+  async createProgram(userId: string, program: ProgramInput): Promise<string> {
+    const programsCollection = collection(this.db, `users/${userId}/programs`);
+    const now = Timestamp.now();
+
+    const programData: ProgramFirestoreData = {
+      name: program.name,
+      description: program.description,
+      type: program.type,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    if (program.type === 'simple') {
+      programData.weeks = program.weeks;
+    } else {
+      programData.phases = program.phases;
+    }
+
+    const docRef = await addDoc(programsCollection, programData);
 
     return docRef.id;
   }

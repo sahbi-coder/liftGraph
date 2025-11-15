@@ -28,6 +28,11 @@ service cloud.firestore {
       match /personalRecords/{recordId} {
         allow read, write: if isOwner(userId);
       }
+      
+      // User's programs subcollection
+      match /programs/{programId} {
+        allow read, write: if isOwner(userId);
+      }
     }
     
     // Global exercises library (read-only for all authenticated users)
