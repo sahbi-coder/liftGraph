@@ -91,15 +91,14 @@ export type ProgramExercise = {
   sets: ProgramSet[];
 };
 
-export type ProgramDay = {
-  name: string;
-  exercises: ProgramExercise[];
-};
+export type ProgramDay =
+  | {
+      name: string;
+      exercises: ProgramExercise[];
+    }
+  | 'rest';
 
-export type ProgramWeek = {
-  name: string;
-  exercises: (ProgramExercise | null)[];
-};
+export type ProgramWeek = { days: ProgramDay[] };
 
 export type ProgramPhase = {
   name: string;
@@ -111,7 +110,7 @@ export type SimpleProgramInput = {
   name: string;
   description: string;
   type: 'simple';
-  weeks: ProgramWeek[];
+  week: ProgramWeek;
 };
 
 export type AdvancedProgramInput = {
@@ -128,7 +127,7 @@ export type SimpleProgram = {
   name: string;
   description: string;
   type: 'simple';
-  weeks: ProgramWeek[];
+  week: ProgramWeek;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -149,7 +148,7 @@ type ProgramFirestoreData = {
   name: string;
   description: string;
   type: 'simple' | 'advanced';
-  weeks?: ProgramWeek[];
+  week?: ProgramWeek;
   phases?: ProgramPhase[];
   createdAt: Timestamp;
   updatedAt: Timestamp;
@@ -257,7 +256,7 @@ export class FirestoreService {
     };
 
     if (program.type === 'simple') {
-      programData.weeks = program.weeks;
+      programData.week = program.week;
     } else {
       programData.phases = program.phases;
     }

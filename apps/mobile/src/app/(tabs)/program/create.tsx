@@ -15,6 +15,7 @@ import {
   ProgramSet,
   ProgramWeek,
   ProgramPhase,
+  ProgramDay,
 } from '@/services/firestore';
 import { colors } from '@/theme/colors';
 import { ExerciseSelection, ExerciseSelectionContext } from '@/app/(tabs)/workout/types';
@@ -22,6 +23,7 @@ import {
   setExercisePickerCallback,
   clearExercisePickerCallback,
 } from '@/app/(tabs)/workout/exercisePickerContext';
+import { DaySelector, type ProgramDay as DaySelectorDay } from '@/components/DaySelector';
 
 type ProgramType = 'simple' | 'advanced';
 
@@ -39,10 +41,15 @@ type ProgramExerciseForm = {
   sets: ProgramSetForm[];
 };
 
+type ProgramDayForm = {
+  exercises: ProgramExerciseForm[];
+};
+
 type ProgramWeekForm = {
   id: string;
   name: string;
-  exercises: (ProgramExerciseForm | null)[];
+  days: ('rest' | ProgramDayForm)[];
+  selectedDays: DaySelectorDay[];
 };
 
 type ProgramPhaseForm = {
@@ -69,7 +76,8 @@ const createExerciseForm = (exercise: ExerciseSelection): ProgramExerciseForm =>
 const createWeekForm = (name: string = ''): ProgramWeekForm => ({
   id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
   name,
-  exercises: [],
+  days: ['rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest'],
+  selectedDays: [],
 });
 
 const createPhaseForm = (name: string = '', description: string = ''): ProgramPhaseForm => ({
@@ -89,79 +97,162 @@ export default function CreateProgramScreen() {
   const [description, setDescription] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
-  // Simple program state
-  const [weeks, setWeeks] = useState<ProgramWeekForm[]>([]);
+  // Simple program state - initialize with one week
+  const [weeks, setWeeks] = useState<ProgramWeekForm[]>(() => [createWeekForm()]);
 
   // Advanced program state
   const [phases, setPhases] = useState<ProgramPhaseForm[]>([]);
+
+  const handleDaySelectionChange = useCallback(
+    (weekId: string, selectedDays: DaySelectorDay[], phaseId?: string) => {
+      const dayMap: Record<DaySelectorDay, number> = {
+        Day1: 0,
+        Day2: 1,
+        Day3: 2,
+        Day4: 3,
+        Day5: 4,
+        Day6: 5,
+        Day7: 6,
+      };
+
+      if (programType === 'simple') {
+        setWeeks((prev) =>
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+
+            const newDays: ('rest' | ProgramDayForm)[] = [...week.days];
+            const selectedIndices = new Set(selectedDays.map((day) => dayMap[day]));
+
+            // Update days array: selected days become ProgramDayForm, unselected become 'rest'
+            for (let i = 0; i < 7; i++) {
+              if (selectedIndices.has(i)) {
+                // If it was 'rest', create new day form, otherwise keep existing
+                if (newDays[i] === 'rest') {
+                  newDays[i] = { exercises: [] };
+                }
+              } else {
+                // If it was a day form, convert to 'rest'
+                newDays[i] = 'rest';
+              }
+            }
+
+            return { ...week, days: newDays, selectedDays };
+          }),
+        );
+      } else if (phaseId) {
+        setPhases((prev) =>
+          prev.map((phase) => {
+            if (phase.id !== phaseId) return phase;
+
+            return {
+              ...phase,
+              weeks: phase.weeks.map((week) => {
+                if (week.id !== weekId) return week;
+
+                const newDays: ('rest' | ProgramDayForm)[] = [...week.days];
+                const selectedIndices = new Set(selectedDays.map((day) => dayMap[day]));
+
+                for (let i = 0; i < 7; i++) {
+                  if (selectedIndices.has(i)) {
+                    if (newDays[i] === 'rest') {
+                      newDays[i] = { exercises: [] };
+                    }
+                  } else {
+                    newDays[i] = 'rest';
+                  }
+                }
+
+                return { ...week, days: newDays, selectedDays };
+              }),
+            };
+          }),
+        );
+      }
+    },
+    [programType],
+  );
 
   const handleSelectExercise = useCallback(
     (exercise: ExerciseSelection, context?: ExerciseSelectionContext) => {
       console.log('handleSelectExercise called with:', { exercise, context, programType });
 
-      if (!context?.weekId) {
-        console.log('No weekId in context, returning early');
+      if (!context?.weekId || !context?.dayId) {
+        console.log('No weekId or dayId in context, returning early');
         return;
       }
 
       const newExercise = createExerciseForm(exercise);
       const weekId = context.weekId;
       const phaseId = context.phaseId;
+      const dayId = context.dayId as DaySelectorDay;
+      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
 
-      console.log('Adding exercise to week:', weekId, 'phase:', phaseId);
+      if (dayIndex === undefined) {
+        console.error('Invalid dayId:', dayId);
+        return;
+      }
+
+      console.log('Adding exercise to week:', weekId, 'day:', dayId, 'phase:', phaseId);
 
       if (programType === 'simple') {
-        console.log('Updating simple program weeks');
         setWeeks((prev) => {
-          const weekExists = prev.some((week) => week.id === weekId);
-          console.log(
-            'Week exists:',
-            weekExists,
-            'Week ID:',
-            weekId,
-            'All week IDs:',
-            prev.map((w) => w.id),
-          );
-
-          if (!weekExists) {
+          const week = prev.find((w) => w.id === weekId);
+          if (!week) {
             console.error('Week not found! Cannot add exercise.');
             return prev;
           }
 
-          const updated = prev.map((week) =>
-            week.id === weekId ? { ...week, exercises: [...week.exercises, newExercise] } : week,
-          );
-          console.log('Updated weeks:', updated);
-          return updated;
+          const newDays = [...week.days];
+          const day = newDays[dayIndex];
+
+          if (day === 'rest') {
+            console.error('Cannot add exercise to rest day');
+            return prev;
+          }
+
+          newDays[dayIndex] = {
+            ...day,
+            exercises: [...day.exercises, newExercise],
+          };
+
+          return prev.map((w) => (w.id === weekId ? { ...w, days: newDays } : w));
         });
       } else if (phaseId) {
-        console.log('Updating advanced program phases');
         setPhases((prev) => {
-          const updated = prev.map((phase) =>
-            phase.id === phaseId
-              ? {
-                  ...phase,
-                  weeks: phase.weeks.map((week) =>
-                    week.id === weekId
-                      ? { ...week, exercises: [...week.exercises, newExercise] }
-                      : week,
-                  ),
+          return prev.map((phase) => {
+            if (phase.id !== phaseId) return phase;
+
+            return {
+              ...phase,
+              weeks: phase.weeks.map((week) => {
+                if (week.id !== weekId) return week;
+
+                const newDays = [...week.days];
+                const day = newDays[dayIndex];
+
+                if (day === 'rest') {
+                  console.error('Cannot add exercise to rest day');
+                  return week;
                 }
-              : phase,
-          );
-          console.log('Updated phases:', updated);
-          return updated;
+
+                newDays[dayIndex] = {
+                  ...day,
+                  exercises: [...day.exercises, newExercise],
+                };
+
+                return { ...week, days: newDays };
+              }),
+            };
+          });
         });
-      } else {
-        console.log('No phaseId for advanced program, not updating');
       }
     },
     [programType],
   );
 
   const handleOpenExercisePicker = useCallback(
-    (weekId: string, phaseId?: string) => {
-      const context: ExerciseSelectionContext = { weekId, phaseId };
+    (weekId: string, dayId: DaySelectorDay, phaseId?: string) => {
+      const context: ExerciseSelectionContext = { weekId, phaseId, dayId };
       setExercisePickerCallback(handleSelectExercise, context, '/(tabs)/program/create');
       router.push('/(tabs)/program/exercises');
     },
@@ -176,12 +267,6 @@ export default function CreateProgramScreen() {
       clearExercisePickerCallback();
     };
   }, []);
-
-  const handleAddWeek = useCallback(() => {
-    if (programType === 'simple') {
-      setWeeks((prev) => [...prev, createWeekForm()]);
-    }
-  }, [programType]);
 
   const handleUpdateWeekName = useCallback(
     (weekId: string, name: string) => {
@@ -285,29 +370,45 @@ export default function CreateProgramScreen() {
   );
 
   const handleRemoveExercise = useCallback(
-    (weekId: string, exerciseId: string, phaseId?: string) => {
+    (weekId: string, dayId: DaySelectorDay, exerciseId: string, phaseId?: string) => {
+      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
+      if (dayIndex === undefined) return;
+
       if (programType === 'simple') {
         setWeeks((prev) =>
-          prev.map((week) =>
-            week.id === weekId
-              ? { ...week, exercises: week.exercises.filter((ex) => ex?.id !== exerciseId) }
-              : week,
-          ),
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+            const newDays = [...week.days];
+            const day = newDays[dayIndex];
+            if (day === 'rest') return week;
+
+            newDays[dayIndex] = {
+              ...day,
+              exercises: day.exercises.filter((ex) => ex.id !== exerciseId),
+            };
+            return { ...week, days: newDays };
+          }),
         );
       } else if (phaseId) {
         setPhases((prev) =>
-          prev.map((phase) =>
-            phase.id === phaseId
-              ? {
-                  ...phase,
-                  weeks: phase.weeks.map((week) =>
-                    week.id === weekId
-                      ? { ...week, exercises: week.exercises.filter((ex) => ex?.id !== exerciseId) }
-                      : week,
-                  ),
-                }
-              : phase,
-          ),
+          prev.map((phase) => {
+            if (phase.id !== phaseId) return phase;
+            return {
+              ...phase,
+              weeks: phase.weeks.map((week) => {
+                if (week.id !== weekId) return week;
+                const newDays = [...week.days];
+                const day = newDays[dayIndex];
+                if (day === 'rest') return week;
+
+                newDays[dayIndex] = {
+                  ...day,
+                  exercises: day.exercises.filter((ex) => ex.id !== exerciseId),
+                };
+                return { ...week, days: newDays };
+              }),
+            };
+          }),
         );
       }
     },
@@ -315,43 +416,49 @@ export default function CreateProgramScreen() {
   );
 
   const handleAddSet = useCallback(
-    (weekId: string, exerciseId: string, phaseId?: string) => {
+    (weekId: string, dayId: DaySelectorDay, exerciseId: string, phaseId?: string) => {
+      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
+      if (dayIndex === undefined) return;
+
       if (programType === 'simple') {
         setWeeks((prev) =>
-          prev.map((week) =>
-            week.id === weekId
-              ? {
-                  ...week,
-                  exercises: week.exercises.map((ex) =>
-                    ex && ex.id === exerciseId
-                      ? { ...ex, sets: [...ex.sets, createSetForm()] }
-                      : ex,
-                  ),
-                }
-              : week,
-          ),
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+            const newDays = [...week.days];
+            const day = newDays[dayIndex];
+            if (day === 'rest') return week;
+
+            newDays[dayIndex] = {
+              ...day,
+              exercises: day.exercises.map((ex) =>
+                ex.id === exerciseId ? { ...ex, sets: [...ex.sets, createSetForm()] } : ex,
+              ),
+            };
+            return { ...week, days: newDays };
+          }),
         );
       } else if (phaseId) {
         setPhases((prev) =>
-          prev.map((phase) =>
-            phase.id === phaseId
-              ? {
-                  ...phase,
-                  weeks: phase.weeks.map((week) =>
-                    week.id === weekId
-                      ? {
-                          ...week,
-                          exercises: week.exercises.map((ex) =>
-                            ex && ex.id === exerciseId
-                              ? { ...ex, sets: [...ex.sets, createSetForm()] }
-                              : ex,
-                          ),
-                        }
-                      : week,
+          prev.map((phase) => {
+            if (phase.id !== phaseId) return phase;
+            return {
+              ...phase,
+              weeks: phase.weeks.map((week) => {
+                if (week.id !== weekId) return week;
+                const newDays = [...week.days];
+                const day = newDays[dayIndex];
+                if (day === 'rest') return week;
+
+                newDays[dayIndex] = {
+                  ...day,
+                  exercises: day.exercises.map((ex) =>
+                    ex.id === exerciseId ? { ...ex, sets: [...ex.sets, createSetForm()] } : ex,
                   ),
-                }
-              : phase,
-          ),
+                };
+                return { ...week, days: newDays };
+              }),
+            };
+          }),
         );
       }
     },
@@ -359,52 +466,65 @@ export default function CreateProgramScreen() {
   );
 
   const handleRemoveSet = useCallback(
-    (weekId: string, exerciseId: string, setId: string, phaseId?: string) => {
+    (
+      weekId: string,
+      dayId: DaySelectorDay,
+      exerciseId: string,
+      setId: string,
+      phaseId?: string,
+    ) => {
+      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
+      if (dayIndex === undefined) return;
+
       if (programType === 'simple') {
         setWeeks((prev) =>
-          prev.map((week) =>
-            week.id === weekId
-              ? {
-                  ...week,
-                  exercises: week.exercises.map((ex) => {
-                    if (!ex || ex.id !== exerciseId) return ex;
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+            const newDays = [...week.days];
+            const day = newDays[dayIndex];
+            if (day === 'rest') return week;
+
+            newDays[dayIndex] = {
+              ...day,
+              exercises: day.exercises.map((ex) => {
+                if (ex.id !== exerciseId) return ex;
+                if (ex.sets.length === 1) {
+                  Alert.alert('Cannot remove set', 'Each exercise must have at least one set.');
+                  return ex;
+                }
+                return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
+              }),
+            };
+            return { ...week, days: newDays };
+          }),
+        );
+      } else if (phaseId) {
+        setPhases((prev) =>
+          prev.map((phase) => {
+            if (phase.id !== phaseId) return phase;
+            return {
+              ...phase,
+              weeks: phase.weeks.map((week) => {
+                if (week.id !== weekId) return week;
+                const newDays = [...week.days];
+                const day = newDays[dayIndex];
+                if (day === 'rest') return week;
+
+                newDays[dayIndex] = {
+                  ...day,
+                  exercises: day.exercises.map((ex) => {
+                    if (ex.id !== exerciseId) return ex;
                     if (ex.sets.length === 1) {
                       Alert.alert('Cannot remove set', 'Each exercise must have at least one set.');
                       return ex;
                     }
                     return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
                   }),
-                }
-              : week,
-          ),
-        );
-      } else if (phaseId) {
-        setPhases((prev) =>
-          prev.map((phase) =>
-            phase.id === phaseId
-              ? {
-                  ...phase,
-                  weeks: phase.weeks.map((week) =>
-                    week.id === weekId
-                      ? {
-                          ...week,
-                          exercises: week.exercises.map((ex) => {
-                            if (!ex || ex.id !== exerciseId) return ex;
-                            if (ex.sets.length === 1) {
-                              Alert.alert(
-                                'Cannot remove set',
-                                'Each exercise must have at least one set.',
-                              );
-                              return ex;
-                            }
-                            return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
-                          }),
-                        }
-                      : week,
-                  ),
-                }
-              : phase,
-          ),
+                };
+                return { ...week, days: newDays };
+              }),
+            };
+          }),
         );
       }
     },
@@ -414,20 +534,56 @@ export default function CreateProgramScreen() {
   const handleUpdateSetField = useCallback(
     (
       weekId: string,
+      dayId: DaySelectorDay,
       exerciseId: string,
       setId: string,
       field: 'reps' | 'rpe',
       value: string,
       phaseId?: string,
     ) => {
+      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
+      if (dayIndex === undefined) return;
+
       if (programType === 'simple') {
         setWeeks((prev) =>
-          prev.map((week) =>
-            week.id === weekId
-              ? {
-                  ...week,
-                  exercises: week.exercises.map((ex) =>
-                    ex && ex.id === exerciseId
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+            const newDays = [...week.days];
+            const day = newDays[dayIndex];
+            if (day === 'rest') return week;
+
+            newDays[dayIndex] = {
+              ...day,
+              exercises: day.exercises.map((ex) =>
+                ex.id === exerciseId
+                  ? {
+                      ...ex,
+                      sets: ex.sets.map((set) =>
+                        set.id === setId ? { ...set, [field]: value } : set,
+                      ),
+                    }
+                  : ex,
+              ),
+            };
+            return { ...week, days: newDays };
+          }),
+        );
+      } else if (phaseId) {
+        setPhases((prev) =>
+          prev.map((phase) => {
+            if (phase.id !== phaseId) return phase;
+            return {
+              ...phase,
+              weeks: phase.weeks.map((week) => {
+                if (week.id !== weekId) return week;
+                const newDays = [...week.days];
+                const day = newDays[dayIndex];
+                if (day === 'rest') return week;
+
+                newDays[dayIndex] = {
+                  ...day,
+                  exercises: day.exercises.map((ex) =>
+                    ex.id === exerciseId
                       ? {
                           ...ex,
                           sets: ex.sets.map((set) =>
@@ -436,36 +592,11 @@ export default function CreateProgramScreen() {
                         }
                       : ex,
                   ),
-                }
-              : week,
-          ),
-        );
-      } else if (phaseId) {
-        setPhases((prev) =>
-          prev.map((phase) =>
-            phase.id === phaseId
-              ? {
-                  ...phase,
-                  weeks: phase.weeks.map((week) =>
-                    week.id === weekId
-                      ? {
-                          ...week,
-                          exercises: week.exercises.map((ex) =>
-                            ex && ex.id === exerciseId
-                              ? {
-                                  ...ex,
-                                  sets: ex.sets.map((set) =>
-                                    set.id === setId ? { ...set, [field]: value } : set,
-                                  ),
-                                }
-                              : ex,
-                          ),
-                        }
-                      : week,
-                  ),
-                }
-              : phase,
-          ),
+                };
+                return { ...week, days: newDays };
+              }),
+            };
+          }),
         );
       }
     },
@@ -489,40 +620,49 @@ export default function CreateProgramScreen() {
         return null;
       }
 
-      const convertedWeeks: ProgramWeek[] = weeks.map((week) => {
-        const exercises: ProgramExercise[] = week.exercises
-          .filter((ex): ex is ProgramExerciseForm => ex !== null)
-          .map((ex) => {
-            const sets: ProgramSet[] = ex.sets
-              .filter((set) => set.reps.trim() && set.rpe.trim())
-              .map((set) => ({
-                reps: Number(set.reps),
-                rpe: Number(set.rpe),
-              }));
+      // Simple programs use only the first week
+      const week = weeks[0];
+      const dayLabels: DaySelectorDay[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
+      const convertedDays: ProgramDay[] = week.days.map((day, dayIndex) => {
+        if (day === 'rest') {
+          return 'rest' as const;
+        }
 
-            if (sets.length === 0) {
-              throw new Error(`Exercise "${ex.name}" must have at least one valid set.`);
-            }
+        const exercises: ProgramExercise[] = day.exercises.map((ex) => {
+          const sets: ProgramSet[] = ex.sets
+            .filter((set) => set.reps.trim() && set.rpe.trim())
+            .map((set) => ({
+              reps: Number(set.reps),
+              rpe: Number(set.rpe),
+            }));
 
-            return {
-              name: ex.name,
-              id: ex.exerciseId,
-              isGlobal: ex.isGlobal,
-              sets,
-            };
-          });
+          if (sets.length === 0) {
+            throw new Error(`Exercise "${ex.name}" must have at least one valid set.`);
+          }
+
+          return {
+            name: ex.name,
+            id: ex.exerciseId,
+            isGlobal: ex.isGlobal,
+            sets,
+          };
+        });
 
         return {
-          name: week.name,
-          exercises: exercises.length > 0 ? exercises : [],
+          name: dayLabels[dayIndex],
+          exercises,
         };
       });
+
+      const convertedWeek: ProgramWeek = {
+        days: convertedDays,
+      };
 
       const simpleProgram: SimpleProgramInput = {
         name: name.trim(),
         description: description.trim(),
         type: 'simple',
-        weeks: convertedWeeks,
+        week: convertedWeek,
       };
 
       return simpleProgram;
@@ -537,10 +677,26 @@ export default function CreateProgramScreen() {
           throw new Error('All phases must have a name.');
         }
 
-        const weeks: ProgramWeek[] = phase.weeks.map((week) => {
-          const exercises: ProgramExercise[] = week.exercises
-            .filter((ex): ex is ProgramExerciseForm => ex !== null)
-            .map((ex) => {
+        if (phase.weeks.length === 0) {
+          throw new Error(`Phase "${phase.name}" must have at least one week.`);
+        }
+
+        const dayLabels: DaySelectorDay[] = [
+          'Day1',
+          'Day2',
+          'Day3',
+          'Day4',
+          'Day5',
+          'Day6',
+          'Day7',
+        ];
+        const convertedWeeks: ProgramWeek[] = phase.weeks.map((week) => {
+          const convertedDays: ProgramDay[] = week.days.map((day, dayIndex) => {
+            if (day === 'rest') {
+              return 'rest' as const;
+            }
+
+            const exercises: ProgramExercise[] = day.exercises.map((ex) => {
               const sets: ProgramSet[] = ex.sets
                 .filter((set) => set.reps.trim() && set.rpe.trim())
                 .map((set) => ({
@@ -560,16 +716,21 @@ export default function CreateProgramScreen() {
               };
             });
 
+            return {
+              name: dayLabels[dayIndex],
+              exercises,
+            };
+          });
+
           return {
-            name: week.name,
-            exercises: exercises.length > 0 ? exercises : [],
+            days: convertedDays,
           };
         });
 
         return {
           name: phase.name.trim(),
           description: phase.description.trim(),
-          weeks,
+          weeks: convertedWeeks,
         };
       });
 
@@ -592,6 +753,8 @@ export default function CreateProgramScreen() {
 
     try {
       const programData = validateAndConvert();
+      // console.log('programData', programData.phases[0].weeks);
+
       if (!programData) {
         return;
       }
@@ -609,7 +772,13 @@ export default function CreateProgramScreen() {
   }, [user, services.firestore, router, validateAndConvert]);
 
   const renderExerciseCard = useCallback(
-    (exercise: ProgramExerciseForm, weekId: string, exerciseIndex: number, phaseId?: string) => (
+    (
+      exercise: ProgramExerciseForm,
+      weekId: string,
+      dayId: DaySelectorDay,
+      exerciseIndex: number,
+      phaseId?: string,
+    ) => (
       <YStack
         key={exercise.id}
         padding="$2"
@@ -626,7 +795,7 @@ export default function CreateProgramScreen() {
             size="$2"
             variant="outlined"
             color={colors.white}
-            onPress={() => handleRemoveExercise(weekId, exercise.id, phaseId)}
+            onPress={() => handleRemoveExercise(weekId, dayId, exercise.id, phaseId)}
           >
             <Entypo name="circle-with-cross" size={24} color={colors.niceOrange} />
           </Button>
@@ -647,7 +816,7 @@ export default function CreateProgramScreen() {
                 height={40}
                 value={set.reps}
                 onChangeText={(value) =>
-                  handleUpdateSetField(weekId, exercise.id, set.id, 'reps', value, phaseId)
+                  handleUpdateSetField(weekId, dayId, exercise.id, set.id, 'reps', value, phaseId)
                 }
                 placeholder="Reps"
                 keyboardType="numeric"
@@ -662,7 +831,7 @@ export default function CreateProgramScreen() {
                 height={40}
                 value={set.rpe}
                 onChangeText={(value) =>
-                  handleUpdateSetField(weekId, exercise.id, set.id, 'rpe', value, phaseId)
+                  handleUpdateSetField(weekId, dayId, exercise.id, set.id, 'rpe', value, phaseId)
                 }
                 placeholder="RPE"
                 keyboardType="numeric"
@@ -675,7 +844,7 @@ export default function CreateProgramScreen() {
                 size="$2"
                 variant="outlined"
                 color={colors.white}
-                onPress={() => handleRemoveSet(weekId, exercise.id, set.id, phaseId)}
+                onPress={() => handleRemoveSet(weekId, dayId, exercise.id, set.id, phaseId)}
               >
                 <AntDesign name="delete" size={24} color={colors.white} />
               </Button>
@@ -689,7 +858,7 @@ export default function CreateProgramScreen() {
           color={colors.white}
           fontWeight="600"
           borderRadius="$4"
-          onPress={() => handleAddSet(weekId, exercise.id, phaseId)}
+          onPress={() => handleAddSet(weekId, dayId, exercise.id, phaseId)}
         >
           <Entypo name="circle-with-plus" size={22} color={colors.white} /> Add Set
         </Button>
@@ -699,57 +868,85 @@ export default function CreateProgramScreen() {
   );
 
   const renderWeek = useCallback(
-    (week: ProgramWeekForm, weekIndex: number, phaseId?: string) => (
-      <YStack
-        key={week.id}
-        padding="$3"
-        backgroundColor={colors.midGray}
-        borderRadius="$4"
-        space="$3"
-        marginBottom="$3"
-      >
-        <XStack space="$2" alignItems="center">
-          <Input
-            flex={1}
-            value={week.name}
-            onChangeText={(value) =>
-              phaseId
-                ? handleUpdateWeekNameInPhase(phaseId, week.id, value)
-                : handleUpdateWeekName(week.id, value)
-            }
-            placeholder={`Week ${weekIndex + 1} name`}
-            borderColor="$inputFieldBorder"
-            backgroundColor="$background"
-            color="$textPrimary"
-          />
-          <Button
-            size="$2"
-            variant="outlined"
-            color={colors.white}
-            onPress={() =>
-              phaseId ? handleRemoveWeekFromPhase(phaseId, week.id) : handleRemoveWeek(week.id)
-            }
-          >
-            <Entypo name="circle-with-cross" size={24} color={colors.niceOrange} />
-          </Button>
-        </XStack>
+    (week: ProgramWeekForm, weekIndex: number, phaseId?: string) => {
+      const dayLabels: DaySelectorDay[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
 
-        {week.exercises.map((exercise, index) =>
-          exercise ? renderExerciseCard(exercise, week.id, index, phaseId) : null,
-        )}
-
-        <Button
-          size="$3"
-          backgroundColor="$secondaryButton"
-          color="$secondaryButtonText"
-          fontWeight="600"
+      return (
+        <YStack
+          key={week.id}
+          padding="$3"
+          backgroundColor={colors.midGray}
           borderRadius="$4"
-          onPress={() => handleOpenExercisePicker(week.id, phaseId)}
+          space="$3"
+          marginBottom="$3"
         >
-          <Entypo name="circle-with-plus" size={22} color={colors.white} /> Add Exercise
-        </Button>
-      </YStack>
-    ),
+          <XStack space="$2" alignItems="center">
+            <Input
+              flex={1}
+              value={week.name}
+              onChangeText={(value) =>
+                phaseId
+                  ? handleUpdateWeekNameInPhase(phaseId, week.id, value)
+                  : handleUpdateWeekName(week.id, value)
+              }
+              placeholder={`Week ${weekIndex + 1} name`}
+              borderColor="$inputFieldBorder"
+              backgroundColor="$background"
+              color="$textPrimary"
+            />
+            <Button
+              size="$2"
+              variant="outlined"
+              color={colors.white}
+              onPress={() =>
+                phaseId ? handleRemoveWeekFromPhase(phaseId, week.id) : handleRemoveWeek(week.id)
+              }
+            >
+              <Entypo name="circle-with-cross" size={24} color={colors.niceOrange} />
+            </Button>
+          </XStack>
+
+          <YStack space="$2">
+            <Text color="$textPrimary" fontSize="$4" fontWeight="600">
+              Select Active Days
+            </Text>
+            <DaySelector
+              value={week.selectedDays}
+              onSelectionChange={(selectedDays) =>
+                handleDaySelectionChange(week.id, selectedDays, phaseId)
+              }
+            />
+          </YStack>
+
+          {week.days.map((day, dayIndex) => {
+            if (day === 'rest') return null;
+
+            const dayId = dayLabels[dayIndex];
+            return (
+              <YStack key={dayIndex} space="$2" marginTop="$2">
+                <Text color="$textPrimary" fontSize="$5" fontWeight="600">
+                  {dayId}
+                </Text>
+                {day.exercises.map((exercise, exerciseIndex) =>
+                  renderExerciseCard(exercise, week.id, dayId, exerciseIndex, phaseId),
+                )}
+                <Button
+                  size="$3"
+                  backgroundColor="$secondaryButton"
+                  color="$secondaryButtonText"
+                  fontWeight="600"
+                  borderRadius="$4"
+                  onPress={() => handleOpenExercisePicker(week.id, dayId, phaseId)}
+                >
+                  <Entypo name="circle-with-plus" size={22} color={colors.white} /> Add Exercise to{' '}
+                  {dayId}
+                </Button>
+              </YStack>
+            );
+          })}
+        </YStack>
+      );
+    },
     [
       renderExerciseCard,
       handleOpenExercisePicker,
@@ -757,6 +954,7 @@ export default function CreateProgramScreen() {
       handleUpdateWeekNameInPhase,
       handleRemoveWeek,
       handleRemoveWeekFromPhase,
+      handleDaySelectionChange,
     ],
   );
 
@@ -778,6 +976,7 @@ export default function CreateProgramScreen() {
               onPress={() => {
                 setProgramType('simple');
                 setPhases([]);
+                setWeeks([createWeekForm()]);
               }}
             >
               Simple
@@ -827,19 +1026,9 @@ export default function CreateProgramScreen() {
 
         {programType === 'simple' ? (
           <YStack space="$3">
-            <XStack alignItems="center" justifyContent="space-between">
-              <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-                Weeks
-              </Text>
-              <Button
-                size="$3"
-                backgroundColor="$secondaryButton"
-                color="$secondaryButtonText"
-                onPress={handleAddWeek}
-              >
-                <Entypo name="circle-with-plus" size={20} color={colors.white} /> Add Week
-              </Button>
-            </XStack>
+            <Text color="$textPrimary" fontSize="$6" fontWeight="600">
+              Week
+            </Text>
 
             {weeks.map((week, index) => renderWeek(week, index))}
           </YStack>

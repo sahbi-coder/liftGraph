@@ -78,6 +78,15 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="components-test"
+        options={{
+          title: 'Components Test',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="layers" size={size ?? 24} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
