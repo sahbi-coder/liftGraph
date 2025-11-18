@@ -1,12 +1,44 @@
-import React from 'react';
-import { ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
-import { YStack, Text, Button } from 'tamagui';
+import React, { useState, useCallback } from 'react';
+import { ScrollView, Pressable } from 'react-native';
+import { useRouter, useFocusEffect } from 'expo-router';
+import { YStack, Text, Button, XStack } from 'tamagui';
+import Entypo from '@expo/vector-icons/Entypo';
 
 import { colors } from '@/theme/colors';
+import { useDependencies } from '@/dependencies/provider';
+import { useAuth } from '@/contexts/AuthContext';
+import { Program } from '@/services/firestore';
 
 export default function ProgramScreen() {
   const router = useRouter();
+  const { services } = useDependencies();
+  const { user } = useAuth();
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadPrograms = useCallback(async () => {
+    if (!user) {
+      setPrograms([]);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const fetchedPrograms = await services.firestore.getPrograms(user.uid);
+      setPrograms(fetchedPrograms);
+    } catch (error) {
+      console.error('Error loading programs:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user, services.firestore]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadPrograms();
+    }, [loadPrograms]),
+  );
 
   const handleCreateProgram = () => {
     router.push('/(tabs)/program/create');
@@ -25,6 +57,55 @@ export default function ProgramScreen() {
           Manage your training programs
         </Text>
       </YStack>
+
+      {loading ? (
+        <Text color="$textSecondary" fontSize="$4">
+          Loading programs...
+        </Text>
+      ) : programs.length === 0 ? (
+        <YStack
+          padding="$4"
+          backgroundColor={colors.midGray}
+          borderRadius="$4"
+          alignItems="center"
+          space="$2"
+        >
+          <Text color="$textSecondary" fontSize="$4" textAlign="center">
+            No programs yet. Create your first program to get started!
+          </Text>
+        </YStack>
+      ) : (
+        <YStack space="$3">
+          {programs.map((program) => (
+            <Pressable
+              key={program.id}
+              onPress={() => {
+                router.push({
+                  pathname: '/(tabs)/program/[id]',
+                  params: { id: program.id },
+                });
+              }}
+            >
+              <YStack padding="$3" backgroundColor={colors.midGray} borderRadius="$4" space="$2">
+                <XStack alignItems="center" justifyContent="space-between">
+                  <YStack flex={1} space="$1">
+                    <Text color="$textPrimary" fontSize="$5" fontWeight="600">
+                      {program.name}
+                    </Text>
+                    <Text color="$textSecondary" fontSize="$3" numberOfLines={2}>
+                      {program.description}
+                    </Text>
+                    <Text color="$textSecondary" fontSize="$2">
+                      {program.type === 'simple' ? 'Simple' : 'Advanced'} Program
+                    </Text>
+                  </YStack>
+                  <Entypo name="chevron-right" size={24} color={colors.niceOrange} />
+                </XStack>
+              </YStack>
+            </Pressable>
+          ))}
+        </YStack>
+      )}
 
       <Button
         size="$5"

@@ -266,6 +266,69 @@ export class FirestoreService {
     return docRef.id;
   }
 
+  async getPrograms(userId: string): Promise<Program[]> {
+    const programsCollection = collection(this.db, `users/${userId}/programs`);
+    const programsQuery = query(programsCollection, orderBy('createdAt', 'desc'));
+    const snapshot = await getDocs(programsQuery);
+
+    return snapshot.docs.map((docSnap) => {
+      const data = docSnap.data() as ProgramFirestoreData;
+      const baseProgram = {
+        id: docSnap.id,
+        name: data.name,
+        description: data.description,
+        createdAt: data.createdAt.toDate(),
+        updatedAt: data.updatedAt.toDate(),
+      };
+
+      if (data.type === 'simple') {
+        return {
+          ...baseProgram,
+          type: 'simple' as const,
+          week: data.week!,
+        } as SimpleProgram;
+      } else {
+        return {
+          ...baseProgram,
+          type: 'advanced' as const,
+          phases: data.phases!,
+        } as AdvancedProgram;
+      }
+    });
+  }
+
+  async getProgram(userId: string, programId: string): Promise<Program | null> {
+    const programRef = doc(this.db, `users/${userId}/programs/${programId}`);
+    const snapshot = await getDoc(programRef);
+
+    if (!snapshot.exists()) {
+      return null;
+    }
+
+    const data = snapshot.data() as ProgramFirestoreData;
+    const baseProgram = {
+      id: snapshot.id,
+      name: data.name,
+      description: data.description,
+      createdAt: data.createdAt.toDate(),
+      updatedAt: data.updatedAt.toDate(),
+    };
+
+    if (data.type === 'simple') {
+      return {
+        ...baseProgram,
+        type: 'simple' as const,
+        week: data.week!,
+      } as SimpleProgram;
+    } else {
+      return {
+        ...baseProgram,
+        type: 'advanced' as const,
+        phases: data.phases!,
+      } as AdvancedProgram;
+    }
+  }
+
   async updateWorkout(userId: string, workoutId: string, workout: WorkoutInput): Promise<void> {
     const workoutRef = doc(this.db, `users/${userId}/workouts/${workoutId}`);
     const existingWorkout = await getDoc(workoutRef);
