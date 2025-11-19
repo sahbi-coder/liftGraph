@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, Modal, ScrollView } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
@@ -280,6 +280,13 @@ export function WorkoutForm({
   const [exercises, setExercises] = useState<ExerciseForm[]>(() =>
     initialValues?.exercises ? mapExercisesToForm(initialValues.exercises) : [],
   );
+
+  // Update exercises when initialValues.exercises changes
+  useEffect(() => {
+    if (initialValues?.exercises && initialValues.exercises.length > 0) {
+      setExercises(mapExercisesToForm(initialValues.exercises));
+    }
+  }, [initialValues]);
 
   const handleSelectExercise = useCallback(
     (exercise: ExerciseSelection) => {

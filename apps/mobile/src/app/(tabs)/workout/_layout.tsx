@@ -13,7 +13,14 @@ export default function WorkoutLayout() {
         contentStyle: { backgroundColor: colors.darkerGray },
       }}
     >
-      <Stack.Screen name="index" options={{ title: 'Workout' }} />
+      <Stack.Screen
+        name="index"
+        options={{
+          headerTitle: 'LiftGraph',
+          headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 35 },
+        }}
+      />
       <Stack.Screen name="create" options={{ title: 'Create Workout' }} />
       <Stack.Screen name="exercises" options={{ title: 'Select Exercise' }} />
       <Stack.Screen name="edit" options={{ title: 'Edit Workout' }} />

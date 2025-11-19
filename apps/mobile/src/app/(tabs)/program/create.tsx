@@ -30,7 +30,7 @@ type ProgramType = 'simple' | 'advanced';
 type ProgramSetForm = {
   id: string;
   reps: string;
-  rpe: string;
+  rir: string;
 };
 
 type ProgramExerciseForm = {
@@ -62,7 +62,7 @@ type ProgramPhaseForm = {
 const createSetForm = (set?: ProgramSet): ProgramSetForm => ({
   id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
   reps: set ? String(set.reps) : '',
-  rpe: set ? String(set.rpe) : '',
+  rir: set ? String(set.rir) : '',
 });
 
 const createExerciseForm = (exercise: ExerciseSelection): ProgramExerciseForm => ({
@@ -537,7 +537,7 @@ export default function CreateProgramScreen() {
       dayId: DaySelectorDay,
       exerciseId: string,
       setId: string,
-      field: 'reps' | 'rpe',
+      field: 'reps' | 'rir',
       value: string,
       phaseId?: string,
     ) => {
@@ -630,10 +630,10 @@ export default function CreateProgramScreen() {
 
         const exercises: ProgramExercise[] = day.exercises.map((ex) => {
           const sets: ProgramSet[] = ex.sets
-            .filter((set) => set.reps.trim() && set.rpe.trim())
+            .filter((set) => set.reps.trim() && set.rir.trim())
             .map((set) => ({
               reps: Number(set.reps),
-              rpe: Number(set.rpe),
+              rir: Number(set.rir),
             }));
 
           if (sets.length === 0) {
@@ -698,10 +698,10 @@ export default function CreateProgramScreen() {
 
             const exercises: ProgramExercise[] = day.exercises.map((ex) => {
               const sets: ProgramSet[] = ex.sets
-                .filter((set) => set.reps.trim() && set.rpe.trim())
+                .filter((set) => set.reps.trim() && set.rir.trim())
                 .map((set) => ({
                   reps: Number(set.reps),
-                  rpe: Number(set.rpe),
+                  rir: Number(set.rir),
                 }));
 
               if (sets.length === 0) {
@@ -829,17 +829,17 @@ export default function CreateProgramScreen() {
               <Input
                 flex={1}
                 height={40}
-                value={set.rpe}
+                value={set.rir}
                 onChangeText={(value) =>
-                  handleUpdateSetField(weekId, dayId, exercise.id, set.id, 'rpe', value, phaseId)
+                  handleUpdateSetField(weekId, dayId, exercise.id, set.id, 'rir', value, phaseId)
                 }
-                placeholder="RPE"
+                placeholder="RIR"
                 keyboardType="numeric"
                 borderColor="$inputFieldBorder"
                 backgroundColor="$background"
                 color="$textPrimary"
               />
-              <Text color={colors.white}>RPE</Text>
+              <Text color={colors.white}>RIR</Text>
               <Button
                 size="$2"
                 variant="outlined"

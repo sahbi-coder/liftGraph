@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { WorkoutForm } from '@/components/workout/WorkoutForm';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { WorkoutInput } from '@/services/firestore';
+import { getWorkoutPrefillData, clearWorkoutPrefillData } from './workoutPrefillContext';
 
 export default function CreateWorkoutScreen() {
   const router = useRouter();
@@ -12,6 +13,19 @@ export default function CreateWorkoutScreen() {
   const { user } = useAuth();
 
   const [isSaving, setIsSaving] = useState(false);
+
+  // Check for prefill data synchronously before first render
+  const prefillData = getWorkoutPrefillData();
+  const [initialExercises] = useState<WorkoutInput['exercises'] | undefined>(
+    prefillData ? prefillData.exercises : undefined,
+  );
+
+  // Clear prefill data after reading it
+  useEffect(() => {
+    if (prefillData) {
+      clearWorkoutPrefillData();
+    }
+  }, [prefillData]);
 
   const handleCreateWorkout = useCallback(
     async (workoutPayload: WorkoutInput) => {
@@ -36,6 +50,11 @@ export default function CreateWorkoutScreen() {
   );
 
   return (
-    <WorkoutForm onSubmit={handleCreateWorkout} isSubmitting={isSaving} submitLabel="End Workout" />
+    <WorkoutForm
+      initialValues={initialExercises ? { exercises: initialExercises } : undefined}
+      onSubmit={handleCreateWorkout}
+      isSubmitting={isSaving}
+      submitLabel="End Workout"
+    />
   );
 }

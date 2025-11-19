@@ -1,13 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { YStack, Text, XStack, Button } from 'tamagui';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import { Program } from '@/services/firestore';
+import { Program, ProgramExercise, WorkoutExercise } from '@/services/firestore';
 import { colors } from '@/theme/colors';
 import { DaySelector, ProgramDay as DaySelectorProgramDay } from '@/components/DaySelector';
+import { setWorkoutPrefillData } from '@/app/(tabs)/workout/workoutPrefillContext';
 
 export default function ProgramDetailsScreen() {
   const router = useRouter();
@@ -128,6 +129,34 @@ export default function ProgramDetailsScreen() {
       return [];
     }
   }, [program]);
+
+  // Transform program exercises to workout exercises
+  const transformProgramExercisesToWorkoutExercises = useCallback(
+    (programExercises: ProgramExercise[]): WorkoutExercise[] => {
+      return programExercises.map((exercise, index) => ({
+        exerciseId: exercise.id,
+        exerciseOwnerId: exercise.isGlobal ? 'global' : null,
+        name: exercise.name,
+        order: index + 1,
+        sets: exercise.sets.map((set) => ({
+          weight: 0, // User will fill in weight
+          reps: set.reps,
+          rir: set.rir,
+        })),
+      }));
+    },
+    [],
+  );
+
+  // Handle Apply Day button press
+  const handleApplyDay = useCallback(
+    (exercises: ProgramExercise[]) => {
+      const workoutExercises = transformProgramExercisesToWorkoutExercises(exercises);
+      setWorkoutPrefillData(workoutExercises);
+      router.push('/(tabs)/workout/create');
+    },
+    [router, transformProgramExercisesToWorkoutExercises],
+  );
 
   if (!user) {
     return (
@@ -267,7 +296,7 @@ export default function ProgramDetailsScreen() {
                         borderWidth={0}
                         paddingHorizontal="$2.5"
                         paddingVertical="$1.5"
-                        onPress={() => {}}
+                        onPress={() => handleApplyDay(dayData.exercises)}
                       >
                         Apply Day
                       </Button>
@@ -314,10 +343,10 @@ export default function ProgramDetailsScreen() {
                                   </YStack>
                                   <YStack space="$0.5">
                                     <Text color="$textSecondary" fontSize="$2">
-                                      RPE
+                                      RIR
                                     </Text>
                                     <Text color={colors.white} fontSize="$3" fontWeight="500">
-                                      {set.rpe}
+                                      {set.rir}
                                     </Text>
                                   </YStack>
                                 </XStack>
@@ -380,7 +409,28 @@ export default function ProgramDetailsScreen() {
                       </Text>
                     )}
                   </YStack>
-                  <DaySelector value={phaseActiveDays} disabled />
+                  {firstWeek && (
+                    <YStack
+                      padding="$3"
+                      backgroundColor={colors.darkGray}
+                      borderRadius="$3"
+                      borderWidth={1}
+                      borderColor={colors.niceOrange}
+                      space="$2"
+                    >
+                      <XStack alignItems="center" space="$2">
+                        <Text color={colors.niceOrange} fontSize="$6" fontWeight="700">
+                          Week 1
+                        </Text>
+                        {phase.weeks.length > 1 && (
+                          <Text color="$textSecondary" fontSize="$3">
+                            (of {phase.weeks.length} weeks)
+                          </Text>
+                        )}
+                      </XStack>
+                      <DaySelector value={phaseActiveDays} disabled />
+                    </YStack>
+                  )}
                   {phaseActiveDayExercises.length > 0 && (
                     <YStack space="$3">
                       {phaseActiveDayExercises.map((dayData, dayIndex) => (
@@ -408,7 +458,7 @@ export default function ProgramDetailsScreen() {
                               borderWidth={0}
                               paddingHorizontal="$2.5"
                               paddingVertical="$1.5"
-                              onPress={() => {}}
+                              onPress={() => handleApplyDay(dayData.exercises)}
                             >
                               Apply Day
                             </Button>
@@ -455,10 +505,10 @@ export default function ProgramDetailsScreen() {
                                         </YStack>
                                         <YStack space="$0.5">
                                           <Text color="$textSecondary" fontSize="$2">
-                                            RPE
+                                            RIR
                                           </Text>
                                           <Text color={colors.white} fontSize="$3" fontWeight="500">
-                                            {set.rpe}
+                                            {set.rir}
                                           </Text>
                                         </YStack>
                                       </XStack>

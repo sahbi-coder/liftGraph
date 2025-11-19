@@ -37,9 +37,12 @@ export default function TabsLayout() {
         },
         headerTitleStyle: {
           color: colors.white,
+          fontSize: 35,
         },
         headerTintColor: colors.white,
         headerShadowVisible: false,
+        headerTitle: 'LiftGraph',
+        headerTitleAlign: 'center',
       }}
     >
       <Tabs.Screen
@@ -56,7 +59,7 @@ export default function TabsLayout() {
         name="program"
         options={{
           headerShown: false,
-          title: 'Program',
+          title: 'Programs',
           tabBarIcon: ({ color, size }) => <Feather name="list" size={size ?? 24} color={color} />,
         }}
       />

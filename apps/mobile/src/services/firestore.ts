@@ -81,7 +81,7 @@ type WorkoutFirestoreData = {
 
 export type ProgramSet = {
   reps: number;
-  rpe: number;
+  rir: number;
 };
 
 export type ProgramExercise = {
@@ -557,6 +557,25 @@ export class FirestoreService {
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
     };
+  }
+
+  async getWorkouts(userId: string): Promise<Workout[]> {
+    const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
+    const workoutsQuery = query(workoutsCollection, orderBy('date', 'desc'));
+    const snapshot = await getDocs(workoutsQuery);
+
+    return snapshot.docs.map((docSnap) => {
+      const data = docSnap.data() as WorkoutFirestoreData;
+      return {
+        id: docSnap.id,
+        date: data.date.toDate(),
+        notes: data.notes,
+        exercises: data.exercises,
+        validated: data.validated ?? false,
+        createdAt: data.createdAt.toDate(),
+        updatedAt: data.updatedAt.toDate(),
+      };
+    });
   }
 
   private serializeWorkout(workout: WorkoutInput) {
