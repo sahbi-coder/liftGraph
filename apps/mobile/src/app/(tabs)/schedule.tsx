@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { YStack, XStack, Text } from 'tamagui';
 import dayjs from 'dayjs';
 
@@ -18,41 +18,28 @@ export default function ScheduleScreen() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchWorkouts = useCallback(async () => {
     if (!user) {
       setIsLoading(false);
       return;
     }
 
-    let isMounted = true;
-
-    const fetchWorkouts = async () => {
-      try {
-        const fetchedWorkouts = await services.firestore.getWorkouts(user.uid);
-
-        if (!isMounted) {
-          return;
-        }
-
-        setWorkouts(fetchedWorkouts);
-      } catch (error) {
-        if (!isMounted) {
-          return;
-        }
-        console.error('Failed to load workouts:', error);
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchWorkouts();
-
-    return () => {
-      isMounted = false;
-    };
+    try {
+      setIsLoading(true);
+      const fetchedWorkouts = await services.firestore.getWorkouts(user.uid);
+      setWorkouts(fetchedWorkouts);
+    } catch (error) {
+      console.error('Failed to load workouts:', error);
+    } finally {
+      setIsLoading(false);
+    }
   }, [services.firestore, user]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchWorkouts();
+    }, [fetchWorkouts]),
+  );
 
   // Create a map of dates to workouts for quick lookup
   const workoutsByDate = useMemo(() => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, Pressable } from 'react-native';
+import { useRouter } from 'expo-router';
 import { YStack, XStack, Text } from 'tamagui';
 import {
   BarChart3,
@@ -96,9 +97,10 @@ const progressMetrics: ProgressMetric[] = [
 ];
 
 export default function ProgressScreen() {
+  const router = useRouter();
+
   const handleMetricPress = (metricId: string) => {
-    // Placeholder for future functionality
-    console.log('Pressed metric:', metricId);
+    router.push(`/(tabs)/progress/${metricId}` as any);
   };
 
   return (

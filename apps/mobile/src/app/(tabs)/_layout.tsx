@@ -66,6 +66,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="progress"
         options={{
+          headerShown: false,
           title: 'Progress',
           tabBarIcon: ({ color, size }) => (
             <Foundation name="graph-trend" size={size ?? 24} color={color} />

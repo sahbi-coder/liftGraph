@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import React, { PropsWithChildren, useEffect } from 'react';
 import { Text } from 'react-native';
 import { TamaguiProvider } from 'tamagui';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { tamaguiConfig } from 'tamagui.config';
 
 import { createClients } from '@/clients/createClients';
@@ -28,6 +29,7 @@ const config = createConfig({
 
 const clients = createClients(config);
 const dependencies = createDependencies(clients);
+const queryClient = new QueryClient();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync().catch(console.error);
@@ -67,11 +69,13 @@ function RootLayout() {
 
   return (
     <DependenciesProvider dependencies={dependencies}>
-      <AuthProvider>
-        <Theme>
-          <Screen />
-        </Theme>
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Theme>
+            <Screen />
+          </Theme>
+        </AuthProvider>
+      </QueryClientProvider>
     </DependenciesProvider>
   );
 }
