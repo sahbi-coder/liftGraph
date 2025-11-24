@@ -35,12 +35,12 @@ export default function ProgressLayout() {
         options={{ headerTitle: 'Weekly Volume Load', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
-        name="pr-timeline"
-        options={{ headerTitle: 'PR Timeline Chart', headerTitleAlign: 'center' }}
-      />
-      <Stack.Screen
         name="frequency-chart"
         options={{ headerTitle: 'Workout Frequency', headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="pr-timeline"
+        options={{ headerTitle: 'PR Timeline Chart', headerTitleAlign: 'center' }}
       />
       <Stack.Screen
         name="variation-comparison"

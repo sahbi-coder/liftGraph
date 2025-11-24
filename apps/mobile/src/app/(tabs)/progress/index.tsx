@@ -49,6 +49,14 @@ const progressMetrics: ProgressMetric[] = [
     color: '#10b981',
   },
   {
+    id: 'frequency-chart',
+    title: 'Workout Frequency',
+    description:
+      'Bar showing how often you hit Squat, Bench, Deadlift, OHP, Accessory pulls, Core, and Upper back. Reveals training balance and helps coaches spot imbalances.',
+    icon: BarChart3,
+    color: '#8b5cf6',
+  },
+  {
     id: 'pr-timeline',
     title: 'PR Timeline Chart',
     description:
@@ -56,14 +64,7 @@ const progressMetrics: ProgressMetric[] = [
     icon: Calendar,
     color: '#f59e0b',
   },
-  {
-    id: 'frequency-chart',
-    title: 'Workout Frequency',
-    description:
-      'Bar or heatmap showing how often you hit Squat, Bench, Deadlift, OHP, Accessory pulls, Core, and Upper back. Reveals training balance and helps coaches spot imbalances.',
-    icon: BarChart3,
-    color: '#8b5cf6',
-  },
+
   {
     id: 'variation-comparison',
     title: 'Movement Variation Comparison',
