@@ -247,6 +247,51 @@ export class FirestoreService {
     return [...libraryExercises, ...userExercises];
   }
 
+  async createExercise(
+    userId: string,
+    exercise: {
+      name: string;
+      category: string;
+      bodyPart: string;
+      description?: string;
+    },
+  ): Promise<string> {
+    // Generate ID from name: lowercase with spaces replaced by hyphens
+    const exerciseId = exercise.name.trim().toLowerCase().replace(/\s+/g, '-');
+
+    // Check if exercise with this ID exists in library
+    const libraryRef = doc(this.db, 'exercisesLibrary', exerciseId);
+    const libraryDoc = await getDoc(libraryRef);
+
+    if (libraryDoc.exists()) {
+      throw new Error(
+        `An exercise with the name "${exercise.name}" already exists in the library.`,
+      );
+    }
+
+    // Check if exercise with this ID exists in user's exercises
+    const userExerciseRef = doc(this.db, `users/${userId}/exercises`, exerciseId);
+    const userExerciseDoc = await getDoc(userExerciseRef);
+
+    if (userExerciseDoc.exists()) {
+      throw new Error(
+        `An exercise with the name "${exercise.name}" already exists in your exercises.`,
+      );
+    }
+
+    // Create the exercise with the generated ID
+    const now = Timestamp.now();
+    await setDoc(userExerciseRef, {
+      name: exercise.name.trim(),
+      category: exercise.category.trim(),
+      bodyPart: exercise.bodyPart.trim(),
+      description: exercise.description?.trim() || '',
+      createdAt: now,
+    });
+
+    return exerciseId;
+  }
+
   async createWorkout(userId: string, workout: WorkoutInput): Promise<string> {
     const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
     const now = Timestamp.now();

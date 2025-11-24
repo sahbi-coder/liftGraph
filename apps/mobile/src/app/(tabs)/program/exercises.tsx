@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
-import { useRouter } from 'expo-router';
+import { FlatList, ListRenderItem, View, StyleSheet } from 'react-native';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { Button, Input, Text, XStack, YStack } from 'tamagui';
+import Entypo from '@expo/vector-icons/Entypo';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
@@ -23,7 +24,7 @@ export default function ProgramExercisePickerScreen() {
   const [filter, setFilter] = useState<'all' | 'library' | 'custom'>('all');
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
+  const loadExercises = useCallback(() => {
     if (!user) {
       return;
     }
@@ -51,6 +52,17 @@ export default function ProgramExercisePickerScreen() {
       isMounted = false;
     };
   }, [services.firestore, user]);
+
+  useEffect(() => {
+    loadExercises();
+  }, [loadExercises]);
+
+  // Reload exercises when screen comes into focus (e.g., after creating a new exercise)
+  useFocusEffect(
+    useCallback(() => {
+      loadExercises();
+    }, [loadExercises]),
+  );
 
   const filteredExercises = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -192,13 +204,38 @@ export default function ProgramExercisePickerScreen() {
         <YStack flex={1} justifyContent="center" alignItems="center">
           <Text color={colors.white}>Loading exercises...</Text>
         </YStack>
+      ) : filteredExercises.length === 0 ? (
+        <YStack flex={1} justifyContent="center" alignItems="center" space="$4" padding="$4">
+          <Entypo name="info" size={48} color={colors.niceOrange} />
+          <Text color="$textPrimary" fontSize="$5" fontWeight="600" textAlign="center">
+            {search.trim() || filter !== 'all' ? 'No exercises found' : 'No exercises yet'}
+          </Text>
+          <Text color="$textSecondary" fontSize="$4" textAlign="center">
+            {search.trim() || filter !== 'all'
+              ? 'Try adjusting your search or filters, or create a new exercise.'
+              : 'Create your first custom exercise to get started!'}
+          </Text>
+          <Button
+            backgroundColor="$primaryButton"
+            color={colors.white}
+            onPress={() => router.push('/(tabs)/program/exercise-create')}
+            borderRadius="$4"
+            paddingHorizontal="$4"
+            paddingVertical="$3"
+          >
+            <Entypo name="circle-with-plus" size={20} color={colors.white} />
+            <Text color={colors.white} marginLeft="$2">
+              Create Exercise
+            </Text>
+          </Button>
+        </YStack>
       ) : (
         <FlatList
           data={filteredExercises}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           contentContainerStyle={{
-            paddingBottom: 32,
+            paddingBottom: 100, // Extra padding for FAB
           }}
         />
       )}
@@ -213,6 +250,33 @@ export default function ProgramExercisePickerScreen() {
       >
         Cancel
       </Button>
+
+      {/* Floating Action Button */}
+      <View style={styles.fabContainer}>
+        <Button
+          size="$5"
+          circular
+          backgroundColor="$primaryButton"
+          color={colors.white}
+          onPress={() => router.push('/(tabs)/program/exercise-create')}
+          shadowColor="#000"
+          shadowOffset={{ width: 0, height: 2 }}
+          shadowOpacity={0.25}
+          shadowRadius={3.84}
+          elevation={5}
+        >
+          <Entypo name="plus" size={28} color={colors.white} />
+        </Button>
+      </View>
     </YStack>
   );
 }
+
+const styles = StyleSheet.create({
+  fabContainer: {
+    position: 'absolute',
+    right: 16,
+    bottom: 80,
+    zIndex: 10,
+  },
+});
