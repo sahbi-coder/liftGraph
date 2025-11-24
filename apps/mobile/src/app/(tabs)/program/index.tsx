@@ -96,7 +96,12 @@ export default function ProgramScreen() {
                       {program.description}
                     </Text>
                     <Text color="$textSecondary" fontSize="$2">
-                      {program.type === 'simple' ? 'Simple' : 'Advanced'} Program
+                      {program.type === 'simple'
+                        ? 'Simple'
+                        : program.type === 'alternating'
+                          ? 'Alternating'
+                          : 'Advanced'}{' '}
+                      Program
                     </Text>
                   </YStack>
                   <Entypo name="chevron-right" size={24} color={colors.niceOrange} />

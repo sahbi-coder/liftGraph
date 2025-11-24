@@ -25,6 +25,7 @@ export default function ProgramDetailsScreen() {
 
   const [program, setProgram] = useState<Program | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedAlternatingWeek, setSelectedAlternatingWeek] = useState<0 | 1>(0);
 
   useEffect(() => {
     if (!programId) {
@@ -85,6 +86,11 @@ export default function ProgramDetailsScreen() {
       return program.week.days
         .map((day, index) => (day !== 'rest' ? (`Day${index + 1}` as DaySelectorProgramDay) : null))
         .filter((day): day is DaySelectorProgramDay => day !== null);
+    } else if (program.type === 'alternating') {
+      // For alternating programs, use the selected week
+      return program.alternatingWeeks[selectedAlternatingWeek].days
+        .map((day, index) => (day !== 'rest' ? (`Day${index + 1}` as DaySelectorProgramDay) : null))
+        .filter((day): day is DaySelectorProgramDay => day !== null);
     } else {
       // For advanced programs, use the first week of the first phase
       if (program.phases.length > 0 && program.phases[0].weeks.length > 0) {
@@ -96,13 +102,25 @@ export default function ProgramDetailsScreen() {
       }
       return [];
     }
-  }, [program]);
+  }, [program, selectedAlternatingWeek]);
 
   // Get active day exercises for display
   const activeDayExercises = useMemo(() => {
     if (!program) return [];
     if (program.type === 'simple') {
       return program.week.days
+        .map((day, index) => {
+          if (day === 'rest') return null;
+          return {
+            dayNumber: index + 1,
+            dayName: day.name,
+            exercises: day.exercises,
+          };
+        })
+        .filter((item): item is NonNullable<typeof item> => item !== null);
+    } else if (program.type === 'alternating') {
+      // For alternating programs, use the selected week
+      return program.alternatingWeeks[selectedAlternatingWeek].days
         .map((day, index) => {
           if (day === 'rest') return null;
           return {
@@ -128,7 +146,7 @@ export default function ProgramDetailsScreen() {
       }
       return [];
     }
-  }, [program]);
+  }, [program, selectedAlternatingWeek]);
 
   // Transform program exercises to workout exercises
   const transformProgramExercisesToWorkoutExercises = useCallback(
@@ -244,9 +262,15 @@ export default function ProgramDetailsScreen() {
               height="auto"
               paddingHorizontal="$1.5"
             >
-              {`${program.type === 'simple' ? 'Simple' : 'Advanced'} Program`}
+              {`${
+                program.type === 'simple'
+                  ? 'Simple'
+                  : program.type === 'alternating'
+                    ? 'Alternating'
+                    : 'Advanced'
+              } Program`}
             </Button>
-            {program.type === 'simple' && (
+            {(program.type === 'simple' || program.type === 'alternating') && (
               <Button
                 disabled
                 backgroundColor={colors.midGray}
@@ -257,17 +281,49 @@ export default function ProgramDetailsScreen() {
                 cursor="default"
                 height="auto"
               >
-                Weekly Schedule
+                {program.type === 'simple' ? 'Weekly Schedule' : 'Alternating Weeks'}
               </Button>
             )}
           </XStack>
         </YStack>
 
-        {program.type === 'simple' ? (
+        {program.type === 'simple' || program.type === 'alternating' ? (
           <YStack space="$3">
             <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-              Weekly Schedule
+              {program.type === 'simple' ? 'Weekly Schedule' : 'Alternating Weeks'}
             </Text>
+            {program.type === 'alternating' && (
+              <XStack space="$2" alignItems="center">
+                <Button
+                  backgroundColor={
+                    selectedAlternatingWeek === 0 ? '$primaryButton' : colors.midGray
+                  }
+                  color={colors.white}
+                  fontSize="$4"
+                  borderRadius="$4"
+                  borderWidth={0}
+                  paddingHorizontal="$3"
+                  paddingVertical="$2"
+                  onPress={() => setSelectedAlternatingWeek(0)}
+                >
+                  Week 1
+                </Button>
+                <Button
+                  backgroundColor={
+                    selectedAlternatingWeek === 1 ? '$primaryButton' : colors.midGray
+                  }
+                  color={colors.white}
+                  fontSize="$4"
+                  borderRadius="$4"
+                  borderWidth={0}
+                  paddingHorizontal="$3"
+                  paddingVertical="$2"
+                  onPress={() => setSelectedAlternatingWeek(1)}
+                >
+                  Week 2
+                </Button>
+              </XStack>
+            )}
             <DaySelector value={activeDays} disabled />
             {activeDayExercises.length > 0 && (
               <YStack space="$3" marginTop="$2">

@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import {
   ProgramInput,
   SimpleProgramInput,
+  AlternatingProgramInput,
   AdvancedProgramInput,
   ProgramExercise,
   ProgramSet,
@@ -25,7 +26,7 @@ import {
 } from '@/app/(tabs)/workout/exercisePickerContext';
 import { DaySelector, type ProgramDay as DaySelectorDay } from '@/components/DaySelector';
 
-type ProgramType = 'simple' | 'advanced';
+type ProgramType = 'simple' | 'alternating' | 'advanced';
 
 type ProgramSetForm = {
   id: string;
@@ -100,6 +101,12 @@ export default function CreateProgramScreen() {
   // Simple program state - initialize with one week
   const [weeks, setWeeks] = useState<ProgramWeekForm[]>(() => [createWeekForm()]);
 
+  // Alternating program state - initialize with two weeks
+  const [alternatingWeeks, setAlternatingWeeks] = useState<ProgramWeekForm[]>(() => [
+    createWeekForm(),
+    createWeekForm(),
+  ]);
+
   // Advanced program state
   const [phases, setPhases] = useState<ProgramPhaseForm[]>([]);
 
@@ -132,6 +139,27 @@ export default function CreateProgramScreen() {
                 }
               } else {
                 // If it was a day form, convert to 'rest'
+                newDays[i] = 'rest';
+              }
+            }
+
+            return { ...week, days: newDays, selectedDays };
+          }),
+        );
+      } else if (programType === 'alternating') {
+        setAlternatingWeeks((prev) =>
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+
+            const newDays: ('rest' | ProgramDayForm)[] = [...week.days];
+            const selectedIndices = new Set(selectedDays.map((day) => dayMap[day]));
+
+            for (let i = 0; i < 7; i++) {
+              if (selectedIndices.has(i)) {
+                if (newDays[i] === 'rest') {
+                  newDays[i] = { exercises: [] };
+                }
+              } else {
                 newDays[i] = 'rest';
               }
             }
@@ -217,6 +245,29 @@ export default function CreateProgramScreen() {
 
           return prev.map((w) => (w.id === weekId ? { ...w, days: newDays } : w));
         });
+      } else if (programType === 'alternating') {
+        setAlternatingWeeks((prev) => {
+          const week = prev.find((w) => w.id === weekId);
+          if (!week) {
+            console.error('Week not found! Cannot add exercise.');
+            return prev;
+          }
+
+          const newDays = [...week.days];
+          const day = newDays[dayIndex];
+
+          if (day === 'rest') {
+            console.error('Cannot add exercise to rest day');
+            return prev;
+          }
+
+          newDays[dayIndex] = {
+            ...day,
+            exercises: [...day.exercises, newExercise],
+          };
+
+          return prev.map((w) => (w.id === weekId ? { ...w, days: newDays } : w));
+        });
       } else if (phaseId) {
         setPhases((prev) => {
           return prev.map((phase) => {
@@ -272,6 +323,10 @@ export default function CreateProgramScreen() {
     (weekId: string, name: string) => {
       if (programType === 'simple') {
         setWeeks((prev) => prev.map((week) => (week.id === weekId ? { ...week, name } : week)));
+      } else if (programType === 'alternating') {
+        setAlternatingWeeks((prev) =>
+          prev.map((week) => (week.id === weekId ? { ...week, name } : week)),
+        );
       }
     },
     [programType],
@@ -282,6 +337,7 @@ export default function CreateProgramScreen() {
       if (programType === 'simple') {
         setWeeks((prev) => prev.filter((week) => week.id !== weekId));
       }
+      // Note: Alternating programs always need exactly 2 weeks, so we don't allow removal
     },
     [programType],
   );
@@ -389,6 +445,21 @@ export default function CreateProgramScreen() {
             return { ...week, days: newDays };
           }),
         );
+      } else if (programType === 'alternating') {
+        setAlternatingWeeks((prev) =>
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+            const newDays = [...week.days];
+            const day = newDays[dayIndex];
+            if (day === 'rest') return week;
+
+            newDays[dayIndex] = {
+              ...day,
+              exercises: day.exercises.filter((ex) => ex.id !== exerciseId),
+            };
+            return { ...week, days: newDays };
+          }),
+        );
       } else if (phaseId) {
         setPhases((prev) =>
           prev.map((phase) => {
@@ -422,6 +493,23 @@ export default function CreateProgramScreen() {
 
       if (programType === 'simple') {
         setWeeks((prev) =>
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+            const newDays = [...week.days];
+            const day = newDays[dayIndex];
+            if (day === 'rest') return week;
+
+            newDays[dayIndex] = {
+              ...day,
+              exercises: day.exercises.map((ex) =>
+                ex.id === exerciseId ? { ...ex, sets: [...ex.sets, createSetForm()] } : ex,
+              ),
+            };
+            return { ...week, days: newDays };
+          }),
+        );
+      } else if (programType === 'alternating') {
+        setAlternatingWeeks((prev) =>
           prev.map((week) => {
             if (week.id !== weekId) return week;
             const newDays = [...week.days];
@@ -498,6 +586,28 @@ export default function CreateProgramScreen() {
             return { ...week, days: newDays };
           }),
         );
+      } else if (programType === 'alternating') {
+        setAlternatingWeeks((prev) =>
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+            const newDays = [...week.days];
+            const day = newDays[dayIndex];
+            if (day === 'rest') return week;
+
+            newDays[dayIndex] = {
+              ...day,
+              exercises: day.exercises.map((ex) => {
+                if (ex.id !== exerciseId) return ex;
+                if (ex.sets.length === 1) {
+                  Alert.alert('Cannot remove set', 'Each exercise must have at least one set.');
+                  return ex;
+                }
+                return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
+              }),
+            };
+            return { ...week, days: newDays };
+          }),
+        );
       } else if (phaseId) {
         setPhases((prev) =>
           prev.map((phase) => {
@@ -546,6 +656,30 @@ export default function CreateProgramScreen() {
 
       if (programType === 'simple') {
         setWeeks((prev) =>
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+            const newDays = [...week.days];
+            const day = newDays[dayIndex];
+            if (day === 'rest') return week;
+
+            newDays[dayIndex] = {
+              ...day,
+              exercises: day.exercises.map((ex) =>
+                ex.id === exerciseId
+                  ? {
+                      ...ex,
+                      sets: ex.sets.map((set) =>
+                        set.id === setId ? { ...set, [field]: value } : set,
+                      ),
+                    }
+                  : ex,
+              ),
+            };
+            return { ...week, days: newDays };
+          }),
+        );
+      } else if (programType === 'alternating') {
+        setAlternatingWeeks((prev) =>
           prev.map((week) => {
             if (week.id !== weekId) return week;
             const newDays = [...week.days];
@@ -666,6 +800,64 @@ export default function CreateProgramScreen() {
       };
 
       return simpleProgram;
+    } else if (programType === 'alternating') {
+      if (alternatingWeeks.length !== 2) {
+        Alert.alert('Validation Error', 'Alternating program must have exactly two weeks.');
+        return null;
+      }
+
+      const dayLabels: DaySelectorDay[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
+
+      const convertWeek = (week: ProgramWeekForm): ProgramWeek => {
+        const convertedDays: ProgramDay[] = week.days.map((day, dayIndex) => {
+          if (day === 'rest') {
+            return 'rest' as const;
+          }
+
+          const exercises: ProgramExercise[] = day.exercises.map((ex) => {
+            const sets: ProgramSet[] = ex.sets
+              .filter((set) => set.reps.trim() && set.rir.trim())
+              .map((set) => ({
+                reps: Number(set.reps),
+                rir: Number(set.rir),
+              }));
+
+            if (sets.length === 0) {
+              throw new Error(`Exercise "${ex.name}" must have at least one valid set.`);
+            }
+
+            return {
+              name: ex.name,
+              id: ex.exerciseId,
+              isGlobal: ex.isGlobal,
+              sets,
+            };
+          });
+
+          return {
+            name: dayLabels[dayIndex],
+            exercises,
+          };
+        });
+
+        return {
+          days: convertedDays,
+        };
+      };
+
+      const convertedWeeks: [ProgramWeek, ProgramWeek] = [
+        convertWeek(alternatingWeeks[0]),
+        convertWeek(alternatingWeeks[1]),
+      ];
+
+      const alternatingProgram: AlternatingProgramInput = {
+        name: name.trim(),
+        description: description.trim(),
+        type: 'alternating',
+        alternatingWeeks: convertedWeeks,
+      };
+
+      return alternatingProgram;
     } else {
       if (phases.length === 0) {
         Alert.alert('Validation Error', 'Advanced program must have at least one phase.');
@@ -743,7 +935,7 @@ export default function CreateProgramScreen() {
 
       return advancedProgram;
     }
-  }, [name, description, programType, weeks, phases]);
+  }, [name, description, programType, weeks, alternatingWeeks, phases]);
 
   const handleSave = useCallback(async () => {
     if (!user) {
@@ -968,31 +1160,50 @@ export default function CreateProgramScreen() {
           <Text color="$textPrimary" fontSize="$6" fontWeight="600">
             Program Type
           </Text>
-          <XStack space="$2">
-            <Button
-              flex={1}
-              backgroundColor={programType === 'simple' ? '$primaryButton' : colors.midGray}
-              color={colors.white}
-              onPress={() => {
-                setProgramType('simple');
-                setPhases([]);
-                setWeeks([createWeekForm()]);
-              }}
-            >
-              Simple
-            </Button>
-            <Button
-              flex={1}
-              backgroundColor={programType === 'advanced' ? '$primaryButton' : colors.midGray}
-              color={colors.white}
-              onPress={() => {
-                setProgramType('advanced');
-                setWeeks([]);
-              }}
-            >
-              Advanced
-            </Button>
-          </XStack>
+          <YStack space="$2">
+            <XStack space="$2">
+              <Button
+                flex={1}
+                backgroundColor={programType === 'simple' ? '$primaryButton' : colors.midGray}
+                color={colors.white}
+                onPress={() => {
+                  setProgramType('simple');
+                  setPhases([]);
+                  setAlternatingWeeks([createWeekForm(), createWeekForm()]);
+                  setWeeks([createWeekForm()]);
+                }}
+              >
+                Simple
+              </Button>
+              <Button
+                flex={1}
+                backgroundColor={programType === 'alternating' ? '$primaryButton' : colors.midGray}
+                color={colors.white}
+                onPress={() => {
+                  setProgramType('alternating');
+                  setPhases([]);
+                  setWeeks([]);
+                  setAlternatingWeeks([createWeekForm(), createWeekForm()]);
+                }}
+              >
+                Alternating
+              </Button>
+            </XStack>
+            <XStack space="$2" justifyContent="center">
+              <Button
+                flex={0.5}
+                backgroundColor={programType === 'advanced' ? '$primaryButton' : colors.midGray}
+                color={colors.white}
+                onPress={() => {
+                  setProgramType('advanced');
+                  setWeeks([]);
+                  setAlternatingWeeks([createWeekForm(), createWeekForm()]);
+                }}
+              >
+                Advanced
+              </Button>
+            </XStack>
+          </YStack>
         </YStack>
 
         <YStack space="$2">
@@ -1031,6 +1242,17 @@ export default function CreateProgramScreen() {
             </Text>
 
             {weeks.map((week, index) => renderWeek(week, index))}
+          </YStack>
+        ) : programType === 'alternating' ? (
+          <YStack space="$3">
+            <Text color="$textPrimary" fontSize="$6" fontWeight="600">
+              Alternating Weeks
+            </Text>
+            <Text color="$textSecondary" fontSize="$4">
+              Define two weeks that will alternate
+            </Text>
+
+            {alternatingWeeks.map((week, index) => renderWeek(week, index))}
           </YStack>
         ) : (
           <YStack space="$3">

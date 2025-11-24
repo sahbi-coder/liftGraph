@@ -113,6 +113,13 @@ export type SimpleProgramInput = {
   week: ProgramWeek;
 };
 
+export type AlternatingProgramInput = {
+  name: string;
+  description: string;
+  type: 'alternating';
+  alternatingWeeks: [ProgramWeek, ProgramWeek];
+};
+
 export type AdvancedProgramInput = {
   name: string;
   description: string;
@@ -120,7 +127,7 @@ export type AdvancedProgramInput = {
   phases: ProgramPhase[];
 };
 
-export type ProgramInput = SimpleProgramInput | AdvancedProgramInput;
+export type ProgramInput = SimpleProgramInput | AlternatingProgramInput | AdvancedProgramInput;
 
 export type SimpleProgram = {
   id: string;
@@ -128,6 +135,16 @@ export type SimpleProgram = {
   description: string;
   type: 'simple';
   week: ProgramWeek;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type AlternatingProgram = {
+  id: string;
+  name: string;
+  description: string;
+  type: 'alternating';
+  alternatingWeeks: [ProgramWeek, ProgramWeek];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -142,13 +159,14 @@ export type AdvancedProgram = {
   updatedAt: Date;
 };
 
-export type Program = SimpleProgram | AdvancedProgram;
+export type Program = SimpleProgram | AlternatingProgram | AdvancedProgram;
 
 type ProgramFirestoreData = {
   name: string;
   description: string;
-  type: 'simple' | 'advanced';
+  type: 'simple' | 'alternating' | 'advanced';
   week?: ProgramWeek;
+  alternatingWeeks?: [ProgramWeek, ProgramWeek];
   phases?: ProgramPhase[];
   createdAt: Timestamp;
   updatedAt: Timestamp;
@@ -257,6 +275,8 @@ export class FirestoreService {
 
     if (program.type === 'simple') {
       programData.week = program.week;
+    } else if (program.type === 'alternating') {
+      programData.alternatingWeeks = program.alternatingWeeks;
     } else {
       programData.phases = program.phases;
     }
@@ -287,6 +307,12 @@ export class FirestoreService {
           type: 'simple' as const,
           week: data.week!,
         } as SimpleProgram;
+      } else if (data.type === 'alternating') {
+        return {
+          ...baseProgram,
+          type: 'alternating' as const,
+          alternatingWeeks: data.alternatingWeeks!,
+        };
       } else {
         return {
           ...baseProgram,
@@ -320,6 +346,12 @@ export class FirestoreService {
         type: 'simple' as const,
         week: data.week!,
       } as SimpleProgram;
+    } else if (data.type === 'alternating') {
+      return {
+        ...baseProgram,
+        type: 'alternating' as const,
+        alternatingWeeks: data.alternatingWeeks!,
+      } as AlternatingProgram;
     } else {
       return {
         ...baseProgram,
