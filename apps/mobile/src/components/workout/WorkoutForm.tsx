@@ -71,6 +71,7 @@ type ExerciseCardProps = {
   index: number;
   onRemoveExercise: (exerciseId: string) => void;
   onAddSet: (exerciseId: string) => void;
+  onDuplicatePreviousSet: (exerciseId: string) => void;
   onRemoveSet: (exerciseId: string, setId: string) => void;
   onUpdateSetField: (
     exerciseId: string,
@@ -86,6 +87,7 @@ const ExerciseCard = ({
   index,
   onRemoveExercise,
   onAddSet,
+  onDuplicatePreviousSet,
   onRemoveSet,
   onUpdateSetField,
   disabled = false,
@@ -182,18 +184,34 @@ const ExerciseCard = ({
         </YStack>
       ))}
 
-      <Button
-        size="$3"
-        backgroundColor={colors.niceOrange}
-        color={colors.white}
-        fontWeight="600"
-        borderRadius="$4"
-        onPress={() => onAddSet(exercise.id)}
-        disabled={disabled}
-        opacity={disabled ? 0.6 : 1}
-      >
-        <Entypo name="circle-with-plus" size={22} color={colors.white} /> Add Set
-      </Button>
+      <XStack space="$2">
+        <Button
+          size="$3"
+          flex={1}
+          backgroundColor={colors.niceOrange}
+          color={colors.white}
+          fontWeight="600"
+          borderRadius="$4"
+          onPress={() => onAddSet(exercise.id)}
+          disabled={disabled}
+          opacity={disabled ? 0.6 : 1}
+        >
+          <Entypo name="circle-with-plus" size={22} color={colors.white} /> Add Set
+        </Button>
+        <Button
+          size="$3"
+          flex={1}
+          backgroundColor={colors.niceOrange}
+          color={colors.white}
+          fontWeight="600"
+          borderRadius="$4"
+          onPress={() => onDuplicatePreviousSet(exercise.id)}
+          disabled={disabled || exercise.sets.length === 0}
+          opacity={disabled || exercise.sets.length === 0 ? 0.6 : 1}
+        >
+          <AntDesign name="copy1" size={22} color={colors.white} /> Duplicate previous
+        </Button>
+      </XStack>
     </YStack>
   );
 };
@@ -318,6 +336,32 @@ export function WorkoutForm({
             ? { ...exercise, sets: [...exercise.sets, createSetForm()] }
             : exercise,
         ),
+      );
+    },
+    [validated],
+  );
+
+  const handleDuplicatePreviousSet = useCallback(
+    (exerciseId: string) => {
+      if (validated) return;
+      setExercises((prev) =>
+        prev.map((exercise) => {
+          if (exercise.id !== exerciseId || exercise.sets.length === 0) {
+            return exercise;
+          }
+
+          const lastSet = exercise.sets[exercise.sets.length - 1];
+          const duplicatedSet = createSetForm({
+            weight: lastSet.weight ? Number(lastSet.weight) : 0,
+            reps: lastSet.reps ? Number(lastSet.reps) : 0,
+            rir: lastSet.rir ? Number(lastSet.rir) : 0,
+          });
+
+          return {
+            ...exercise,
+            sets: [...exercise.sets, duplicatedSet],
+          };
+        }),
       );
     },
     [validated],
@@ -520,6 +564,7 @@ export function WorkoutForm({
                 index={index}
                 onRemoveExercise={handleRemoveExercise}
                 onAddSet={handleAddSet}
+                onDuplicatePreviousSet={handleDuplicatePreviousSet}
                 onRemoveSet={handleRemoveSet}
                 onUpdateSetField={handleUpdateSetField}
                 disabled={validated}

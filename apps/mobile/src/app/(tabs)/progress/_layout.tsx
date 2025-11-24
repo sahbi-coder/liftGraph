@@ -38,26 +38,6 @@ export default function ProgressLayout() {
         name="frequency-chart"
         options={{ headerTitle: 'Workout Frequency', headerTitleAlign: 'center' }}
       />
-      <Stack.Screen
-        name="pr-timeline"
-        options={{ headerTitle: 'PR Timeline Chart', headerTitleAlign: 'center' }}
-      />
-      <Stack.Screen
-        name="variation-comparison"
-        options={{ headerTitle: 'Movement Variation Comparison', headerTitleAlign: 'center' }}
-      />
-      <Stack.Screen
-        name="block-comparison"
-        options={{ headerTitle: 'Block Comparison', headerTitleAlign: 'center' }}
-      />
-      <Stack.Screen
-        name="strength-balance"
-        options={{ headerTitle: 'Strength Balance Ratio', headerTitleAlign: 'center' }}
-      />
-      <Stack.Screen
-        name="volume-intensity-scatter"
-        options={{ headerTitle: 'Volume–Intensity Scatter', headerTitleAlign: 'center' }}
-      />
     </Stack>
   );
 }

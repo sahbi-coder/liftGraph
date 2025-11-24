@@ -2,16 +2,7 @@ import React from 'react';
 import { ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { YStack, XStack, Text } from 'tamagui';
-import {
-  BarChart3,
-  TrendingUp,
-  Calendar,
-  Activity,
-  GitCompare,
-  Layers,
-  Scale,
-  ScatterChart,
-} from '@tamagui/lucide-icons';
+import { BarChart3, TrendingUp, Activity } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
 
@@ -55,45 +46,6 @@ const progressMetrics: ProgressMetric[] = [
       'Bar showing how often you hit Squat, Bench, Deadlift, OHP, Accessory pulls, Core, and Upper back. Reveals training balance and helps coaches spot imbalances.',
     icon: BarChart3,
     color: '#8b5cf6',
-  },
-  {
-    id: 'pr-timeline',
-    title: 'PR Timeline Chart',
-    description:
-      'Plot ALL PR categories: 1RM PR, 3RM PR, 5RM PR, Volume PR, Rep PR, and Top-set PR. Each PR type has its own marker. Very motivating to see all your achievements over time.',
-    icon: Calendar,
-    color: '#f59e0b',
-  },
-
-  {
-    id: 'variation-comparison',
-    title: 'Movement Variation Comparison',
-    description:
-      'Compare squat variations (high-bar, low-bar, SSB, front, tempo) and other movements. Chart average intensity, top sets, and progression of each. See which variations produce the best carryover.',
-    icon: GitCompare,
-    color: '#ec4899',
-  },
-  {
-    id: 'block-comparison',
-    title: 'Block Comparison',
-    description: 'Compare training blocks to track progress over periods',
-    icon: Layers,
-    color: '#06b6d4',
-  },
-  {
-    id: 'strength-balance',
-    title: 'Strength Balance Ratio',
-    description:
-      'Visualize strength ratios: Knee extension vs hip extension vs press vs pull. Examples include Bench-to-squat ratio, Deadlift-to-squat ratio, and Pull-to-push ratio. Helps spot weak chains.',
-    icon: Scale,
-    color: '#14b8a6',
-  },
-  {
-    id: 'volume-intensity-scatter',
-    title: 'Volume–Intensity Scatter',
-    description: 'See the relationship between training volume and intensity',
-    icon: ScatterChart,
-    color: '#f97316',
   },
 ];
 
