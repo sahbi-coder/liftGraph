@@ -16,7 +16,7 @@ export default function Schedule() {
   const handleDayPress = useCallback(
     (workoutId: string) => {
       router.push({
-        pathname: '/(tabs)/workout/edit',
+        pathname: '/(tabs)/schedule/edit',
         params: { workoutId },
       });
     },

@@ -80,6 +80,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Entypo name="calendar" size={size ?? 24} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tabs.Screen
