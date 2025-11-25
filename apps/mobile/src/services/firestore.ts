@@ -3,6 +3,7 @@ import {
   Timestamp,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -404,6 +405,17 @@ export class FirestoreService {
         phases: data.phases!,
       } as AdvancedProgram;
     }
+  }
+
+  async deleteProgram(userId: string, programId: string): Promise<void> {
+    const programRef = doc(this.db, `users/${userId}/programs/${programId}`);
+    const existingProgram = await getDoc(programRef);
+
+    if (!existingProgram.exists()) {
+      throw new Error('Program not found');
+    }
+
+    await deleteDoc(programRef);
   }
 
   async updateWorkout(userId: string, workoutId: string, workout: WorkoutInput): Promise<void> {

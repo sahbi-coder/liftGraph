@@ -26,6 +26,7 @@ export default function ProgramDetailsScreen() {
   const [program, setProgram] = useState<Program | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAlternatingWeek, setSelectedAlternatingWeek] = useState<0 | 1>(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (!programId) {
@@ -175,6 +176,41 @@ export default function ProgramDetailsScreen() {
     },
     [router, transformProgramExercisesToWorkoutExercises],
   );
+
+  // Handle Delete Program
+  const handleDeleteProgram = useCallback(async () => {
+    if (!user || !programId || !program) {
+      return;
+    }
+
+    Alert.alert(
+      'Delete Program',
+      `Are you sure you want to delete "${program.name}"? This action cannot be undone.`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            setIsDeleting(true);
+            try {
+              await services.firestore.deleteProgram(user.uid, programId);
+              Alert.alert('Program deleted', 'The program has been deleted successfully.');
+              router.back();
+            } catch (error) {
+              const message = error instanceof Error ? error.message : 'Something went wrong.';
+              Alert.alert('Failed to delete program', message);
+            } finally {
+              setIsDeleting(false);
+            }
+          },
+        },
+      ],
+    );
+  }, [user, programId, program, services.firestore, router]);
 
   if (!user) {
     return (
@@ -583,6 +619,29 @@ export default function ProgramDetailsScreen() {
             })}
           </YStack>
         )}
+        <YStack
+          space="$3"
+          marginTop="$4"
+          paddingTop="$4"
+          borderTopWidth={1}
+          borderTopColor={colors.midGray}
+        >
+          <Button
+            backgroundColor={colors.midGray}
+            color="#ef4444"
+            fontSize="$4"
+            borderRadius="$4"
+            borderWidth={0}
+            paddingHorizontal="$3"
+            paddingVertical="$2"
+            onPress={handleDeleteProgram}
+            disabled={isDeleting}
+            opacity={isDeleting ? 0.5 : 1}
+            alignSelf="center"
+          >
+            {isDeleting ? 'Deleting...' : 'Delete Program'}
+          </Button>
+        </YStack>
       </YStack>
     </ScrollView>
   );
