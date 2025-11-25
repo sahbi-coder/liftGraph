@@ -1,129 +1,73 @@
-import React, { useState, useCallback } from 'react';
-import { ScrollView, Pressable } from 'react-native';
-import { useRouter, useFocusEffect } from 'expo-router';
-import { YStack, Text, Button, XStack } from 'tamagui';
-import Entypo from '@expo/vector-icons/Entypo';
+import React, { useCallback } from 'react';
+import { useRouter } from 'expo-router';
+import { YStack, Text, Button } from 'tamagui';
 
 import { colors } from '@/theme/colors';
-import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
-import { Program } from '@/services/firestore';
+import { ProgramHomeScreen } from '@/components/program/ProgramHomeScreen';
+import { useUserPrograms } from '@/hooks/useUserPrograms';
 
-export default function ProgramScreen() {
+export default function ProgramHome() {
   const router = useRouter();
-  const { services } = useDependencies();
-  const { user } = useAuth();
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  const loadPrograms = useCallback(async () => {
-    if (!user) {
-      setPrograms([]);
-      setLoading(false);
-      return;
-    }
+  const { programs, isLoading, isError, refetch } = useUserPrograms();
 
-    try {
-      setLoading(true);
-      const fetchedPrograms = await services.firestore.getPrograms(user.uid);
-      setPrograms(fetchedPrograms);
-    } catch (error) {
-      console.error('Error loading programs:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [user, services.firestore]);
+  const handleCreateProgram = useCallback(() => {
+    router.push('/(tabs)/program/create');
+  }, [router]);
 
-  useFocusEffect(
-    useCallback(() => {
-      loadPrograms();
-    }, [loadPrograms]),
+  const handleProgramPress = useCallback(
+    (programId: string) => {
+      router.push({
+        pathname: '/(tabs)/program/[id]',
+        params: { id: programId },
+      });
+    },
+    [router],
   );
 
-  const handleCreateProgram = () => {
-    router.push('/(tabs)/program/create');
-  };
-
-  return (
-    <ScrollView
-      style={{ flex: 1, backgroundColor: colors.darkerGray }}
-      contentContainerStyle={{ padding: 16, gap: 16, paddingBottom: 32 }}
-    >
-      <YStack space="$2" alignItems="flex-start">
-        <Text color="$textPrimary" fontSize="$9" fontWeight="700">
-          Programs
-        </Text>
-        <Text color="$textSecondary" fontSize="$5">
-          Manage your training programs
-        </Text>
-      </YStack>
-
-      {loading ? (
-        <Text color="$textSecondary" fontSize="$4">
+  // Show loading state
+  if (isLoading) {
+    return (
+      <YStack
+        flex={1}
+        backgroundColor={colors.darkerGray}
+        justifyContent="center"
+        alignItems="center"
+        padding="$4"
+      >
+        <Text color="$textPrimary" fontSize="$5">
           Loading programs...
         </Text>
-      ) : programs.length === 0 ? (
-        <YStack
-          padding="$4"
-          backgroundColor={colors.midGray}
-          borderRadius="$4"
-          alignItems="center"
-          space="$2"
-        >
-          <Text color="$textSecondary" fontSize="$4" textAlign="center">
-            No programs yet. Create your first program to get started!
-          </Text>
-        </YStack>
-      ) : (
-        <YStack space="$3">
-          {programs.map((program) => (
-            <Pressable
-              key={program.id}
-              onPress={() => {
-                router.push({
-                  pathname: '/(tabs)/program/[id]',
-                  params: { id: program.id },
-                });
-              }}
-            >
-              <YStack padding="$3" backgroundColor={colors.midGray} borderRadius="$4" space="$2">
-                <XStack alignItems="center" justifyContent="space-between">
-                  <YStack flex={1} space="$1">
-                    <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                      {program.name}
-                    </Text>
-                    <Text color="$textSecondary" fontSize="$3" numberOfLines={2}>
-                      {program.description}
-                    </Text>
-                    <Text color="$textSecondary" fontSize="$2">
-                      {program.type === 'simple'
-                        ? 'Simple'
-                        : program.type === 'alternating'
-                          ? 'Alternating'
-                          : 'Advanced'}{' '}
-                      Program
-                    </Text>
-                  </YStack>
-                  <Entypo name="chevron-right" size={24} color={colors.niceOrange} />
-                </XStack>
-              </YStack>
-            </Pressable>
-          ))}
-        </YStack>
-      )}
+      </YStack>
+    );
+  }
 
-      <Button
-        size="$5"
-        backgroundColor="$secondaryButton"
-        color="$secondaryButtonText"
-        fontWeight="600"
-        borderRadius="$4"
-        onPress={handleCreateProgram}
-        pressStyle={{ opacity: 0.85 }}
-        alignSelf="stretch"
+  // Show error state
+  if (isError) {
+    return (
+      <YStack
+        flex={1}
+        backgroundColor={colors.darkerGray}
+        justifyContent="center"
+        alignItems="center"
+        padding="$4"
+        space="$4"
       >
-        Create Program
-      </Button>
-    </ScrollView>
+        <Text color="$textPrimary" fontSize="$5" textAlign="center">
+          Failed to load programs
+        </Text>
+        <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => refetch()}>
+          Retry
+        </Button>
+      </YStack>
+    );
+  }
+
+  return (
+    <ProgramHomeScreen
+      programs={programs ?? []}
+      onCreateProgram={handleCreateProgram}
+      onProgramPress={handleProgramPress}
+    />
   );
 }
