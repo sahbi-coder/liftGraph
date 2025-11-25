@@ -1,4 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
@@ -32,6 +34,13 @@ export function useUserWorkouts(): UseUserWorkoutsResult {
       return services.firestore.getWorkouts(user.uid);
     },
   });
+
+  // Refetch when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      reactQueryRefetch();
+    }, [reactQueryRefetch]),
+  );
 
   return {
     workouts: data,
