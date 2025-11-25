@@ -1,15 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { YStack, Text } from 'tamagui';
+import { YStack, Text, Button } from 'tamagui';
 
-import { WorkoutForm } from '@/components/workout/WorkoutForm';
-import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import { Workout, WorkoutInput } from '@/services/firestore';
 import { colors } from '@/theme/colors';
+import { EditWorkoutScreen } from '@/components/workout/EditWorkoutScreen';
+import { useWorkout } from '@/hooks/useWorkout';
+import { useWorkoutMutations } from '@/hooks/useWorkoutMutations';
 
-export default function EditWorkoutScreen() {
+export default function EditWorkout() {
   const router = useRouter();
   const { workoutId: workoutIdParam } = useLocalSearchParams<{ workoutId?: string | string[] }>();
   const workoutId = useMemo(() => {
@@ -19,86 +19,34 @@ export default function EditWorkoutScreen() {
     return workoutIdParam;
   }, [workoutIdParam]);
 
-  const { services } = useDependencies();
   const { user } = useAuth();
-
-  const [initialWorkout, setInitialWorkout] = useState<Workout | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isValidating, setIsValidating] = useState(false);
-
-  useEffect(() => {
-    if (!workoutId) {
-      Alert.alert('Invalid workout', 'Workout ID is missing.');
-      router.back();
-    }
-  }, [router, workoutId]);
-
-  useEffect(() => {
-    if (!user || !workoutId) {
-      setIsLoading(false);
-      return;
-    }
-
-    let isMounted = true;
-
-    const fetchWorkout = async () => {
-      try {
-        const workout = await services.firestore.getWorkout(user.uid, workoutId);
-
-        if (!isMounted) {
-          return;
-        }
-
-        if (!workout) {
-          Alert.alert('Workout not found', 'We could not find that workout.');
-          router.back();
-          return;
-        }
-
-        setInitialWorkout(workout);
-      } catch (error) {
-        if (!isMounted) {
-          return;
-        }
-
-        const message = error instanceof Error ? error.message : 'Unable to load workout.';
-        Alert.alert('Failed to load workout', message);
-        router.back();
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchWorkout();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [router, services.firestore, user, workoutId]);
+  const { workout, isLoading, isError, refetch } = useWorkout(workoutId);
+  const {
+    updateWorkout,
+    isUpdating,
+    validateWorkout,
+    isValidating,
+    unvalidateWorkout,
+    isUnvalidating,
+  } = useWorkoutMutations(workoutId);
 
   const handleUpdateWorkout = useCallback(
-    async (workoutPayload: WorkoutInput) => {
+    async (workoutPayload: Parameters<typeof updateWorkout>[0]) => {
       if (!user || !workoutId) {
         Alert.alert('Not signed in', 'Please sign in to edit workouts.');
         return;
       }
 
-      setIsSaving(true);
       try {
-        await services.firestore.updateWorkout(user.uid, workoutId, workoutPayload);
+        await updateWorkout(workoutPayload);
         Alert.alert('Workout updated', 'Your workout has been updated successfully.');
         router.back();
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Something went wrong.';
         Alert.alert('Failed to update workout', message);
-      } finally {
-        setIsSaving(false);
       }
     },
-    [router, services.firestore, user, workoutId],
+    [router, user, workoutId, updateWorkout],
   );
 
   const handleValidateWorkout = useCallback(async () => {
@@ -107,22 +55,14 @@ export default function EditWorkoutScreen() {
       return;
     }
 
-    setIsValidating(true);
     try {
-      await services.firestore.validateWorkout(user.uid, workoutId);
+      await validateWorkout();
       Alert.alert('Workout validated', 'Your workout has been marked as complete.');
-      // Refresh the workout data
-      const updatedWorkout = await services.firestore.getWorkout(user.uid, workoutId);
-      if (updatedWorkout) {
-        setInitialWorkout(updatedWorkout);
-      }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Something went wrong.';
       Alert.alert('Failed to validate workout', message);
-    } finally {
-      setIsValidating(false);
     }
-  }, [services.firestore, user, workoutId]);
+  }, [user, workoutId, validateWorkout]);
 
   const handleUnvalidateWorkout = useCallback(async () => {
     if (!user || !workoutId) {
@@ -130,39 +70,16 @@ export default function EditWorkoutScreen() {
       return;
     }
 
-    setIsValidating(true);
     try {
-      await services.firestore.unvalidateWorkout(user.uid, workoutId);
+      await unvalidateWorkout();
       Alert.alert('Workout marked as incomplete', 'You can now edit this workout.');
-      // Refresh the workout data
-      const updatedWorkout = await services.firestore.getWorkout(user.uid, workoutId);
-      if (updatedWorkout) {
-        setInitialWorkout(updatedWorkout);
-      }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Something went wrong.';
       Alert.alert('Failed to unvalidate workout', message);
-    } finally {
-      setIsValidating(false);
     }
-  }, [services.firestore, user, workoutId]);
+  }, [user, workoutId, unvalidateWorkout]);
 
-  if (!user) {
-    return (
-      <YStack
-        flex={1}
-        justifyContent="center"
-        alignItems="center"
-        backgroundColor={colors.darkerGray}
-        padding="$4"
-      >
-        <Text color={colors.white} fontSize="$5" textAlign="center">
-          Please sign in to edit workouts.
-        </Text>
-      </YStack>
-    );
-  }
-
+  // Show loading state
   if (isLoading) {
     return (
       <YStack
@@ -176,7 +93,8 @@ export default function EditWorkoutScreen() {
     );
   }
 
-  if (!initialWorkout) {
+  // Show error state
+  if (isError) {
     return (
       <YStack
         flex={1}
@@ -184,27 +102,49 @@ export default function EditWorkoutScreen() {
         alignItems="center"
         backgroundColor={colors.darkerGray}
         padding="$4"
+        space="$4"
       >
         <Text color={colors.white} fontSize="$5" textAlign="center">
-          Workout could not be loaded.
+          Failed to load workout
         </Text>
+        <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => refetch()}>
+          Retry
+        </Button>
+        <Button backgroundColor={colors.midGray} color={colors.white} onPress={() => router.back()}>
+          Go Back
+        </Button>
+      </YStack>
+    );
+  }
+
+  if (!workout) {
+    return (
+      <YStack
+        flex={1}
+        justifyContent="center"
+        alignItems="center"
+        backgroundColor={colors.darkerGray}
+        padding="$4"
+        space="$4"
+      >
+        <Text color={colors.white} fontSize="$5" textAlign="center">
+          Workout not found
+        </Text>
+        <Button backgroundColor={colors.midGray} color={colors.white} onPress={() => router.back()}>
+          Go Back
+        </Button>
       </YStack>
     );
   }
 
   return (
-    <WorkoutForm
-      initialValues={{
-        date: initialWorkout.date,
-        notes: initialWorkout.notes,
-        exercises: initialWorkout.exercises,
-        validated: initialWorkout.validated,
-      }}
-      onSubmit={handleUpdateWorkout}
+    <EditWorkoutScreen
+      workout={workout}
+      onUpdateWorkout={handleUpdateWorkout}
       onValidateWorkout={handleValidateWorkout}
       onUnvalidateWorkout={handleUnvalidateWorkout}
-      isSubmitting={isSaving || isValidating}
-      submitLabel="Update Workout"
+      isUpdating={isUpdating}
+      isValidating={isValidating || isUnvalidating}
     />
   );
 }
