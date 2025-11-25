@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { ScrollView, View, Dimensions, Modal } from 'react-native';
+import { ScrollView, View, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { YStack, XStack, Text, Button } from 'tamagui';
 import { TrendingUp } from '@tamagui/lucide-icons';
@@ -7,8 +7,12 @@ import { LineChart } from 'react-native-gifted-charts';
 import dayjs from 'dayjs';
 
 import { colors } from '@/theme/colors';
-import { Calendar } from '@/components/Calendar';
 import { LoadingView, ErrorView } from '@/components/StatusViews';
+import { CustomRangeModal } from '@/components/progress/CustomRangeModal';
+import {
+  DurationFilterButtons,
+  type FilterType,
+} from '@/components/progress/DurationFilterButtons';
 import { useUserWorkouts } from '@/hooks/useUserWorkouts';
 import type { Workout } from '@/services/firestore';
 import type { ExerciseSelection } from '@/app/(tabs)/workout/types';
@@ -16,8 +20,6 @@ import { setExercisePickerCallback } from '@/app/(tabs)/workout/exercisePickerCo
 import { buildExerciseE1RMSeries } from '@/utils/strength';
 
 const screenWidth = Dimensions.get('window').width;
-
-type FilterType = 'week' | 'month' | '3months' | '6months' | 'year' | 'all' | 'custom';
 
 type PointerLabelItem = {
   value: number;
@@ -40,8 +42,6 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
   const [customStartDate, setCustomStartDate] = useState<string | null>(null);
   const [customEndDate, setCustomEndDate] = useState<string | null>(null);
   const [isCustomRangeModalVisible, setIsCustomRangeModalVisible] = useState(false);
-  const [tempStartDate, setTempStartDate] = useState<string | null>(null);
-  const [tempEndDate, setTempEndDate] = useState<string | null>(null);
   const [pointSpacing, setPointSpacing] = useState(40); // horizontal spacing (months/dates)
 
   const handleExerciseSelect = useCallback((exercise: ExerciseSelection) => {
@@ -142,26 +142,13 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
   }, []);
 
   const handleOpenCustomRange = useCallback(() => {
-    setTempStartDate(customStartDate);
-    setTempEndDate(customEndDate);
     setIsCustomRangeModalVisible(true);
-  }, [customStartDate, customEndDate]);
-
-  const handleApplyCustomRange = useCallback(() => {
-    if (tempStartDate && tempEndDate) {
-      setCustomStartDate(tempStartDate);
-      setCustomEndDate(tempEndDate);
-      setFilterType('custom');
-    }
-    setIsCustomRangeModalVisible(false);
-  }, [tempStartDate, tempEndDate]);
-
-  const handleStartDateSelect = useCallback((day: { dateString: string }) => {
-    setTempStartDate(day.dateString);
   }, []);
 
-  const handleEndDateSelect = useCallback((day: { dateString: string }) => {
-    setTempEndDate(day.dateString);
+  const handleApplyCustomRange = useCallback((startDate: string, endDate: string) => {
+    setCustomStartDate(startDate);
+    setCustomEndDate(endDate);
+    setFilterType('custom');
   }, []);
 
   return (
@@ -217,93 +204,12 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
             </Button>
           </XStack>
 
-          {/* Quick Filter Buttons */}
-          <XStack gap="$2" flexWrap="wrap" marginBottom="$3">
-            <Button
-              size="$3"
-              backgroundColor={filterType === 'week' ? colors.niceOrange : colors.darkGray}
-              color={filterType === 'week' ? colors.white : colors.white}
-              fontSize="$3"
-              borderRadius="$3"
-              paddingHorizontal="$3"
-              paddingVertical="$2"
-              onPress={() => handleQuickFilter('week')}
-            >
-              Last Week
-            </Button>
-            <Button
-              size="$3"
-              backgroundColor={filterType === 'month' ? colors.niceOrange : colors.darkGray}
-              color={filterType === 'month' ? colors.white : colors.white}
-              fontSize="$3"
-              borderRadius="$3"
-              paddingHorizontal="$3"
-              paddingVertical="$2"
-              onPress={() => handleQuickFilter('month')}
-            >
-              Last Month
-            </Button>
-            <Button
-              size="$3"
-              backgroundColor={filterType === '3months' ? colors.niceOrange : colors.darkGray}
-              color={filterType === '3months' ? colors.white : colors.white}
-              fontSize="$3"
-              borderRadius="$3"
-              paddingHorizontal="$3"
-              paddingVertical="$2"
-              onPress={() => handleQuickFilter('3months')}
-            >
-              3 Months
-            </Button>
-            <Button
-              size="$3"
-              backgroundColor={filterType === '6months' ? colors.niceOrange : colors.darkGray}
-              color={filterType === '6months' ? colors.white : colors.white}
-              fontSize="$3"
-              borderRadius="$3"
-              paddingHorizontal="$3"
-              paddingVertical="$2"
-              onPress={() => handleQuickFilter('6months')}
-            >
-              6 Months
-            </Button>
-            <Button
-              size="$3"
-              backgroundColor={filterType === 'year' ? colors.niceOrange : colors.darkGray}
-              color={filterType === 'year' ? colors.white : colors.white}
-              fontSize="$3"
-              borderRadius="$3"
-              paddingHorizontal="$3"
-              paddingVertical="$2"
-              onPress={() => handleQuickFilter('year')}
-            >
-              Last Year
-            </Button>
-            <Button
-              size="$3"
-              backgroundColor={filterType === 'all' ? colors.niceOrange : colors.darkGray}
-              color={filterType === 'all' ? colors.white : colors.white}
-              fontSize="$3"
-              borderRadius="$3"
-              paddingHorizontal="$3"
-              paddingVertical="$2"
-              onPress={() => handleQuickFilter('all')}
-            >
-              All Time
-            </Button>
-            <Button
-              size="$3"
-              backgroundColor={filterType === 'custom' ? colors.niceOrange : colors.darkGray}
-              color={filterType === 'custom' ? colors.white : colors.white}
-              fontSize="$3"
-              borderRadius="$3"
-              paddingHorizontal="$3"
-              paddingVertical="$2"
-              onPress={handleOpenCustomRange}
-            >
-              Custom Range
-            </Button>
-          </XStack>
+          <DurationFilterButtons
+            filterType={filterType}
+            onFilterChange={handleQuickFilter}
+            onCustomRangePress={handleOpenCustomRange}
+            availableFilters={['week', 'month', '3months', '6months', 'year', 'all', 'custom']}
+          />
 
           {/* Chart Display Controls */}
           <XStack gap="$4" marginBottom="$3" flexWrap="wrap">
@@ -406,116 +312,13 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
           </View>
         </YStack>
 
-        {/* Custom Date Range Modal */}
-        <Modal
+        <CustomRangeModal
           visible={isCustomRangeModalVisible}
-          transparent
-          animationType="slide"
-          onRequestClose={() => setIsCustomRangeModalVisible(false)}
-        >
-          <YStack
-            flex={1}
-            backgroundColor="rgba(0, 0, 0, 0.6)"
-            justifyContent="center"
-            alignItems="center"
-            padding="$4"
-          >
-            <YStack
-              width="90%"
-              maxWidth={420}
-              maxHeight="90%"
-              backgroundColor={colors.midGray}
-              borderRadius="$4"
-              padding="$4"
-              space="$4"
-            >
-              <XStack alignItems="center" justifyContent="space-between">
-                <Text color={colors.white} fontSize="$5" fontWeight="600">
-                  Select Date Range
-                </Text>
-                <Button
-                  size="$2"
-                  variant="outlined"
-                  color={colors.white}
-                  onPress={() => setIsCustomRangeModalVisible(false)}
-                >
-                  Close
-                </Button>
-              </XStack>
-
-              <ScrollView
-                style={{ maxHeight: 600 }}
-                contentContainerStyle={{ gap: 16 }}
-                showsVerticalScrollIndicator
-              >
-                <YStack space="$3">
-                  <YStack space="$2">
-                    <Text color={colors.white} fontSize="$4" fontWeight="600">
-                      Start Date
-                    </Text>
-                    <Calendar
-                      current={tempStartDate || undefined}
-                      onDayPress={handleStartDateSelect}
-                      markedDates={
-                        tempStartDate
-                          ? {
-                              [tempStartDate]: {
-                                selected: true,
-                                selectedColor: colors.niceOrange,
-                                selectedTextColor: colors.white,
-                              },
-                            }
-                          : undefined
-                      }
-                    />
-                  </YStack>
-
-                  <YStack space="$2">
-                    <Text color={colors.white} fontSize="$4" fontWeight="600">
-                      End Date
-                    </Text>
-                    <Calendar
-                      current={tempEndDate || undefined}
-                      onDayPress={handleEndDateSelect}
-                      markedDates={
-                        tempEndDate
-                          ? {
-                              [tempEndDate]: {
-                                selected: true,
-                                selectedColor: colors.niceOrange,
-                                selectedTextColor: colors.white,
-                              },
-                            }
-                          : undefined
-                      }
-                    />
-                  </YStack>
-                </YStack>
-              </ScrollView>
-
-              <XStack space="$3" justifyContent="flex-end">
-                <Button
-                  backgroundColor={colors.darkGray}
-                  color={colors.white}
-                  borderWidth={1}
-                  borderColor={colors.white}
-                  onPress={() => setIsCustomRangeModalVisible(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  backgroundColor={colors.niceOrange}
-                  color={colors.white}
-                  onPress={handleApplyCustomRange}
-                  disabled={!tempStartDate || !tempEndDate}
-                  opacity={!tempStartDate || !tempEndDate ? 0.5 : 1}
-                >
-                  Apply
-                </Button>
-              </XStack>
-            </YStack>
-          </YStack>
-        </Modal>
+          onClose={() => setIsCustomRangeModalVisible(false)}
+          onApply={handleApplyCustomRange}
+          initialStartDate={customStartDate}
+          initialEndDate={customEndDate}
+        />
       </YStack>
     </ScrollView>
   );
