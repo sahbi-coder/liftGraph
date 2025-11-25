@@ -6,6 +6,7 @@ import { Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
+import { PasswordInput } from '@/components/PasswordInput';
 
 export default function SignupScreen() {
   const [name, setName] = useState('');
@@ -101,30 +102,12 @@ export default function SignupScreen() {
             focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
           />
 
-          <Input
-            size="$4"
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            borderColor="$inputFieldBorder"
-            backgroundColor="$inputFieldBackground"
-            placeholderTextColor="$inputFieldPlaceholderText"
-            color="$inputFieldText"
-            focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
-          />
+          <PasswordInput value={password} onChangeText={setPassword} />
 
-          <Input
-            size="$4"
-            placeholder="Confirm Password"
+          <PasswordInput
             value={confirmPassword}
             onChangeText={setConfirmPassword}
-            secureTextEntry
-            borderColor="$inputFieldBorder"
-            backgroundColor="$inputFieldBackground"
-            placeholderTextColor="$inputFieldPlaceholderText"
-            color="$inputFieldText"
-            focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
+            placeholder="Confirm Password"
           />
 
           <Button

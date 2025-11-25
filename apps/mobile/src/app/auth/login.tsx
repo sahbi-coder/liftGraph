@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { YStack, XStack, Text, Input, Button, H1, H3, Image, Checkbox, View } from 'tamagui';
+import { YStack, XStack, Text, Input, Button, H1, H3, Image, View } from 'tamagui';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
 import { Alert } from 'react-native';
-import { Check } from '@tamagui/lucide-icons';
 import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
+import { PasswordInput } from '@/components/PasswordInput';
 
 const logoSource = require('../../../assets/exp-icon.png');
 
@@ -14,7 +14,6 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const { signIn } = useAuth();
   const router = useRouter();
 
@@ -79,46 +78,17 @@ export default function LoginScreen() {
             focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
           />
 
-          <Input
-            size="$4"
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            // secureTextEntry
-            borderColor="$inputFieldBorder"
-            backgroundColor="$inputFieldBackground"
-            placeholderTextColor="$inputFieldPlaceholderText"
-            color="$inputFieldText"
-            focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
-          />
+          <PasswordInput value={password} onChangeText={setPassword} />
 
-          <XStack alignItems="center" justifyContent="space-between">
-            <XStack space="$2" alignItems="center">
-              <Checkbox
-                size="$3"
-                checked={rememberMe}
-                onCheckedChange={(next) => setRememberMe(Boolean(next))}
-                borderColor="$inputFieldBorder"
-                backgroundColor="$inputFieldBackground"
-                focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
-                hoverStyle={{ borderColor: '$primaryButton' }}
-                pressStyle={{ borderColor: '$primaryButton' }}
-              >
-                <Checkbox.Indicator alignItems="center" justifyContent="center">
-                  <Check size={16} color="$primaryButtonText" />
-                </Checkbox.Indicator>
-              </Checkbox>
-              <Text color="$textPrimary">Remember me</Text>
-            </XStack>
-            <Button
-              size="$3"
-              color="$textTertiary"
-              variant="outlined"
-              onPress={() => router.push('/auth/forgot-password')}
-            >
-              Forgot Password?
-            </Button>
-          </XStack>
+          <Button
+            size="$3"
+            color="$textTertiary"
+            variant="outlined"
+            alignSelf="flex-end"
+            onPress={() => router.push('/auth/forgot-password')}
+          >
+            Forgot Password?
+          </Button>
           <Button
             size="$4"
             backgroundColor="$primaryButton"
