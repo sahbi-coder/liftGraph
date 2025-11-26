@@ -1,5 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
-import { Alert } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { YStack, Text, Button } from 'tamagui';
 
@@ -8,6 +7,7 @@ import { colors } from '@/theme/colors';
 import { EditWorkoutScreen } from '@/components/workout/EditWorkoutScreen';
 import { useWorkout } from '@/hooks/useWorkout';
 import { useWorkoutMutations } from '@/hooks/useWorkoutMutations';
+import { AlertModal } from '@/components/AlertModal';
 
 export function EditWorkoutPage() {
   const router = useRouter();
@@ -30,19 +30,41 @@ export function EditWorkoutPage() {
     isUnvalidating,
   } = useWorkoutMutations(workoutId);
 
+  const [alertModal, setAlertModal] = useState<{
+    visible: boolean;
+    message: string;
+    type: 'success' | 'info' | 'warning' | 'error';
+  }>({
+    visible: false,
+    message: '',
+    type: 'info',
+  });
+
   const handleUpdateWorkout = useCallback(
     async (workoutPayload: Parameters<typeof updateWorkout>[0]) => {
       if (!user || !workoutId) {
-        Alert.alert('Not signed in', 'Please sign in to edit workouts.');
+        setAlertModal({
+          visible: true,
+          message: 'Please sign in to edit workouts.',
+          type: 'error',
+        });
         return;
       }
 
       try {
         await updateWorkout(workoutPayload);
-        Alert.alert('Workout updated', 'Your workout has been updated successfully.');
+        setAlertModal({
+          visible: true,
+          message: 'Your workout has been updated successfully.',
+          type: 'success',
+        });
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Something went wrong.';
-        Alert.alert('Failed to update workout', message);
+        setAlertModal({
+          visible: true,
+          message,
+          type: 'error',
+        });
       }
     },
     [user, workoutId, updateWorkout],
@@ -50,31 +72,59 @@ export function EditWorkoutPage() {
 
   const handleValidateWorkout = useCallback(async () => {
     if (!user || !workoutId) {
-      Alert.alert('Not signed in', 'Please sign in to validate workouts.');
+      setAlertModal({
+        visible: true,
+        message: 'Please sign in to validate workouts.',
+        type: 'error',
+      });
       return;
     }
 
     try {
       await validateWorkout();
-      Alert.alert('Workout validated', 'Your workout has been marked as complete.');
+      setAlertModal({
+        visible: true,
+        message: 'Your workout has been marked as complete.',
+        type: 'success',
+      });
+      // Navigate back after showing success message
+      setTimeout(() => {
+        router.back();
+      }, 1500);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Something went wrong.';
-      Alert.alert('Failed to validate workout', message);
+      setAlertModal({
+        visible: true,
+        message,
+        type: 'error',
+      });
     }
   }, [router, user, workoutId, validateWorkout]);
 
   const handleUnvalidateWorkout = useCallback(async () => {
     if (!user || !workoutId) {
-      Alert.alert('Not signed in', 'Please sign in to unvalidate workouts.');
+      setAlertModal({
+        visible: true,
+        message: 'Please sign in to unvalidate workouts.',
+        type: 'error',
+      });
       return;
     }
 
     try {
       await unvalidateWorkout();
-      Alert.alert('Workout marked as incomplete', 'You can now edit this workout.');
+      setAlertModal({
+        visible: true,
+        message: 'You can now edit this workout.',
+        type: 'success',
+      });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Something went wrong.';
-      Alert.alert('Failed to unvalidate workout', message);
+      setAlertModal({
+        visible: true,
+        message,
+        type: 'error',
+      });
     }
   }, [user, workoutId, unvalidateWorkout]);
 
@@ -137,13 +187,22 @@ export function EditWorkoutPage() {
   }
 
   return (
-    <EditWorkoutScreen
-      workout={workout}
-      onUpdateWorkout={handleUpdateWorkout}
-      onValidateWorkout={handleValidateWorkout}
-      onUnvalidateWorkout={handleUnvalidateWorkout}
-      isUpdating={isUpdating}
-      isValidating={isValidating || isUnvalidating}
-    />
+    <>
+      <EditWorkoutScreen
+        workout={workout}
+        onUpdateWorkout={handleUpdateWorkout}
+        onValidateWorkout={handleValidateWorkout}
+        onUnvalidateWorkout={handleUnvalidateWorkout}
+        isUpdating={isUpdating}
+        isValidating={isValidating || isUnvalidating}
+      />
+      <AlertModal
+        visible={alertModal.visible}
+        message={alertModal.message}
+        type={alertModal.type}
+        duration={2000}
+        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
+      />
+    </>
   );
 }

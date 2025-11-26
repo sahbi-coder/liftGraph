@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import { Alert, Modal, ScrollView } from 'react-native';
+import { Modal, ScrollView } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -12,6 +12,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { ExerciseSelection, WorkoutStackParamList } from '@/types/workout';
 import { Calendar } from '@/components/Calendar';
 import { Calendar as CalendarIcon } from '@tamagui/lucide-icons';
+import { AlertModal } from '@/components/AlertModal';
 
 type WorkoutFormProps = {
   initialValues?: {
@@ -28,6 +29,7 @@ type WorkoutFormProps = {
   onFormChange?: (payload: WorkoutInput | null) => void;
   disableValidateButton?: boolean;
   disableSubmitButton?: boolean;
+  workoutKey?: string; // Stable key to identify when workout changes
 };
 
 type SetForm = {
@@ -229,6 +231,7 @@ export function WorkoutForm({
   onFormChange,
   disableValidateButton = false,
   disableSubmitButton = false,
+  workoutKey,
 }: WorkoutFormProps) {
   const navigation = useNavigation<NavigationProp<WorkoutStackParamList>>();
 
@@ -246,6 +249,15 @@ export function WorkoutForm({
 
   const validated = initialValues?.validated ?? false;
   const [isUnvalidateModalVisible, setIsUnvalidateModalVisible] = useState(false);
+  const [alertModal, setAlertModal] = useState<{
+    visible: boolean;
+    message: string;
+    type: 'success' | 'info' | 'warning' | 'error';
+  }>({
+    visible: false,
+    message: '',
+    type: 'info',
+  });
 
   // Check if validate button should be shown
   const shouldShowValidateButton = useMemo(() => {
@@ -305,12 +317,31 @@ export function WorkoutForm({
     initialValues?.exercises ? mapExercisesToForm(initialValues.exercises) : [],
   );
 
-  // Update exercises when initialValues.exercises changes
+  // Track the workout key to detect when we're loading a different workout
+  const initializedWorkoutKeyRef = useRef<string | null | undefined>(workoutKey);
+
+  // Only initialize/reset when loading a different workout (different workoutKey)
   useEffect(() => {
-    if (initialValues?.exercises && initialValues.exercises.length > 0) {
-      setExercises(mapExercisesToForm(initialValues.exercises));
+    // If this is a new workout (different key), reset the form
+    if (workoutKey !== undefined && workoutKey !== initializedWorkoutKeyRef.current) {
+      if (initialValues?.exercises) {
+        setExercises(mapExercisesToForm(initialValues.exercises));
+      }
+      if (initialValues?.notes !== undefined) {
+        setNotes(initialValues.notes);
+      }
+      initializedWorkoutKeyRef.current = workoutKey;
+    } else if (workoutKey === undefined && initializedWorkoutKeyRef.current !== undefined) {
+      // Clear form if workoutKey was cleared (create mode)
+      if (initialValues?.exercises) {
+        setExercises(mapExercisesToForm(initialValues.exercises));
+      } else {
+        setExercises([]);
+      }
+      setNotes(initialValues?.notes ?? '');
+      initializedWorkoutKeyRef.current = undefined;
     }
-  }, [initialValues]);
+  }, [workoutKey, initialValues?.exercises, initialValues?.notes]);
 
   // Track previous form values to avoid unnecessary onFormChange calls
   const previousFormValuesRef = useRef<string>('');
@@ -386,7 +417,11 @@ export function WorkoutForm({
           }
 
           if (exercise.sets.length === 1) {
-            Alert.alert('Cannot remove set', 'Each exercise must have at least one set.');
+            setAlertModal({
+              visible: true,
+              message: 'Each exercise must have at least one set.',
+              type: 'warning',
+            });
             return exercise;
           }
 
@@ -477,6 +512,30 @@ export function WorkoutForm({
     };
   }, [date, exercises, notes]);
 
+  // Validate form and check if it's valid
+  const isFormValid = useMemo(() => {
+    try {
+      if (!date) return false;
+      const workoutDate = new Date(date);
+      if (Number.isNaN(workoutDate.getTime())) return false;
+      if (exercises.length === 0) return false;
+      for (const exercise of exercises) {
+        if (exercise.sets.length === 0) return false;
+        for (const set of exercise.sets) {
+          const weight = Number(set.weight);
+          const reps = Number(set.reps);
+          const rir = Number(set.rir);
+          if (Number.isNaN(weight) || Number.isNaN(reps) || Number.isNaN(rir)) {
+            return false;
+          }
+        }
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  }, [date, exercises]);
+
   // Notify parent of form changes
   useEffect(() => {
     if (!onFormChange) return;
@@ -516,10 +575,11 @@ export function WorkoutForm({
 
   const handleSubmit = useCallback(async () => {
     if (validated) {
-      Alert.alert(
-        'Workout is validated',
-        'This workout has been validated and cannot be modified.',
-      );
+      setAlertModal({
+        visible: true,
+        message: 'This workout has been validated and cannot be modified.',
+        type: 'warning',
+      });
       return;
     }
 
@@ -529,7 +589,11 @@ export function WorkoutForm({
       workoutPayload = buildWorkoutPayload();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Workout is not valid.';
-      Alert.alert('Invalid workout', message);
+      setAlertModal({
+        visible: true,
+        message,
+        type: 'error',
+      });
       return;
     }
 
@@ -537,7 +601,11 @@ export function WorkoutForm({
       await onSubmit(workoutPayload);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unable to save workout.';
-      Alert.alert('Failed to save workout', message);
+      setAlertModal({
+        visible: true,
+        message,
+        type: 'error',
+      });
     }
   }, [buildWorkoutPayload, onSubmit, validated]);
 
@@ -641,8 +709,8 @@ export function WorkoutForm({
             fontWeight="600"
             borderRadius="$4"
             onPress={handleSubmit}
-            disabled={isSubmitting || validated || disableSubmitButton}
-            opacity={isSubmitting || validated || disableSubmitButton ? 0.6 : 1}
+            disabled={isSubmitting || validated || disableSubmitButton || !isFormValid}
+            opacity={isSubmitting || validated || disableSubmitButton || !isFormValid ? 0.6 : 1}
           >
             {isSubmitting ? 'Saving...' : submitLabel}
           </Button>
@@ -789,6 +857,14 @@ export function WorkoutForm({
           </YStack>
         </YStack>
       </Modal>
+
+      <AlertModal
+        visible={alertModal.visible}
+        message={alertModal.message}
+        type={alertModal.type}
+        duration={2000}
+        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
+      />
     </>
   );
 }

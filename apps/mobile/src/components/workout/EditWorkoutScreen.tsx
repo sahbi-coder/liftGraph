@@ -49,14 +49,26 @@ export function EditWorkoutScreen({
     return !hasWorkoutChanges(currentFormState, workout);
   }, [currentFormState, workout]);
 
+  // Memoize initialValues to prevent unnecessary re-renders and form resets
+  const initialValues = useMemo(
+    () => ({
+      date: workout.date,
+      notes: workout.notes,
+      exercises: workout.exercises,
+      validated: workout.validated,
+    }),
+    [workout.id, workout.updatedAt],
+  );
+
+  // Create a stable workout key that only changes when workout actually changes
+  const workoutKey = useMemo(
+    () => `${workout.id}-${workout.updatedAt.getTime()}`,
+    [workout.id, workout.updatedAt],
+  );
+
   return (
     <WorkoutForm
-      initialValues={{
-        date: workout.date,
-        notes: workout.notes,
-        exercises: workout.exercises,
-        validated: workout.validated,
-      }}
+      initialValues={initialValues}
       onSubmit={onUpdateWorkout}
       onValidateWorkout={onValidateWorkout}
       onUnvalidateWorkout={onUnvalidateWorkout}
@@ -65,6 +77,7 @@ export function EditWorkoutScreen({
       onFormChange={handleFormChange}
       disableValidateButton={hasUnsavedChanges}
       disableSubmitButton={hasNoChanges}
+      workoutKey={workoutKey}
     />
   );
 }
