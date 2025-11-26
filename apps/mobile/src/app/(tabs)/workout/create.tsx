@@ -54,7 +54,7 @@ export default function CreateWorkoutScreen() {
       initialValues={initialExercises ? { exercises: initialExercises } : undefined}
       onSubmit={handleCreateWorkout}
       isSubmitting={isSaving}
-      submitLabel="End Workout"
+      submitLabel="Create Workout"
     />
   );
 }

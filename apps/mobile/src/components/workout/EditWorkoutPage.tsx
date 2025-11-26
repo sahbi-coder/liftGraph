@@ -40,13 +40,12 @@ export function EditWorkoutPage() {
       try {
         await updateWorkout(workoutPayload);
         Alert.alert('Workout updated', 'Your workout has been updated successfully.');
-        router.back();
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Something went wrong.';
         Alert.alert('Failed to update workout', message);
       }
     },
-    [router, user, workoutId, updateWorkout],
+    [user, workoutId, updateWorkout],
   );
 
   const handleValidateWorkout = useCallback(async () => {
@@ -62,7 +61,7 @@ export function EditWorkoutPage() {
       const message = error instanceof Error ? error.message : 'Something went wrong.';
       Alert.alert('Failed to validate workout', message);
     }
-  }, [user, workoutId, validateWorkout]);
+  }, [router, user, workoutId, validateWorkout]);
 
   const handleUnvalidateWorkout = useCallback(async () => {
     if (!user || !workoutId) {

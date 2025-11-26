@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { Alert, Modal, ScrollView } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
@@ -25,6 +25,9 @@ type WorkoutFormProps = {
   onUnvalidateWorkout?: () => Promise<void> | void;
   isSubmitting?: boolean;
   submitLabel: string;
+  onFormChange?: (payload: WorkoutInput | null) => void;
+  disableValidateButton?: boolean;
+  disableSubmitButton?: boolean;
 };
 
 type SetForm = {
@@ -223,6 +226,9 @@ export function WorkoutForm({
   onUnvalidateWorkout,
   isSubmitting = false,
   submitLabel,
+  onFormChange,
+  disableValidateButton = false,
+  disableSubmitButton = false,
 }: WorkoutFormProps) {
   const navigation = useNavigation<NavigationProp<WorkoutStackParamList>>();
 
@@ -305,6 +311,9 @@ export function WorkoutForm({
       setExercises(mapExercisesToForm(initialValues.exercises));
     }
   }, [initialValues]);
+
+  // Track previous form values to avoid unnecessary onFormChange calls
+  const previousFormValuesRef = useRef<string>('');
 
   const handleSelectExercise = useCallback(
     (exercise: ExerciseSelection) => {
@@ -468,6 +477,43 @@ export function WorkoutForm({
     };
   }, [date, exercises, notes]);
 
+  // Notify parent of form changes
+  useEffect(() => {
+    if (!onFormChange) return;
+
+    // Create a stable key from form values to detect actual changes
+    const formKey = JSON.stringify({
+      date,
+      notes,
+      exercises: exercises.map((ex) => ({
+        exerciseId: ex.exerciseId,
+        exerciseOwnerId: ex.exerciseOwnerId,
+        name: ex.name,
+        sets: ex.sets.map((set) => ({
+          weight: set.weight,
+          reps: set.reps,
+          rir: set.rir,
+        })),
+      })),
+    });
+
+    // Only notify if values actually changed
+    if (formKey === previousFormValuesRef.current) {
+      return;
+    }
+
+    previousFormValuesRef.current = formKey;
+
+    try {
+      const payload = buildWorkoutPayload();
+      onFormChange(payload);
+    } catch {
+      // Form is invalid, notify parent with null
+      onFormChange(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date, notes, exercises, onFormChange]);
+
   const handleSubmit = useCallback(async () => {
     if (validated) {
       Alert.alert(
@@ -595,8 +641,8 @@ export function WorkoutForm({
             fontWeight="600"
             borderRadius="$4"
             onPress={handleSubmit}
-            disabled={isSubmitting || validated}
-            opacity={isSubmitting || validated ? 0.6 : 1}
+            disabled={isSubmitting || validated || disableSubmitButton}
+            opacity={isSubmitting || validated || disableSubmitButton ? 0.6 : 1}
           >
             {isSubmitting ? 'Saving...' : submitLabel}
           </Button>
@@ -609,8 +655,8 @@ export function WorkoutForm({
               fontWeight="600"
               borderRadius="$4"
               onPress={onValidateWorkout}
-              disabled={isSubmitting}
-              opacity={isSubmitting ? 0.6 : 1}
+              disabled={isSubmitting || disableValidateButton}
+              opacity={isSubmitting || disableValidateButton ? 0.6 : 1}
             >
               Validate Workout
             </Button>
