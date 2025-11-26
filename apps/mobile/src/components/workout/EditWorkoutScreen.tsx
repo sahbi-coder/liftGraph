@@ -9,6 +9,7 @@ type EditWorkoutScreenProps = {
   onUpdateWorkout: (workout: WorkoutInput) => Promise<void>;
   onValidateWorkout: () => Promise<void>;
   onUnvalidateWorkout: () => Promise<void>;
+  onDeleteWorkout: () => void;
   isUpdating: boolean;
   isValidating: boolean;
 };
@@ -18,6 +19,7 @@ export function EditWorkoutScreen({
   onUpdateWorkout,
   onValidateWorkout,
   onUnvalidateWorkout,
+  onDeleteWorkout,
   isUpdating,
   isValidating,
 }: EditWorkoutScreenProps) {
@@ -72,6 +74,7 @@ export function EditWorkoutScreen({
       onSubmit={onUpdateWorkout}
       onValidateWorkout={onValidateWorkout}
       onUnvalidateWorkout={onUnvalidateWorkout}
+      onDeleteWorkout={onDeleteWorkout}
       isSubmitting={isUpdating || isValidating}
       submitLabel="Update Workout"
       onFormChange={handleFormChange}

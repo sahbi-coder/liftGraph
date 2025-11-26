@@ -469,6 +469,17 @@ export class FirestoreService {
     });
   }
 
+  async deleteWorkout(userId: string, workoutId: string): Promise<void> {
+    const workoutRef = doc(this.db, `users/${userId}/workouts/${workoutId}`);
+    const existingWorkout = await getDoc(workoutRef);
+
+    if (!existingWorkout.exists()) {
+      throw new Error('Workout not found');
+    }
+
+    await deleteDoc(workoutRef);
+  }
+
   async getLatestValidatedWorkout(userId: string): Promise<Workout | null> {
     const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
 

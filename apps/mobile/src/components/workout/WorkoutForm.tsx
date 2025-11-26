@@ -24,6 +24,7 @@ type WorkoutFormProps = {
   onSubmit: (payload: WorkoutInput) => Promise<void> | void;
   onValidateWorkout?: () => Promise<void> | void;
   onUnvalidateWorkout?: () => Promise<void> | void;
+  onDeleteWorkout?: () => void;
   isSubmitting?: boolean;
   submitLabel: string;
   onFormChange?: (payload: WorkoutInput | null) => void;
@@ -226,6 +227,7 @@ export function WorkoutForm({
   onSubmit,
   onValidateWorkout,
   onUnvalidateWorkout,
+  onDeleteWorkout,
   isSubmitting = false,
   submitLabel,
   onFormChange,
@@ -743,6 +745,22 @@ export function WorkoutForm({
               opacity={isSubmitting ? 0.6 : 1}
             >
               Mark as Incomplete
+            </Button>
+          )}
+
+          {onDeleteWorkout && (
+            <Button
+              alignSelf="center"
+              width="50%"
+              backgroundColor="#ef4444"
+              color={colors.white}
+              fontWeight="600"
+              borderRadius="$4"
+              onPress={onDeleteWorkout}
+              disabled={isSubmitting}
+              opacity={isSubmitting ? 0.6 : 1}
+            >
+              Delete Workout
             </Button>
           )}
         </YStack>

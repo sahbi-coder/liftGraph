@@ -57,6 +57,22 @@ export function useWorkoutMutations(workoutId: string | undefined) {
     },
   });
 
+  const deleteWorkoutMutation = useMutation({
+    mutationFn: async () => {
+      if (!user?.uid || !workoutId) {
+        throw new Error('User or workout ID is missing');
+      }
+      return services.firestore.deleteWorkout(user.uid, workoutId);
+    },
+    onSuccess: () => {
+      // Invalidate and refetch related queries
+      queryClient.invalidateQueries({ queryKey: ['workout', user?.uid, workoutId] });
+      queryClient.invalidateQueries({ queryKey: ['workouts', user?.uid] });
+      queryClient.invalidateQueries({ queryKey: ['latestValidatedWorkout', user?.uid] });
+      queryClient.invalidateQueries({ queryKey: ['earliestFutureWorkout', user?.uid] });
+    },
+  });
+
   return {
     updateWorkout: updateWorkoutMutation.mutateAsync,
     isUpdating: updateWorkoutMutation.isPending,
@@ -64,5 +80,7 @@ export function useWorkoutMutations(workoutId: string | undefined) {
     isValidating: validateWorkoutMutation.isPending,
     unvalidateWorkout: unvalidateWorkoutMutation.mutateAsync,
     isUnvalidating: unvalidateWorkoutMutation.isPending,
+    deleteWorkout: deleteWorkoutMutation.mutateAsync,
+    isDeleting: deleteWorkoutMutation.isPending,
   };
 }
