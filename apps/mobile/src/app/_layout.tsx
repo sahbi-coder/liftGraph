@@ -8,6 +8,7 @@ import { Text } from 'react-native';
 import { TamaguiProvider } from 'tamagui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { tamaguiConfig } from 'tamagui.config';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 import { createClients } from '@/clients/createClients';
 import { DependenciesProvider } from '@/dependencies/provider';
@@ -15,6 +16,7 @@ import { createDependencies } from '@/dependencies/createDependencies';
 import { createConfig } from '@/config';
 import { useThemeFonts } from '@/theme/fonts';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { NoInternetScreen } from '@/components/NoInternetScreen';
 
 const config = createConfig({
   firebase: {
@@ -56,6 +58,7 @@ function Screen() {
 
 function RootLayout() {
   const [loaded] = useThemeFonts();
+  const { isInternetReachable } = useNetInfo();
 
   useEffect(() => {
     if (loaded) {
@@ -65,6 +68,16 @@ function RootLayout() {
 
   if (!loaded) {
     return <Text>Loading...</Text>;
+  }
+
+  // Show no internet screen if we know there's no connection
+  // (null/undefined means we're still checking, so show the app)
+  if (!isInternetReachable) {
+    return (
+      <Theme>
+        <NoInternetScreen />
+      </Theme>
+    );
   }
 
   return (
