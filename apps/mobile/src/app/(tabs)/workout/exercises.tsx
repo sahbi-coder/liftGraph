@@ -6,7 +6,7 @@ import { YStack, Text, Button } from 'tamagui';
 import { colors } from '@/theme/colors';
 import { ExercisePickerScreen } from '@/components/exercises/ExercisePickerScreen';
 import { useExercisesWithLibrary } from '@/hooks/useExercisesWithLibrary';
-import type { ExerciseSelection } from './types';
+import type { ExerciseSelection } from '@/types/workout';
 
 type ExercisePickerParams = {
   onSelect?: (exercise: ExerciseSelection) => void;

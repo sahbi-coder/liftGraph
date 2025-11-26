@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Program, ProgramExercise, WorkoutExercise } from '@/services/firestore';
 import { colors } from '@/theme/colors';
 import { DaySelector, ProgramDay as DaySelectorProgramDay } from '@/components/DaySelector';
-import { setWorkoutPrefillData } from '@/app/(tabs)/workout/workoutPrefillContext';
+import { setWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 
 export default function ProgramDetailsScreen() {
   const router = useRouter();

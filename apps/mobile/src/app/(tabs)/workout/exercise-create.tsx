@@ -6,11 +6,11 @@ import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
-import { ExerciseSelection } from '@/app/(tabs)/workout/types';
+import { ExerciseSelection } from '@/types/workout';
 import {
   getExercisePickerCallback,
   clearExercisePickerCallback,
-} from '@/app/(tabs)/workout/exercisePickerContext';
+} from '@/contexts/exercisePickerContext';
 
 const EXERCISE_CATEGORIES = [
   'Barbell',

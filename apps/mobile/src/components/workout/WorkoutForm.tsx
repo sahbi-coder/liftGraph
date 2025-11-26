@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import { WorkoutExercise, WorkoutInput } from '@/services/firestore';
 import { colors } from '@/theme/colors';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { ExerciseSelection, WorkoutStackParamList } from '@/app/(tabs)/workout/types';
+import { ExerciseSelection, WorkoutStackParamList } from '@/types/workout';
 import { Calendar } from '@/components/Calendar';
 import { Calendar as CalendarIcon } from '@tamagui/lucide-icons';
 

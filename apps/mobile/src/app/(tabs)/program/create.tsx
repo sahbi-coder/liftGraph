@@ -19,11 +19,11 @@ import {
   ProgramDay,
 } from '@/services/firestore';
 import { colors } from '@/theme/colors';
-import { ExerciseSelection, ExerciseSelectionContext } from '@/app/(tabs)/workout/types';
+import { ExerciseSelection, ExerciseSelectionContext } from '@/types/workout';
 import {
   setExercisePickerCallback,
   clearExercisePickerCallback,
-} from '@/app/(tabs)/workout/exercisePickerContext';
+} from '@/contexts/exercisePickerContext';
 import { DaySelector, type ProgramDay as DaySelectorDay } from '@/components/DaySelector';
 
 type ProgramType = 'simple' | 'alternating' | 'advanced';

@@ -5,7 +5,7 @@ import { WorkoutForm } from '@/components/workout/WorkoutForm';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { WorkoutInput } from '@/services/firestore';
-import { getWorkoutPrefillData, clearWorkoutPrefillData } from './workoutPrefillContext';
+import { getWorkoutPrefillData, clearWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 
 export default function CreateWorkoutScreen() {
   const router = useRouter();

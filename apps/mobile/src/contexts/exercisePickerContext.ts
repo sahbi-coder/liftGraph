@@ -1,5 +1,5 @@
 // Temporary storage for exercise selection callbacks across stacks
-import type { ExerciseSelection, ExerciseSelectionContext } from './types';
+import type { ExerciseSelection, ExerciseSelectionContext } from '@/types/workout';
 
 type ExerciseCallback = (exercise: ExerciseSelection, context?: ExerciseSelectionContext) => void;
 

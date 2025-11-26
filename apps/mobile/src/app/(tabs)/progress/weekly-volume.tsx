@@ -15,8 +15,8 @@ import {
 } from '@/components/progress/DurationFilterButtons';
 import { useUserWorkouts } from '@/hooks/useUserWorkouts';
 import type { Workout } from '@/services/firestore';
-import type { ExerciseSelection } from '@/app/(tabs)/workout/types';
-import { setExercisePickerCallback } from '@/app/(tabs)/workout/exercisePickerContext';
+import type { ExerciseSelection } from '@/types/workout';
+import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 import { buildWeeklyExerciseVolumeByWeek } from '@/utils/strength';
 
 const screenWidth = Dimensions.get('window').width;

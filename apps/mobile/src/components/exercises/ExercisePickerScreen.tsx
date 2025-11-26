@@ -5,7 +5,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 
 import { colors } from '@/theme/colors';
 import type { Exercise } from '@/services/firestore';
-import type { ExerciseSelection } from '@/app/(tabs)/workout/types';
+import type { ExerciseSelection } from '@/types/workout';
 
 type ExercisePickerScreenProps = {
   exercises: Exercise[];

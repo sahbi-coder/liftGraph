@@ -5,11 +5,11 @@ import { YStack, Text, Button } from 'tamagui';
 import { colors } from '@/theme/colors';
 import { ExercisePickerScreen } from '@/components/exercises/ExercisePickerScreen';
 import { useExercisesWithLibrary } from '@/hooks/useExercisesWithLibrary';
-import type { ExerciseSelection } from '@/app/(tabs)/workout/types';
+import type { ExerciseSelection } from '@/types/workout';
 import {
   getExercisePickerCallback,
   clearExercisePickerCallback,
-} from '@/app/(tabs)/workout/exercisePickerContext';
+} from '@/contexts/exercisePickerContext';
 
 export default function ProgressExercisePickerScreen() {
   const router = useRouter();
