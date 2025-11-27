@@ -23,9 +23,6 @@ export function ProgramHomeScreen({
       contentContainerStyle={{ padding: 16, gap: 16, paddingBottom: 32 }}
     >
       <YStack space="$2" alignItems="flex-start">
-        <Text color="$textPrimary" fontSize="$9" fontWeight="700">
-          Programs
-        </Text>
         <Text color="$textSecondary" fontSize="$5">
           Manage your training programs
         </Text>

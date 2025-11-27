@@ -16,8 +16,8 @@ export default function ProgramLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: 'LiftGraph',
-          headerTitleAlign: 'center',
+          headerTitle: 'Programs',
+          headerTitleAlign: 'left',
           headerTitleStyle: { fontSize: 35 },
         }}
       />

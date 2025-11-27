@@ -16,9 +16,9 @@ export default function ScheduleLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: 'LiftGraph',
-          headerTitleAlign: 'center',
-          headerTitleStyle: { fontSize: 35 },
+          headerTitle: 'Schedule',
+          headerTitleAlign: 'left',
+          headerTitleStyle: { fontSize: 28 },
         }}
       />
       <Stack.Screen name="edit" options={{ title: 'Edit Workout' }} />

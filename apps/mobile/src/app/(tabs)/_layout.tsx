@@ -35,20 +35,12 @@ export default function TabsLayout() {
         headerStyle: {
           backgroundColor: colors.darkerGray,
         },
-        headerTitleStyle: {
-          color: colors.white,
-          fontSize: 35,
-        },
-        headerTintColor: colors.white,
-        headerShadowVisible: false,
-        headerTitle: 'LiftGraph',
-        headerTitleAlign: 'center',
       }}
     >
       <Tabs.Screen
         name="workout"
         options={{
-          title: 'Workout',
+          title: 'Workouts',
           tabBarIcon: ({ color, size }) => (
             <Feather name="activity" size={size ?? 24} color={color} />
           ),

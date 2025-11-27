@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { YStack, XStack, Text, Input, Button, H1, H3, Image, View } from 'tamagui';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
-import { Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
 import { PasswordInput } from '@/components/PasswordInput';
+import { AlertModal } from '@/components/AlertModal';
 
 export default function SignupScreen() {
   const [name, setName] = useState('');
@@ -14,22 +14,31 @@ export default function SignupScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState<'success' | 'info' | 'warning' | 'error'>('error');
   const { signUp } = useAuth();
   const router = useRouter();
 
+  const showAlert = (message: string, type: 'success' | 'info' | 'warning' | 'error' = 'error') => {
+    setAlertMessage(message);
+    setAlertType(type);
+    setAlertVisible(true);
+  };
+
   const handleSignup = async () => {
     if (!name || !email || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
+      showAlert('Please fill in all fields', 'error');
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      showAlert('Passwords do not match', 'error');
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
+      showAlert('Password must be at least 6 characters', 'error');
       return;
     }
 
@@ -38,7 +47,7 @@ export default function SignupScreen() {
       await signUp(email, password, name);
       router.replace('/' as any);
     } catch (error: any) {
-      Alert.alert('Signup Failed', error.message);
+      showAlert(error.message, 'error');
     } finally {
       setLoading(false);
     }
@@ -177,6 +186,12 @@ export default function SignupScreen() {
           </Text>
         </YStack>
       </XStack>
+      <AlertModal
+        visible={alertVisible}
+        message={alertMessage}
+        type={alertType}
+        onComplete={() => setAlertVisible(false)}
+      />
     </YStack>
   );
 }

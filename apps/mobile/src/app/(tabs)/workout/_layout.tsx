@@ -16,9 +16,9 @@ export default function WorkoutLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: 'LiftGraph',
-          headerTitleAlign: 'center',
-          headerTitleStyle: { fontSize: 35 },
+          headerTitle: 'Workouts',
+          headerTitleAlign: 'left',
+          headerTitleStyle: { fontSize: 28 },
         }}
       />
       <Stack.Screen name="create" options={{ title: 'Create Workout' }} />

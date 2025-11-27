@@ -63,9 +63,6 @@ export default function ProgressScreen() {
     >
       <YStack space="$4">
         <YStack space="$2">
-          <Text color="$textPrimary" fontSize="$9" fontWeight="700">
-            Progress Analytics
-          </Text>
           <Text color="$textSecondary" fontSize="$5">
             Explore your training data and insights
           </Text>

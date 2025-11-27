@@ -59,9 +59,6 @@ export function ScheduleScreen({ workouts, onDayPress }: ScheduleScreenProps) {
     >
       <YStack space="$4">
         <YStack space="$2">
-          <Text color="$textPrimary" fontSize="$9" fontWeight="700">
-            Schedule
-          </Text>
           <Text color="$textSecondary" fontSize="$5">
             Tap on a marked day to view or edit your workout
           </Text>

@@ -17,9 +17,9 @@ export default function ProgressLayout() {
         name="index"
         options={{
           headerShown: true,
-          headerTitle: 'LiftGraph',
-          headerTitleAlign: 'center',
-          headerTitleStyle: { fontSize: 35 },
+          headerTitle: 'Progress Analytics',
+          headerTitleAlign: 'left',
+          headerTitleStyle: { fontSize: 28 },
         }}
       />
       <Stack.Screen

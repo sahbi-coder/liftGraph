@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { YStack, XStack, Text, Input, Button, H1, H3, Image, View } from 'tamagui';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
-import { Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
 import { PasswordInput } from '@/components/PasswordInput';
+import { AlertModal } from '@/components/AlertModal';
 
 const logoSource = require('../../../assets/exp-icon.png');
 
@@ -14,12 +14,21 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState<'success' | 'info' | 'warning' | 'error'>('error');
   const { signIn } = useAuth();
   const router = useRouter();
 
+  const showAlert = (message: string, type: 'success' | 'info' | 'warning' | 'error' = 'error') => {
+    setAlertMessage(message);
+    setAlertType(type);
+    setAlertVisible(true);
+  };
+
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please enter email and password');
+      showAlert('Please enter email and password', 'error');
       return;
     }
 
@@ -28,7 +37,7 @@ export default function LoginScreen() {
       await signIn(email, password);
       router.replace('/');
     } catch (error) {
-      Alert.alert('Login Failed', error instanceof Error ? error.message : 'Unknown error');
+      showAlert(error instanceof Error ? error.message : 'Unknown error', 'error');
     } finally {
       setLoading(false);
     }
@@ -152,6 +161,12 @@ export default function LoginScreen() {
           </Text>
         </YStack>
       </XStack>
+      <AlertModal
+        visible={alertVisible}
+        message={alertMessage}
+        type={alertType}
+        onComplete={() => setAlertVisible(false)}
+      />
     </YStack>
   );
 }

@@ -2,31 +2,41 @@ import React, { useState } from 'react';
 import { YStack, Text, Input, Button, H1, H3, Image, View, XStack } from 'tamagui';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
-import { Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
+import { AlertModal } from '@/components/AlertModal';
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState<'success' | 'info' | 'warning' | 'error'>('error');
   const { resetPassword } = useAuth();
   const router = useRouter();
 
+  const showAlert = (message: string, type: 'success' | 'info' | 'warning' | 'error' = 'error') => {
+    setAlertMessage(message);
+    setAlertType(type);
+    setAlertVisible(true);
+  };
+
   const handleResetPassword = async () => {
     if (!email) {
-      Alert.alert('Error', 'Please enter your email');
+      showAlert('Please enter your email', 'error');
       return;
     }
 
     setLoading(true);
     try {
       await resetPassword(email);
-      Alert.alert('Success', 'Password reset email sent. Please check your inbox.', [
-        { text: 'OK', onPress: () => router.back() },
-      ]);
+      showAlert('Password reset email sent. Please check your inbox.', 'success');
+      setTimeout(() => {
+        router.back();
+      }, 3000);
     } catch (error: any) {
-      Alert.alert('Error', error.message);
+      showAlert(error.message, 'error');
     } finally {
       setLoading(false);
     }
@@ -147,6 +157,12 @@ export default function ForgotPasswordScreen() {
           </Text>
         </YStack>
       </XStack>
+      <AlertModal
+        visible={alertVisible}
+        message={alertMessage}
+        type={alertType}
+        onComplete={() => setAlertVisible(false)}
+      />
     </YStack>
   );
 }
