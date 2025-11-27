@@ -2,8 +2,9 @@ import React from 'react';
 import { Stack } from 'expo-router';
 
 import { colors } from '@/theme/colors';
+import { DrawerButton } from '@/components/DrawerButton';
 
-export default function WorkoutLayout() {
+export default function ProgramLayout() {
   return (
     <Stack
       screenOptions={{
@@ -16,14 +17,15 @@ export default function WorkoutLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: 'Workouts',
+          headerTitle: 'Programs',
           headerTitleAlign: 'left',
-          headerTitleStyle: { fontSize: 28 },
+          headerTitleStyle: { fontSize: 35 },
+          headerLeft: () => <DrawerButton />,
         }}
       />
-      <Stack.Screen name="create" options={{ title: 'Create Workout' }} />
+      <Stack.Screen name="create" options={{ title: 'Create Program' }} />
       <Stack.Screen name="exercises" options={{ title: 'Select Exercise' }} />
-      <Stack.Screen name="edit" options={{ title: 'Edit Workout' }} />
+      <Stack.Screen name="[id]" options={{ title: 'Program Details' }} />
     </Stack>
   );
 }

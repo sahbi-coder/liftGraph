@@ -12,13 +12,13 @@ export default function ProgramHome() {
   const { programs, isLoading, isError, refetch } = useUserPrograms();
 
   const handleCreateProgram = useCallback(() => {
-    router.push('/(tabs)/program/create');
+    router.push('/(drawer)/(tabs)/program/create');
   }, [router]);
 
   const handleProgramPress = useCallback(
     (programId: string) => {
       router.push({
-        pathname: '/(tabs)/program/[id]',
+        pathname: '/(drawer)/(tabs)/program/[id]',
         params: { id: programId },
       });
     },

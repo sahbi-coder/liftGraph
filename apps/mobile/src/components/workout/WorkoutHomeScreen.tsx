@@ -5,7 +5,6 @@ import { YStack, Text, Button } from 'tamagui';
 import { colors } from '@/theme/colors';
 import { WorkoutSummaryCard } from '@/components/workout/WorkoutSummaryCard';
 import type { Workout } from '@/services/firestore';
-import { useAuth } from '@/contexts/AuthContext';
 
 type WorkoutHomeScreenProps = {
   latestWorkout: Workout | null;
@@ -26,16 +25,6 @@ export function WorkoutHomeScreen({
   onEditWorkout,
   onEditFutureWorkout,
 }: WorkoutHomeScreenProps) {
-  const { signOut } = useAuth();
-
-  const handleLogout = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
-
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.darkerGray }}
@@ -113,21 +102,6 @@ export function WorkoutHomeScreen({
       >
         Schedule Workout
       </Button>
-
-      <YStack marginTop="$4" paddingTop="$4" borderTopWidth={1} borderTopColor="$borderColor">
-        <Button
-          size="$4"
-          backgroundColor={colors.midGray}
-          color={colors.white}
-          fontWeight="600"
-          borderRadius="$4"
-          onPress={handleLogout}
-          pressStyle={{ opacity: 0.85 }}
-          alignSelf="stretch"
-        >
-          Logout
-        </Button>
-      </YStack>
     </ScrollView>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { YStack, Text, Button } from 'tamagui';
 
@@ -7,45 +6,55 @@ import { colors } from '@/theme/colors';
 import { ExercisePickerScreen } from '@/components/exercises/ExercisePickerScreen';
 import { useExercisesWithLibrary } from '@/hooks/useExercisesWithLibrary';
 import type { ExerciseSelection } from '@/types/workout';
+import {
+  getExercisePickerCallback,
+  clearExercisePickerCallback,
+} from '@/contexts/exercisePickerContext';
 
-type ExercisePickerParams = {
-  onSelect?: (exercise: ExerciseSelection) => void;
-};
-
-type WorkoutStackParamList = {
-  index: undefined;
-  create: undefined;
-  exercises: ExercisePickerParams;
-};
-
-type RouteParams = RouteProp<WorkoutStackParamList, 'exercises'>;
-
-export default function WorkoutExercisePickerScreen() {
-  const navigation = useNavigation<NavigationProp<WorkoutStackParamList>>();
+export default function ProgramExercisePickerScreen() {
   const router = useRouter();
-  const route = useRoute<RouteParams>();
-  const onSelect = route.params?.onSelect;
-
   const { exercises, isLoading, isError, refetch } = useExercisesWithLibrary();
 
   const handleSelect = useCallback(
     (exercise: ExerciseSelection) => {
-      if (onSelect) {
-        onSelect(exercise);
+      // Get fresh callback and context from the context module
+      const contextCallback = getExercisePickerCallback();
+      const effectiveOnSelect = contextCallback.callback;
+      const effectiveContext = contextCallback.context;
+
+      console.log('Exercise selected:', exercise);
+      console.log('Callback exists:', !!effectiveOnSelect);
+      console.log('Context:', effectiveContext);
+
+      if (effectiveOnSelect) {
+        try {
+          effectiveOnSelect(exercise, effectiveContext || undefined);
+          console.log('Callback executed successfully');
+        } catch (error) {
+          console.error('Error executing callback:', error);
+        }
+        clearExercisePickerCallback();
+        router.back();
       } else {
-        console.log('Selected exercise:', exercise.id, exercise.name, exercise.source);
+        console.log(
+          'No callback found. Selected exercise:',
+          exercise.id,
+          exercise.name,
+          exercise.source,
+        );
+        router.back();
       }
-      router.back();
     },
-    [onSelect, router],
+    [router],
   );
 
   const handleCancel = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+    clearExercisePickerCallback();
+    router.back();
+  }, [router]);
 
   const handleCreateExercise = useCallback(() => {
-    router.push('/(tabs)/workout/exercise-create');
+    router.push('/(drawer)/(tabs)/program/exercise-create');
   }, [router]);
 
   // Show error state

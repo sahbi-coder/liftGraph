@@ -304,8 +304,8 @@ export default function CreateProgramScreen() {
   const handleOpenExercisePicker = useCallback(
     (weekId: string, dayId: DaySelectorDay, phaseId?: string) => {
       const context: ExerciseSelectionContext = { weekId, phaseId, dayId };
-      setExercisePickerCallback(handleSelectExercise, context, '/(tabs)/program/create');
-      router.push('/(tabs)/program/exercises');
+      setExercisePickerCallback(handleSelectExercise, context, '/(drawer)/(tabs)/program/create');
+      router.push('/(drawer)/(tabs)/program/exercises');
     },
     [handleSelectExercise, router],
   );

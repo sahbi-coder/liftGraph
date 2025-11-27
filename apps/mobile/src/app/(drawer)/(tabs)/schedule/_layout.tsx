@@ -2,6 +2,7 @@ import React from 'react';
 import { Stack } from 'expo-router';
 
 import { colors } from '@/theme/colors';
+import { DrawerButton } from '@/components/DrawerButton';
 
 export default function ScheduleLayout() {
   return (
@@ -19,6 +20,7 @@ export default function ScheduleLayout() {
           headerTitle: 'Schedule',
           headerTitleAlign: 'left',
           headerTitleStyle: { fontSize: 28 },
+          headerLeft: () => <DrawerButton />,
         }}
       />
       <Stack.Screen name="edit" options={{ title: 'Edit Workout' }} />

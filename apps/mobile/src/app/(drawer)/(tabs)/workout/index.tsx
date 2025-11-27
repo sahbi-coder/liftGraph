@@ -30,7 +30,7 @@ export default function WorkoutHome() {
   } = useEarliestFutureWorkout();
 
   const handleCreateWorkout = useCallback(() => {
-    router.push('/(tabs)/workout/create');
+    router.push('/(drawer)/(tabs)/workout/create');
   }, [router]);
 
   const handleEditWorkout = useCallback(() => {
@@ -45,7 +45,7 @@ export default function WorkoutHome() {
     }
 
     router.push({
-      pathname: '/(tabs)/workout/edit',
+      pathname: '/(drawer)/(tabs)/workout/edit',
       params: { workoutId: latestWorkout.id },
     });
   }, [latestWorkout, router, user]);
@@ -62,7 +62,7 @@ export default function WorkoutHome() {
     }
 
     router.push({
-      pathname: '/(tabs)/workout/edit',
+      pathname: '/(drawer)/(tabs)/workout/edit',
       params: { workoutId: earliestFutureWorkout.id },
     });
   }, [earliestFutureWorkout, router, user]);
