@@ -57,9 +57,19 @@ export function DrawerContent({ onClose }: DrawerContentProps) {
   };
 
   return (
-    <YStack flex={1} backgroundColor={colors.darkerGray}>
+    <YStack flex={1} backgroundColor={colors.darkerGray} opacity={0.95}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flex: 1 }}>
         <YStack flex={1} padding="$4" paddingTop="$8">
+          {/* Header */}
+          <YStack alignItems="center" space="$1" marginBottom="$6">
+            <Text color={colors.niceOrange} fontSize="$9" fontWeight="bold">
+              LiftGraph
+            </Text>
+            <Text color={colors.white} fontSize="$4" textAlign="center" opacity={0.7}>
+              Log and track your progress...
+            </Text>
+          </YStack>
+
           <YStack space="$2" flex={1}>
             {menuItems.map((item) => {
               const IconComponent = item.iconComponent;
@@ -79,7 +89,8 @@ export function DrawerContent({ onClose }: DrawerContentProps) {
                     <IconComponent
                       name={item.icon}
                       size={24}
-                      color={isActive ? colors.niceOrange : colors.midGray}
+                      color={colors.midGray}
+                      opacity={0.7}
                     />
                     <Text
                       color={isActive ? colors.niceOrange : colors.white}

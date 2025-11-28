@@ -43,12 +43,12 @@ function DrawerInner() {
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       renderDrawerContent={DrawerContentWrapper}
-      drawerType="slide"
+      drawerType="front"
+      drawerStyle={{ width: 280 }}
     >
       <Stack
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: colors.darkerGray },
         }}
       >
         <Stack.Screen
