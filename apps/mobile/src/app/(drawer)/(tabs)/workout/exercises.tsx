@@ -32,8 +32,6 @@ export default function WorkoutExercisePickerScreen() {
     (exercise: ExerciseSelection) => {
       if (onSelect) {
         onSelect(exercise);
-      } else {
-        console.log('Selected exercise:', exercise.id, exercise.name, exercise.source);
       }
       router.back();
     },

@@ -520,13 +520,9 @@ export class FirestoreService {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
 
-    console.log('Today UTC midnight:', today.toISOString());
-
     // Query all workouts, then filter in memory
     const futureWorkoutQuery = query(workoutsCollection, orderBy('date', 'asc'));
     const snapshot = await getDocs(futureWorkoutQuery);
-
-    console.log('Query results count:', snapshot.size);
 
     // Filter results to only include non-validated workouts dated today or in the future
     // Compare at day level using UTC time
@@ -549,24 +545,12 @@ export class FirestoreService {
         0,
         0,
       );
-      console.log('Workout date UTC:', workoutDateUTC.toISOString());
-      console.log('Today:', today.toISOString());
       const isTodayOrFuture = workoutDateUTC >= today;
-
-      console.log('Workout date check:', {
-        id: doc.id,
-        workoutDate: workoutDate.toISOString(),
-        workoutDateUTC: workoutDateUTC.toISOString(),
-        todayUTC: today.toISOString(),
-        isTodayOrFuture,
-        validated: data.validated,
-      });
 
       return isTodayOrFuture;
     });
 
     if (filteredDocs.length === 0) {
-      console.log('No non-validated workouts found that are today or in the future');
       return null;
     }
 

@@ -29,12 +29,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
       try {
         if (firebaseUser) {
-          console.log(
-            'Firebase user',
-            firebaseUser.uid,
-            firebaseUser.email,
-            firebaseUser.displayName,
-          );
           setUser(authService.toAuthUser(firebaseUser));
 
           const profile = await firestoreService.getUserProfile(firebaseUser.uid);

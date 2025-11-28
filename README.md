@@ -5,8 +5,13 @@ A React Native app for tracking powerlifting progress, built with Expo, Firebase
 ## Features
 
 - 🔐 **Authentication** - Email/password login and signup
-- 🏋️ **Workout Tracking** - Log exercises, sets, reps, and weight (coming soon)
-- 📊 **Progress Analytics** - Visualize your strength gains (coming soon)
+- 🏋️ **Workout Tracking** - Log exercises, sets, reps, weight, and RIR (Reps in Reserve)
+- 📊 **Progress Analytics** - Visualize your strength gains with multiple chart types:
+  - Estimated 1RM trends
+  - Top set progression charts
+  - Weekly volume tracking
+  - Workout frequency analysis
+- 📅 **Program Management** - Create and manage training programs (simple, alternating, and advanced multi-phase)
 - 📱 **Cross-platform** - iOS and Android support
 - 🔥 **Firebase Backend** - Real-time database and authentication
 - 🎨 **Modern UI** - Built with Tamagui design system

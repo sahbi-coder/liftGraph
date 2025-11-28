@@ -202,10 +202,7 @@ export default function CreateProgramScreen() {
 
   const handleSelectExercise = useCallback(
     (exercise: ExerciseSelection, context?: ExerciseSelectionContext) => {
-      console.log('handleSelectExercise called with:', { exercise, context, programType });
-
       if (!context?.weekId || !context?.dayId) {
-        console.log('No weekId or dayId in context, returning early');
         return;
       }
 
@@ -219,8 +216,6 @@ export default function CreateProgramScreen() {
         console.error('Invalid dayId:', dayId);
         return;
       }
-
-      console.log('Adding exercise to week:', weekId, 'day:', dayId, 'phase:', phaseId);
 
       if (programType === 'simple') {
         setWeeks((prev) => {

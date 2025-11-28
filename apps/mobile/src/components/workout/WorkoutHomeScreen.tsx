@@ -32,7 +32,7 @@ export function WorkoutHomeScreen({
     >
       <YStack space="$2" alignItems="flex-start">
         <Text color="$textSecondary" fontSize="$5">
-          Lest cursh your goals today
+          Let's crush your goals today
         </Text>
       </YStack>
 

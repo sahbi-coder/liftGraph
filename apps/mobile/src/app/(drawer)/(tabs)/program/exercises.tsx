@@ -22,26 +22,15 @@ export default function ProgramExercisePickerScreen() {
       const effectiveOnSelect = contextCallback.callback;
       const effectiveContext = contextCallback.context;
 
-      console.log('Exercise selected:', exercise);
-      console.log('Callback exists:', !!effectiveOnSelect);
-      console.log('Context:', effectiveContext);
-
       if (effectiveOnSelect) {
         try {
           effectiveOnSelect(exercise, effectiveContext || undefined);
-          console.log('Callback executed successfully');
         } catch (error) {
           console.error('Error executing callback:', error);
         }
         clearExercisePickerCallback();
         router.back();
       } else {
-        console.log(
-          'No callback found. Selected exercise:',
-          exercise.id,
-          exercise.name,
-          exercise.source,
-        );
         router.back();
       }
     },
