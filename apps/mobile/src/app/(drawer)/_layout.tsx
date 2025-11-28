@@ -2,6 +2,8 @@ import React from 'react';
 import { Drawer } from 'react-native-drawer-layout';
 import { Stack, Redirect, Slot, usePathname } from 'expo-router';
 import { YStack, Text } from 'tamagui';
+import { TouchableOpacity } from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { DrawerContent } from '@/components/DrawerContent';
@@ -64,6 +66,17 @@ function DrawerInner() {
             headerTitleStyle: { fontSize: 28, color: colors.white },
             headerStyle: { backgroundColor: colors.darkerGray },
             headerTintColor: colors.white,
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => {
+                  // TODO: Navigate to edit profile
+                  console.log('Edit profile');
+                }}
+                style={{ paddingRight: 16, paddingVertical: 8 }}
+              >
+                <Feather name="edit-2" size={24} color={colors.niceOrange} />
+              </TouchableOpacity>
+            ),
           }}
         />
         <Stack.Screen
@@ -71,6 +84,39 @@ function DrawerInner() {
           options={{
             headerShown: true,
             headerTitle: 'Settings',
+            headerTitleAlign: 'left',
+            headerTitleStyle: { fontSize: 28, color: colors.white },
+            headerStyle: { backgroundColor: colors.darkerGray },
+            headerTintColor: colors.white,
+          }}
+        />
+        <Stack.Screen
+          name="export-data"
+          options={{
+            headerShown: true,
+            headerTitle: 'Export Data',
+            headerTitleAlign: 'left',
+            headerTitleStyle: { fontSize: 28, color: colors.white },
+            headerStyle: { backgroundColor: colors.darkerGray },
+            headerTintColor: colors.white,
+          }}
+        />
+        <Stack.Screen
+          name="rate-us"
+          options={{
+            headerShown: true,
+            headerTitle: 'Rate Us',
+            headerTitleAlign: 'left',
+            headerTitleStyle: { fontSize: 28, color: colors.white },
+            headerStyle: { backgroundColor: colors.darkerGray },
+            headerTintColor: colors.white,
+          }}
+        />
+        <Stack.Screen
+          name="contact-us"
+          options={{
+            headerShown: true,
+            headerTitle: 'Contact Us',
             headerTitleAlign: 'left',
             headerTitleStyle: { fontSize: 28, color: colors.white },
             headerStyle: { backgroundColor: colors.darkerGray },

@@ -20,14 +20,32 @@ export function DrawerContent({ onClose }: DrawerContentProps) {
   const menuItems = [
     {
       label: 'Profile',
-      icon: 'user',
+      icon: 'user' as const,
       route: '/(drawer)/profile',
       iconComponent: Feather,
     },
     {
       label: 'Settings',
-      icon: 'settings',
+      icon: 'settings' as const,
       route: '/(drawer)/settings',
+      iconComponent: Feather,
+    },
+    {
+      label: 'Export Data',
+      icon: 'download' as const,
+      route: '/(drawer)/export-data',
+      iconComponent: Feather,
+    },
+    {
+      label: 'Rate Us',
+      icon: 'star' as const,
+      route: '/(drawer)/rate-us',
+      iconComponent: Feather,
+    },
+    {
+      label: 'Contact Us',
+      icon: 'mail' as const,
+      route: '/(drawer)/contact-us',
       iconComponent: Feather,
     },
   ];
@@ -59,7 +77,7 @@ export function DrawerContent({ onClose }: DrawerContentProps) {
                 >
                   <XStack space="$3" alignItems="center">
                     <IconComponent
-                      name={item.icon as any}
+                      name={item.icon}
                       size={24}
                       color={isActive ? colors.niceOrange : colors.midGray}
                     />
