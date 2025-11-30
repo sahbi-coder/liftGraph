@@ -18,6 +18,8 @@ import type { Workout } from '@/services/firestore';
 import type { ExerciseSelection } from '@/types/workout';
 import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 import { buildWorkoutTopSets } from '@/utils/strength';
+import { useUserPreferences } from '@/contexts/UserPreferencesContext';
+import { weightForDisplay } from '@/utils/units';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -35,6 +37,8 @@ type TopSetProgressionChartProps = {
 
 function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartProps) {
   const router = useRouter();
+  const { preferences } = useUserPreferences();
+  const weightUnit = preferences?.weightUnit ?? 'kg';
   const [selectedExercise, setSelectedExercise] = useState<{ id: string; name: string }>({
     id: 'squat',
     name: 'Squat',
@@ -117,12 +121,13 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
         );
       })
       .map((point) => ({
-        value: point.set.weight,
+        // Convert weight from kg to display unit
+        value: weightForDisplay(point.set.weight, weightUnit),
         label: dayjs(point.date).format('MMM D'),
         reps: point.set.reps,
         labelTextStyle: { color: colors.white, fontSize: 10 },
       }));
-  }, [topSetSeries, dateRange]);
+  }, [topSetSeries, dateRange, weightUnit]);
 
   // Determine a reasonable max value for the y-axis in kg
   const maxYValue = useMemo(() => {
@@ -281,7 +286,7 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
               noOfSections={4}
               maxValue={maxYValue}
               yAxisLabelWidth={50}
-              yAxisLabelSuffix=" kg"
+              yAxisLabelSuffix={weightUnit === 'lb' ? ' lbs' : ' kg'}
               pointerConfig={{
                 activatePointersOnLongPress: true,
                 pointerStripHeight: 200,
@@ -308,7 +313,7 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
                       minHeight={60}
                     >
                       <Text color={colors.niceOrange} fontSize="$4" fontWeight="600">
-                        {Math.round(item.value)} kg
+                        {Math.round(item.value)} {weightUnit === 'lb' ? 'lbs' : 'kg'}
                       </Text>
                       {typeof item.reps === 'number' && (
                         <Text color={colors.white} fontSize="$3">

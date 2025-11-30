@@ -18,6 +18,8 @@ import type { Workout } from '@/services/firestore';
 import type { ExerciseSelection } from '@/types/workout';
 import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 import { buildExerciseE1RMSeries } from '@/utils/strength';
+import { useUserPreferences } from '@/contexts/UserPreferencesContext';
+import { weightForDisplay } from '@/utils/units';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -34,6 +36,8 @@ type Estimated1RMChartProps = {
 
 function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
   const router = useRouter();
+  const { preferences } = useUserPreferences();
+  const weightUnit = preferences?.weightUnit ?? 'kg';
   const [selectedExercise, setSelectedExercise] = useState<{ id: string; name: string }>({
     id: 'squat',
     name: 'Squat',
@@ -113,11 +117,12 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
         );
       })
       .map((point) => ({
-        value: point.estimated1RM,
+        // Convert weight from kg to display unit
+        value: weightForDisplay(point.estimated1RM, weightUnit),
         label: dayjs(point.date).format('MMM D'),
         labelTextStyle: { color: colors.white, fontSize: 10 },
       }));
-  }, [exerciseSeries, dateRange]);
+  }, [exerciseSeries, dateRange, weightUnit]);
 
   // Determine a reasonable max value for the y-axis in kg
   const maxYValue = useMemo(() => {
@@ -272,7 +277,7 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
               noOfSections={4}
               maxValue={maxYValue}
               yAxisLabelWidth={50}
-              yAxisLabelSuffix=" kg"
+              yAxisLabelSuffix={weightUnit === 'lb' ? ' lbs' : ' kg'}
               pointerConfig={{
                 activatePointersOnLongPress: true,
                 pointerStripHeight: 200,
@@ -299,7 +304,7 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
                       minHeight={60}
                     >
                       <Text color={colors.niceOrange} fontSize="$4" fontWeight="600">
-                        {Math.round(item.value)} kg
+                        {Math.round(item.value)} {weightUnit === 'lb' ? 'lbs' : 'kg'}
                       </Text>
                       <Text color={colors.white} fontSize="$3">
                         {item.label}

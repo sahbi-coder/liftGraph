@@ -18,6 +18,8 @@ import type { Workout } from '@/services/firestore';
 import type { ExerciseSelection } from '@/types/workout';
 import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 import { buildWeeklyExerciseVolumeByWeek } from '@/utils/strength';
+import { useUserPreferences } from '@/contexts/UserPreferencesContext';
+import { weightForDisplay } from '@/utils/units';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -27,6 +29,8 @@ type WeeklyVolumeChartProps = {
 
 function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
   const router = useRouter();
+  const { preferences } = useUserPreferences();
+  const weightUnit = preferences?.weightUnit ?? 'kg';
   const [selectedExercise, setSelectedExercise] = useState<{ id: string; name: string }>({
     id: 'squat',
     name: 'Squat',
@@ -135,14 +139,17 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
     const data = [];
     for (let i = 0; i <= maxWeekIndex; i += 1) {
       const weekStart = dayjs(start).add(i * 7, 'day');
+      const volumeInKg = volumeByWeek.get(i) ?? 0;
+      // Convert volume from kg to display unit
+      // Note: Volume is weight × reps, so we convert the weight component
       data.push({
-        value: volumeByWeek.get(i) ?? 0,
+        value: weightForDisplay(volumeInKg, weightUnit),
         label: weekStart.format('MMM D'),
       });
     }
 
     return data;
-  }, [_workouts, dateRange, selectedExercise.id]);
+  }, [_workouts, dateRange, selectedExercise.id, weightUnit]);
 
   // Determine a reasonable max value for the y-axis (volume)
   const maxYValue = useMemo(() => {
@@ -263,7 +270,7 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
               noOfSections={4}
               maxValue={maxYValue}
               yAxisLabelWidth={60}
-              yAxisLabelSuffix=" kg"
+              yAxisLabelSuffix={weightUnit === 'lb' ? ' lbs' : ' kg'}
               showGradient
               gradientColor={`${colors.niceOrange}55`}
               onPress={(_item: unknown, index: number) => setSelectedWeekIndex(index)}
@@ -282,7 +289,8 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
                   Week starting {weeklyVolumeData[selectedWeekIndex].label}
                 </Text>
                 <Text color={colors.niceOrange} fontSize="$4" fontWeight="600">
-                  {Math.round(weeklyVolumeData[selectedWeekIndex].value)} kg
+                  {Math.round(weeklyVolumeData[selectedWeekIndex].value)}{' '}
+                  {weightUnit === 'lb' ? 'lbs' : 'kg'}
                 </Text>
               </YStack>
             )}
