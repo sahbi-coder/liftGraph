@@ -15,6 +15,7 @@ import { Calendar } from '@/components/Calendar';
 import { Calendar as CalendarIcon } from '@tamagui/lucide-icons';
 import { AlertModal } from '@/components/AlertModal';
 import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
+import { useUserWorkouts } from '@/hooks/useUserWorkouts';
 
 type WorkoutFormProps = {
   initialValues?: {
@@ -34,6 +35,7 @@ type WorkoutFormProps = {
   disableSubmitButton?: boolean;
   workoutKey?: string; // Stable key to identify when workout changes
   exerciseNavigationPath?: string; // Path to navigate to exercise picker (schedule vs workout)
+  currentWorkoutId?: string; // ID of the current workout (for edit mode, to exclude from conflict check)
 };
 
 type SetForm = {
@@ -238,9 +240,11 @@ export function WorkoutForm({
   disableSubmitButton = false,
   workoutKey,
   exerciseNavigationPath,
+  currentWorkoutId,
 }: WorkoutFormProps) {
   const navigation = useNavigation<NavigationProp<WorkoutStackParamList>>();
   const router = useRouter();
+  const { workouts } = useUserWorkouts();
 
   const [date, setDate] = useState(() => {
     if (!initialValues?.date) {
@@ -613,6 +617,30 @@ export function WorkoutForm({
       return;
     }
 
+    // Check if there's already a workout on this date
+    if (workouts && workouts.length > 0) {
+      const selectedDate = workoutPayload.date;
+      const selectedDateKey = dayjs(selectedDate).format('YYYY-MM-DD');
+
+      const conflictingWorkout = workouts.find((workout) => {
+        // Exclude the current workout if we're editing
+        if (currentWorkoutId && workout.id === currentWorkoutId) {
+          return false;
+        }
+        const workoutDateKey = dayjs(workout.date).format('YYYY-MM-DD');
+        return workoutDateKey === selectedDateKey;
+      });
+
+      if (conflictingWorkout) {
+        setAlertModal({
+          visible: true,
+          message: 'A workout already exists on this date. Please choose a different date.',
+          type: 'warning',
+        });
+        return;
+      }
+    }
+
     try {
       await onSubmit(workoutPayload);
     } catch (error) {
@@ -623,7 +651,7 @@ export function WorkoutForm({
         type: 'error',
       });
     }
-  }, [buildWorkoutPayload, onSubmit, validated]);
+  }, [buildWorkoutPayload, onSubmit, validated, workouts, currentWorkoutId]);
 
   return (
     <>

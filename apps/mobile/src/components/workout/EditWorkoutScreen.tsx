@@ -84,6 +84,7 @@ export function EditWorkoutScreen({
       disableSubmitButton={hasNoChanges}
       workoutKey={workoutKey}
       exerciseNavigationPath={exerciseNavigationPath}
+      currentWorkoutId={workout.id}
     />
   );
 }
