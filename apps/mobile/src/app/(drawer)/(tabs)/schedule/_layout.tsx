@@ -24,6 +24,8 @@ export default function ScheduleLayout() {
         }}
       />
       <Stack.Screen name="edit" options={{ title: 'Edit Workout' }} />
+      <Stack.Screen name="exercises" options={{ title: 'Select Exercise' }} />
+      <Stack.Screen name="exercise-create" options={{ title: 'Create Exercise' }} />
     </Stack>
   );
 }

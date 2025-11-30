@@ -12,6 +12,7 @@ type EditWorkoutScreenProps = {
   onDeleteWorkout: () => void;
   isUpdating: boolean;
   isValidating: boolean;
+  exerciseNavigationPath: string;
 };
 
 export function EditWorkoutScreen({
@@ -22,6 +23,7 @@ export function EditWorkoutScreen({
   onDeleteWorkout,
   isUpdating,
   isValidating,
+  exerciseNavigationPath,
 }: EditWorkoutScreenProps) {
   const [currentFormState, setCurrentFormState] = useState<WorkoutInput | null>(null);
 
@@ -81,6 +83,7 @@ export function EditWorkoutScreen({
       disableValidateButton={hasUnsavedChanges}
       disableSubmitButton={hasNoChanges}
       workoutKey={workoutKey}
+      exerciseNavigationPath={exerciseNavigationPath}
     />
   );
 }

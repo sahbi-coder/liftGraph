@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { Modal, ScrollView } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
 import Entypo from '@expo/vector-icons/Entypo';
 
@@ -13,6 +14,7 @@ import { ExerciseSelection, WorkoutStackParamList } from '@/types/workout';
 import { Calendar } from '@/components/Calendar';
 import { Calendar as CalendarIcon } from '@tamagui/lucide-icons';
 import { AlertModal } from '@/components/AlertModal';
+import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 
 type WorkoutFormProps = {
   initialValues?: {
@@ -31,6 +33,7 @@ type WorkoutFormProps = {
   disableValidateButton?: boolean;
   disableSubmitButton?: boolean;
   workoutKey?: string; // Stable key to identify when workout changes
+  exerciseNavigationPath?: string; // Path to navigate to exercise picker (schedule vs workout)
 };
 
 type SetForm = {
@@ -234,8 +237,10 @@ export function WorkoutForm({
   disableValidateButton = false,
   disableSubmitButton = false,
   workoutKey,
+  exerciseNavigationPath,
 }: WorkoutFormProps) {
   const navigation = useNavigation<NavigationProp<WorkoutStackParamList>>();
+  const router = useRouter();
 
   const [date, setDate] = useState(() => {
     if (!initialValues?.date) {
@@ -358,8 +363,17 @@ export function WorkoutForm({
 
   const handleOpenExercisePicker = useCallback(() => {
     if (validated) return;
-    navigation.navigate('exercises', { onSelect: handleSelectExercise });
-  }, [handleSelectExercise, navigation, validated]);
+
+    // Use context-aware navigation path if provided (for schedule), otherwise use React Navigation (for workout)
+    if (exerciseNavigationPath) {
+      // For expo-router navigation, use the exercise picker context to pass the callback
+      setExercisePickerCallback(handleSelectExercise);
+      router.push(exerciseNavigationPath);
+    } else {
+      // For React Navigation (workout stack), pass callback directly via params
+      navigation.navigate('exercises', { onSelect: handleSelectExercise });
+    }
+  }, [handleSelectExercise, navigation, router, validated, exerciseNavigationPath]);
 
   const handleRemoveExercise = useCallback(
     (exerciseId: string) => {

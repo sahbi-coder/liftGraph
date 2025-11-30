@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter, useSegments } from 'expo-router';
 import { YStack, Text, Button } from 'tamagui';
 import { ActivityIndicator } from 'react-native';
 
@@ -13,6 +13,7 @@ import { ConfirmationModal } from '@/components/ConfirmationModal';
 
 export function EditWorkoutPage() {
   const router = useRouter();
+  const segments = useSegments();
   const { workoutId: workoutIdParam } = useLocalSearchParams<{ workoutId?: string | string[] }>();
   const workoutId = useMemo(() => {
     if (Array.isArray(workoutIdParam)) {
@@ -20,6 +21,15 @@ export function EditWorkoutPage() {
     }
     return workoutIdParam;
   }, [workoutIdParam]);
+
+  // Detect if we're in schedule or workout context based on route segments
+  const exerciseNavigationPath = useMemo(() => {
+    const pathString = segments.join('/');
+    if (pathString.includes('schedule')) {
+      return '/(drawer)/(tabs)/schedule/exercises';
+    }
+    return '/(drawer)/(tabs)/workout/exercises';
+  }, [segments]);
 
   const { user } = useAuth();
   const { workout, isLoading, isError, refetch } = useWorkout(workoutId);
@@ -288,6 +298,7 @@ export function EditWorkoutPage() {
         onDeleteWorkout={handleDeleteWorkout}
         isUpdating={isUpdating}
         isValidating={isValidating || isUnvalidating || isDeleting}
+        exerciseNavigationPath={exerciseNavigationPath}
       />
       {modals}
     </>
