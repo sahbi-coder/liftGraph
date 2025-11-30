@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
 
@@ -11,6 +11,7 @@ import {
   getExercisePickerCallback,
   clearExercisePickerCallback,
 } from '@/contexts/exercisePickerContext';
+import { AlertModal } from '@/components/AlertModal';
 
 const EXERCISE_CATEGORIES = [
   'Barbell',
@@ -46,25 +47,50 @@ export default function CreateExerciseScreen() {
   const [bodyPart, setBodyPart] = useState('');
   const [description, setDescription] = useState('');
   const [isCreating, setIsCreating] = useState(false);
+  const [alertModal, setAlertModal] = useState<{
+    visible: boolean;
+    message: string;
+    type: 'success' | 'info' | 'warning' | 'error';
+  }>({
+    visible: false,
+    message: '',
+    type: 'info',
+  });
 
   const handleCreate = async () => {
     if (!user) {
-      Alert.alert('Error', 'Please sign in to create exercises.');
+      setAlertModal({
+        visible: true,
+        message: 'Please sign in to create exercises.',
+        type: 'error',
+      });
       return;
     }
 
     if (!name.trim()) {
-      Alert.alert('Validation Error', 'Exercise name is required.');
+      setAlertModal({
+        visible: true,
+        message: 'Exercise name is required.',
+        type: 'error',
+      });
       return;
     }
 
     if (!category.trim()) {
-      Alert.alert('Validation Error', 'Category is required.');
+      setAlertModal({
+        visible: true,
+        message: 'Category is required.',
+        type: 'error',
+      });
       return;
     }
 
     if (!bodyPart.trim()) {
-      Alert.alert('Validation Error', 'Body part is required.');
+      setAlertModal({
+        visible: true,
+        message: 'Body part is required.',
+        type: 'error',
+      });
       return;
     }
 
@@ -97,15 +123,22 @@ export default function CreateExerciseScreen() {
         clearExercisePickerCallback();
       }
 
-      Alert.alert('Success', 'Exercise created successfully!', [
-        {
-          text: 'OK',
-          onPress: () => router.back(),
-        },
-      ]);
+      setAlertModal({
+        visible: true,
+        message: 'Exercise created successfully!',
+        type: 'success',
+      });
+      // Navigate back after showing success message
+      setTimeout(() => {
+        router.back();
+      }, 1500);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to create exercise.';
-      Alert.alert('Error', message);
+      setAlertModal({
+        visible: true,
+        message,
+        type: 'error',
+      });
     } finally {
       setIsCreating(false);
     }
@@ -241,6 +274,13 @@ export default function CreateExerciseScreen() {
           </Button>
         </XStack>
       </YStack>
+      <AlertModal
+        visible={alertModal.visible}
+        message={alertModal.message}
+        type={alertModal.type}
+        duration={alertModal.type === 'success' ? 2000 : 4000}
+        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
+      />
     </ScrollView>
   );
 }

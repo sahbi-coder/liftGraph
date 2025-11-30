@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Alert, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -7,6 +7,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
+import { AlertModal } from '@/components/AlertModal';
 import {
   ProgramInput,
   SimpleProgramInput,
@@ -97,6 +98,15 @@ export default function CreateProgramScreen() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [alertModal, setAlertModal] = useState<{
+    visible: boolean;
+    message: string;
+    type: 'success' | 'info' | 'warning' | 'error';
+  }>({
+    visible: false,
+    message: '',
+    type: 'info',
+  });
 
   // Simple program state - initialize with one week
   const [weeks, setWeeks] = useState<ProgramWeekForm[]>(() => [createWeekForm()]);
@@ -572,7 +582,11 @@ export default function CreateProgramScreen() {
               exercises: day.exercises.map((ex) => {
                 if (ex.id !== exerciseId) return ex;
                 if (ex.sets.length === 1) {
-                  Alert.alert('Cannot remove set', 'Each exercise must have at least one set.');
+                  setAlertModal({
+                    visible: true,
+                    message: 'Each exercise must have at least one set.',
+                    type: 'warning',
+                  });
                   return ex;
                 }
                 return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
@@ -594,7 +608,11 @@ export default function CreateProgramScreen() {
               exercises: day.exercises.map((ex) => {
                 if (ex.id !== exerciseId) return ex;
                 if (ex.sets.length === 1) {
-                  Alert.alert('Cannot remove set', 'Each exercise must have at least one set.');
+                  setAlertModal({
+                    visible: true,
+                    message: 'Each exercise must have at least one set.',
+                    type: 'warning',
+                  });
                   return ex;
                 }
                 return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
@@ -620,7 +638,11 @@ export default function CreateProgramScreen() {
                   exercises: day.exercises.map((ex) => {
                     if (ex.id !== exerciseId) return ex;
                     if (ex.sets.length === 1) {
-                      Alert.alert('Cannot remove set', 'Each exercise must have at least one set.');
+                      setAlertModal({
+                        visible: true,
+                        message: 'Each exercise must have at least one set.',
+                        type: 'warning',
+                      });
                       return ex;
                     }
                     return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
@@ -734,18 +756,30 @@ export default function CreateProgramScreen() {
 
   const validateAndConvert = useCallback((): ProgramInput | null => {
     if (!name.trim()) {
-      Alert.alert('Validation Error', 'Program name is required.');
+      setAlertModal({
+        visible: true,
+        message: 'Program name is required.',
+        type: 'error',
+      });
       return null;
     }
 
     if (!description.trim()) {
-      Alert.alert('Validation Error', 'Program description is required.');
+      setAlertModal({
+        visible: true,
+        message: 'Program description is required.',
+        type: 'error',
+      });
       return null;
     }
 
     if (programType === 'simple') {
       if (weeks.length === 0) {
-        Alert.alert('Validation Error', 'Simple program must have at least one week.');
+        setAlertModal({
+          visible: true,
+          message: 'Simple program must have at least one week.',
+          type: 'error',
+        });
         return null;
       }
 
@@ -797,7 +831,11 @@ export default function CreateProgramScreen() {
       return simpleProgram;
     } else if (programType === 'alternating') {
       if (alternatingWeeks.length !== 2) {
-        Alert.alert('Validation Error', 'Alternating program must have exactly two weeks.');
+        setAlertModal({
+          visible: true,
+          message: 'Alternating program must have exactly two weeks.',
+          type: 'error',
+        });
         return null;
       }
 
@@ -855,7 +893,11 @@ export default function CreateProgramScreen() {
       return alternatingProgram;
     } else {
       if (phases.length === 0) {
-        Alert.alert('Validation Error', 'Advanced program must have at least one phase.');
+        setAlertModal({
+          visible: true,
+          message: 'Advanced program must have at least one phase.',
+          type: 'error',
+        });
         return null;
       }
 
@@ -934,7 +976,11 @@ export default function CreateProgramScreen() {
 
   const handleSave = useCallback(async () => {
     if (!user) {
-      Alert.alert('Not signed in', 'Please sign in to create programs.');
+      setAlertModal({
+        visible: true,
+        message: 'Please sign in to create programs.',
+        type: 'error',
+      });
       return;
     }
 
@@ -948,11 +994,22 @@ export default function CreateProgramScreen() {
 
       setIsSaving(true);
       await services.firestore.createProgram(user.uid, programData);
-      Alert.alert('Program created', 'Your program has been saved successfully.');
-      router.back();
+      setAlertModal({
+        visible: true,
+        message: 'Your program has been saved successfully.',
+        type: 'success',
+      });
+      // Navigate back after showing success message
+      setTimeout(() => {
+        router.back();
+      }, 1500);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Something went wrong.';
-      Alert.alert('Failed to create program', message);
+      setAlertModal({
+        visible: true,
+        message,
+        type: 'error',
+      });
     } finally {
       setIsSaving(false);
     }
@@ -1337,6 +1394,13 @@ export default function CreateProgramScreen() {
           {isSaving ? 'Creating...' : 'Create Program'}
         </Button>
       </YStack>
+      <AlertModal
+        visible={alertModal.visible}
+        message={alertModal.message}
+        type={alertModal.type}
+        duration={alertModal.type === 'success' ? 2000 : 4000}
+        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
+      />
     </ScrollView>
   );
 }

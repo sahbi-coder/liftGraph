@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { Modal, ScrollView, Alert } from 'react-native';
+import { Modal, ScrollView } from 'react-native';
 import { YStack, XStack, Text, Button } from 'tamagui';
 import dayjs from 'dayjs';
 import { colors } from '@/theme/colors';
 import { Calendar } from '@/components/Calendar';
+import { AlertModal } from '@/components/AlertModal';
 
 interface CustomRangeModalProps {
   visible: boolean;
@@ -22,6 +23,15 @@ export function CustomRangeModal({
 }: CustomRangeModalProps) {
   const [tempStartDate, setTempStartDate] = useState<string | null>(initialStartDate || null);
   const [tempEndDate, setTempEndDate] = useState<string | null>(initialEndDate || null);
+  const [alertModal, setAlertModal] = useState<{
+    visible: boolean;
+    message: string;
+    type: 'success' | 'info' | 'warning' | 'error';
+  }>({
+    visible: false,
+    message: '',
+    type: 'warning',
+  });
 
   const handleStartDateSelect = useCallback(
     (day: { dateString: string }) => {
@@ -37,10 +47,11 @@ export function CustomRangeModal({
   const handleEndDateSelect = useCallback(
     (day: { dateString: string }) => {
       if (tempStartDate && dayjs(day.dateString).isBefore(dayjs(tempStartDate).add(1, 'day'))) {
-        Alert.alert(
-          'Invalid Date Range',
-          'End date must be after the start date. Please select a later date.',
-        );
+        setAlertModal({
+          visible: true,
+          message: 'End date must be after the start date. Please select a later date.',
+          type: 'warning',
+        });
         return;
       }
       setTempEndDate(day.dateString);
@@ -55,15 +66,20 @@ export function CustomRangeModal({
 
   const handleApply = useCallback(() => {
     if (!tempStartDate || !tempEndDate) {
-      Alert.alert('Missing Dates', 'Please select both start and end dates.');
+      setAlertModal({
+        visible: true,
+        message: 'Please select both start and end dates.',
+        type: 'warning',
+      });
       return;
     }
 
     if (!isValidDateRange) {
-      Alert.alert(
-        'Invalid Date Range',
-        'End date must be after the start date. Please select a valid date range.',
-      );
+      setAlertModal({
+        visible: true,
+        message: 'End date must be after the start date. Please select a valid date range.',
+        type: 'warning',
+      });
       return;
     }
 
@@ -176,6 +192,13 @@ export function CustomRangeModal({
           </XStack>
         </YStack>
       </YStack>
+      <AlertModal
+        visible={alertModal.visible}
+        message={alertModal.message}
+        type={alertModal.type}
+        duration={4000}
+        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
+      />
     </Modal>
   );
 }

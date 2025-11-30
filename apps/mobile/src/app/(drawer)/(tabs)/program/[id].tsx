@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Alert, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { YStack, Text, XStack, Button } from 'tamagui';
 
@@ -9,6 +9,8 @@ import { Program, ProgramExercise, WorkoutExercise } from '@/services/firestore'
 import { colors } from '@/theme/colors';
 import { DaySelector, ProgramDay as DaySelectorProgramDay } from '@/components/DaySelector';
 import { setWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
+import { AlertModal } from '@/components/AlertModal';
+import { ConfirmationModal } from '@/components/ConfirmationModal';
 
 export default function ProgramDetailsScreen() {
   const router = useRouter();
@@ -27,11 +29,27 @@ export default function ProgramDetailsScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAlternatingWeek, setSelectedAlternatingWeek] = useState<0 | 1>(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [alertModal, setAlertModal] = useState<{
+    visible: boolean;
+    message: string;
+    type: 'success' | 'info' | 'warning' | 'error';
+  }>({
+    visible: false,
+    message: '',
+    type: 'info',
+  });
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useEffect(() => {
     if (!programId) {
-      Alert.alert('Invalid program', 'Program ID is missing.');
-      router.back();
+      setAlertModal({
+        visible: true,
+        message: 'Program ID is missing.',
+        type: 'error',
+      });
+      setTimeout(() => {
+        router.back();
+      }, 2000);
     }
   }, [router, programId]);
 
@@ -52,8 +70,14 @@ export default function ProgramDetailsScreen() {
         }
 
         if (!fetchedProgram) {
-          Alert.alert('Program not found', 'We could not find that program.');
-          router.back();
+          setAlertModal({
+            visible: true,
+            message: 'We could not find that program.',
+            type: 'error',
+          });
+          setTimeout(() => {
+            router.back();
+          }, 2000);
           return;
         }
 
@@ -64,8 +88,14 @@ export default function ProgramDetailsScreen() {
         }
 
         const message = error instanceof Error ? error.message : 'Unable to load program.';
-        Alert.alert('Failed to load program', message);
-        router.back();
+        setAlertModal({
+          visible: true,
+          message,
+          type: 'error',
+        });
+        setTimeout(() => {
+          router.back();
+        }, 2000);
       } finally {
         if (isMounted) {
           setIsLoading(false);
@@ -178,38 +208,42 @@ export default function ProgramDetailsScreen() {
   );
 
   // Handle Delete Program
-  const handleDeleteProgram = useCallback(async () => {
+  const handleDeleteProgram = useCallback(() => {
     if (!user || !programId || !program) {
       return;
     }
 
-    Alert.alert(
-      'Delete Program',
-      `Are you sure you want to delete "${program.name}"? This action cannot be undone.`,
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            setIsDeleting(true);
-            try {
-              await services.firestore.deleteProgram(user.uid, programId);
-              Alert.alert('Program deleted', 'The program has been deleted successfully.');
-              router.back();
-            } catch (error) {
-              const message = error instanceof Error ? error.message : 'Something went wrong.';
-              Alert.alert('Failed to delete program', message);
-            } finally {
-              setIsDeleting(false);
-            }
-          },
-        },
-      ],
-    );
+    setIsDeleteModalVisible(true);
+  }, [user, programId, program]);
+
+  const handleConfirmDelete = useCallback(async () => {
+    setIsDeleteModalVisible(false);
+    if (!user || !programId || !program) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await services.firestore.deleteProgram(user.uid, programId);
+      setAlertModal({
+        visible: true,
+        message: 'The program has been deleted successfully.',
+        type: 'success',
+      });
+      // Navigate back after showing success message
+      setTimeout(() => {
+        router.back();
+      }, 2000);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Something went wrong.';
+      setAlertModal({
+        visible: true,
+        message,
+        type: 'error',
+      });
+    } finally {
+      setIsDeleting(false);
+    }
   }, [user, programId, program, services.firestore, router]);
 
   if (!user) {
@@ -643,6 +677,24 @@ export default function ProgramDetailsScreen() {
           </Button>
         </YStack>
       </YStack>
+      <ConfirmationModal
+        visible={isDeleteModalVisible}
+        title="Delete Program?"
+        message={`Are you sure you want to delete "${program?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDeleteModalVisible(false)}
+        confirmButtonColor="#ef4444"
+        cancelButtonColor={colors.midGray}
+      />
+      <AlertModal
+        visible={alertModal.visible}
+        message={alertModal.message}
+        type={alertModal.type}
+        duration={alertModal.type === 'success' ? 2000 : 4000}
+        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
+      />
     </ScrollView>
   );
 }

@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react';
-import { Alert } from 'react-native';
+import React, { useCallback, useState } from 'react';
 import { useRouter } from 'expo-router';
 import { YStack, Text, Button } from 'tamagui';
 
@@ -8,10 +7,20 @@ import { colors } from '@/theme/colors';
 import { WorkoutHomeScreen } from '@/components/workout/WorkoutHomeScreen';
 import { useLatestValidatedWorkout } from '@/hooks/useLatestValidatedWorkout';
 import { useEarliestFutureWorkout } from '@/hooks/useEarliestFutureWorkout';
+import { AlertModal } from '@/components/AlertModal';
 
 export default function WorkoutHome() {
   const router = useRouter();
   const { user } = useAuth();
+  const [alertModal, setAlertModal] = useState<{
+    visible: boolean;
+    message: string;
+    type: 'success' | 'info' | 'warning' | 'error';
+  }>({
+    visible: false,
+    message: '',
+    type: 'info',
+  });
 
   const {
     workout: latestWorkout,
@@ -35,12 +44,20 @@ export default function WorkoutHome() {
 
   const handleEditWorkout = useCallback(() => {
     if (!user) {
-      Alert.alert('Not signed in', 'Please sign in to edit workouts.');
+      setAlertModal({
+        visible: true,
+        message: 'Please sign in to edit workouts.',
+        type: 'warning',
+      });
       return;
     }
 
     if (!latestWorkout) {
-      Alert.alert('No workouts yet', 'Create a workout before trying to edit.');
+      setAlertModal({
+        visible: true,
+        message: 'Create a workout before trying to edit.',
+        type: 'info',
+      });
       return;
     }
 
@@ -52,12 +69,20 @@ export default function WorkoutHome() {
 
   const handleEditFutureWorkout = useCallback(() => {
     if (!user) {
-      Alert.alert('Not signed in', 'Please sign in to edit workouts.');
+      setAlertModal({
+        visible: true,
+        message: 'Please sign in to edit workouts.',
+        type: 'warning',
+      });
       return;
     }
 
     if (!earliestFutureWorkout) {
-      Alert.alert('No future workouts', 'No upcoming workouts to edit.');
+      setAlertModal({
+        visible: true,
+        message: 'No upcoming workouts to edit.',
+        type: 'info',
+      });
       return;
     }
 
@@ -115,14 +140,23 @@ export default function WorkoutHome() {
   }
 
   return (
-    <WorkoutHomeScreen
-      latestWorkout={latestWorkout ?? null}
-      earliestFutureWorkout={earliestFutureWorkout ?? null}
-      isLoadingLatest={isLoadingLatest}
-      isLoadingFuture={isLoadingFuture}
-      onCreateWorkout={handleCreateWorkout}
-      onEditWorkout={handleEditWorkout}
-      onEditFutureWorkout={handleEditFutureWorkout}
-    />
+    <>
+      <WorkoutHomeScreen
+        latestWorkout={latestWorkout ?? null}
+        earliestFutureWorkout={earliestFutureWorkout ?? null}
+        isLoadingLatest={isLoadingLatest}
+        isLoadingFuture={isLoadingFuture}
+        onCreateWorkout={handleCreateWorkout}
+        onEditWorkout={handleEditWorkout}
+        onEditFutureWorkout={handleEditFutureWorkout}
+      />
+      <AlertModal
+        visible={alertModal.visible}
+        message={alertModal.message}
+        type={alertModal.type}
+        duration={4000}
+        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
+      />
+    </>
   );
 }
