@@ -82,12 +82,7 @@ function DrawerInner() {
         <Stack.Screen
           name="settings"
           options={{
-            headerShown: true,
-            headerTitle: 'Settings',
-            headerTitleAlign: 'left',
-            headerTitleStyle: { fontSize: 28, color: colors.white },
-            headerStyle: { backgroundColor: colors.darkerGray },
-            headerTintColor: colors.white,
+            headerShown: false,
           }}
         />
         <Stack.Screen

@@ -16,6 +16,7 @@ import { createDependencies } from '@/dependencies/createDependencies';
 import { createConfig } from '@/config';
 import { useThemeFonts } from '@/theme/fonts';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { UserPreferencesProvider } from '@/contexts/UserPreferencesContext';
 import { NoInternetScreen } from '@/components/NoInternetScreen';
 
 const config = createConfig({
@@ -84,9 +85,11 @@ function RootLayout() {
     <DependenciesProvider dependencies={dependencies}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <Theme>
-            <Screen />
-          </Theme>
+          <UserPreferencesProvider>
+            <Theme>
+              <Screen />
+            </Theme>
+          </UserPreferencesProvider>
         </AuthProvider>
       </QueryClientProvider>
     </DependenciesProvider>

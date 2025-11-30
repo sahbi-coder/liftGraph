@@ -14,10 +14,18 @@ import {
   where,
 } from 'firebase/firestore';
 
+export type UserPreferences = {
+  weightUnit: 'kg' | 'lb';
+  distanceUnit: 'cm' | 'ft';
+  temperatureUnit: 'celsius' | 'fahrenheit';
+  onboardingCompleted?: boolean;
+};
+
 export type UserProfile = {
   uid: string;
   email: string;
   displayName: string;
+  preferences: UserPreferences;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -206,10 +214,11 @@ export class FirestoreService {
 
   async updateUserProfile(uid: string, data: Partial<UserProfile>) {
     const userRef = doc(this.db, 'users', uid);
-    await updateDoc(userRef, {
+    const updateData = {
       ...data,
       updatedAt: Timestamp.now().toDate(),
-    });
+    };
+    await updateDoc(userRef, updateData);
   }
 
   async getExercisesWithLibrary(userId: string): Promise<Exercise[]> {

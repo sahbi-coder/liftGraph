@@ -62,7 +62,7 @@ export default function SettingsScreen() {
       id: 'units',
       label: 'Units & Measurements',
       icon: Target,
-      onPress: () => console.log('Units & Measurements'),
+      onPress: () => handleNavigation('/(drawer)/settings/units'),
     },
   ];
 
@@ -311,3 +311,4 @@ export default function SettingsScreen() {
     </YStack>
   );
 }
+
