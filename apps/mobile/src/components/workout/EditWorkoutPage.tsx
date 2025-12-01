@@ -8,7 +8,7 @@ import { colors } from '@/theme/colors';
 import { EditWorkoutScreen } from '@/components/workout/EditWorkoutScreen';
 import { useWorkout } from '@/hooks/useWorkout';
 import { useWorkoutMutations } from '@/hooks/useWorkoutMutations';
-import { AlertModal } from '@/components/AlertModal';
+import { useAlertModal } from '@/hooks/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 
 export function EditWorkoutPage() {
@@ -44,109 +44,61 @@ export function EditWorkoutPage() {
     isDeleting,
   } = useWorkoutMutations(workoutId);
 
-  const [alertModal, setAlertModal] = useState<{
-    visible: boolean;
-    message: string;
-    type: 'success' | 'info' | 'warning' | 'error';
-  }>({
-    visible: false,
-    message: '',
-    type: 'info',
-  });
+  const { showSuccess, showError, AlertModalComponent } = useAlertModal();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDeletingWorkout, setIsDeletingWorkout] = useState(false);
-
-  const handleAlertComplete = useCallback(() => {
-    setAlertModal((prev) => ({ ...prev, visible: false }));
-  }, []);
 
   const handleUpdateWorkout = useCallback(
     async (workoutPayload: Parameters<typeof updateWorkout>[0]) => {
       if (!user || !workoutId) {
-        setAlertModal({
-          visible: true,
-          message: 'Please sign in to edit workouts.',
-          type: 'error',
-        });
+        showError('Please sign in to edit workouts.');
         return;
       }
 
       try {
         await updateWorkout(workoutPayload);
-        setAlertModal({
-          visible: true,
-          message: 'Your workout has been updated successfully.',
-          type: 'success',
-        });
+        showSuccess('Your workout has been updated successfully.');
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Something went wrong.';
-        setAlertModal({
-          visible: true,
-          message,
-          type: 'error',
-        });
+        showError(message);
       }
     },
-    [user, workoutId, updateWorkout],
+    [user, workoutId, updateWorkout, showSuccess, showError],
   );
 
   const handleValidateWorkout = useCallback(async () => {
     if (!user || !workoutId) {
-      setAlertModal({
-        visible: true,
-        message: 'Please sign in to validate workouts.',
-        type: 'error',
-      });
+      showError('Please sign in to validate workouts.');
       return;
     }
 
     try {
       await validateWorkout();
-      setAlertModal({
-        visible: true,
-        message: 'Your workout has been marked as complete.',
-        type: 'success',
-      });
+      showSuccess('Your workout has been marked as complete.');
       // Navigate back after showing success message
       setTimeout(() => {
         router.back();
       }, 1500);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Something went wrong.';
-      setAlertModal({
-        visible: true,
-        message,
-        type: 'error',
-      });
+      showError(message);
     }
-  }, [router, user, workoutId, validateWorkout]);
+  }, [router, user, workoutId, validateWorkout, showSuccess, showError]);
 
   const handleUnvalidateWorkout = useCallback(async () => {
     if (!user || !workoutId) {
-      setAlertModal({
-        visible: true,
-        message: 'Please sign in to unvalidate workouts.',
-        type: 'error',
-      });
+      showError('Please sign in to unvalidate workouts.');
       return;
     }
 
     try {
       await unvalidateWorkout();
-      setAlertModal({
-        visible: true,
-        message: 'You can now edit this workout.',
-        type: 'success',
-      });
+      showSuccess('You can now edit this workout.');
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Something went wrong.';
-      setAlertModal({
-        visible: true,
-        message,
-        type: 'error',
-      });
+      showError(message);
     }
-  }, [user, workoutId, unvalidateWorkout]);
+  }, [user, workoutId, unvalidateWorkout, showSuccess, showError]);
 
   const handleDeleteWorkout = useCallback(() => {
     setIsDeleteModalVisible(true);
@@ -155,22 +107,14 @@ export function EditWorkoutPage() {
   const handleConfirmDelete = useCallback(async () => {
     setIsDeleteModalVisible(false);
     if (!user || !workoutId) {
-      setAlertModal({
-        visible: true,
-        message: 'Please sign in to delete workouts.',
-        type: 'error',
-      });
+      showError('Please sign in to delete workouts.');
       return;
     }
 
     try {
       setIsDeletingWorkout(true);
       await deleteWorkout();
-      setAlertModal({
-        visible: true,
-        message: 'Workout deleted successfully.',
-        type: 'success',
-      });
+      showSuccess('Workout deleted successfully.');
       // Navigate back after alert is shown (2 seconds for success alerts)
       setTimeout(() => {
         router.back();
@@ -178,13 +122,9 @@ export function EditWorkoutPage() {
     } catch (error) {
       setIsDeletingWorkout(false);
       const message = error instanceof Error ? error.message : 'Something went wrong.';
-      setAlertModal({
-        visible: true,
-        message,
-        type: 'error',
-      });
+      showError(message);
     }
-  }, [router, user, workoutId, deleteWorkout]);
+  }, [router, user, workoutId, deleteWorkout, showSuccess, showError]);
 
   // Show loading state
   if (isLoading) {
@@ -214,13 +154,7 @@ export function EditWorkoutPage() {
         confirmButtonColor="#ef4444"
         cancelButtonColor={colors.midGray}
       />
-      <AlertModal
-        visible={alertModal.visible}
-        message={alertModal.message}
-        type={alertModal.type}
-        duration={alertModal.type === 'success' ? 2000 : 4000}
-        onComplete={handleAlertComplete}
-      />
+      <AlertModalComponent />
     </>
   );
 

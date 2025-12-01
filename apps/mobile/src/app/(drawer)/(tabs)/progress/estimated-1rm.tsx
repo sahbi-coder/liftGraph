@@ -1,6 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, View, Dimensions } from 'react-native';
-import { useRouter } from 'expo-router';
 import { YStack, XStack, Text, Button } from 'tamagui';
 import { TrendingUp } from '@tamagui/lucide-icons';
 import { LineChart } from 'react-native-gifted-charts';
@@ -9,14 +8,11 @@ import dayjs from 'dayjs';
 import { colors } from '@/theme/colors';
 import { LoadingView, ErrorView } from '@/components/StatusViews';
 import { CustomRangeModal } from '@/components/progress/CustomRangeModal';
-import {
-  DurationFilterButtons,
-  type FilterType,
-} from '@/components/progress/DurationFilterButtons';
-import { useUserWorkouts } from '@/hooks/useUserWorkouts';
+import { DurationFilterButtons } from '@/components/progress/DurationFilterButtons';
+import { useValidatedWorkouts } from '@/hooks/useValidatedWorkouts';
+import { useDateRangeFilter } from '@/hooks/useDateRangeFilter';
+import { useExerciseSelection } from '@/hooks/useExerciseSelection';
 import type { Workout } from '@/domain';
-import type { ExerciseSelection } from '@/types/workout';
-import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 import { buildExerciseE1RMSeries } from '@/utils/strength';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { weightForDisplay } from '@/utils/units';
@@ -35,27 +31,14 @@ type Estimated1RMChartProps = {
 };
 
 function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
-  const router = useRouter();
   const { preferences } = useUserPreferences();
   const weightUnit = preferences?.weightUnit ?? 'kg';
-  const [selectedExercise, setSelectedExercise] = useState<{ id: string; name: string }>({
-    id: 'squat',
-    name: 'Squat',
-  });
-  const [filterType, setFilterType] = useState<FilterType>('3months');
-  const [customStartDate, setCustomStartDate] = useState<string | null>(null);
-  const [customEndDate, setCustomEndDate] = useState<string | null>(null);
-  const [isCustomRangeModalVisible, setIsCustomRangeModalVisible] = useState(false);
   const [pointSpacing, setPointSpacing] = useState(40); // horizontal spacing (months/dates)
 
-  const handleExerciseSelect = useCallback((exercise: ExerciseSelection) => {
-    setSelectedExercise({ id: exercise.id, name: exercise.name });
-  }, []);
-
-  const handleOpenExercisePicker = useCallback(() => {
-    setExercisePickerCallback(handleExerciseSelect);
-    router.push('/(tabs)/progress/exercises');
-  }, [handleExerciseSelect, router]);
+  const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
+    defaultExercise: { id: 'squat', name: 'Squat' },
+    exercisePickerPath: '/(tabs)/progress/exercises',
+  });
 
   // Build e1RM series for the selected exercise from workout data
   const exerciseSeries = useMemo(
@@ -63,48 +46,22 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
     [_workouts, selectedExercise.id],
   );
 
-  // Calculate date range based on filter type
-  const dateRange = useMemo(() => {
-    const today = dayjs();
-    let startDate: dayjs.Dayjs;
-    let endDate: dayjs.Dayjs = today;
-
-    if (filterType === 'custom') {
-      if (customStartDate && customEndDate) {
-        startDate = dayjs(customStartDate);
-        endDate = dayjs(customEndDate);
-      } else {
-        // Default to last 3 months if custom not set
-        startDate = today.subtract(3, 'month');
-      }
-    } else {
-      switch (filterType) {
-        case 'week':
-          startDate = today.subtract(1, 'week');
-          break;
-        case 'month':
-          startDate = today.subtract(1, 'month');
-          break;
-        case '3months':
-          startDate = today.subtract(3, 'month');
-          break;
-        case '6months':
-          startDate = today.subtract(6, 'month');
-          break;
-        case 'year':
-          startDate = today.subtract(1, 'year');
-          break;
-        case 'all':
-        default:
-          startDate = exerciseSeries.length
-            ? dayjs(exerciseSeries[0].date)
-            : today.subtract(3, 'month');
-          break;
-      }
-    }
-
-    return { startDate, endDate };
-  }, [filterType, customStartDate, customEndDate, exerciseSeries]);
+  const {
+    filterType,
+    customStartDate,
+    customEndDate,
+    isCustomRangeModalVisible,
+    setIsCustomRangeModalVisible,
+    dateRange,
+    dateRangeDisplay,
+    handleQuickFilter,
+    handleOpenCustomRange,
+    handleApplyCustomRange,
+  } = useDateRangeFilter({
+    workouts: _workouts,
+    defaultFilter: '3months',
+    seriesData: exerciseSeries,
+  });
 
   // Filter series based on date range and adapt to chart data format
   const filteredData = useMemo(() => {
@@ -131,30 +88,6 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
     // Round up to nearest 10 for a cleaner axis
     return Math.ceil(maxVal / 10) * 10;
   }, [filteredData]);
-
-  // Format date range display
-  const dateRangeDisplay = useMemo(() => {
-    if (filterType === 'custom' && customStartDate && customEndDate) {
-      return `${dayjs(customStartDate).format('MMM D, YYYY')} - ${dayjs(customEndDate).format('MMM D, YYYY')}`;
-    }
-    return `${dateRange.startDate.format('MMM D, YYYY')} - ${dateRange.endDate.format('MMM D, YYYY')}`;
-  }, [filterType, customStartDate, customEndDate, dateRange]);
-
-  const handleQuickFilter = useCallback((type: FilterType) => {
-    setFilterType(type);
-    setCustomStartDate(null);
-    setCustomEndDate(null);
-  }, []);
-
-  const handleOpenCustomRange = useCallback(() => {
-    setIsCustomRangeModalVisible(true);
-  }, []);
-
-  const handleApplyCustomRange = useCallback((startDate: string, endDate: string) => {
-    setCustomStartDate(startDate);
-    setCustomEndDate(endDate);
-    setFilterType('custom');
-  }, []);
 
   return (
     <ScrollView
@@ -330,7 +263,7 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
 }
 
 export default function Estimated1RMScreen() {
-  const { workouts, isLoading, isError, refetch } = useUserWorkouts();
+  const { workouts, isLoading, isError, refetch } = useValidatedWorkouts();
 
   if (isLoading) {
     return <LoadingView />;
@@ -340,7 +273,5 @@ export default function Estimated1RMScreen() {
     return <ErrorView onRetry={refetch} />;
   }
 
-  const validatedWorkouts = (workouts ?? []).filter((workout) => workout.validated);
-
-  return <Estimated1RMChart workouts={validatedWorkouts} />;
+  return <Estimated1RMChart workouts={workouts} />;
 }

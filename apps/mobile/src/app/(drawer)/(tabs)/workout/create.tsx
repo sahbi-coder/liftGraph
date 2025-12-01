@@ -5,23 +5,15 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import type { WorkoutInput } from '@/domain';
 import { getWorkoutPrefillData, clearWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
-import { AlertModal } from '@/components/AlertModal';
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 export default function CreateWorkoutScreen() {
   const router = useRouter();
   const { services } = useDependencies();
   const { user } = useAuth();
+  const { showSuccess, showError, AlertModalComponent } = useAlertModal();
 
   const [isSaving, setIsSaving] = useState(false);
-  const [alertModal, setAlertModal] = useState<{
-    visible: boolean;
-    message: string;
-    type: 'success' | 'info' | 'warning' | 'error';
-  }>({
-    visible: false,
-    message: '',
-    type: 'info',
-  });
 
   // Check for prefill data synchronously before first render
   const prefillData = getWorkoutPrefillData();
@@ -39,38 +31,26 @@ export default function CreateWorkoutScreen() {
   const handleCreateWorkout = useCallback(
     async (workoutPayload: WorkoutInput) => {
       if (!user) {
-        setAlertModal({
-          visible: true,
-          message: 'Please sign in to save workouts.',
-          type: 'error',
-        });
+        showError('Please sign in to save workouts.');
         return;
       }
 
       setIsSaving(true);
       try {
         await services.firestore.createWorkout(user.uid, workoutPayload);
-        setAlertModal({
-          visible: true,
-          message: 'Your workout has been saved successfully.',
-          type: 'success',
-        });
+        showSuccess('Your workout has been saved successfully.');
         // Navigate back after showing success message
         setTimeout(() => {
           router.back();
         }, 1500);
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Something went wrong.';
-        setAlertModal({
-          visible: true,
-          message,
-          type: 'error',
-        });
+        showError(message);
       } finally {
         setIsSaving(false);
       }
     },
-    [router, services.firestore, user],
+    [router, services.firestore, user, showSuccess, showError],
   );
 
   return (
@@ -81,13 +61,7 @@ export default function CreateWorkoutScreen() {
         isSubmitting={isSaving}
         submitLabel="Create Workout"
       />
-      <AlertModal
-        visible={alertModal.visible}
-        message={alertModal.message}
-        type={alertModal.type}
-        duration={2000}
-        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
-      />
+      <AlertModalComponent duration={2000} />
     </>
   );
 }

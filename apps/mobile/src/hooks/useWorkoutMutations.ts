@@ -4,6 +4,21 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import type { WorkoutInput } from '@/domain';
 
+/**
+ * Helper function to invalidate all workout-related queries.
+ * Extracted to avoid duplication across mutation onSuccess callbacks.
+ */
+function invalidateWorkoutQueries(
+  queryClient: ReturnType<typeof useQueryClient>,
+  userId: string | undefined,
+  workoutId: string | undefined,
+) {
+  queryClient.invalidateQueries({ queryKey: ['workout', userId, workoutId] });
+  queryClient.invalidateQueries({ queryKey: ['workouts', userId] });
+  queryClient.invalidateQueries({ queryKey: ['latestValidatedWorkout', userId] });
+  queryClient.invalidateQueries({ queryKey: ['earliestFutureWorkout', userId] });
+}
+
 export function useWorkoutMutations(workoutId: string | undefined) {
   const { services } = useDependencies();
   const { user } = useAuth();
@@ -17,11 +32,7 @@ export function useWorkoutMutations(workoutId: string | undefined) {
       return services.firestore.updateWorkout(user.uid, workoutId, workout);
     },
     onSuccess: () => {
-      // Invalidate and refetch related queries
-      queryClient.invalidateQueries({ queryKey: ['workout', user?.uid, workoutId] });
-      queryClient.invalidateQueries({ queryKey: ['workouts', user?.uid] });
-      queryClient.invalidateQueries({ queryKey: ['latestValidatedWorkout', user?.uid] });
-      queryClient.invalidateQueries({ queryKey: ['earliestFutureWorkout', user?.uid] });
+      invalidateWorkoutQueries(queryClient, user?.uid, workoutId);
     },
   });
 
@@ -33,11 +44,7 @@ export function useWorkoutMutations(workoutId: string | undefined) {
       return services.firestore.validateWorkout(user.uid, workoutId);
     },
     onSuccess: () => {
-      // Invalidate and refetch related queries
-      queryClient.invalidateQueries({ queryKey: ['workout', user?.uid, workoutId] });
-      queryClient.invalidateQueries({ queryKey: ['workouts', user?.uid] });
-      queryClient.invalidateQueries({ queryKey: ['latestValidatedWorkout', user?.uid] });
-      queryClient.invalidateQueries({ queryKey: ['earliestFutureWorkout', user?.uid] });
+      invalidateWorkoutQueries(queryClient, user?.uid, workoutId);
     },
   });
 
@@ -49,11 +56,7 @@ export function useWorkoutMutations(workoutId: string | undefined) {
       return services.firestore.unvalidateWorkout(user.uid, workoutId);
     },
     onSuccess: () => {
-      // Invalidate and refetch related queries
-      queryClient.invalidateQueries({ queryKey: ['workout', user?.uid, workoutId] });
-      queryClient.invalidateQueries({ queryKey: ['workouts', user?.uid] });
-      queryClient.invalidateQueries({ queryKey: ['latestValidatedWorkout', user?.uid] });
-      queryClient.invalidateQueries({ queryKey: ['earliestFutureWorkout', user?.uid] });
+      invalidateWorkoutQueries(queryClient, user?.uid, workoutId);
     },
   });
 
@@ -65,11 +68,7 @@ export function useWorkoutMutations(workoutId: string | undefined) {
       return services.firestore.deleteWorkout(user.uid, workoutId);
     },
     onSuccess: () => {
-      // Invalidate and refetch related queries
-      queryClient.invalidateQueries({ queryKey: ['workout', user?.uid, workoutId] });
-      queryClient.invalidateQueries({ queryKey: ['workouts', user?.uid] });
-      queryClient.invalidateQueries({ queryKey: ['latestValidatedWorkout', user?.uid] });
-      queryClient.invalidateQueries({ queryKey: ['earliestFutureWorkout', user?.uid] });
+      invalidateWorkoutQueries(queryClient, user?.uid, workoutId);
     },
   });
 

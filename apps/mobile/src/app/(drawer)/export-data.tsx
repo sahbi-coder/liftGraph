@@ -2,10 +2,10 @@ import React from 'react';
 
 import { LoadingView, ErrorView } from '@/components/StatusViews';
 import { ExportDataScreen } from '@/components/export/ExportDataScreen';
-import { useUserWorkouts } from '@/hooks/useUserWorkouts';
+import { useValidatedWorkouts } from '@/hooks/useValidatedWorkouts';
 
 export default function ExportDataPage() {
-  const { workouts, isLoading, isError, refetch } = useUserWorkouts();
+  const { workouts, isLoading, isError, refetch } = useValidatedWorkouts();
 
   if (isLoading) {
     return <LoadingView />;
@@ -15,7 +15,5 @@ export default function ExportDataPage() {
     return <ErrorView onRetry={refetch} />;
   }
 
-  const validatedWorkouts = (workouts ?? []).filter((workout) => workout.validated);
-
-  return <ExportDataScreen workouts={validatedWorkouts} />;
+  return <ExportDataScreen workouts={workouts} />;
 }

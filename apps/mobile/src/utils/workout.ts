@@ -64,3 +64,12 @@ export function hasWorkoutChanges(workoutInput: WorkoutInput, originalWorkout: W
 
   return false;
 }
+
+/**
+ * Filters workouts to only include validated ones.
+ * @param workouts - Array of workouts (can be null or undefined)
+ * @returns Array of validated workouts
+ */
+export function getValidatedWorkouts(workouts: Workout[] | null | undefined): Workout[] {
+  return (workouts ?? []).filter((workout) => workout.validated);
+}

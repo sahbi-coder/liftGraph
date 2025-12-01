@@ -1,6 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ScrollView, View, Dimensions } from 'react-native';
-import { useRouter } from 'expo-router';
 import { YStack, XStack, Text, Button } from 'tamagui';
 import { BarChart3 } from '@tamagui/lucide-icons';
 import { BarChart } from 'react-native-gifted-charts';
@@ -9,14 +8,11 @@ import dayjs from 'dayjs';
 import { colors } from '@/theme/colors';
 import { LoadingView, ErrorView } from '@/components/StatusViews';
 import { CustomRangeModal } from '@/components/progress/CustomRangeModal';
-import {
-  DurationFilterButtons,
-  type FilterType,
-} from '@/components/progress/DurationFilterButtons';
-import { useUserWorkouts } from '@/hooks/useUserWorkouts';
+import { DurationFilterButtons } from '@/components/progress/DurationFilterButtons';
+import { useValidatedWorkouts } from '@/hooks/useValidatedWorkouts';
+import { useDateRangeFilter } from '@/hooks/useDateRangeFilter';
+import { useExerciseSelection } from '@/hooks/useExerciseSelection';
 import type { Workout } from '@/domain';
-import type { ExerciseSelection } from '@/types/workout';
-import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 import { buildWeeklyExerciseVolumeByWeek } from '@/utils/strength';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { weightForDisplay } from '@/utils/units';
@@ -28,93 +24,30 @@ type WeeklyVolumeChartProps = {
 };
 
 function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
-  const router = useRouter();
   const { preferences } = useUserPreferences();
   const weightUnit = preferences?.weightUnit ?? 'kg';
-  const [selectedExercise, setSelectedExercise] = useState<{ id: string; name: string }>({
-    id: 'squat',
-    name: 'Squat',
-  });
-  const [filterType, setFilterType] = useState<FilterType>('month');
-  const [customStartDate, setCustomStartDate] = useState<string | null>(null);
-  const [customEndDate, setCustomEndDate] = useState<string | null>(null);
-  const [isCustomRangeModalVisible, setIsCustomRangeModalVisible] = useState(false);
   const [selectedWeekIndex, setSelectedWeekIndex] = useState<number | null>(null);
 
-  const handleExerciseSelect = useCallback((exercise: ExerciseSelection) => {
-    setSelectedExercise({ id: exercise.id, name: exercise.name });
-  }, []);
+  const {
+    filterType,
+    customStartDate,
+    customEndDate,
+    isCustomRangeModalVisible,
+    setIsCustomRangeModalVisible,
+    dateRange,
+    dateRangeDisplay,
+    handleQuickFilter,
+    handleOpenCustomRange,
+    handleApplyCustomRange,
+  } = useDateRangeFilter({
+    workouts: _workouts,
+    defaultFilter: 'month',
+  });
 
-  const handleOpenExercisePicker = useCallback(() => {
-    setExercisePickerCallback(handleExerciseSelect);
-    router.push('/(tabs)/progress/exercises');
-  }, [handleExerciseSelect, router]);
-
-  // Compute overall date range from workouts
-  const overallRange = useMemo(() => {
-    if (!_workouts.length) {
-      const today = dayjs();
-      return {
-        minDate: today.subtract(3, 'month'),
-        maxDate: today,
-      };
-    }
-
-    let minDate = dayjs(_workouts[0].date);
-    let maxDate = dayjs(_workouts[0].date);
-
-    _workouts.forEach((w) => {
-      const d = dayjs(w.date);
-      if (d.isBefore(minDate)) minDate = d;
-      if (d.isAfter(maxDate)) maxDate = d;
-    });
-
-    return { minDate, maxDate };
-  }, [_workouts]);
-
-  // Calculate date range based on filter type
-  const dateRange = useMemo(() => {
-    const today = dayjs();
-    let startDate: dayjs.Dayjs;
-    let endDate: dayjs.Dayjs;
-
-    if (filterType === 'custom') {
-      if (customStartDate && customEndDate) {
-        startDate = dayjs(customStartDate);
-        endDate = dayjs(customEndDate);
-      } else {
-        // Default to last 3 months if custom not set
-        endDate = today;
-        startDate = endDate.subtract(3, 'month');
-      }
-    } else {
-      switch (filterType) {
-        case 'month':
-          endDate = today;
-          startDate = endDate.subtract(1, 'month');
-          break;
-        case '3months':
-          endDate = today;
-          startDate = endDate.subtract(3, 'month');
-          break;
-        case '6months':
-          endDate = today;
-          startDate = endDate.subtract(6, 'month');
-          break;
-        case 'year':
-          endDate = today;
-          startDate = endDate.subtract(1, 'year');
-          break;
-        case 'all':
-        default:
-          startDate = overallRange.minDate;
-          endDate = overallRange.maxDate;
-          break;
-      }
-    }
-
-    return { startDate, endDate };
-  }, [filterType, customStartDate, customEndDate, overallRange]);
+  const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
+    defaultExercise: { id: 'squat', name: 'Squat' },
+    exercisePickerPath: '/(tabs)/progress/exercises',
+  });
 
   // Build weekly volume data for the selected exercise
   const weeklyVolumeData = useMemo(() => {
@@ -159,34 +92,6 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
     // Round up to nearest 100 for a cleaner axis
     return Math.ceil(maxVal / 100) * 100;
   }, [weeklyVolumeData]);
-
-  // Format date range display
-  const dateRangeDisplay = useMemo(() => {
-    if (filterType === 'custom' && customStartDate && customEndDate) {
-      return `${dayjs(customStartDate).format('MMM D, YYYY')} - ${dayjs(customEndDate).format(
-        'MMM D, YYYY',
-      )}`;
-    }
-    return `${dateRange.startDate.format('MMM D, YYYY')} - ${dateRange.endDate.format(
-      'MMM D, YYYY',
-    )}`;
-  }, [filterType, customStartDate, customEndDate, dateRange]);
-
-  const handleQuickFilter = useCallback((type: FilterType) => {
-    setFilterType(type);
-    setCustomStartDate(null);
-    setCustomEndDate(null);
-  }, []);
-
-  const handleOpenCustomRange = useCallback(() => {
-    setIsCustomRangeModalVisible(true);
-  }, []);
-
-  const handleApplyCustomRange = useCallback((startDate: string, endDate: string) => {
-    setCustomStartDate(startDate);
-    setCustomEndDate(endDate);
-    setFilterType('custom');
-  }, []);
 
   return (
     <ScrollView
@@ -310,7 +215,7 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
 }
 
 export default function WeeklyVolumeScreen() {
-  const { workouts, isLoading, isError, refetch } = useUserWorkouts();
+  const { workouts, isLoading, isError, refetch } = useValidatedWorkouts();
 
   if (isLoading) {
     return <LoadingView />;
@@ -320,7 +225,5 @@ export default function WeeklyVolumeScreen() {
     return <ErrorView onRetry={refetch} />;
   }
 
-  const validatedWorkouts = (workouts ?? []).filter((workout) => workout.validated);
-
-  return <WeeklyVolumeChart workouts={validatedWorkouts} />;
+  return <WeeklyVolumeChart workouts={workouts} />;
 }
