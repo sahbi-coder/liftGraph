@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Program } from '@/services/firestore';
+import type { Program } from '@/domain';
 
 type UseUserProgramsResult = {
   programs: Program[] | undefined;

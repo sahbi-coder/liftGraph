@@ -15,7 +15,7 @@ import dayjs from 'dayjs';
 
 import { colors } from '@/theme/colors';
 import { Calendar } from '@/components/Calendar';
-import type { Workout } from '@/services/firestore';
+import type { Workout } from '@/domain';
 import { exportWorkouts, type ExportFormat } from '@/utils/export';
 
 type DataType = 'workoutHistory' | 'personalRecords' | 'progressTracking' | 'trainingPrograms';

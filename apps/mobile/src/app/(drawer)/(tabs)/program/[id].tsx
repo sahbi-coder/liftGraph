@@ -5,7 +5,7 @@ import { YStack, Text, XStack, Button } from 'tamagui';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import { Program, ProgramExercise, WorkoutExercise } from '@/services/firestore';
+import type { Program, ProgramExercise, WorkoutExercise } from '@/domain';
 import { colors } from '@/theme/colors';
 import { DaySelector, ProgramDay as DaySelectorProgramDay } from '@/components/DaySelector';
 import { setWorkoutPrefillData } from '@/contexts/workoutPrefillContext';

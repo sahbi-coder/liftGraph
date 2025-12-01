@@ -7,7 +7,7 @@ import { colors } from '@/theme/colors';
 import Feather from '@expo/vector-icons/Feather';
 import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
-import type { UserPreferences } from '@/services/firestore';
+import type { UserPreferences } from '@/domain';
 
 type UnitOption = {
   value: 'kg' | 'lb' | 'cm' | 'ft' | 'celsius' | 'fahrenheit';

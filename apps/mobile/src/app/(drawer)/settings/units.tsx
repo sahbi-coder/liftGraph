@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router';
 import { colors } from '@/theme/colors';
 import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
-import type { UserPreferences } from '@/services/firestore';
+import type { UserPreferences } from '@/domain';
 import { AlertModal } from '@/components/AlertModal';
 
 type UnitOption = {

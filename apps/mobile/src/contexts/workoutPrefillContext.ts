@@ -1,5 +1,5 @@
 // Temporary storage for pre-filled workout data from programs
-import type { WorkoutExercise } from '@/services/firestore';
+import type { WorkoutExercise } from '@/domain';
 
 type WorkoutPrefillData = {
   exercises: WorkoutExercise[];

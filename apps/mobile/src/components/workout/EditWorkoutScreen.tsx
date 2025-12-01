@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo, useEffect } from 'react';
 
 import { WorkoutForm } from '@/components/workout/WorkoutForm';
-import type { Workout, WorkoutInput } from '@/services/firestore';
+import type { Workout, WorkoutInput } from '@/domain';
 import { hasWorkoutChanges } from '@/utils/workout';
 
 type EditWorkoutScreenProps = {

@@ -4,7 +4,7 @@ import { Button, Input, Text, XStack, YStack } from 'tamagui';
 import Entypo from '@expo/vector-icons/Entypo';
 
 import { colors } from '@/theme/colors';
-import type { Exercise } from '@/services/firestore';
+import type { Exercise } from '@/domain';
 import type { ExerciseSelection } from '@/types/workout';
 
 type ExercisePickerScreenProps = {

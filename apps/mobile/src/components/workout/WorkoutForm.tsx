@@ -7,7 +7,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 
 import dayjs from 'dayjs';
 
-import { WorkoutExercise, WorkoutInput } from '@/services/firestore';
+import type { WorkoutExercise, WorkoutInput } from '@/domain';
 import { colors } from '@/theme/colors';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { ExerciseSelection, WorkoutStackParamList } from '@/types/workout';

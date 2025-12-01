@@ -11,10 +11,8 @@ export type ExerciseSelectionContext = {
 };
 
 export type WorkoutStackParamList = {
-  index: undefined;
-  create: undefined;
   edit: { workoutId: string };
   exercises: {
-    onSelect?: (exercise: ExerciseSelection) => void;
+    onSelect: (exercise: ExerciseSelection) => void;
   };
 };

@@ -4,7 +4,7 @@ import { YStack, Text, Button, XStack } from 'tamagui';
 import Entypo from '@expo/vector-icons/Entypo';
 
 import { colors } from '@/theme/colors';
-import type { Program } from '@/services/firestore';
+import type { Program } from '@/domain';
 
 type ProgramHomeScreenProps = {
   programs: Program[];

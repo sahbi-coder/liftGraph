@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { WorkoutForm } from '@/components/workout/WorkoutForm';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import { WorkoutInput } from '@/services/firestore';
+import type { WorkoutInput } from '@/domain';
 import { getWorkoutPrefillData, clearWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 import { AlertModal } from '@/components/AlertModal';
 

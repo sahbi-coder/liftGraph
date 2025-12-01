@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { WorkoutInput } from '@/services/firestore';
+import type { WorkoutInput } from '@/domain';
 
 export function useWorkoutMutations(workoutId: string | undefined) {
   const { services } = useDependencies();

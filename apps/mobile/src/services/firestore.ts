@@ -14,171 +14,59 @@ import {
   where,
 } from 'firebase/firestore';
 
-export type UserPreferences = {
-  weightUnit: 'kg' | 'lb';
-  distanceUnit: 'cm' | 'ft';
-  temperatureUnit: 'celsius' | 'fahrenheit';
-  onboardingCompleted?: boolean;
-};
+// Domain models
+import type {
+  UserPreferences,
+  UserProfile,
+  Exercise,
+  WorkoutSet,
+  WorkoutExercise,
+  WorkoutInput,
+  Workout,
+  ProgramSet,
+  ProgramExercise,
+  ProgramDay,
+  ProgramWeek,
+  ProgramPhase,
+  SimpleProgramInput,
+  AlternatingProgramInput,
+  AdvancedProgramInput,
+  ProgramInput,
+  SimpleProgram,
+  AlternatingProgram,
+  AdvancedProgram,
+  Program,
+} from '@/domain';
 
-export type UserProfile = {
-  uid: string;
-  email: string;
-  displayName: string;
-  preferences: UserPreferences;
-  createdAt: Date;
-  updatedAt: Date;
-};
+// Firestore-specific types (internal use only)
+import type {
+  ExerciseFirestoreData,
+  WorkoutFirestoreData,
+  ProgramFirestoreData,
+} from './firestore-types';
 
-export type Exercise = {
-  id: string;
-  name: string;
-  category: string;
-  bodyPart: string;
-  description?: string;
-  createdAt?: Date;
-  source: 'library' | 'user';
-};
-
-type ExerciseFirestoreData = {
-  name: string;
-  category: string;
-  bodyPart: string;
-  description?: string;
-  createdAt?: Timestamp | Date;
-  [key: string]: unknown;
-};
-
-export type WorkoutSet = {
-  weight: number;
-  reps: number;
-  rir: number;
-};
-
-export type WorkoutExercise = {
-  exerciseId: string;
-  exerciseOwnerId: string | null;
-  name: string;
-  order: number;
-  sets: WorkoutSet[];
-};
-
-export type WorkoutInput = {
-  date: Date;
-  notes?: string;
-  exercises: WorkoutExercise[];
-};
-
-export type Workout = {
-  id: string;
-  date: Date;
-  notes: string;
-  exercises: WorkoutExercise[];
-  validated: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-type WorkoutFirestoreData = {
-  date: Timestamp;
-  notes: string;
-  exercises: WorkoutExercise[];
-  validated: boolean;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
-};
-
-export type ProgramSet = {
-  reps: number;
-  rir: number;
-};
-
-export type ProgramExercise = {
-  name: string;
-  id: string;
-  isGlobal: boolean;
-  sets: ProgramSet[];
-};
-
-export type ProgramDay =
-  | {
-      name: string;
-      exercises: ProgramExercise[];
-    }
-  | 'rest';
-
-export type ProgramWeek = { days: ProgramDay[] };
-
-export type ProgramPhase = {
-  name: string;
-  description: string;
-  weeks: ProgramWeek[];
-};
-
-export type SimpleProgramInput = {
-  name: string;
-  description: string;
-  type: 'simple';
-  week: ProgramWeek;
-};
-
-export type AlternatingProgramInput = {
-  name: string;
-  description: string;
-  type: 'alternating';
-  alternatingWeeks: [ProgramWeek, ProgramWeek];
-};
-
-export type AdvancedProgramInput = {
-  name: string;
-  description: string;
-  type: 'advanced';
-  phases: ProgramPhase[];
-};
-
-export type ProgramInput = SimpleProgramInput | AlternatingProgramInput | AdvancedProgramInput;
-
-export type SimpleProgram = {
-  id: string;
-  name: string;
-  description: string;
-  type: 'simple';
-  week: ProgramWeek;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type AlternatingProgram = {
-  id: string;
-  name: string;
-  description: string;
-  type: 'alternating';
-  alternatingWeeks: [ProgramWeek, ProgramWeek];
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type AdvancedProgram = {
-  id: string;
-  name: string;
-  description: string;
-  type: 'advanced';
-  phases: ProgramPhase[];
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-export type Program = SimpleProgram | AlternatingProgram | AdvancedProgram;
-
-type ProgramFirestoreData = {
-  name: string;
-  description: string;
-  type: 'simple' | 'alternating' | 'advanced';
-  week?: ProgramWeek;
-  alternatingWeeks?: [ProgramWeek, ProgramWeek];
-  phases?: ProgramPhase[];
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+// Re-export domain types for backward compatibility during migration
+export type {
+  UserPreferences,
+  UserProfile,
+  Exercise,
+  WorkoutSet,
+  WorkoutExercise,
+  WorkoutInput,
+  Workout,
+  ProgramSet,
+  ProgramExercise,
+  ProgramDay,
+  ProgramWeek,
+  ProgramPhase,
+  SimpleProgramInput,
+  AlternatingProgramInput,
+  AdvancedProgramInput,
+  ProgramInput,
+  SimpleProgram,
+  AlternatingProgram,
+  AdvancedProgram,
+  Program,
 };
 
 export class FirestoreService {

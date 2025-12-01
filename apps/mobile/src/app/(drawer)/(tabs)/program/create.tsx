@@ -8,7 +8,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { AlertModal } from '@/components/AlertModal';
-import {
+import type {
   ProgramInput,
   SimpleProgramInput,
   AlternatingProgramInput,
@@ -18,7 +18,7 @@ import {
   ProgramWeek,
   ProgramPhase,
   ProgramDay,
-} from '@/services/firestore';
+} from '@/domain';
 import { colors } from '@/theme/colors';
 import { ExerciseSelection, ExerciseSelectionContext } from '@/types/workout';
 import {

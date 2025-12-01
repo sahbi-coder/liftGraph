@@ -14,7 +14,7 @@ import {
   type FilterType,
 } from '@/components/progress/DurationFilterButtons';
 import { useUserWorkouts } from '@/hooks/useUserWorkouts';
-import type { Workout } from '@/services/firestore';
+import type { Workout } from '@/domain';
 import type { ExerciseSelection } from '@/types/workout';
 import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 import { buildExerciseE1RMSeries } from '@/utils/strength';

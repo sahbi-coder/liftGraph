@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Workout } from '@/services/firestore';
+import type { Workout } from '@/domain';
 
 type UseWorkoutResult = {
   workout: Workout | null | undefined;

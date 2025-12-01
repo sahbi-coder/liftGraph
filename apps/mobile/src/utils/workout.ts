@@ -1,4 +1,4 @@
-import type { Workout, WorkoutInput } from '@/services/firestore';
+import type { Workout, WorkoutInput } from '@/domain';
 import dayjs from 'dayjs';
 
 /**
