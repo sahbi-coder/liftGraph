@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { ScrollView, TouchableOpacity, Linking, TextInput, View } from 'react-native';
 import { YStack, XStack, Text, Button } from 'tamagui';
 import { useRouter } from 'expo-router';
-import Feather from '@expo/vector-icons/Feather';
 import {
   Star,
   Dumbbell,
@@ -11,7 +10,8 @@ import {
   Palette,
   Trophy,
   Users,
-  Send,
+  Apple,
+  Play,
 } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
@@ -100,7 +100,7 @@ export default function RateUsScreen() {
   return (
     <YStack flex={1} backgroundColor={colors.darkerGray}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 40 }}>
-        <YStack padding="$4" paddingTop="$10" space="$6" alignItems="center">
+        <YStack padding="$4" paddingTop="$3" space="$6" alignItems="center">
           {/* Star Icon */}
           <YStack
             width={120}
@@ -117,7 +117,7 @@ export default function RateUsScreen() {
           {/* Main Title */}
           <YStack space="$2" alignItems="center" paddingHorizontal="$4">
             <Text color={colors.white} fontSize="$9" fontWeight="bold" textAlign="center">
-              Enjoying PowerLift Pro?
+              Enjoying LiftGraph?
             </Text>
             <Text
               color={colors.midGray}
@@ -228,66 +228,59 @@ export default function RateUsScreen() {
 
           {/* Submit Button */}
           <Button
-            width="100%"
-            backgroundColor={colors.niceOrange}
-            color={colors.white}
-            onPress={handleSubmit}
-            borderRadius="$3"
-            padding="$4"
-            marginTop="$2"
+            size="$5"
+            backgroundColor="$primaryButton"
+            color="$secondaryButtonText"
+            fontWeight="600"
+            borderRadius="$4"
+            onPress={() => handleSubmit()}
+            pressStyle={{ opacity: 0.85 }}
+            alignSelf="stretch"
           >
-            <XStack space="$2" alignItems="center">
-              <Send size={20} color={colors.white} />
-              <Text fontSize="$5" fontWeight="600" color={colors.white}>
-                Submit Rating
-              </Text>
-            </XStack>
+            Submit Rating
           </Button>
 
-          {/* Maybe Later Link */}
-          <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7}>
-            <Text color={colors.midGray} fontSize="$4" marginTop="$2">
-              Maybe Later
-            </Text>
-          </TouchableOpacity>
-
           {/* App Store Rating Section */}
-          <YStack width="100%" space="$3" marginTop="$6" alignItems="center">
-            <Text color={colors.midGray} fontSize="$4" textAlign="center">
+          <YStack width="100%" space="$4" marginTop="$4" alignItems="center">
+            <Text color={colors.midGray} fontSize="$4" textAlign="center" paddingHorizontal="$4">
               Love the app? Rate us on your app store!
             </Text>
-            <XStack width="100%" space="$3">
+            <YStack width="100%" space="$3">
               <Button
-                flex={1}
+                size="$5"
                 backgroundColor={colors.darkGray}
                 color={colors.white}
+                fontWeight="600"
+                borderRadius="$4"
                 onPress={handleAppStoreRating}
-                borderRadius="$3"
-                padding="$3"
+                pressStyle={{ opacity: 0.85 }}
+                alignSelf="stretch"
               >
-                <XStack space="$2" alignItems="center">
-                  <Feather name="smartphone" size={18} color={colors.white} />
-                  <Text fontSize="$4" fontWeight="500" color={colors.white}>
+                <XStack space="$2" alignItems="center" justifyContent="center">
+                  <Apple size={20} color={colors.white} />
+                  <Text fontSize="$5" fontWeight="600" color={colors.white}>
                     Rate on App Store
                   </Text>
                 </XStack>
               </Button>
               <Button
-                flex={1}
+                size="$5"
                 backgroundColor={colors.darkGray}
                 color={colors.white}
+                fontWeight="600"
+                borderRadius="$4"
                 onPress={handlePlayStoreRating}
-                borderRadius="$3"
-                padding="$3"
+                pressStyle={{ opacity: 0.85 }}
+                alignSelf="stretch"
               >
-                <XStack space="$2" alignItems="center">
-                  <Feather name="smartphone" size={18} color={colors.white} />
-                  <Text fontSize="$4" fontWeight="500" color={colors.white}>
+                <XStack space="$2" alignItems="center" justifyContent="center">
+                  <Play size={20} color={colors.white} />
+                  <Text fontSize="$5" fontWeight="600" color={colors.white}>
                     Rate on Play Store
                   </Text>
                 </XStack>
               </Button>
-            </XStack>
+            </YStack>
           </YStack>
         </YStack>
       </ScrollView>

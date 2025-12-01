@@ -35,7 +35,7 @@ const config: ExpoConfig = {
     output: 'static',
     favicon: './assets/favicon.png',
   },
-  plugins: ['expo-router', 'expo-font'],
+  plugins: ['expo-router', 'expo-font', 'expo-file-system'],
   // Temporarily disable typedRoutes experiment to fix route discovery
   // experiments: {
   //   typedRoutes: true,

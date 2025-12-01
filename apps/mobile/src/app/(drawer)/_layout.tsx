@@ -52,12 +52,6 @@ function DrawerInner() {
         }}
       >
         <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
           name="profile"
           options={{
             headerShown: true,

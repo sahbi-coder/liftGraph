@@ -1,63 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView, TouchableOpacity, Switch } from 'react-native';
-import { YStack, XStack, Text, Button } from 'tamagui';
+import { YStack, XStack, Text } from 'tamagui';
 import { useRouter } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
-import {
-  User,
-  Dumbbell,
-  Target,
-  Bell,
-  Moon,
-  Languages,
-  Shield,
-  Download,
-  Cloud,
-  HelpCircle,
-  Star,
-  Info,
-  LogOut,
-} from '@tamagui/lucide-icons';
+import { Target, Languages, Shield, Download, Star, Info } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function SettingsScreen() {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
-  const [darkMode, setDarkMode] = useState(true);
-
-  const handleLogout = async () => {
-    try {
-      await signOut();
-      router.replace('/auth/login');
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
-
-  const handleEditProfile = () => {
-    // TODO: Navigate to edit profile screen
-    console.log('Edit profile');
-  };
 
   const handleNavigation = (route: string) => {
     router.push(route as any);
   };
 
   const accountSettings = [
-    {
-      id: 'personalInfo',
-      label: 'Personal Information',
-      icon: User,
-      onPress: () => console.log('Personal Information'),
-    },
-    {
-      id: 'trainingPreferences',
-      label: 'Training Preferences',
-      icon: Dumbbell,
-      onPress: () => console.log('Training Preferences'),
-    },
     {
       id: 'units',
       label: 'Units & Measurements',
@@ -67,12 +26,6 @@ export default function SettingsScreen() {
   ];
 
   const appSettings = [
-    {
-      id: 'notifications',
-      label: 'Notifications',
-      icon: Bell,
-      onPress: () => console.log('Notifications'),
-    },
     {
       id: 'language',
       label: 'Language',
@@ -95,21 +48,9 @@ export default function SettingsScreen() {
       icon: Download,
       onPress: () => handleNavigation('/(drawer)/export-data'),
     },
-    {
-      id: 'backupSync',
-      label: 'Backup & Sync',
-      icon: Cloud,
-      onPress: () => console.log('Backup & Sync'),
-    },
   ];
 
   const supportSettings = [
-    {
-      id: 'helpCenter',
-      label: 'Help Center',
-      icon: HelpCircle,
-      onPress: () => console.log('Help Center'),
-    },
     {
       id: 'rateUs',
       label: 'Rate Us',
@@ -117,11 +58,11 @@ export default function SettingsScreen() {
       onPress: () => handleNavigation('/(drawer)/rate-us'),
     },
     {
-      id: 'about',
-      label: 'About',
+      id: 'ContactUs',
+      label: 'Contact Us',
       icon: Info,
       value: 'v2.4.1',
-      onPress: () => console.log('About'),
+      onPress: () => handleNavigation('/(drawer)/contact-us'),
     },
   ];
 
@@ -186,16 +127,6 @@ export default function SettingsScreen() {
             space="$3"
             alignItems="center"
           >
-            <YStack
-              width={60}
-              height={60}
-              borderRadius={30}
-              backgroundColor={colors.midGray}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Feather name="user" size={30} color={colors.midGray} />
-            </YStack>
             <YStack flex={1} space="$1">
               <Text color={colors.white} fontSize="$6" fontWeight="bold">
                 {user?.displayName || 'Marcus Johnson'}
@@ -204,9 +135,6 @@ export default function SettingsScreen() {
                 {user?.email || 'marcus.j@email.com'}
               </Text>
             </YStack>
-            <TouchableOpacity onPress={handleEditProfile} activeOpacity={0.7}>
-              <Feather name="edit-2" size={20} color={colors.niceOrange} />
-            </TouchableOpacity>
           </XStack>
 
           {/* Account Section */}
@@ -230,28 +158,6 @@ export default function SettingsScreen() {
               {appSettings.map((item) => (
                 <React.Fragment key={item.id}>{renderSettingItem(item)}</React.Fragment>
               ))}
-              {/* Dark Mode with Toggle */}
-              <TouchableOpacity activeOpacity={0.7}>
-                <XStack
-                  backgroundColor={colors.darkGray}
-                  borderRadius="$3"
-                  padding="$4"
-                  space="$3"
-                  alignItems="center"
-                  marginBottom="$2"
-                >
-                  <Moon size={24} color={colors.niceOrange} />
-                  <Text color={colors.white} fontSize="$5" fontWeight="500" flex={1}>
-                    Dark Mode
-                  </Text>
-                  <Switch
-                    value={darkMode}
-                    onValueChange={setDarkMode}
-                    trackColor={{ false: colors.midGray, true: colors.niceOrange }}
-                    thumbColor={colors.white}
-                  />
-                </XStack>
-              </TouchableOpacity>
             </YStack>
           </YStack>
 
@@ -279,28 +185,10 @@ export default function SettingsScreen() {
             </YStack>
           </YStack>
 
-          {/* Log Out Button */}
-          <Button
-            width="100%"
-            backgroundColor="#ef4444"
-            color={colors.white}
-            onPress={handleLogout}
-            borderRadius="$3"
-            padding="$4"
-            marginTop="$2"
-          >
-            <XStack space="$2" alignItems="center">
-              <LogOut size={20} color={colors.white} />
-              <Text fontSize="$5" fontWeight="600" color={colors.white}>
-                Log Out
-              </Text>
-            </XStack>
-          </Button>
-
           {/* Footer */}
           <YStack alignItems="center" space="$1" marginTop="$4">
             <Text color={colors.midGray} fontSize="$4">
-              PowerLift Pro
+              LiftGraph
             </Text>
             <Text color={colors.midGray} fontSize="$3">
               Version 2.4.1
