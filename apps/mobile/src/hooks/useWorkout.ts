@@ -2,17 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Workout } from '@/domain';
 
-type UseWorkoutResult = {
-  workout: Workout | null | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  error: unknown;
-  refetch: () => void;
-};
-
-export function useWorkout(workoutId: string | undefined): UseWorkoutResult {
+export function useWorkout(workoutId: string | undefined) {
   const { services } = useDependencies();
   const { user } = useAuth();
 

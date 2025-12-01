@@ -4,17 +4,8 @@ import { useCallback } from 'react';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Workout } from '@/domain';
 
-type UseEarliestFutureWorkoutResult = {
-  workout: Workout | null | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  error: unknown;
-  refetch: () => void;
-};
-
-export function useEarliestFutureWorkout(): UseEarliestFutureWorkoutResult {
+export function useEarliestFutureWorkout() {
   const { services } = useDependencies();
   const { user } = useAuth();
 

@@ -14,7 +14,7 @@ import {
   where,
 } from 'firebase/firestore';
 
-// Domain models
+// Domain models - types
 import type {
   UserPreferences,
   UserProfile,
@@ -38,12 +38,19 @@ import type {
   Program,
 } from '@/domain';
 
+// Domain models - schemas for validation
+import {
+  UserProfileSchema,
+  UserPreferencesSchema,
+  ExerciseSchema,
+  WorkoutSchema,
+  WorkoutInputSchema,
+  ProgramSchema,
+  ProgramInputSchema,
+} from '@/domain';
+
 // Firestore-specific types (internal use only)
-import type {
-  ExerciseFirestoreData,
-  WorkoutFirestoreData,
-  ProgramFirestoreData,
-} from './firestore-types';
+import type { ProgramFirestoreData } from './firestore-types';
 
 // Re-export domain types for backward compatibility during migration
 export type {
@@ -73,6 +80,14 @@ export class FirestoreService {
   constructor(private readonly db: Firestore) {}
 
   async createUserProfile(uid: string, data: Omit<UserProfile, 'uid' | 'createdAt' | 'updatedAt'>) {
+    // Validate preferences if provided
+    if (data.preferences) {
+      const preferencesResult = UserPreferencesSchema.safeParse(data.preferences);
+      if (!preferencesResult.success) {
+        throw new Error(`Invalid user preferences: ${preferencesResult.error.message}`);
+      }
+    }
+
     const userRef = doc(this.db, 'users', uid);
     const now = Timestamp.now().toDate();
 
@@ -84,7 +99,7 @@ export class FirestoreService {
     });
   }
 
-  async getUserProfile(uid: string): Promise<UserProfile | null> {
+  async getUserProfile(uid: string) {
     const userRef = doc(this.db, 'users', uid);
     const userSnap = await getDoc(userRef);
 
@@ -93,11 +108,23 @@ export class FirestoreService {
     }
 
     const data = userSnap.data();
-    return {
-      ...data,
+    const profileData = {
+      uid,
+      email: data.email,
+      displayName: data.displayName,
+      preferences: data.preferences,
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
-    } as UserProfile;
+    };
+
+    // Validate with schema
+    const result = UserProfileSchema.safeParse(profileData);
+    if (!result.success) {
+      console.error('Invalid user profile from Firestore:', result.error);
+      throw new Error(`Invalid user profile data: ${result.error.message}`);
+    }
+
+    return result.data;
   }
 
   async updateUserProfile(uid: string, data: Partial<UserProfile>) {
@@ -109,38 +136,55 @@ export class FirestoreService {
     await updateDoc(userRef, updateData);
   }
 
-  async getExercisesWithLibrary(userId: string): Promise<Exercise[]> {
+  async getExercisesWithLibrary(userId: string) {
     const librarySnapshot = await getDocs(collection(this.db, 'exercisesLibrary'));
-    const libraryExercises: Exercise[] = librarySnapshot.docs.map((docSnap) => {
-      const data = docSnap.data() as ExerciseFirestoreData;
-      return {
-        id: docSnap.id,
-        name: data.name,
-        category: data.category,
-        bodyPart: data.bodyPart ?? (data.body_part as string | undefined),
-        description: data.description,
-        source: 'library',
-      };
-    });
+    const libraryExercises = librarySnapshot.docs
+      .map((docSnap) => {
+        const data = docSnap.data();
+        const exerciseData = {
+          id: docSnap.id,
+          name: data.name,
+          category: data.category,
+          bodyPart: data.bodyPart,
+          description: data.description,
+          source: 'library',
+        };
+
+        // Validate with schema
+        const result = ExerciseSchema.safeParse(exerciseData);
+        if (!result.success) {
+          console.error(`Invalid exercise from library (${docSnap.id}):`, result.error);
+          return null;
+        }
+        return result.data;
+      })
+      .filter((exercise): exercise is Exercise => exercise !== null);
 
     const userSnapshot = await getDocs(collection(this.db, `users/${userId}/exercises`));
-    const userExercises: Exercise[] = userSnapshot.docs.map((docSnap) => {
-      const data = docSnap.data() as ExerciseFirestoreData;
-      const createdAtValue = data.createdAt;
+    const userExercises = userSnapshot.docs
+      .map((docSnap) => {
+        const data = docSnap.data();
+        const createdAtValue = data.createdAt;
 
-      return {
-        id: docSnap.id,
-        name: data.name,
-        category: data.category,
-        bodyPart: data.bodyPart,
-        description: data.description,
-        createdAt:
-          createdAtValue instanceof Timestamp
-            ? createdAtValue.toDate()
-            : (createdAtValue as Date | undefined),
-        source: 'user',
-      };
-    });
+        const exerciseData = {
+          id: docSnap.id,
+          name: data.name,
+          category: data.category,
+          bodyPart: data.bodyPart,
+          description: data.description,
+          createdAt: createdAtValue instanceof Timestamp ? createdAtValue.toDate() : createdAtValue,
+          source: 'user',
+        };
+
+        // Validate with schema
+        const result = ExerciseSchema.safeParse(exerciseData);
+        if (!result.success) {
+          console.error(`Invalid user exercise (${docSnap.id}):`, result.error);
+          return null;
+        }
+        return result.data;
+      })
+      .filter((exercise): exercise is Exercise => exercise !== null);
 
     return [...libraryExercises, ...userExercises];
   }
@@ -190,10 +234,16 @@ export class FirestoreService {
     return exerciseId;
   }
 
-  async createWorkout(userId: string, workout: WorkoutInput): Promise<string> {
+  async createWorkout(userId: string, workout: WorkoutInput) {
+    // Validate input with schema
+    const inputResult = WorkoutInputSchema.safeParse(workout);
+    if (!inputResult.success) {
+      throw new Error(`Invalid workout input: ${inputResult.error.message}`);
+    }
+
     const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
     const now = Timestamp.now();
-    const serialized = this.serializeWorkout(workout);
+    const serialized = this.serializeWorkout(inputResult.data);
     const docRef = await addDoc(workoutsCollection, {
       ...serialized,
       validated: false,
@@ -204,24 +254,30 @@ export class FirestoreService {
     return docRef.id;
   }
 
-  async createProgram(userId: string, program: ProgramInput): Promise<string> {
+  async createProgram(userId: string, program: ProgramInput) {
+    // Validate input with schema
+    const inputResult = ProgramInputSchema.safeParse(program);
+    if (!inputResult.success) {
+      throw new Error(`Invalid program input: ${inputResult.error.message}`);
+    }
+
     const programsCollection = collection(this.db, `users/${userId}/programs`);
     const now = Timestamp.now();
 
     const programData: ProgramFirestoreData = {
-      name: program.name,
-      description: program.description,
-      type: program.type,
+      name: inputResult.data.name,
+      description: inputResult.data.description,
+      type: inputResult.data.type,
       createdAt: now,
       updatedAt: now,
     };
 
-    if (program.type === 'simple') {
-      programData.week = program.week;
-    } else if (program.type === 'alternating') {
-      programData.alternatingWeeks = program.alternatingWeeks;
+    if (inputResult.data.type === 'simple') {
+      programData.week = inputResult.data.week;
+    } else if (inputResult.data.type === 'alternating') {
+      programData.alternatingWeeks = inputResult.data.alternatingWeeks;
     } else {
-      programData.phases = program.phases;
+      programData.phases = inputResult.data.phases;
     }
 
     const docRef = await addDoc(programsCollection, programData);
@@ -229,44 +285,69 @@ export class FirestoreService {
     return docRef.id;
   }
 
-  async getPrograms(userId: string): Promise<Program[]> {
+  async getPrograms(userId: string) {
     const programsCollection = collection(this.db, `users/${userId}/programs`);
     const programsQuery = query(programsCollection, orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(programsQuery);
 
-    return snapshot.docs.map((docSnap) => {
-      const data = docSnap.data() as ProgramFirestoreData;
-      const baseProgram = {
-        id: docSnap.id,
-        name: data.name,
-        description: data.description,
-        createdAt: data.createdAt.toDate(),
-        updatedAt: data.updatedAt.toDate(),
-      };
-
-      if (data.type === 'simple') {
-        return {
-          ...baseProgram,
-          type: 'simple' as const,
-          week: data.week!,
-        } as SimpleProgram;
-      } else if (data.type === 'alternating') {
-        return {
-          ...baseProgram,
-          type: 'alternating' as const,
-          alternatingWeeks: data.alternatingWeeks!,
+    const programs = snapshot.docs
+      .map((docSnap) => {
+        const data = docSnap.data();
+        const baseProgram = {
+          id: docSnap.id,
+          name: data.name,
+          description: data.description,
+          createdAt: data.createdAt.toDate(),
+          updatedAt: data.updatedAt.toDate(),
         };
-      } else {
-        return {
-          ...baseProgram,
-          type: 'advanced' as const,
-          phases: data.phases!,
-        } as AdvancedProgram;
-      }
-    });
+
+        let programData: Program;
+        if (data.type === 'simple') {
+          if (!data.week) {
+            console.error(`Invalid simple program (${docSnap.id}): missing week`);
+            return null;
+          }
+          programData = {
+            ...baseProgram,
+            type: 'simple',
+            week: data.week,
+          };
+        } else if (data.type === 'alternating') {
+          if (!data.alternatingWeeks) {
+            console.error(`Invalid alternating program (${docSnap.id}): missing alternatingWeeks`);
+            return null;
+          }
+          programData = {
+            ...baseProgram,
+            type: 'alternating',
+            alternatingWeeks: data.alternatingWeeks,
+          };
+        } else {
+          if (!data.phases) {
+            console.error(`Invalid advanced program (${docSnap.id}): missing phases`);
+            return null;
+          }
+          programData = {
+            ...baseProgram,
+            type: 'advanced',
+            phases: data.phases,
+          };
+        }
+
+        // Validate with schema
+        const result = ProgramSchema.safeParse(programData);
+        if (!result.success) {
+          console.error(`Invalid program (${docSnap.id}):`, result.error);
+          return null;
+        }
+        return result.data;
+      })
+      .filter((program): program is Program => program !== null);
+
+    return programs;
   }
 
-  async getProgram(userId: string, programId: string): Promise<Program | null> {
+  async getProgram(userId: string, programId: string) {
     const programRef = doc(this.db, `users/${userId}/programs/${programId}`);
     const snapshot = await getDoc(programRef);
 
@@ -274,7 +355,7 @@ export class FirestoreService {
       return null;
     }
 
-    const data = snapshot.data() as ProgramFirestoreData;
+    const data = snapshot.data();
     const baseProgram = {
       id: snapshot.id,
       name: data.name,
@@ -283,25 +364,44 @@ export class FirestoreService {
       updatedAt: data.updatedAt.toDate(),
     };
 
+    let programData: Program;
     if (data.type === 'simple') {
-      return {
+      if (!data.week) {
+        throw new Error(`Invalid simple program: missing week`);
+      }
+      programData = {
         ...baseProgram,
-        type: 'simple' as const,
-        week: data.week!,
-      } as SimpleProgram;
+        type: 'simple',
+        week: data.week,
+      };
     } else if (data.type === 'alternating') {
-      return {
+      if (!data.alternatingWeeks) {
+        throw new Error(`Invalid alternating program: missing alternatingWeeks`);
+      }
+      programData = {
         ...baseProgram,
-        type: 'alternating' as const,
-        alternatingWeeks: data.alternatingWeeks!,
-      } as AlternatingProgram;
+        type: 'alternating',
+        alternatingWeeks: data.alternatingWeeks,
+      };
     } else {
-      return {
+      if (!data.phases) {
+        throw new Error(`Invalid advanced program: missing phases`);
+      }
+      programData = {
         ...baseProgram,
-        type: 'advanced' as const,
-        phases: data.phases!,
-      } as AdvancedProgram;
+        type: 'advanced',
+        phases: data.phases,
+      };
     }
+
+    // Validate with schema
+    const result = ProgramSchema.safeParse(programData);
+    if (!result.success) {
+      console.error('Invalid program from Firestore:', result.error);
+      throw new Error(`Invalid program data: ${result.error.message}`);
+    }
+
+    return result.data;
   }
 
   async deleteProgram(userId: string, programId: string): Promise<void> {
@@ -315,7 +415,13 @@ export class FirestoreService {
     await deleteDoc(programRef);
   }
 
-  async updateWorkout(userId: string, workoutId: string, workout: WorkoutInput): Promise<void> {
+  async updateWorkout(userId: string, workoutId: string, workout: WorkoutInput) {
+    // Validate input with schema
+    const inputResult = WorkoutInputSchema.safeParse(workout);
+    if (!inputResult.success) {
+      throw new Error(`Invalid workout input: ${inputResult.error.message}`);
+    }
+
     const workoutRef = doc(this.db, `users/${userId}/workouts/${workoutId}`);
     const existingWorkout = await getDoc(workoutRef);
 
@@ -323,12 +429,12 @@ export class FirestoreService {
       throw new Error('Workout not found');
     }
 
-    const existingData = existingWorkout.data() as Partial<WorkoutFirestoreData>;
+    const existingData = existingWorkout.data();
     const createdAt =
       existingData?.createdAt instanceof Timestamp ? existingData.createdAt : Timestamp.now();
     const validated = existingData?.validated ?? false;
 
-    const serialized = this.serializeWorkout(workout);
+    const serialized = this.serializeWorkout(inputResult.data);
 
     await setDoc(workoutRef, {
       ...serialized,
@@ -377,7 +483,7 @@ export class FirestoreService {
     await deleteDoc(workoutRef);
   }
 
-  async getLatestValidatedWorkout(userId: string): Promise<Workout | null> {
+  async getLatestValidatedWorkout(userId: string) {
     const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
 
     // Query validated workouts without orderBy to avoid composite index requirement
@@ -399,8 +505,7 @@ export class FirestoreService {
 
     const latestDoc = sortedDocs[0];
     const data = latestDoc.data();
-
-    return {
+    const workoutData = {
       id: latestDoc.id,
       date: data.date.toDate(),
       notes: data.notes,
@@ -409,9 +514,18 @@ export class FirestoreService {
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
     };
+
+    // Validate with schema
+    const result = WorkoutSchema.safeParse(workoutData);
+    if (!result.success) {
+      console.error('Invalid workout from Firestore:', result.error);
+      throw new Error(`Invalid workout data: ${result.error.message}`);
+    }
+
+    return result.data;
   }
 
-  async getEarliestNonValidatedFutureWorkout(userId: string): Promise<Workout | null> {
+  async getEarliestNonValidatedFutureWorkout(userId: string) {
     const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
     // Get today at midnight in UTC
     const now = new Date();
@@ -424,7 +538,7 @@ export class FirestoreService {
     // Filter results to only include non-validated workouts dated today or in the future
     // Compare at day level using UTC time
     const filteredDocs = snapshot.docs.filter((doc) => {
-      const data = doc.data() as WorkoutFirestoreData;
+      const data = doc.data();
 
       // Skip validated workouts
       if (data.validated === true) {
@@ -453,9 +567,8 @@ export class FirestoreService {
 
     // Get the earliest one (first in the filtered array since query is ordered)
     const earliestDoc = filteredDocs[0];
-    const data = earliestDoc.data() as WorkoutFirestoreData;
-
-    return {
+    const data = earliestDoc.data();
+    const workoutData = {
       id: earliestDoc.id,
       date: data.date.toDate(),
       notes: data.notes,
@@ -464,9 +577,18 @@ export class FirestoreService {
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
     };
+
+    // Validate with schema
+    const result = WorkoutSchema.safeParse(workoutData);
+    if (!result.success) {
+      console.error('Invalid workout from Firestore:', result.error);
+      throw new Error(`Invalid workout data: ${result.error.message}`);
+    }
+
+    return result.data;
   }
 
-  async getTodaysWorkout(userId: string): Promise<Workout | null> {
+  async getTodaysWorkout(userId: string) {
     const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
     // Get today at midnight in local time
     const now = new Date();
@@ -480,7 +602,7 @@ export class FirestoreService {
 
     // Filter to find workouts dated today
     const todaysWorkouts = snapshot.docs.filter((doc) => {
-      const data = doc.data() as WorkoutFirestoreData;
+      const data = doc.data();
       const workoutDate = data.date.toDate();
       // Normalize workout date to local midnight for day-level comparison
       const workoutDateLocal = new Date(
@@ -501,14 +623,13 @@ export class FirestoreService {
 
     // Prioritize non-validated workouts (scheduled for today), otherwise return validated
     const nonValidated = todaysWorkouts.find((doc) => {
-      const data = doc.data() as WorkoutFirestoreData;
+      const data = doc.data();
       return data.validated === false;
     });
 
     const workoutDoc = nonValidated || todaysWorkouts[0];
-    const data = workoutDoc.data() as WorkoutFirestoreData;
-
-    return {
+    const data = workoutDoc.data();
+    const workoutData = {
       id: workoutDoc.id,
       date: data.date.toDate(),
       notes: data.notes,
@@ -517,9 +638,18 @@ export class FirestoreService {
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
     };
+
+    // Validate with schema
+    const result = WorkoutSchema.safeParse(workoutData);
+    if (!result.success) {
+      console.error('Invalid workout from Firestore:', result.error);
+      throw new Error(`Invalid workout data: ${result.error.message}`);
+    }
+
+    return result.data;
   }
 
-  async getWorkout(userId: string, workoutId: string): Promise<Workout | null> {
+  async getWorkout(userId: string, workoutId: string) {
     const workoutRef = doc(this.db, `users/${userId}/workouts/${workoutId}`);
     const snapshot = await getDoc(workoutRef);
 
@@ -527,9 +657,8 @@ export class FirestoreService {
       return null;
     }
 
-    const data = snapshot.data() as WorkoutFirestoreData;
-
-    return {
+    const data = snapshot.data();
+    const workoutData = {
       id: snapshot.id,
       date: data.date.toDate(),
       notes: data.notes,
@@ -538,25 +667,46 @@ export class FirestoreService {
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
     };
+
+    // Validate with schema
+    const result = WorkoutSchema.safeParse(workoutData);
+    if (!result.success) {
+      console.error('Invalid workout from Firestore:', result.error);
+      throw new Error(`Invalid workout data: ${result.error.message}`);
+    }
+
+    return result.data;
   }
 
-  async getWorkouts(userId: string): Promise<Workout[]> {
+  async getWorkouts(userId: string) {
     const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
     const workoutsQuery = query(workoutsCollection, orderBy('date', 'desc'));
     const snapshot = await getDocs(workoutsQuery);
 
-    return snapshot.docs.map((docSnap) => {
-      const data = docSnap.data() as WorkoutFirestoreData;
-      return {
-        id: docSnap.id,
-        date: data.date.toDate(),
-        notes: data.notes,
-        exercises: data.exercises,
-        validated: data.validated ?? false,
-        createdAt: data.createdAt.toDate(),
-        updatedAt: data.updatedAt.toDate(),
-      };
-    });
+    const workouts = snapshot.docs
+      .map((docSnap) => {
+        const data = docSnap.data();
+        const workoutData = {
+          id: docSnap.id,
+          date: data.date.toDate(),
+          notes: data.notes,
+          exercises: data.exercises,
+          validated: data.validated ?? false,
+          createdAt: data.createdAt.toDate(),
+          updatedAt: data.updatedAt.toDate(),
+        };
+
+        // Validate with schema
+        const result = WorkoutSchema.safeParse(workoutData);
+        if (!result.success) {
+          console.error(`Invalid workout (${docSnap.id}):`, result.error);
+          return null;
+        }
+        return result.data;
+      })
+      .filter((workout): workout is Workout => workout !== null);
+
+    return workouts;
   }
 
   private serializeWorkout(workout: WorkoutInput) {

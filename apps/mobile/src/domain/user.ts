@@ -1,15 +1,28 @@
-export type UserPreferences = {
-  weightUnit: 'kg' | 'lb';
-  distanceUnit: 'cm' | 'ft';
-  temperatureUnit: 'celsius' | 'fahrenheit';
-  onboardingCompleted?: boolean;
-};
+import { z } from 'zod';
 
-export type UserProfile = {
-  uid: string;
-  email: string;
-  displayName: string;
-  preferences: UserPreferences;
-  createdAt: Date;
-  updatedAt: Date;
-};
+// ============================================
+// ZOD SCHEMAS (Source of Truth)
+// ============================================
+
+export const UserPreferencesSchema = z.object({
+  weightUnit: z.enum(['kg', 'lb']),
+  distanceUnit: z.enum(['cm', 'ft']),
+  temperatureUnit: z.enum(['celsius', 'fahrenheit']),
+  onboardingCompleted: z.boolean().optional(),
+});
+
+export const UserProfileSchema = z.object({
+  uid: z.string().min(1, 'User ID is required'),
+  email: z.string().email('Invalid email address'),
+  displayName: z.string().min(1, 'Display name is required'),
+  preferences: UserPreferencesSchema,
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+// ============================================
+// INFERRED TYPES (From Schemas)
+// ============================================
+
+export type UserPreferences = z.infer<typeof UserPreferencesSchema>;
+export type UserProfile = z.infer<typeof UserProfileSchema>;

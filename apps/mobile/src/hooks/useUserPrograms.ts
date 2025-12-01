@@ -6,15 +6,7 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import type { Program } from '@/domain';
 
-type UseUserProgramsResult = {
-  programs: Program[] | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  error: unknown;
-  refetch: () => void;
-};
-
-export function useUserPrograms(): UseUserProgramsResult {
+export function useUserPrograms() {
   const { services } = useDependencies();
   const { user } = useAuth();
 

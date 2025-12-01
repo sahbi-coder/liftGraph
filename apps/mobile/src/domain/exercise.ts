@@ -1,9 +1,21 @@
-export type Exercise = {
-  id: string;
-  name: string;
-  category: string;
-  bodyPart: string;
-  description?: string;
-  createdAt?: Date;
-  source: 'library' | 'user';
-};
+import { z } from 'zod';
+
+// ============================================
+// ZOD SCHEMAS (Source of Truth)
+// ============================================
+
+export const ExerciseSchema = z.object({
+  id: z.string().min(1, 'Exercise ID is required'),
+  name: z.string().min(1, 'Exercise name is required'),
+  category: z.string().min(1, 'Category is required'),
+  bodyPart: z.string().min(1, 'Body part is required'),
+  description: z.string().optional(),
+  createdAt: z.date().optional(),
+  source: z.enum(['library', 'user']),
+});
+
+// ============================================
+// INFERRED TYPES (From Schemas)
+// ============================================
+
+export type Exercise = z.infer<typeof ExerciseSchema>;

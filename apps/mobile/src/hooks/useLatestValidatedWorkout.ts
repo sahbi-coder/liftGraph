@@ -4,17 +4,8 @@ import { useCallback } from 'react';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Workout } from '@/domain';
 
-type UseLatestValidatedWorkoutResult = {
-  workout: Workout | null | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  error: unknown;
-  refetch: () => void;
-};
-
-export function useLatestValidatedWorkout(): UseLatestValidatedWorkoutResult {
+export function useLatestValidatedWorkout() {
   const { services } = useDependencies();
   const { user } = useAuth();
 

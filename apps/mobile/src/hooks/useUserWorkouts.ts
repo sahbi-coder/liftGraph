@@ -6,15 +6,7 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import type { Workout } from '@/domain';
 
-type UseUserWorkoutsResult = {
-  workouts: Workout[] | undefined;
-  isLoading: boolean;
-  isError: boolean;
-  error: unknown;
-  refetch: () => void;
-};
-
-export function useUserWorkouts(): UseUserWorkoutsResult {
+export function useUserWorkouts() {
   const { services } = useDependencies();
   const { user } = useAuth();
 
