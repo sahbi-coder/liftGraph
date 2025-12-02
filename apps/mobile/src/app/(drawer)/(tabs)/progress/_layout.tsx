@@ -1,6 +1,8 @@
 import React from 'react';
 import { Stack } from 'expo-router';
 
+import { BackButton } from '@/components/BackButton';
+
 import { colors } from '@/theme/colors';
 import { DrawerButton } from '@/components/DrawerButton';
 
@@ -12,6 +14,7 @@ export default function ProgressLayout() {
         headerTintColor: colors.white,
         headerTitleStyle: { color: colors.white },
         contentStyle: { backgroundColor: colors.darkerGray },
+        headerBackVisible: false,
       }}
     >
       <Stack.Screen
@@ -26,19 +29,35 @@ export default function ProgressLayout() {
       />
       <Stack.Screen
         name="estimated-1rm"
-        options={{ headerTitle: 'Estimated 1RM Trend', headerTitleAlign: 'center' }}
+        options={{
+          headerTitle: 'Estimated 1RM Trend',
+          headerTitleAlign: 'center',
+          headerLeft: () => <BackButton />,
+        }}
       />
       <Stack.Screen
         name="top-set"
-        options={{ headerTitle: 'Top Set Progression Chart', headerTitleAlign: 'center' }}
+        options={{
+          headerTitle: 'Top Set Progression Chart',
+          headerTitleAlign: 'center',
+          headerLeft: () => <BackButton />,
+        }}
       />
       <Stack.Screen
         name="weekly-volume"
-        options={{ headerTitle: 'Weekly Volume Load', headerTitleAlign: 'center' }}
+        options={{
+          headerTitle: 'Weekly Volume Load',
+          headerTitleAlign: 'center',
+          headerLeft: () => <BackButton />,
+        }}
       />
       <Stack.Screen
         name="frequency-chart"
-        options={{ headerTitle: 'Workout Frequency', headerTitleAlign: 'center' }}
+        options={{
+          headerTitle: 'Workout Frequency',
+          headerTitleAlign: 'center',
+          headerLeft: () => <BackButton />,
+        }}
       />
     </Stack>
   );

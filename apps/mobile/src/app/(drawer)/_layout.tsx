@@ -2,8 +2,9 @@ import React from 'react';
 import { Drawer } from 'react-native-drawer-layout';
 import { Stack, Redirect, Slot, usePathname } from 'expo-router';
 import { YStack, Text } from 'tamagui';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Platform } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
+import { BackButton } from '@/components/BackButton';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { DrawerContent } from '@/components/DrawerContent';
@@ -60,6 +61,7 @@ function DrawerInner() {
             headerTitleStyle: { fontSize: 28, color: colors.white },
             headerStyle: { backgroundColor: colors.darkerGray },
             headerTintColor: colors.white,
+            headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {
@@ -88,6 +90,7 @@ function DrawerInner() {
             headerTitleStyle: { fontSize: 28, color: colors.white },
             headerStyle: { backgroundColor: colors.darkerGray },
             headerTintColor: colors.white,
+            headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
           }}
         />
         <Stack.Screen
@@ -99,6 +102,7 @@ function DrawerInner() {
             headerTitleStyle: { fontSize: 28, color: colors.white },
             headerStyle: { backgroundColor: colors.darkerGray },
             headerTintColor: colors.white,
+            headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
           }}
         />
         <Stack.Screen
@@ -110,9 +114,9 @@ function DrawerInner() {
             headerTitleStyle: { fontSize: 28, color: colors.white },
             headerStyle: { backgroundColor: colors.darkerGray },
             headerTintColor: colors.white,
+            headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
           }}
         />
-        {/* Add more standalone screens here as Stack.Screen */}
       </Stack>
     </Drawer>
   );

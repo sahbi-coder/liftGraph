@@ -19,7 +19,7 @@ export default function ProgramLayout() {
         options={{
           headerTitle: 'Programs',
           headerTitleAlign: 'left',
-          headerTitleStyle: { fontSize: 35 },
+          headerTitleStyle: { fontSize: 28 },
           headerLeft: () => <DrawerButton />,
         }}
       />
