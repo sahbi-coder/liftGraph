@@ -7,7 +7,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import { AlertModal } from '@/components/AlertModal';
+import { useAlertModal } from '@/hooks/useAlertModal';
 import type {
   ProgramInput,
   SimpleProgramInput,
@@ -98,15 +98,7 @@ export default function CreateProgramScreen() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const [alertModal, setAlertModal] = useState<{
-    visible: boolean;
-    message: string;
-    type: 'success' | 'info' | 'warning' | 'error';
-  }>({
-    visible: false,
-    message: '',
-    type: 'info',
-  });
+  const { showSuccess, showError, showWarning, AlertModalComponent } = useAlertModal();
 
   // Simple program state - initialize with one week
   const [weeks, setWeeks] = useState<ProgramWeekForm[]>(() => [createWeekForm()]);
@@ -582,11 +574,7 @@ export default function CreateProgramScreen() {
               exercises: day.exercises.map((ex) => {
                 if (ex.id !== exerciseId) return ex;
                 if (ex.sets.length === 1) {
-                  setAlertModal({
-                    visible: true,
-                    message: 'Each exercise must have at least one set.',
-                    type: 'warning',
-                  });
+                  showWarning('Each exercise must have at least one set.');
                   return ex;
                 }
                 return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
@@ -608,11 +596,7 @@ export default function CreateProgramScreen() {
               exercises: day.exercises.map((ex) => {
                 if (ex.id !== exerciseId) return ex;
                 if (ex.sets.length === 1) {
-                  setAlertModal({
-                    visible: true,
-                    message: 'Each exercise must have at least one set.',
-                    type: 'warning',
-                  });
+                  showWarning('Each exercise must have at least one set.');
                   return ex;
                 }
                 return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
@@ -638,11 +622,7 @@ export default function CreateProgramScreen() {
                   exercises: day.exercises.map((ex) => {
                     if (ex.id !== exerciseId) return ex;
                     if (ex.sets.length === 1) {
-                      setAlertModal({
-                        visible: true,
-                        message: 'Each exercise must have at least one set.',
-                        type: 'warning',
-                      });
+                      showWarning('Each exercise must have at least one set.');
                       return ex;
                     }
                     return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
@@ -756,30 +736,18 @@ export default function CreateProgramScreen() {
 
   const validateAndConvert = useCallback((): ProgramInput | null => {
     if (!name.trim()) {
-      setAlertModal({
-        visible: true,
-        message: 'Program name is required.',
-        type: 'error',
-      });
+      showError('Program name is required.');
       return null;
     }
 
     if (!description.trim()) {
-      setAlertModal({
-        visible: true,
-        message: 'Program description is required.',
-        type: 'error',
-      });
+      showError('Program description is required.');
       return null;
     }
 
     if (programType === 'simple') {
       if (weeks.length === 0) {
-        setAlertModal({
-          visible: true,
-          message: 'Simple program must have at least one week.',
-          type: 'error',
-        });
+        showError('Simple program must have at least one week.');
         return null;
       }
 
@@ -831,11 +799,7 @@ export default function CreateProgramScreen() {
       return simpleProgram;
     } else if (programType === 'alternating') {
       if (alternatingWeeks.length !== 2) {
-        setAlertModal({
-          visible: true,
-          message: 'Alternating program must have exactly two weeks.',
-          type: 'error',
-        });
+        showError('Alternating program must have exactly two weeks.');
         return null;
       }
 
@@ -893,11 +857,7 @@ export default function CreateProgramScreen() {
       return alternatingProgram;
     } else {
       if (phases.length === 0) {
-        setAlertModal({
-          visible: true,
-          message: 'Advanced program must have at least one phase.',
-          type: 'error',
-        });
+        showError('Advanced program must have at least one phase.');
         return null;
       }
 
@@ -972,15 +932,11 @@ export default function CreateProgramScreen() {
 
       return advancedProgram;
     }
-  }, [name, description, programType, weeks, alternatingWeeks, phases]);
+  }, [name, description, programType, weeks, alternatingWeeks, phases, showError]);
 
   const handleSave = useCallback(async () => {
     if (!user) {
-      setAlertModal({
-        visible: true,
-        message: 'Please sign in to create programs.',
-        type: 'error',
-      });
+      showError('Please sign in to create programs.');
       return;
     }
 
@@ -994,26 +950,18 @@ export default function CreateProgramScreen() {
 
       setIsSaving(true);
       await services.firestore.createProgram(user.uid, programData);
-      setAlertModal({
-        visible: true,
-        message: 'Your program has been saved successfully.',
-        type: 'success',
-      });
+      showSuccess('Your program has been saved successfully.');
       // Navigate back after showing success message
       setTimeout(() => {
         router.back();
       }, 1500);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Something went wrong.';
-      setAlertModal({
-        visible: true,
-        message,
-        type: 'error',
-      });
+      showError(message);
     } finally {
       setIsSaving(false);
     }
-  }, [user, services.firestore, router, validateAndConvert]);
+  }, [user, services.firestore, router, validateAndConvert, showError, showSuccess]);
 
   const renderExerciseCard = useCallback(
     (
@@ -1394,13 +1342,7 @@ export default function CreateProgramScreen() {
           {isSaving ? 'Creating...' : 'Create Program'}
         </Button>
       </YStack>
-      <AlertModal
-        visible={alertModal.visible}
-        message={alertModal.message}
-        type={alertModal.type}
-        duration={alertModal.type === 'success' ? 2000 : 4000}
-        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
-      />
+      <AlertModalComponent />
     </ScrollView>
   );
 }

@@ -6,7 +6,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
 import { PasswordInput } from '@/components/PasswordInput';
-import { AlertModal } from '@/components/AlertModal';
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 const logoSource = require('../../../assets/exp-icon.png');
 
@@ -14,21 +14,13 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState<'success' | 'info' | 'warning' | 'error'>('error');
+  const { showError, AlertModalComponent } = useAlertModal();
   const { signIn } = useAuth();
   const router = useRouter();
 
-  const showAlert = (message: string, type: 'success' | 'info' | 'warning' | 'error' = 'error') => {
-    setAlertMessage(message);
-    setAlertType(type);
-    setAlertVisible(true);
-  };
-
   const handleLogin = async () => {
     if (!email || !password) {
-      showAlert('Please enter email and password', 'error');
+      showError('Please enter email and password');
       return;
     }
 
@@ -37,7 +29,7 @@ export default function LoginScreen() {
       await signIn(email, password);
       router.replace('/');
     } catch (error) {
-      showAlert(error instanceof Error ? error.message : 'Unknown error', 'error');
+      showError(error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
@@ -161,12 +153,7 @@ export default function LoginScreen() {
           </Text>
         </YStack>
       </XStack>
-      <AlertModal
-        visible={alertVisible}
-        message={alertMessage}
-        type={alertType}
-        onComplete={() => setAlertVisible(false)}
-      />
+      <AlertModalComponent />
     </YStack>
   );
 }

@@ -11,7 +11,7 @@ import {
   getExercisePickerCallback,
   clearExercisePickerCallback,
 } from '@/contexts/exercisePickerContext';
-import { AlertModal } from '@/components/AlertModal';
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 const EXERCISE_CATEGORIES = [
   'Barbell',
@@ -47,50 +47,26 @@ export default function CreateExerciseScreen() {
   const [bodyPart, setBodyPart] = useState('');
   const [description, setDescription] = useState('');
   const [isCreating, setIsCreating] = useState(false);
-  const [alertModal, setAlertModal] = useState<{
-    visible: boolean;
-    message: string;
-    type: 'success' | 'info' | 'warning' | 'error';
-  }>({
-    visible: false,
-    message: '',
-    type: 'info',
-  });
+  const { showSuccess, showError, AlertModalComponent } = useAlertModal();
 
   const handleCreate = async () => {
     if (!user) {
-      setAlertModal({
-        visible: true,
-        message: 'Please sign in to create exercises.',
-        type: 'error',
-      });
+      showError('Please sign in to create exercises.');
       return;
     }
 
     if (!name.trim()) {
-      setAlertModal({
-        visible: true,
-        message: 'Exercise name is required.',
-        type: 'error',
-      });
+      showError('Exercise name is required.');
       return;
     }
 
     if (!category.trim()) {
-      setAlertModal({
-        visible: true,
-        message: 'Category is required.',
-        type: 'error',
-      });
+      showError('Category is required.');
       return;
     }
 
     if (!bodyPart.trim()) {
-      setAlertModal({
-        visible: true,
-        message: 'Body part is required.',
-        type: 'error',
-      });
+      showError('Body part is required.');
       return;
     }
 
@@ -123,22 +99,14 @@ export default function CreateExerciseScreen() {
         clearExercisePickerCallback();
       }
 
-      setAlertModal({
-        visible: true,
-        message: 'Exercise created successfully!',
-        type: 'success',
-      });
+      showSuccess('Exercise created successfully!');
       // Navigate back after showing success message
       setTimeout(() => {
         router.back();
       }, 1500);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to create exercise.';
-      setAlertModal({
-        visible: true,
-        message,
-        type: 'error',
-      });
+      showError(message);
     } finally {
       setIsCreating(false);
     }
@@ -274,13 +242,7 @@ export default function CreateExerciseScreen() {
           </Button>
         </XStack>
       </YStack>
-      <AlertModal
-        visible={alertModal.visible}
-        message={alertModal.message}
-        type={alertModal.type}
-        duration={alertModal.type === 'success' ? 2000 : 4000}
-        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
-      />
+      <AlertModalComponent />
     </ScrollView>
   );
 }

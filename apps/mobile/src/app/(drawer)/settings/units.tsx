@@ -6,7 +6,7 @@ import { colors } from '@/theme/colors';
 import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import type { UserPreferences } from '@/domain';
-import { AlertModal } from '@/components/AlertModal';
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 type UnitOption = {
   value: 'kg' | 'lb' | 'cm' | 'ft' | 'celsius' | 'fahrenheit';
@@ -68,9 +68,7 @@ export default function UnitsSettingsScreen() {
     distanceUnit: preferences?.distanceUnit || 'cm',
     temperatureUnit: preferences?.temperatureUnit || 'celsius',
   });
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState<'success' | 'info' | 'warning' | 'error'>('success');
+  const { showSuccess, showError, AlertModalComponent } = useAlertModal();
 
   const handleUnitSelect = (
     type: 'weightUnit' | 'distanceUnit' | 'temperatureUnit',
@@ -85,17 +83,13 @@ export default function UnitsSettingsScreen() {
   const handleSave = async () => {
     try {
       await updatePreferences(selectedUnits);
-      setAlertMessage('Preferences saved successfully!');
-      setAlertType('success');
-      setAlertVisible(true);
+      showSuccess('Preferences saved successfully!');
       setTimeout(() => {
         router.back();
       }, 1500);
     } catch (error) {
       console.error('Error saving preferences:', error);
-      setAlertMessage('Failed to save preferences. Please try again.');
-      setAlertType('error');
-      setAlertVisible(true);
+      showError('Failed to save preferences. Please try again.');
     }
   };
 
@@ -219,12 +213,7 @@ export default function UnitsSettingsScreen() {
         </XStack>
       </ScrollView>
 
-      <AlertModal
-        visible={alertVisible}
-        message={alertMessage}
-        type={alertType}
-        onComplete={() => setAlertVisible(false)}
-      />
+      <AlertModalComponent />
     </YStack>
   );
 }

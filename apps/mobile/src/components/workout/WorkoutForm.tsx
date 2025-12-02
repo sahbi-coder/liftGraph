@@ -13,7 +13,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { ExerciseSelection, WorkoutStackParamList } from '@/types/workout';
 import { Calendar } from '@/components/Calendar';
 import { Calendar as CalendarIcon } from '@tamagui/lucide-icons';
-import { AlertModal } from '@/components/AlertModal';
+import { useAlertModal } from '@/hooks/useAlertModal';
 import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 import { useUserWorkouts } from '@/hooks/useUserWorkouts';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
@@ -287,15 +287,7 @@ export function WorkoutForm({
 
   const validated = initialValues?.validated ?? false;
   const [isUnvalidateModalVisible, setIsUnvalidateModalVisible] = useState(false);
-  const [alertModal, setAlertModal] = useState<{
-    visible: boolean;
-    message: string;
-    type: 'success' | 'info' | 'warning' | 'error';
-  }>({
-    visible: false,
-    message: '',
-    type: 'info',
-  });
+  const { showWarning, showError, AlertModalComponent } = useAlertModal();
 
   // Check if validate button should be shown
   const shouldShowValidateButton = useMemo(() => {
@@ -523,11 +515,7 @@ export function WorkoutForm({
           }
 
           if (exercise.sets.length === 1) {
-            setAlertModal({
-              visible: true,
-              message: 'Each exercise must have at least one set.',
-              type: 'warning',
-            });
+            showWarning('Each exercise must have at least one set.');
             return exercise;
           }
 
@@ -682,11 +670,7 @@ export function WorkoutForm({
 
   const handleSubmit = useCallback(async () => {
     if (validated) {
-      setAlertModal({
-        visible: true,
-        message: 'This workout has been validated and cannot be modified.',
-        type: 'warning',
-      });
+      showWarning('This workout has been validated and cannot be modified.');
       return;
     }
 
@@ -696,11 +680,7 @@ export function WorkoutForm({
       workoutPayload = buildWorkoutPayload();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Workout is not valid.';
-      setAlertModal({
-        visible: true,
-        message,
-        type: 'error',
-      });
+      showError(message);
       return;
     }
 
@@ -719,11 +699,7 @@ export function WorkoutForm({
       });
 
       if (conflictingWorkout) {
-        setAlertModal({
-          visible: true,
-          message: 'A workout already exists on this date. Please choose a different date.',
-          type: 'warning',
-        });
+        showWarning('A workout already exists on this date. Please choose a different date.');
         return;
       }
     }
@@ -732,13 +708,17 @@ export function WorkoutForm({
       await onSubmit(workoutPayload);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unable to save workout.';
-      setAlertModal({
-        visible: true,
-        message,
-        type: 'error',
-      });
+      showError(message);
     }
-  }, [buildWorkoutPayload, onSubmit, validated, workouts, currentWorkoutId]);
+  }, [
+    buildWorkoutPayload,
+    onSubmit,
+    validated,
+    workouts,
+    currentWorkoutId,
+    showWarning,
+    showError,
+  ]);
 
   return (
     <>
@@ -1006,13 +986,7 @@ export function WorkoutForm({
         </YStack>
       </Modal>
 
-      <AlertModal
-        visible={alertModal.visible}
-        message={alertModal.message}
-        type={alertModal.type}
-        duration={2000}
-        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
-      />
+      <AlertModalComponent duration={2000} />
     </>
   );
 }

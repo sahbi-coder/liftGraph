@@ -9,7 +9,7 @@ import type { Program, ProgramExercise, WorkoutExercise } from '@/domain';
 import { colors } from '@/theme/colors';
 import { DaySelector, ProgramDay as DaySelectorProgramDay } from '@/components/DaySelector';
 import { setWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
-import { AlertModal } from '@/components/AlertModal';
+import { useAlertModal } from '@/hooks/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 
 export default function ProgramDetailsScreen() {
@@ -29,29 +29,17 @@ export default function ProgramDetailsScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAlternatingWeek, setSelectedAlternatingWeek] = useState<0 | 1>(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [alertModal, setAlertModal] = useState<{
-    visible: boolean;
-    message: string;
-    type: 'success' | 'info' | 'warning' | 'error';
-  }>({
-    visible: false,
-    message: '',
-    type: 'info',
-  });
+  const { showSuccess, showError, AlertModalComponent } = useAlertModal();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useEffect(() => {
     if (!programId) {
-      setAlertModal({
-        visible: true,
-        message: 'Program ID is missing.',
-        type: 'error',
-      });
+      showError('Program ID is missing.');
       setTimeout(() => {
         router.back();
       }, 2000);
     }
-  }, [router, programId]);
+  }, [router, programId, showError]);
 
   useEffect(() => {
     if (!user || !programId) {
@@ -70,11 +58,7 @@ export default function ProgramDetailsScreen() {
         }
 
         if (!fetchedProgram) {
-          setAlertModal({
-            visible: true,
-            message: 'We could not find that program.',
-            type: 'error',
-          });
+          showError('We could not find that program.');
           setTimeout(() => {
             router.back();
           }, 2000);
@@ -88,11 +72,7 @@ export default function ProgramDetailsScreen() {
         }
 
         const message = error instanceof Error ? error.message : 'Unable to load program.';
-        setAlertModal({
-          visible: true,
-          message,
-          type: 'error',
-        });
+        showError(message);
         setTimeout(() => {
           router.back();
         }, 2000);
@@ -108,7 +88,7 @@ export default function ProgramDetailsScreen() {
     return () => {
       isMounted = false;
     };
-  }, [router, services.firestore, user, programId]);
+  }, [router, services.firestore, user, programId, showError]);
 
   // Determine active days for DaySelector
   const activeDays = useMemo<DaySelectorProgramDay[]>(() => {
@@ -225,26 +205,18 @@ export default function ProgramDetailsScreen() {
     setIsDeleting(true);
     try {
       await services.firestore.deleteProgram(user.uid, programId);
-      setAlertModal({
-        visible: true,
-        message: 'The program has been deleted successfully.',
-        type: 'success',
-      });
+      showSuccess('The program has been deleted successfully.');
       // Navigate back after showing success message
       setTimeout(() => {
         router.back();
       }, 2000);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Something went wrong.';
-      setAlertModal({
-        visible: true,
-        message,
-        type: 'error',
-      });
+      showError(message);
     } finally {
       setIsDeleting(false);
     }
-  }, [user, programId, program, services.firestore, router]);
+  }, [user, programId, program, services.firestore, router, showSuccess, showError]);
 
   if (!user) {
     return (
@@ -688,13 +660,7 @@ export default function ProgramDetailsScreen() {
         confirmButtonColor="#ef4444"
         cancelButtonColor={colors.midGray}
       />
-      <AlertModal
-        visible={alertModal.visible}
-        message={alertModal.message}
-        type={alertModal.type}
-        duration={alertModal.type === 'success' ? 2000 : 4000}
-        onComplete={() => setAlertModal((prev) => ({ ...prev, visible: false }))}
-      />
+      <AlertModalComponent />
     </ScrollView>
   );
 }

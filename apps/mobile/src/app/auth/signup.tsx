@@ -6,7 +6,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
 import { PasswordInput } from '@/components/PasswordInput';
-import { AlertModal } from '@/components/AlertModal';
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 export default function SignupScreen() {
   const [name, setName] = useState('');
@@ -14,31 +14,23 @@ export default function SignupScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState<'success' | 'info' | 'warning' | 'error'>('error');
+  const { showError, AlertModalComponent } = useAlertModal();
   const { signUp } = useAuth();
   const router = useRouter();
 
-  const showAlert = (message: string, type: 'success' | 'info' | 'warning' | 'error' = 'error') => {
-    setAlertMessage(message);
-    setAlertType(type);
-    setAlertVisible(true);
-  };
-
   const handleSignup = async () => {
     if (!name || !email || !password || !confirmPassword) {
-      showAlert('Please fill in all fields', 'error');
+      showError('Please fill in all fields');
       return;
     }
 
     if (password !== confirmPassword) {
-      showAlert('Passwords do not match', 'error');
+      showError('Passwords do not match');
       return;
     }
 
     if (password.length < 6) {
-      showAlert('Password must be at least 6 characters', 'error');
+      showError('Password must be at least 6 characters');
       return;
     }
 
@@ -47,7 +39,7 @@ export default function SignupScreen() {
       await signUp(email, password, name);
       router.replace('/' as any);
     } catch (error: any) {
-      showAlert(error.message, 'error');
+      showError(error.message);
     } finally {
       setLoading(false);
     }
@@ -186,12 +178,7 @@ export default function SignupScreen() {
           </Text>
         </YStack>
       </XStack>
-      <AlertModal
-        visible={alertVisible}
-        message={alertMessage}
-        type={alertType}
-        onComplete={() => setAlertVisible(false)}
-      />
+      <AlertModalComponent />
     </YStack>
   );
 }

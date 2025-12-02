@@ -5,38 +5,30 @@ import { useAuth } from '@/contexts/AuthContext';
 import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
-import { AlertModal } from '@/components/AlertModal';
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [alertVisible, setAlertVisible] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState<'success' | 'info' | 'warning' | 'error'>('error');
+  const { showSuccess, showError, AlertModalComponent } = useAlertModal();
   const { resetPassword } = useAuth();
   const router = useRouter();
 
-  const showAlert = (message: string, type: 'success' | 'info' | 'warning' | 'error' = 'error') => {
-    setAlertMessage(message);
-    setAlertType(type);
-    setAlertVisible(true);
-  };
-
   const handleResetPassword = async () => {
     if (!email) {
-      showAlert('Please enter your email', 'error');
+      showError('Please enter your email');
       return;
     }
 
     setLoading(true);
     try {
       await resetPassword(email);
-      showAlert('Password reset email sent. Please check your inbox.', 'success');
+      showSuccess('Password reset email sent. Please check your inbox.');
       setTimeout(() => {
         router.back();
       }, 3000);
     } catch (error: any) {
-      showAlert(error.message, 'error');
+      showError(error.message);
     } finally {
       setLoading(false);
     }
@@ -157,12 +149,7 @@ export default function ForgotPasswordScreen() {
           </Text>
         </YStack>
       </XStack>
-      <AlertModal
-        visible={alertVisible}
-        message={alertMessage}
-        type={alertType}
-        onComplete={() => setAlertVisible(false)}
-      />
+      <AlertModalComponent />
     </YStack>
   );
 }
