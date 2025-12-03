@@ -1,0 +1,87 @@
+{
+  "common": {
+    "appName": "LiftGraph",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "retry": "Réessayer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "back": "Retour",
+    "next": "Suivant",
+    "done": "Terminé",
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "no": "Non"
+  },
+  "auth": {
+    "welcomeBack": "Bon Retour",
+    "signIn": "Se Connecter",
+    "signingIn": "Connexion...",
+    "signUp": "S'inscrire",
+    "signingUp": "Inscription...",
+    "createAccount": "Créer un Compte",
+    "letsGetStarted": "Commençons",
+    "email": "E-mail",
+    "password": "Mot de Passe",
+    "fullName": "Nom Complet",
+    "forgotPassword": "Mot de Passe Oublié?",
+    "dontHaveAccount": "Vous n'avez pas de compte?",
+    "alreadyHaveAccount": "Vous avez déjà un compte?",
+    "tagline": "Créé par des haltérophiles pour des haltérophiles, connectez-vous pour continuer à suivre vos progrès.",
+    "joinTagline": "Rejoignez LiftGraph pour planifier des entraînements, suivre vos PR et rester motivé.",
+    "pleaseEnterEmailPassword": "Veuillez entrer l'e-mail et le mot de passe",
+    "unknownError": "Erreur inconnue"
+  },
+  "features": {
+    "planWorkouts": "Planifier les Entraînements",
+    "trackProgress": "Suivre les Progrès"
+  },
+  "workout": {
+    "title": "Entraînement",
+    "create": "Créer un Entraînement",
+    "edit": "Modifier l'Entraînement",
+    "exercises": "Exercices",
+    "addExercise": "Ajouter un Exercice"
+  },
+  "program": {
+    "title": "Programme",
+    "create": "Créer un Programme",
+    "exercises": "Exercices",
+    "addExercise": "Ajouter un Exercice"
+  },
+  "schedule": {
+    "title": "Horaire",
+    "edit": "Modifier l'Horaire",
+    "exercises": "Exercices",
+    "addExercise": "Ajouter un Exercice"
+  },
+  "progress": {
+    "title": "Progrès",
+    "estimated1RM": "1RM Estimé",
+    "topSet": "Meilleure Série",
+    "weeklyVolume": "Volume Hebdomadaire",
+    "frequencyChart": "Graphique de Fréquence",
+    "exercises": "Exercices"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "units": "Unités",
+    "language": "Langue"
+  },
+  "profile": {
+    "title": "Profil"
+  },
+  "contactUs": {
+    "title": "Nous Contacter"
+  },
+  "exportData": {
+    "title": "Exporter les Données"
+  },
+  "rateUs": {
+    "title": "Noter l'Application"
+  }
+}
+

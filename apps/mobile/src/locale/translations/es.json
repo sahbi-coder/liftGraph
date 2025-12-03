@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "LiftGraph",
+    "loading": "Cargando...",
+    "error": "Error",
+    "retry": "Reintentar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "done": "Hecho",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "auth": {
+    "welcomeBack": "Bienvenido de Nuevo",
+    "signIn": "Iniciar Sesión",
+    "signingIn": "Iniciando sesión...",
+    "signUp": "Registrarse",
+    "signingUp": "Registrando...",
+    "createAccount": "Crear Cuenta",
+    "letsGetStarted": "Empecemos",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "fullName": "Nombre Completo",
+    "forgotPassword": "¿Olvidaste tu Contraseña?",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "tagline": "Hecho por levantadores para levantadores, inicia sesión para continuar rastreando tu progreso.",
+    "joinTagline": "Únete a LiftGraph para planificar entrenamientos, rastrear PRs y mantenerte motivado.",
+    "pleaseEnterEmailPassword": "Por favor ingresa correo electrónico y contraseña",
+    "unknownError": "Error desconocido"
+  },
+  "features": {
+    "planWorkouts": "Planificar Entrenamientos",
+    "trackProgress": "Rastrear Progreso"
+  },
+  "workout": {
+    "title": "Entrenamiento",
+    "create": "Crear Entrenamiento",
+    "edit": "Editar Entrenamiento",
+    "exercises": "Ejercicios",
+    "addExercise": "Agregar Ejercicio"
+  },
+  "program": {
+    "title": "Programa",
+    "create": "Crear Programa",
+    "exercises": "Ejercicios",
+    "addExercise": "Agregar Ejercicio"
+  },
+  "schedule": {
+    "title": "Horario",
+    "edit": "Editar Horario",
+    "exercises": "Ejercicios",
+    "addExercise": "Agregar Ejercicio"
+  },
+  "progress": {
+    "title": "Progreso",
+    "estimated1RM": "1RM Estimado",
+    "topSet": "Mejor Serie",
+    "weeklyVolume": "Volumen Semanal",
+    "frequencyChart": "Gráfico de Frecuencia",
+    "exercises": "Ejercicios"
+  },
+  "settings": {
+    "title": "Configuración",
+    "units": "Unidades",
+    "language": "Idioma"
+  },
+  "profile": {
+    "title": "Perfil"
+  },
+  "contactUs": {
+    "title": "Contáctanos"
+  },
+  "exportData": {
+    "title": "Exportar Datos"
+  },
+  "rateUs": {
+    "title": "Califícanos"
+  }
+}

@@ -1,5 +1,6 @@
 import 'react-native-reanimated';
 import 'react-native-get-random-values';
+import '@/locale/i18n'; // Initialize i18n
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';

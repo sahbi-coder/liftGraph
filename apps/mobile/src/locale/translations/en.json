@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "LiftGraph",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "auth": {
+    "welcomeBack": "Welcome Back",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "signUp": "Sign Up",
+    "signingUp": "Signing up...",
+    "createAccount": "Create Account",
+    "letsGetStarted": "Let's Get Started",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full Name",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "tagline": "Built by lifters for lifters, sign in to continue tracking your progress.",
+    "joinTagline": "Join LiftGraph to plan workouts, track PRs, and stay motivated.",
+    "pleaseEnterEmailPassword": "Please enter email and password",
+    "unknownError": "Unknown error"
+  },
+  "features": {
+    "planWorkouts": "Plan Workouts",
+    "trackProgress": "Track Progress"
+  },
+  "workout": {
+    "title": "Workout",
+    "create": "Create Workout",
+    "edit": "Edit Workout",
+    "exercises": "Exercises",
+    "addExercise": "Add Exercise"
+  },
+  "program": {
+    "title": "Program",
+    "create": "Create Program",
+    "exercises": "Exercises",
+    "addExercise": "Add Exercise"
+  },
+  "schedule": {
+    "title": "Schedule",
+    "edit": "Edit Schedule",
+    "exercises": "Exercises",
+    "addExercise": "Add Exercise"
+  },
+  "progress": {
+    "title": "Progress",
+    "estimated1RM": "Estimated 1RM",
+    "topSet": "Top Set",
+    "weeklyVolume": "Weekly Volume",
+    "frequencyChart": "Frequency Chart",
+    "exercises": "Exercises"
+  },
+  "settings": {
+    "title": "Settings",
+    "units": "Units",
+    "language": "Language"
+  },
+  "profile": {
+    "title": "Profile"
+  },
+  "contactUs": {
+    "title": "Contact Us"
+  },
+  "exportData": {
+    "title": "Export Data"
+  },
+  "rateUs": {
+    "title": "Rate Us"
+  }
+}
