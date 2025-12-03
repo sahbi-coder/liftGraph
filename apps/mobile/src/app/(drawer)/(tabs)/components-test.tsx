@@ -2,11 +2,14 @@ import React from 'react';
 import { YStack, Text } from 'tamagui';
 import { DaySelector, type ProgramDay } from '@/components/DaySelector';
 import { LoadingView, ErrorView } from '@/components/StatusViews';
+import { useLocale } from '@/hooks/useLocale';
 
 export default function ComponentsTestScreen() {
   const handleSelectionChange = (selectedDays: ProgramDay[]) => {
     console.log('Selected days:', selectedDays);
   };
+  const [locale] = useLocale();
+  console.log('Locale:', locale);
 
   return (
     <YStack flex={1} backgroundColor="$background" padding="$4" space="$4">
