@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { XStack, Input, Button } from 'tamagui';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface PasswordInputProps {
   value: string;
@@ -8,18 +9,16 @@ interface PasswordInputProps {
   placeholder?: string;
 }
 
-export function PasswordInput({
-  value,
-  onChangeText,
-  placeholder = 'Password',
-}: PasswordInputProps) {
+export function PasswordInput({ value, onChangeText, placeholder }: PasswordInputProps) {
+  const { t } = useTranslation();
+  const defaultPlaceholder = placeholder ?? t('auth.password');
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <XStack position="relative" alignItems="center">
       <Input
         size="$4"
-        placeholder={placeholder}
+        placeholder={defaultPlaceholder}
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={!showPassword}

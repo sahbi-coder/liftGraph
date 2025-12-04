@@ -822,7 +822,7 @@ export default function CreateProgramScreen() {
               }));
 
             if (sets.length === 0) {
-              throw new Error(`Exercise "${ex.name}" must have at least one valid set.`);
+              throw new Error(t('program.exerciseMustHaveValidSet', { name: ex.name }));
             }
 
             return {
@@ -896,7 +896,7 @@ export default function CreateProgramScreen() {
                 }));
 
               if (sets.length === 0) {
-                throw new Error(`Exercise "${ex.name}" must have at least one valid set.`);
+                throw new Error(t('program.exerciseMustHaveValidSet', { name: ex.name }));
               }
 
               return {

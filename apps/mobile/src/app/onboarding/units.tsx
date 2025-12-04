@@ -8,6 +8,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import type { UserPreferences } from '@/domain';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type UnitOption = {
   value: 'kg' | 'lb' | 'cm' | 'ft' | 'celsius' | 'fahrenheit';
@@ -16,54 +17,55 @@ type UnitOption = {
   icon: React.ComponentType<any>;
 };
 
-const weightOptions: UnitOption[] = [
-  {
-    value: 'kg',
-    label: 'Kilograms (kg)',
-    subtitle: 'Metric system',
-    icon: Scale,
-  },
-  {
-    value: 'lb',
-    label: 'Pounds (lbs)',
-    subtitle: 'Imperial system',
-    icon: Scale,
-  },
-];
-
-const distanceOptions: UnitOption[] = [
-  {
-    value: 'cm',
-    label: 'Centimeters (cm)',
-    subtitle: 'Metric system',
-    icon: Ruler,
-  },
-  {
-    value: 'ft',
-    label: 'Feet & Inches',
-    subtitle: 'Imperial system',
-    icon: Ruler,
-  },
-];
-
-const temperatureOptions: UnitOption[] = [
-  {
-    value: 'celsius',
-    label: 'Celsius (°C)',
-    subtitle: 'Metric system',
-    icon: Thermometer,
-  },
-  {
-    value: 'fahrenheit',
-    label: 'Fahrenheit (°F)',
-    subtitle: 'Imperial system',
-    icon: Thermometer,
-  },
-];
-
 export default function UnitsOnboardingScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { preferences, updatePreferences, loading } = useUserPreferences();
+
+  const weightOptions: UnitOption[] = [
+    {
+      value: 'kg',
+      label: t('settings.kilograms'),
+      subtitle: t('settings.metricSystem'),
+      icon: Scale,
+    },
+    {
+      value: 'lb',
+      label: t('settings.pounds'),
+      subtitle: t('settings.imperialSystem'),
+      icon: Scale,
+    },
+  ];
+
+  const distanceOptions: UnitOption[] = [
+    {
+      value: 'cm',
+      label: t('settings.centimeters'),
+      subtitle: t('settings.metricSystem'),
+      icon: Ruler,
+    },
+    {
+      value: 'ft',
+      label: t('settings.feetInches'),
+      subtitle: t('settings.imperialSystem'),
+      icon: Ruler,
+    },
+  ];
+
+  const temperatureOptions: UnitOption[] = [
+    {
+      value: 'celsius',
+      label: t('settings.celsius'),
+      subtitle: t('settings.metricSystem'),
+      icon: Thermometer,
+    },
+    {
+      value: 'fahrenheit',
+      label: t('settings.fahrenheit'),
+      subtitle: t('settings.imperialSystem'),
+      icon: Thermometer,
+    },
+  ];
 
   const [selectedUnits, setSelectedUnits] = useState<Partial<UserPreferences>>({
     weightUnit: preferences?.weightUnit || 'kg',
@@ -187,17 +189,17 @@ export default function UnitsOnboardingScreen() {
             />
           </YStack>
           <Text color={colors.white} fontSize="$9" fontWeight="bold" textAlign="center">
-            Choose Your Units
+            {t('onboarding.chooseYourUnits')}
           </Text>
           <Text color={colors.midGray} fontSize="$4" textAlign="center" marginTop="$2">
-            Select your preferred measurement units for tracking your powerlifting progress.
+            {t('onboarding.chooseYourUnitsDescription')}
           </Text>
         </YStack>
 
         {/* Weight Units */}
         <YStack marginBottom="$6">
           <Text color={colors.white} fontSize="$6" fontWeight="600" marginBottom="$3">
-            Weight Units
+            {t('settings.weightUnits')}
           </Text>
           {weightOptions.map((option) =>
             renderUnitOption(option, 'weightUnit', selectedUnits.weightUnit === option.value),
@@ -207,7 +209,7 @@ export default function UnitsOnboardingScreen() {
         {/* Distance/Height Units */}
         <YStack marginBottom="$6">
           <Text color={colors.white} fontSize="$6" fontWeight="600" marginBottom="$3">
-            Distance/Height Units
+            {t('settings.distanceHeightUnits')}
           </Text>
           {distanceOptions.map((option) =>
             renderUnitOption(option, 'distanceUnit', selectedUnits.distanceUnit === option.value),
@@ -217,7 +219,7 @@ export default function UnitsOnboardingScreen() {
         {/* Temperature Units */}
         <YStack marginBottom="$6">
           <Text color={colors.white} fontSize="$6" fontWeight="600" marginBottom="$3">
-            Temperature Units
+            {t('settings.temperatureUnits')}
           </Text>
           {temperatureOptions.map((option) =>
             renderUnitOption(
@@ -240,7 +242,7 @@ export default function UnitsOnboardingScreen() {
             opacity={loading ? 0.6 : 1}
             pressStyle={{ opacity: 0.85 }}
           >
-            {loading ? 'Saving...' : 'Continue'}
+            {loading ? t('common.saving') : t('onboarding.continue')}
           </Button>
         </YStack>
       </ScrollView>

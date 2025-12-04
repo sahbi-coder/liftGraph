@@ -111,7 +111,13 @@
     "complete": "Terminé",
     "today": "Aujourd'hui",
     "avgRir": "RIR Moyen",
-    "opening": "Ouverture..."
+    "opening": "Ouverture...",
+    "pleaseSignInToSave": "Veuillez vous connecter pour enregistrer les entraînements.",
+    "workoutSavedSuccessfully": "Votre entraînement a été enregistré avec succès.",
+    "createWorkoutBeforeEdit": "Créez un entraînement avant d'essayer de modifier.",
+    "noUpcomingWorkoutsToEdit": "Aucun entraînement à venir à modifier.",
+    "loadingWorkouts": "Chargement des entraînements...",
+    "failedToLoadWorkouts": "Échec du chargement des entraînements"
   },
   "program": {
     "title": "Programme",
@@ -215,7 +221,7 @@
     "lastYear": "Année Dernière",
     "allTime": "Tout le Temps",
     "customRange": "Plage Personnalisée",
-    "selectDateRange": "Sélectionner une Plage de Dates",
+    "selectDateRange": "Sélectionner les Dates",
     "startDate": "Date de Début",
     "endDate": "Date de Fin"
   },
@@ -389,5 +395,19 @@
     "endDateAfterStart": "La date de fin doit être postérieure à la date de début. Veuillez sélectionner une date ultérieure.",
     "selectBothDates": "Veuillez sélectionner les dates de début et de fin.",
     "endDateAfterStartValid": "La date de fin doit être postérieure à la date de début. Veuillez sélectionner une plage de dates valide."
+  },
+  "onboarding": {
+    "welcomeToLiftGraph": "Bienvenue sur LiftGraph",
+    "personalPowerliftingCompanion": "Votre compagnon personnel de force athlétique",
+    "planWorkouts": "Planifier les Entraînements",
+    "planWorkoutsDescription": "Créez et programmez vos séances d'entraînement",
+    "trackProgress": "Suivre les Progrès",
+    "trackProgressDescription": "Surveillez vos gains de force et vos records",
+    "exportYourData": "Exporter vos Données",
+    "exportYourDataDescription": "Téléchargez votre historique d'entraînements à tout moment",
+    "getStarted": "Commencer",
+    "chooseYourUnits": "Choisissez vos Unités",
+    "chooseYourUnitsDescription": "Sélectionnez vos unités de mesure préférées pour suivre vos progrès en force athlétique.",
+    "continue": "Continuer"
   }
 }

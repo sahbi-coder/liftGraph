@@ -119,7 +119,13 @@
     "complete": "Complete",
     "today": "Today",
     "avgRir": "Avg RIR",
-    "opening": "Opening..."
+    "opening": "Opening...",
+    "pleaseSignInToSave": "Please sign in to save workouts.",
+    "workoutSavedSuccessfully": "Your workout has been saved successfully.",
+    "createWorkoutBeforeEdit": "Create a workout before trying to edit.",
+    "noUpcomingWorkoutsToEdit": "No upcoming workouts to edit.",
+    "loadingWorkouts": "Loading workouts...",
+    "failedToLoadWorkouts": "Failed to load workouts"
   },
   "program": {
     "title": "Program",
@@ -397,5 +403,19 @@
     "endDateAfterStart": "End date must be after the start date. Please select a later date.",
     "selectBothDates": "Please select both start and end dates.",
     "endDateAfterStartValid": "End date must be after the start date. Please select a valid date range."
+  },
+  "onboarding": {
+    "welcomeToLiftGraph": "Welcome to LiftGraph",
+    "personalPowerliftingCompanion": "Your personal powerlifting companion",
+    "planWorkouts": "Plan Workouts",
+    "planWorkoutsDescription": "Create and schedule your training sessions",
+    "trackProgress": "Track Progress",
+    "trackProgressDescription": "Monitor your strength gains and PRs",
+    "exportYourData": "Export Your Data",
+    "exportYourDataDescription": "Download your workout history anytime",
+    "getStarted": "Get Started",
+    "chooseYourUnits": "Choose Your Units",
+    "chooseYourUnitsDescription": "Select your preferred measurement units for tracking your powerlifting progress.",
+    "continue": "Continue"
   }
 }

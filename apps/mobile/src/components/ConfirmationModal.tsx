@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { Modal } from 'react-native';
 import { YStack, XStack, Text, Button } from 'tamagui';
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface ConfirmationModalProps {
   visible: boolean;
@@ -19,13 +20,17 @@ export function ConfirmationModal({
   visible,
   title,
   message,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   onConfirm,
   onCancel,
   confirmButtonColor = colors.niceOrange,
   cancelButtonColor = colors.darkGray,
 }: ConfirmationModalProps) {
+  const { t } = useTranslation();
+  const defaultConfirmText = confirmText ?? t('common.confirm');
+  const defaultCancelText = cancelText ?? t('common.cancel');
+
   const handleConfirm = useCallback(() => {
     onConfirm();
   }, [onConfirm]);
@@ -68,7 +73,7 @@ export function ConfirmationModal({
               onPress={handleCancel}
               flex={1}
             >
-              {cancelText}
+              {defaultCancelText}
             </Button>
             <Button
               backgroundColor={confirmButtonColor}
@@ -76,7 +81,7 @@ export function ConfirmationModal({
               onPress={handleConfirm}
               flex={1}
             >
-              {confirmText}
+              {defaultConfirmText}
             </Button>
           </XStack>
         </YStack>

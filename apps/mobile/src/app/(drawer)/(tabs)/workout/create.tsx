@@ -6,11 +6,13 @@ import { useAuth } from '@/contexts/AuthContext';
 import type { WorkoutInput } from '@/domain';
 import { getWorkoutPrefillData, clearWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function CreateWorkoutScreen() {
   const router = useRouter();
   const { services } = useDependencies();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const { showSuccess, showError, AlertModalComponent } = useAlertModal();
 
   const [isSaving, setIsSaving] = useState(false);
@@ -31,26 +33,26 @@ export default function CreateWorkoutScreen() {
   const handleCreateWorkout = useCallback(
     async (workoutPayload: WorkoutInput) => {
       if (!user) {
-        showError('Please sign in to save workouts.');
+        showError(t('workout.pleaseSignInToSave'));
         return;
       }
 
       setIsSaving(true);
       try {
         await services.firestore.createWorkout(user.uid, workoutPayload);
-        showSuccess('Your workout has been saved successfully.');
+        showSuccess(t('workout.workoutSavedSuccessfully'));
         // Navigate back after showing success message
         setTimeout(() => {
           router.back();
         }, 1500);
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Something went wrong.';
+        const message = error instanceof Error ? error.message : t('common.somethingWentWrong');
         showError(message);
       } finally {
         setIsSaving(false);
       }
     },
-    [router, services.firestore, user, showSuccess, showError],
+    [router, services.firestore, user, showSuccess, showError, t],
   );
 
   return (
@@ -59,7 +61,7 @@ export default function CreateWorkoutScreen() {
         initialValues={initialExercises ? { exercises: initialExercises } : undefined}
         onSubmit={handleCreateWorkout}
         isSubmitting={isSaving}
-        submitLabel="Create Workout"
+        submitLabel={t('workout.create')}
       />
       <AlertModalComponent duration={2000} />
     </>

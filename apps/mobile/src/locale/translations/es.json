@@ -119,7 +119,13 @@
     "complete": "Completo",
     "today": "Hoy",
     "avgRir": "RIR Promedio",
-    "opening": "Abriendo..."
+    "opening": "Abriendo...",
+    "pleaseSignInToSave": "Por favor inicia sesión para guardar entrenamientos.",
+    "workoutSavedSuccessfully": "Tu entrenamiento ha sido guardado exitosamente.",
+    "createWorkoutBeforeEdit": "Crea un entrenamiento antes de intentar editar.",
+    "noUpcomingWorkoutsToEdit": "No hay entrenamientos próximos para editar.",
+    "loadingWorkouts": "Cargando entrenamientos...",
+    "failedToLoadWorkouts": "No se pudieron cargar los entrenamientos"
   },
   "program": {
     "title": "Programa",
@@ -397,5 +403,19 @@
     "endDateAfterStart": "La fecha de fin debe ser posterior a la fecha de inicio. Por favor selecciona una fecha posterior.",
     "selectBothDates": "Por favor selecciona ambas fechas de inicio y fin.",
     "endDateAfterStartValid": "La fecha de fin debe ser posterior a la fecha de inicio. Por favor selecciona un rango de fechas válido."
+  },
+  "onboarding": {
+    "welcomeToLiftGraph": "Bienvenido a LiftGraph",
+    "personalPowerliftingCompanion": "Tu compañero personal de powerlifting",
+    "planWorkouts": "Planificar Entrenamientos",
+    "planWorkoutsDescription": "Crea y programa tus sesiones de entrenamiento",
+    "trackProgress": "Rastrear Progreso",
+    "trackProgressDescription": "Monitorea tus ganancias de fuerza y PRs",
+    "exportYourData": "Exportar tus Datos",
+    "exportYourDataDescription": "Descarga tu historial de entrenamientos en cualquier momento",
+    "getStarted": "Comenzar",
+    "chooseYourUnits": "Elige tus Unidades",
+    "chooseYourUnitsDescription": "Selecciona tus unidades de medida preferidas para rastrear tu progreso de powerlifting.",
+    "continue": "Continuar"
   }
 }

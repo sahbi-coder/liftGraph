@@ -3,11 +3,13 @@ import { YStack, XStack, Text, Button, H1 } from 'tamagui';
 import { useRouter } from 'expo-router';
 import { Image } from 'react-native';
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 import { Download, Target, TrendingUp } from '@tamagui/lucide-icons';
 
 export default function WelcomeOnboardingScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const logoSource = require('../../../assets/exp-icon.png');
 
@@ -39,10 +41,10 @@ export default function WelcomeOnboardingScreen() {
           />
         </YStack>
         <H1 color={colors.white} fontSize="$10" fontWeight="bold" textAlign="center">
-          Welcome to LiftGraph
+          {t('onboarding.welcomeToLiftGraph')}
         </H1>
         <Text color={colors.midGray} fontSize="$5" textAlign="center" marginTop="$2">
-          Your personal powerlifting companion
+          {t('onboarding.personalPowerliftingCompanion')}
         </Text>
       </YStack>
 
@@ -68,10 +70,10 @@ export default function WelcomeOnboardingScreen() {
           </YStack>
           <YStack flex={1}>
             <Text color={colors.white} fontSize="$5" fontWeight="600" marginBottom="$1">
-              Plan Workouts
+              {t('onboarding.planWorkouts')}
             </Text>
             <Text color={colors.midGray} fontSize="$4">
-              Create and schedule your training sessions
+              {t('onboarding.planWorkoutsDescription')}
             </Text>
           </YStack>
         </XStack>
@@ -96,10 +98,10 @@ export default function WelcomeOnboardingScreen() {
           </YStack>
           <YStack flex={1}>
             <Text color={colors.white} fontSize="$5" fontWeight="600" marginBottom="$1">
-              Track Progress
+              {t('onboarding.trackProgress')}
             </Text>
             <Text color={colors.midGray} fontSize="$4">
-              Monitor your strength gains and PRs
+              {t('onboarding.trackProgressDescription')}
             </Text>
           </YStack>
         </XStack>
@@ -124,10 +126,10 @@ export default function WelcomeOnboardingScreen() {
           </YStack>
           <YStack flex={1}>
             <Text color={colors.white} fontSize="$5" fontWeight="600" marginBottom="$1">
-              Export Your Data
+              {t('onboarding.exportYourData')}
             </Text>
             <Text color={colors.midGray} fontSize="$4">
-              Download your workout history anytime
+              {t('onboarding.exportYourDataDescription')}
             </Text>
           </YStack>
         </XStack>
@@ -144,7 +146,7 @@ export default function WelcomeOnboardingScreen() {
           onPress={() => router.push('/onboarding/units')}
           pressStyle={{ opacity: 0.85 }}
         >
-          Get Started
+          {t('onboarding.getStarted')}
         </Button>
       </YStack>
     </YStack>

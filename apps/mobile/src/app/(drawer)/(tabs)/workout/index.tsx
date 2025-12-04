@@ -8,10 +8,12 @@ import { WorkoutHomeScreen } from '@/components/workout/WorkoutHomeScreen';
 import { useLatestValidatedWorkout } from '@/hooks/useLatestValidatedWorkout';
 import { useEarliestFutureWorkout } from '@/hooks/useEarliestFutureWorkout';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function WorkoutHome() {
   const router = useRouter();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const { showWarning, showInfo, AlertModalComponent } = useAlertModal();
 
   const {
@@ -36,12 +38,12 @@ export default function WorkoutHome() {
 
   const handleEditWorkout = useCallback(() => {
     if (!user) {
-      showWarning('Please sign in to edit workouts.');
+      showWarning(t('workout.pleaseSignInToEdit'));
       return;
     }
 
     if (!latestWorkout) {
-      showInfo('Create a workout before trying to edit.');
+      showInfo(t('workout.createWorkoutBeforeEdit'));
       return;
     }
 
@@ -53,12 +55,12 @@ export default function WorkoutHome() {
 
   const handleEditFutureWorkout = useCallback(() => {
     if (!user) {
-      showWarning('Please sign in to edit workouts.');
+      showWarning(t('workout.pleaseSignInToEdit'));
       return;
     }
 
     if (!earliestFutureWorkout) {
-      showInfo('No upcoming workouts to edit.');
+      showInfo(t('workout.noUpcomingWorkoutsToEdit'));
       return;
     }
 
@@ -79,7 +81,7 @@ export default function WorkoutHome() {
         padding="$4"
       >
         <Text color="$textPrimary" fontSize="$5">
-          Loading workouts...
+          {t('workout.loadingWorkouts')}
         </Text>
       </YStack>
     );
@@ -87,8 +89,6 @@ export default function WorkoutHome() {
 
   // Show error state
   if (isErrorLatest || isErrorFuture) {
-    const errorMessage = 'Failed to load workouts';
-
     return (
       <YStack
         flex={1}
@@ -99,7 +99,7 @@ export default function WorkoutHome() {
         space="$4"
       >
         <Text color="$textPrimary" fontSize="$5" textAlign="center">
-          {errorMessage}
+          {t('workout.failedToLoadWorkouts')}
         </Text>
         <Button
           backgroundColor="$primaryButton"
@@ -109,7 +109,7 @@ export default function WorkoutHome() {
             if (isErrorFuture) refetchFuture();
           }}
         >
-          Retry
+          {t('common.retry')}
         </Button>
       </YStack>
     );
