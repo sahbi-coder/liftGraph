@@ -12,6 +12,7 @@ export type AuthUser = {
   uid: string;
   email: string;
   displayName: string;
+  createdAt: Date | null;
 };
 
 export class AuthService {
@@ -42,10 +43,15 @@ export class AuthService {
 
   toAuthUser(user: User | null): AuthUser | null {
     if (!user) return null;
+
+    // Extract creation time from Firebase Auth metadata
+    const createdAt = user.metadata.creationTime ? new Date(user.metadata.creationTime) : null;
+
     return {
       uid: user.uid,
       email: user.email ?? '',
       displayName: user.displayName ?? '',
+      createdAt,
     };
   }
 }

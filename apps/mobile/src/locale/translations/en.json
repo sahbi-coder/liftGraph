@@ -271,22 +271,15 @@
   },
   "profile": {
     "title": "Profile",
-    "powerliftingEnthusiast": "Powerlifting Enthusiast",
-    "memberSince": "Member since {{date}}",
-    "workouts": "Workouts",
-    "daysStreak": "Days Streak",
-    "totalKg": "Total kg",
-    "personalRecords": "Personal Records",
-    "lastUpdated": "Last updated {{time}}",
-    "bodyStats": "Body Stats",
-    "weight": "Weight",
-    "bodyFat": "Body Fat",
-    "height": "Height",
-    "age": "Age",
-    "years": "years",
-    "recentAchievements": "Recent Achievements",
-    "shareProfile": "Share Profile",
-    "logAndTrackProgress": "Log and track your progress..."
+    "email": "Email",
+    "memberSince": "Member Since",
+    "subscriptionPlan": "Subscription Plan",
+    "logout": "Logout",
+    "planType": {
+      "free": "Free",
+      "premium": "Premium",
+      "pro": "Pro"
+    }
   },
   "contactUs": {
     "title": "Contact Us",

@@ -2,8 +2,7 @@ import React from 'react';
 import { Drawer } from 'react-native-drawer-layout';
 import { Stack, Redirect, Slot, usePathname } from 'expo-router';
 import { YStack, Text } from 'tamagui';
-import { TouchableOpacity, Platform } from 'react-native';
-import Feather from '@expo/vector-icons/Feather';
+import { Platform } from 'react-native';
 import { BackButton } from '@/components/BackButton';
 
 import { useAuth } from '@/contexts/AuthContext';
@@ -63,17 +62,6 @@ function DrawerInner() {
             headerStyle: { backgroundColor: colors.darkerGray },
             headerTintColor: colors.white,
             headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={() => {
-                  // TODO: Navigate to edit profile
-                  console.log('Edit profile');
-                }}
-                style={{ paddingRight: 16, paddingVertical: 8 }}
-              >
-                <Feather name="edit-2" size={24} color={colors.niceOrange} />
-              </TouchableOpacity>
-            ),
           }}
         />
         <Stack.Screen

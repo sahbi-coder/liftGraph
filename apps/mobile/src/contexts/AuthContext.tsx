@@ -37,6 +37,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
             await firestoreService.createUserProfile(firebaseUser.uid, {
               email: firebaseUser.email,
               displayName: firebaseUser.displayName || 'User',
+              // TODO: inspect this, should we use the default preferences?
+              preferences: {
+                weightUnit: 'kg',
+                distanceUnit: 'cm',
+                temperatureUnit: 'celsius',
+                onboardingCompleted: false,
+              },
             });
           }
         } else {

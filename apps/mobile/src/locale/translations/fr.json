@@ -271,22 +271,15 @@
   },
   "profile": {
     "title": "Profil",
-    "powerliftingEnthusiast": "Enthousiaste de Force Athlétique",
-    "memberSince": "Membre depuis {{date}}",
-    "workouts": "Entraînements",
-    "daysStreak": "Série de Jours",
-    "totalKg": "Total kg",
-    "personalRecords": "Records Personnels",
-    "lastUpdated": "Dernière mise à jour {{time}}",
-    "bodyStats": "Statistiques Corporelles",
-    "weight": "Poids",
-    "bodyFat": "Graisse Corporelle",
-    "height": "Taille",
-    "age": "Âge",
-    "years": "ans",
-    "recentAchievements": "Réalisations Récentes",
-    "shareProfile": "Partager le Profil",
-    "logAndTrackProgress": "Enregistrez et suivez vos progrès..."
+    "email": "E-mail",
+    "memberSince": "Membre Depuis",
+    "subscriptionPlan": "Plan d'Abonnement",
+    "logout": "Déconnexion",
+    "planType": {
+      "free": "Gratuit",
+      "premium": "Premium",
+      "pro": "Pro"
+    }
   },
   "contactUs": {
     "title": "Nous Contacter",
