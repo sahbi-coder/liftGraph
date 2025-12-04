@@ -106,7 +106,7 @@ export function ExercisePickerScreen({
           onPress={() => setSearch('')}
           disabled={!search}
         >
-          {t('common.clear')}
+          <Text color={colors.white}>{t('common.clear')}</Text>
         </Button>
       </XStack>
 

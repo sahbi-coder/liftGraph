@@ -1027,13 +1027,13 @@ export default function CreateProgramScreen() {
                 onChangeText={(value) =>
                   handleUpdateSetField(weekId, dayId, exercise.id, set.id, 'rir', value, phaseId)
                 }
-                placeholder="RIR"
+                placeholder={t('workout.rir')}
                 keyboardType="numeric"
                 borderColor="$inputFieldBorder"
                 backgroundColor="$background"
                 color="$textPrimary"
               />
-              <Text color={colors.white}>RIR</Text>
+              <Text color={colors.white}>{t('workout.rir')}</Text>
               <Button
                 size="$2"
                 variant="outlined"
@@ -1054,7 +1054,8 @@ export default function CreateProgramScreen() {
           borderRadius="$4"
           onPress={() => handleAddSet(weekId, dayId, exercise.id, phaseId)}
         >
-          <Entypo name="circle-with-plus" size={22} color={colors.white} /> {t('common.set')}
+          <Entypo name="circle-with-plus" size={22} color={colors.white} />
+          <Text color={colors.white}>{t('common.set')}</Text>
         </Button>
       </YStack>
     ),
@@ -1102,7 +1103,7 @@ export default function CreateProgramScreen() {
 
           <YStack space="$2">
             <Text color="$textPrimary" fontSize="$4" fontWeight="600">
-              Select Active Days
+              {t('program.selectActiveDays')}
             </Text>
             <DaySelector
               value={week.selectedDays}
@@ -1119,7 +1120,7 @@ export default function CreateProgramScreen() {
             return (
               <YStack key={dayIndex} space="$2" marginTop="$2">
                 <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                  {dayId}
+                  {t('common.day')} {dayIndex + 1}
                 </Text>
                 {day.exercises.map((exercise, exerciseIndex) =>
                   renderExerciseCard(exercise, week.id, dayId, exerciseIndex, phaseId),
@@ -1132,8 +1133,10 @@ export default function CreateProgramScreen() {
                   borderRadius="$4"
                   onPress={() => handleOpenExercisePicker(week.id, dayId, phaseId)}
                 >
-                  <Entypo name="circle-with-plus" size={22} color={colors.white} /> Add Exercise to{' '}
-                  {dayId}
+                  <Entypo name="circle-with-plus" size={22} color={colors.white} />
+                  <Text color={colors.white}>
+                    {t('program.addExerciseTo')} {t('common.day')} {dayIndex + 1}
+                  </Text>
                 </Button>
               </YStack>
             );
@@ -1160,7 +1163,7 @@ export default function CreateProgramScreen() {
       <YStack space="$4">
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-            Program Type
+            {t('program.programType')}
           </Text>
           <YStack space="$2">
             <XStack space="$2">

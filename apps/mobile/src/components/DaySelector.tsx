@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Pressable } from 'react-native';
 import { XStack, Text } from 'tamagui';
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export type ProgramDay = 'Day1' | 'Day2' | 'Day3' | 'Day4' | 'Day5' | 'Day6' | 'Day7';
 
@@ -14,8 +15,14 @@ export interface DaySelectorProps {
 const DAYS: ProgramDay[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
 
 export function DaySelector({ value, onSelectionChange, disabled = false }: DaySelectorProps) {
+  const { t } = useTranslation();
   const [internalSelectedDays, setInternalSelectedDays] = useState<ProgramDay[]>([]);
   const selectedDays = value !== undefined ? value : internalSelectedDays;
+
+  const getDayLabel = (day: ProgramDay): string => {
+    const dayNumber = day.replace('Day', '');
+    return t('common.day') + ' ' + dayNumber;
+  };
 
   const handleDayPress = (day: ProgramDay) => {
     if (disabled) {
@@ -53,7 +60,7 @@ export function DaySelector({ value, onSelectionChange, disabled = false }: DayS
             }}
           >
             <Text color={colors.white} fontSize="$3" fontWeight={isSelected ? '600' : '400'}>
-              {day}
+              {getDayLabel(day)}
             </Text>
           </Pressable>
         );

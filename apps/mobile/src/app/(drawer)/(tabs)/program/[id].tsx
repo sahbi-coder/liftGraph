@@ -449,7 +449,7 @@ export default function ProgramDetailsScreen() {
                                   </YStack>
                                   <YStack space="$0.5">
                                     <Text color="$textSecondary" fontSize="$2">
-                                      RIR
+                                      {t('workout.rir')}
                                     </Text>
                                     <Text color={colors.white} fontSize="$3" fontWeight="500">
                                       {set.rir}
@@ -549,11 +549,13 @@ export default function ProgramDetailsScreen() {
                           >
                             <YStack space="$1" flex={1}>
                               <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                                Day {dayData.dayNumber}
+                                {t('common.day')} {dayData.dayNumber}
                               </Text>
                               <Text color="$textSecondary" fontSize="$4">
-                                {dayData.exercises.length} exercise
-                                {dayData.exercises.length !== 1 ? 's' : ''}
+                                {dayData.exercises.length}{' '}
+                                {dayData.exercises.length !== 1
+                                  ? t('common.exercises')
+                                  : t('common.exercise')}
                               </Text>
                             </YStack>
                             <Button
@@ -566,7 +568,7 @@ export default function ProgramDetailsScreen() {
                               paddingVertical="$1.5"
                               onPress={() => handleApplyDay(dayData.exercises)}
                             >
-                              Apply Day
+                              {t('program.applyDay')}
                             </Button>
                           </XStack>
                           <YStack
@@ -589,7 +591,7 @@ export default function ProgramDetailsScreen() {
                                 <XStack gap="$3" flexWrap="wrap">
                                   <YStack space="$1">
                                     <Text color="$textSecondary" fontSize="$2">
-                                      Sets
+                                      {t('common.sets')}
                                     </Text>
                                     <Text color={colors.white} fontSize="$3" fontWeight="500">
                                       {exercise.sets.length}
@@ -598,12 +600,12 @@ export default function ProgramDetailsScreen() {
                                   {exercise.sets.map((set, setIndex) => (
                                     <YStack key={setIndex} space="$1">
                                       <Text color="$textSecondary" fontSize="$2">
-                                        Set {setIndex + 1}
+                                        {t('common.set')} {setIndex + 1}
                                       </Text>
                                       <XStack gap="$3">
                                         <YStack space="$0.5">
                                           <Text color="$textSecondary" fontSize="$2">
-                                            Reps
+                                            {t('common.reps')}
                                           </Text>
                                           <Text color={colors.white} fontSize="$3" fontWeight="500">
                                             {set.reps}
@@ -611,7 +613,7 @@ export default function ProgramDetailsScreen() {
                                         </YStack>
                                         <YStack space="$0.5">
                                           <Text color="$textSecondary" fontSize="$2">
-                                            RIR
+                                            {t('workout.rir')}
                                           </Text>
                                           <Text color={colors.white} fontSize="$3" fontWeight="500">
                                             {set.rir}

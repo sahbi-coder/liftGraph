@@ -31,7 +31,15 @@
     "exercise": "exercice",
     "exercises": "exercices",
     "of": "de",
-    "weeks": "semaines"
+    "weeks": "semaines",
+    "clear": "Effacer",
+    "close": "Fermer",
+    "apply": "Appliquer",
+    "somethingWentWrong": "Quelque chose s'est mal passé.",
+    "oopsSomethingWentWrong": "Oups! quelque chose s'est mal passé.",
+    "tryAgain": "Réessayer",
+    "noInternetConnection": "Pas de Connexion Internet",
+    "checkInternetConnection": "Veuillez vérifier votre connexion Internet et réessayer."
   },
   "auth": {
     "welcomeBack": "Bon Retour",
@@ -87,6 +95,7 @@
     "unableToSaveWorkout": "Impossible d'enregistrer l'entraînement.",
     "exerciseMustHaveSet": "L'exercice \"{{name}}\" doit avoir au moins une série.",
     "setRequiresNumericValues": "La série {{setIndex}} dans \"{{exerciseName}}\" nécessite un poids, des reps et un RIR numériques.",
+    "rir": "RIR",
     "letsCrushGoals": "Réalisons vos objectifs aujourd'hui",
     "upcomingWorkout": "Entraînement à venir",
     "startScheduledWorkout": "Démarrer l'Entraînement Programmé",
@@ -157,6 +166,7 @@
     "week1": "Semaine 1",
     "week2": "Semaine 2",
     "programName": "Nom du Programme",
+    "programType": "Type de Programme",
     "description": "Description",
     "simple": "Simple",
     "alternating": "Alterné",
@@ -167,6 +177,8 @@
     "phaseName": "Phase {{index}} nom",
     "weeks": "Semaines",
     "addWeek": "Ajouter une Semaine",
+    "selectActiveDays": "Sélectionner les Jours Actifs",
+    "addExerciseTo": "Ajouter un Exercice à",
     "loadingPrograms": "Chargement des programmes...",
     "failedToLoadPrograms": "Échec du chargement des programmes",
     "manageYourTrainingPrograms": "Gérez vos programmes d'entraînement",
@@ -223,7 +235,8 @@
     "customRange": "Plage Personnalisée",
     "selectDateRange": "Sélectionner les Dates",
     "startDate": "Date de Début",
-    "endDate": "Date de Fin"
+    "endDate": "Date de Fin",
+    "chooseExerciseForProgress": "Choisir un Exercice pour le Progrès"
   },
   "settings": {
     "title": "Paramètres",

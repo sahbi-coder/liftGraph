@@ -95,6 +95,7 @@
     "unableToSaveWorkout": "No se pudo guardar el entrenamiento.",
     "exerciseMustHaveSet": "El ejercicio \"{{name}}\" debe tener al menos una serie.",
     "setRequiresNumericValues": "La serie {{setIndex}} en \"{{exerciseName}}\" requiere peso, reps y RIR numéricos.",
+    "rir": "RIR",
     "letsCrushGoals": "Vamos a alcanzar tus objetivos hoy",
     "upcomingWorkout": "Entrenamiento próximo",
     "startScheduledWorkout": "Iniciar Entrenamiento Programado",
@@ -165,6 +166,7 @@
     "week1": "Semana 1",
     "week2": "Semana 2",
     "programName": "Nombre del Programa",
+    "programType": "Tipo de Programa",
     "description": "Descripción",
     "simple": "Simple",
     "alternating": "Alternante",
@@ -175,6 +177,8 @@
     "phaseName": "Fase {{index}} nombre",
     "weeks": "Semanas",
     "addWeek": "Agregar Semana",
+    "selectActiveDays": "Seleccionar Días Activos",
+    "addExerciseTo": "Agregar Ejercicio a",
     "loadingPrograms": "Cargando programas...",
     "failedToLoadPrograms": "No se pudieron cargar los programas",
     "manageYourTrainingPrograms": "Administra tus programas de entrenamiento",
@@ -231,7 +235,8 @@
     "customRange": "Rango Personalizado",
     "selectDateRange": "Seleccionar Rango de Fechas",
     "startDate": "Fecha de Inicio",
-    "endDate": "Fecha de Fin"
+    "endDate": "Fecha de Fin",
+    "chooseExerciseForProgress": "Elegir Ejercicio para Progreso"
   },
   "settings": {
     "title": "Configuración",

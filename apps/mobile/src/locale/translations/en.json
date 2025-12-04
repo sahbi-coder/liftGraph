@@ -95,6 +95,7 @@
     "unableToSaveWorkout": "Unable to save workout.",
     "exerciseMustHaveSet": "Exercise \"{{name}}\" must have at least one set.",
     "setRequiresNumericValues": "Set {{setIndex}} in \"{{exerciseName}}\" requires numeric weight, reps, and RIR.",
+    "rir": "RIR",
     "letsCrushGoals": "Let's crush your goals today",
     "upcomingWorkout": "Upcoming workout",
     "startScheduledWorkout": "Start Scheduled Workout",
@@ -165,6 +166,7 @@
     "week1": "Week 1",
     "week2": "Week 2",
     "programName": "Program Name",
+    "programType": "Program Type",
     "description": "Description",
     "simple": "Simple",
     "alternating": "Alternating",
@@ -175,6 +177,8 @@
     "phaseName": "Phase {{index}} name",
     "weeks": "Weeks",
     "addWeek": "Add Week",
+    "selectActiveDays": "Select Active Days",
+    "addExerciseTo": "Add Exercise to",
     "loadingPrograms": "Loading programs...",
     "failedToLoadPrograms": "Failed to load programs",
     "manageYourTrainingPrograms": "Manage your training programs",
@@ -231,7 +235,8 @@
     "customRange": "Custom Range",
     "selectDateRange": "Select Date Range",
     "startDate": "Start Date",
-    "endDate": "End Date"
+    "endDate": "End Date",
+    "chooseExerciseForProgress": "Choose Exercise for Progress"
   },
   "settings": {
     "title": "Settings",

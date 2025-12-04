@@ -10,9 +10,11 @@ import {
   getExercisePickerCallback,
   clearExercisePickerCallback,
 } from '@/contexts/exercisePickerContext';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ProgressExercisePickerScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { exercises, isLoading, isError, refetch } = useExercisesWithLibrary();
 
   const handleSelect = useCallback(
@@ -52,10 +54,10 @@ export default function ProgressExercisePickerScreen() {
         space="$4"
       >
         <Text color="$textPrimary" fontSize="$5" textAlign="center">
-          Failed to load exercises
+          {t('exercise.failedToLoadExercises')}
         </Text>
         <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => refetch()}>
-          Retry
+          {t('common.retry')}
         </Button>
       </YStack>
     );
@@ -68,7 +70,7 @@ export default function ProgressExercisePickerScreen() {
       onSelect={handleSelect}
       onCancel={handleCancel}
       showCreateButton={false}
-      title="Choose Exercise for Progress"
+      title={t('progress.chooseExerciseForProgress')}
     />
   );
 }
