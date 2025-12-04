@@ -16,6 +16,7 @@ import type { Workout } from '@/domain';
 import { buildWeeklyExerciseVolumeByWeek } from '@/utils/strength';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { weightForDisplay } from '@/utils/units';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -27,6 +28,7 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
   const { preferences } = useUserPreferences();
   const weightUnit = preferences?.weightUnit ?? 'kg';
   const [selectedWeekIndex, setSelectedWeekIndex] = useState<number | null>(null);
+  const { t } = useTranslation();
 
   const {
     filterType,
@@ -113,13 +115,12 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
             </YStack>
             <YStack flex={1} space="$1">
               <Text color="$textPrimary" fontSize="$7" fontWeight="700">
-                Weekly Volume Load
+                {t('progress.weeklyVolumeLoad')}
               </Text>
             </YStack>
           </XStack>
           <Text color="$textSecondary" fontSize="$4">
-            Weekly training volume (weight × reps) per lift. Helps track block transitions, deloads,
-            and under/over-training trends.
+            {t('progress.weeklyVolumeLoadDescription')}
           </Text>
         </YStack>
 
@@ -127,7 +128,7 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
           <XStack alignItems="center" justifyContent="space-between" marginBottom="$2" space="$3">
             <YStack flex={1}>
               <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                {selectedExercise.name} - Weekly Volume
+                {selectedExercise.name} - {t('progress.weeklyVolumeLabel')}
               </Text>
               <Text color="$textSecondary" fontSize="$3">
                 {dateRangeDisplay}
@@ -142,7 +143,7 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
               paddingVertical="$2"
               onPress={handleOpenExercisePicker}
             >
-              Change Exercise
+              {t('progress.changeExercise')}
             </Button>
           </XStack>
 
@@ -191,7 +192,7 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
                 minWidth={140}
               >
                 <Text color={colors.white} fontSize="$3">
-                  Week starting {weeklyVolumeData[selectedWeekIndex].label}
+                  {t('progress.weekStarting', { date: weeklyVolumeData[selectedWeekIndex].label })}
                 </Text>
                 <Text color={colors.niceOrange} fontSize="$4" fontWeight="600">
                   {Math.round(weeklyVolumeData[selectedWeekIndex].value)}{' '}

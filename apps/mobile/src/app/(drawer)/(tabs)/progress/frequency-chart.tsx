@@ -14,6 +14,7 @@ import { useDateRangeFilter } from '@/hooks/useDateRangeFilter';
 import { useExerciseSelection } from '@/hooks/useExerciseSelection';
 import type { Workout } from '@/domain';
 import { buildWeeklyExerciseFrequencyByWeek } from '@/utils/strength';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -22,6 +23,7 @@ type WeeklyFrequencyChartProps = {
 };
 
 function WeeklyFrequencyChart({ workouts: _workouts }: WeeklyFrequencyChartProps) {
+  const { t } = useTranslation();
   const {
     filterType,
     customStartDate,
@@ -103,13 +105,12 @@ function WeeklyFrequencyChart({ workouts: _workouts }: WeeklyFrequencyChartProps
             </YStack>
             <YStack flex={1} space="$1">
               <Text color="$textPrimary" fontSize="$7" fontWeight="700">
-                Workout Frequency
+                {t('progress.workoutFrequency')}
               </Text>
             </YStack>
           </XStack>
           <Text color="$textSecondary" fontSize="$4">
-            Sessions per week for a given lift. Highlights how consistently you are training each
-            movement over time.
+            {t('progress.frequencyChartDescriptionShort')}
           </Text>
         </YStack>
 
@@ -117,7 +118,7 @@ function WeeklyFrequencyChart({ workouts: _workouts }: WeeklyFrequencyChartProps
           <XStack alignItems="center" justifyContent="space-between" marginBottom="$2" space="$3">
             <YStack flex={1}>
               <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                {selectedExercise.name} - Weekly Frequency
+                {selectedExercise.name} - {t('progress.weeklyFrequency')}
               </Text>
               <Text color="$textSecondary" fontSize="$3">
                 {dateRangeDisplay}
@@ -132,7 +133,7 @@ function WeeklyFrequencyChart({ workouts: _workouts }: WeeklyFrequencyChartProps
               paddingVertical="$2"
               onPress={handleOpenExercisePicker}
             >
-              Change Exercise
+              {t('progress.changeExercise')}
             </Button>
           </XStack>
 

@@ -16,6 +16,7 @@ import type { Workout } from '@/domain';
 import { buildWorkoutTopSets } from '@/utils/strength';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { weightForDisplay } from '@/utils/units';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -35,6 +36,7 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
   const { preferences } = useUserPreferences();
   const weightUnit = preferences?.weightUnit ?? 'kg';
   const [pointSpacing, setPointSpacing] = useState(40); // horizontal spacing (months/dates)
+  const { t } = useTranslation();
 
   const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
     defaultExercise: { id: 'squat', name: 'Squat' },
@@ -114,13 +116,12 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
             </YStack>
             <YStack flex={1} space="$1">
               <Text color="$textPrimary" fontSize="$7" fontWeight="700">
-                Top Set Progression Chart
+                {t('progress.topSetProgressionChart')}
               </Text>
             </YStack>
           </XStack>
           <Text color="$textSecondary" fontSize="$4">
-            Track top weight × reps over time as a bubble chart. X-axis = date, Y-axis = weight,
-            bubble size = reps. See progression like 405×1 → 405×3 → 420×1 → 425×1.
+            {t('progress.topSetProgressionDescription')}
           </Text>
         </YStack>
 
@@ -128,7 +129,7 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
           <XStack alignItems="center" justifyContent="space-between" marginBottom="$2" space="$3">
             <YStack flex={1}>
               <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                {selectedExercise.name} - Top Set (heaviest)
+                {selectedExercise.name} - {t('progress.topSetHeaviest')}
               </Text>
               <Text color="$textSecondary" fontSize="$3">
                 {dateRangeDisplay}
@@ -143,7 +144,7 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
               paddingVertical="$2"
               onPress={handleOpenExercisePicker}
             >
-              Change Exercise
+              {t('progress.changeExercise')}
             </Button>
           </XStack>
 
@@ -158,7 +159,7 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
           <XStack gap="$4" marginBottom="$3" flexWrap="wrap">
             <YStack gap="$2">
               <Text color="$textSecondary" fontSize="$3">
-                Time scale (spacing between dates):
+                {t('progress.timeScale')}
               </Text>
               <XStack alignItems="center" gap="$2">
                 <Button
@@ -246,7 +247,7 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
                       </Text>
                       {typeof item.reps === 'number' && (
                         <Text color={colors.white} fontSize="$3">
-                          {item.reps} reps
+                          {item.reps} {t('progress.reps')}
                         </Text>
                       )}
                       <Text color={colors.white} fontSize="$3">

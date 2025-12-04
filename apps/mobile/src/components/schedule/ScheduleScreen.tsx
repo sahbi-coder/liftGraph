@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { Calendar } from '@/components/Calendar';
 import { colors } from '@/theme/colors';
 import type { Workout } from '@/domain';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type ScheduleScreenProps = {
   workouts: Workout[];
@@ -13,6 +14,7 @@ type ScheduleScreenProps = {
 };
 
 export function ScheduleScreen({ workouts, onDayPress }: ScheduleScreenProps) {
+  const { t } = useTranslation();
   // Create a map of dates to workouts for quick lookup
   const workoutsByDate = useMemo(() => {
     const map = new Map<string, Workout>();
@@ -60,7 +62,7 @@ export function ScheduleScreen({ workouts, onDayPress }: ScheduleScreenProps) {
       <YStack space="$4">
         <YStack space="$2">
           <Text color="$textSecondary" fontSize="$5">
-            Tap on a marked day to view or edit your workout
+            {t('schedule.tapMarkedDay')}
           </Text>
         </YStack>
 
@@ -79,7 +81,7 @@ export function ScheduleScreen({ workouts, onDayPress }: ScheduleScreenProps) {
 
         <YStack space="$2" padding="$3" backgroundColor={colors.midGray} borderRadius="$4">
           <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-            Legend
+            {t('schedule.legend')}
           </Text>
           <YStack space="$2">
             <XStack alignItems="center" space="$2">
@@ -90,13 +92,13 @@ export function ScheduleScreen({ workouts, onDayPress }: ScheduleScreenProps) {
                 backgroundColor={colors.niceOrange}
               />
               <Text color="$textPrimary" fontSize="$4">
-                Validated workout
+                {t('schedule.validatedWorkout')}
               </Text>
             </XStack>
             <XStack alignItems="center" space="$2">
               <YStack width={24} height={24} borderRadius="$2" backgroundColor={colors.white} />
               <Text color="$textPrimary" fontSize="$4">
-                Non-validated workout
+                {t('schedule.nonValidatedWorkout')}
               </Text>
             </XStack>
           </YStack>

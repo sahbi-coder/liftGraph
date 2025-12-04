@@ -6,10 +6,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
 import { ScheduleScreen } from '@/components/schedule/ScheduleScreen';
 import { useUserWorkouts } from '@/hooks/useUserWorkouts';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function Schedule() {
   const router = useRouter();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const { workouts, isLoading, isError, refetch } = useUserWorkouts();
 
@@ -34,7 +36,7 @@ export default function Schedule() {
         padding="$4"
       >
         <Text color="$textPrimary" fontSize="$5">
-          Loading schedule...
+          {t('schedule.loadingSchedule')}
         </Text>
       </YStack>
     );
@@ -52,10 +54,10 @@ export default function Schedule() {
         space="$4"
       >
         <Text color="$textPrimary" fontSize="$5" textAlign="center">
-          Failed to load schedule
+          {t('schedule.failedToLoadSchedule')}
         </Text>
         <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => refetch()}>
-          Retry
+          {t('common.retry')}
         </Button>
       </YStack>
     );
@@ -71,7 +73,7 @@ export default function Schedule() {
         padding="$4"
       >
         <Text color={colors.white} fontSize="$5" textAlign="center">
-          Please sign in to view your schedule.
+          {t('schedule.pleaseSignInToViewSchedule')}
         </Text>
       </YStack>
     );

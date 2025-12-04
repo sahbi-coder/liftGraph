@@ -8,6 +8,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useTranslation } from '@/hooks/useTranslation';
 import type {
   ProgramInput,
   SimpleProgramInput,
@@ -93,6 +94,7 @@ export default function CreateProgramScreen() {
   const router = useRouter();
   const { services } = useDependencies();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const [programType, setProgramType] = useState<ProgramType>('simple');
   const [name, setName] = useState('');
@@ -574,7 +576,7 @@ export default function CreateProgramScreen() {
               exercises: day.exercises.map((ex) => {
                 if (ex.id !== exerciseId) return ex;
                 if (ex.sets.length === 1) {
-                  showWarning('Each exercise must have at least one set.');
+                  showWarning(t('workout.eachExerciseMustHaveSet'));
                   return ex;
                 }
                 return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
@@ -596,7 +598,7 @@ export default function CreateProgramScreen() {
               exercises: day.exercises.map((ex) => {
                 if (ex.id !== exerciseId) return ex;
                 if (ex.sets.length === 1) {
-                  showWarning('Each exercise must have at least one set.');
+                  showWarning(t('workout.eachExerciseMustHaveSet'));
                   return ex;
                 }
                 return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
@@ -622,7 +624,7 @@ export default function CreateProgramScreen() {
                   exercises: day.exercises.map((ex) => {
                     if (ex.id !== exerciseId) return ex;
                     if (ex.sets.length === 1) {
-                      showWarning('Each exercise must have at least one set.');
+                      showWarning(t('workout.eachExerciseMustHaveSet'));
                       return ex;
                     }
                     return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
@@ -736,18 +738,18 @@ export default function CreateProgramScreen() {
 
   const validateAndConvert = useCallback((): ProgramInput | null => {
     if (!name.trim()) {
-      showError('Program name is required.');
+      showError(t('program.programNameRequired'));
       return null;
     }
 
     if (!description.trim()) {
-      showError('Program description is required.');
+      showError(t('program.programDescriptionRequired'));
       return null;
     }
 
     if (programType === 'simple') {
       if (weeks.length === 0) {
-        showError('Simple program must have at least one week.');
+        showError(t('program.simpleProgramMustHaveWeek'));
         return null;
       }
 
@@ -768,7 +770,7 @@ export default function CreateProgramScreen() {
             }));
 
           if (sets.length === 0) {
-            throw new Error(`Exercise "${ex.name}" must have at least one valid set.`);
+            throw new Error(t('program.exerciseMustHaveValidSet', { name: ex.name }));
           }
 
           return {
@@ -799,7 +801,7 @@ export default function CreateProgramScreen() {
       return simpleProgram;
     } else if (programType === 'alternating') {
       if (alternatingWeeks.length !== 2) {
-        showError('Alternating program must have exactly two weeks.');
+        showError(t('program.alternatingProgramMustHaveWeeks'));
         return null;
       }
 
@@ -857,17 +859,17 @@ export default function CreateProgramScreen() {
       return alternatingProgram;
     } else {
       if (phases.length === 0) {
-        showError('Advanced program must have at least one phase.');
+        showError(t('program.advancedProgramMustHavePhase'));
         return null;
       }
 
       const convertedPhases: ProgramPhase[] = phases.map((phase) => {
         if (!phase.name.trim()) {
-          throw new Error('All phases must have a name.');
+          throw new Error(t('program.allPhasesMustHaveName'));
         }
 
         if (phase.weeks.length === 0) {
-          throw new Error(`Phase "${phase.name}" must have at least one week.`);
+          throw new Error(t('program.phaseMustHaveWeek', { name: phase.name }));
         }
 
         const dayLabels: DaySelectorDay[] = [
@@ -936,7 +938,7 @@ export default function CreateProgramScreen() {
 
   const handleSave = useCallback(async () => {
     if (!user) {
-      showError('Please sign in to create programs.');
+      showError(t('program.pleaseSignInToCreate'));
       return;
     }
 
@@ -950,18 +952,18 @@ export default function CreateProgramScreen() {
 
       setIsSaving(true);
       await services.firestore.createProgram(user.uid, programData);
-      showSuccess('Your program has been saved successfully.');
+      showSuccess(t('program.programSavedSuccessfully'));
       // Navigate back after showing success message
       setTimeout(() => {
         router.back();
       }, 1500);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Something went wrong.';
+      const message = error instanceof Error ? error.message : t('program.somethingWentWrong');
       showError(message);
     } finally {
       setIsSaving(false);
     }
-  }, [user, services.firestore, router, validateAndConvert, showError, showSuccess]);
+  }, [user, services.firestore, router, validateAndConvert, showError, showSuccess, t]);
 
   const renderExerciseCard = useCallback(
     (
@@ -1010,7 +1012,7 @@ export default function CreateProgramScreen() {
                 onChangeText={(value) =>
                   handleUpdateSetField(weekId, dayId, exercise.id, set.id, 'reps', value, phaseId)
                 }
-                placeholder="Reps"
+                placeholder={t('common.reps')}
                 keyboardType="numeric"
                 borderColor="$inputFieldBorder"
                 backgroundColor="$background"
@@ -1052,7 +1054,7 @@ export default function CreateProgramScreen() {
           borderRadius="$4"
           onPress={() => handleAddSet(weekId, dayId, exercise.id, phaseId)}
         >
-          <Entypo name="circle-with-plus" size={22} color={colors.white} /> Add Set
+          <Entypo name="circle-with-plus" size={22} color={colors.white} /> {t('common.set')}
         </Button>
       </YStack>
     ),
@@ -1081,7 +1083,7 @@ export default function CreateProgramScreen() {
                   ? handleUpdateWeekNameInPhase(phaseId, week.id, value)
                   : handleUpdateWeekName(week.id, value)
               }
-              placeholder={`Week ${weekIndex + 1} name`}
+              placeholder={`${t('common.week')} ${weekIndex + 1}`}
               borderColor="$inputFieldBorder"
               backgroundColor="$background"
               color="$textPrimary"
@@ -1173,7 +1175,7 @@ export default function CreateProgramScreen() {
                   setWeeks([createWeekForm()]);
                 }}
               >
-                Simple
+                {t('program.simple')}
               </Button>
               <Button
                 flex={1}
@@ -1186,7 +1188,7 @@ export default function CreateProgramScreen() {
                   setAlternatingWeeks([createWeekForm(), createWeekForm()]);
                 }}
               >
-                Alternating
+                {t('program.alternating')}
               </Button>
             </XStack>
             <XStack space="$2" justifyContent="center">
@@ -1200,7 +1202,7 @@ export default function CreateProgramScreen() {
                   setAlternatingWeeks([createWeekForm(), createWeekForm()]);
                 }}
               >
-                Advanced
+                {t('program.advanced')}
               </Button>
             </XStack>
           </YStack>
@@ -1208,12 +1210,12 @@ export default function CreateProgramScreen() {
 
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-            Program Name
+            {t('program.programName')}
           </Text>
           <Input
             value={name}
             onChangeText={setName}
-            placeholder="Enter program name"
+            placeholder={t('program.enterProgramName')}
             borderColor="$inputFieldBorder"
             backgroundColor="$inputFieldBackground"
             color="$textPrimary"
@@ -1222,12 +1224,12 @@ export default function CreateProgramScreen() {
 
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-            Description
+            {t('program.description')}
           </Text>
           <TextArea
             value={description}
             onChangeText={setDescription}
-            placeholder="Enter program description"
+            placeholder={t('program.enterProgramDescription')}
             borderColor="$inputFieldBorder"
             backgroundColor="$inputFieldBackground"
             color="$textPrimary"
@@ -1238,7 +1240,7 @@ export default function CreateProgramScreen() {
         {programType === 'simple' ? (
           <YStack space="$3">
             <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-              Week
+              {t('common.week')}
             </Text>
 
             {weeks.map((week, index) => renderWeek(week, index))}
@@ -1246,10 +1248,10 @@ export default function CreateProgramScreen() {
         ) : programType === 'alternating' ? (
           <YStack space="$3">
             <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-              Alternating Weeks
+              {t('program.alternatingWeeks')}
             </Text>
             <Text color="$textSecondary" fontSize="$4">
-              Define two weeks that will alternate
+              {t('program.defineTwoWeeks')}
             </Text>
 
             {alternatingWeeks.map((week, index) => renderWeek(week, index))}
@@ -1258,7 +1260,7 @@ export default function CreateProgramScreen() {
           <YStack space="$3">
             <XStack alignItems="center" justifyContent="space-between">
               <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-                Phases
+                {t('program.phases')}
               </Text>
               <Button
                 size="$3"
@@ -1266,7 +1268,8 @@ export default function CreateProgramScreen() {
                 color="$secondaryButtonText"
                 onPress={handleAddPhase}
               >
-                <Entypo name="circle-with-plus" size={20} color={colors.white} /> Add Phase
+                <Entypo name="circle-with-plus" size={20} color={colors.white} />{' '}
+                {t('program.addPhase')}
               </Button>
             </XStack>
 
@@ -1284,7 +1287,7 @@ export default function CreateProgramScreen() {
                     flex={1}
                     value={phase.name}
                     onChangeText={(value) => handleUpdatePhaseName(phase.id, value)}
-                    placeholder={`Phase ${phaseIndex + 1} name`}
+                    placeholder={`${t('program.phases')} ${phaseIndex + 1}`}
                     borderColor="$inputFieldBorder"
                     backgroundColor="$background"
                     color="$textPrimary"
@@ -1302,7 +1305,7 @@ export default function CreateProgramScreen() {
                 <TextArea
                   value={phase.description}
                   onChangeText={(value) => handleUpdatePhaseDescription(phase.id, value)}
-                  placeholder="Phase description"
+                  placeholder={t('program.phaseDescription')}
                   borderColor="$inputFieldBorder"
                   backgroundColor="$background"
                   color="$textPrimary"
@@ -1311,7 +1314,7 @@ export default function CreateProgramScreen() {
 
                 <XStack alignItems="center" justifyContent="space-between">
                   <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                    Weeks
+                    {t('program.weeks')}
                   </Text>
                   <Button
                     size="$3"
@@ -1319,7 +1322,8 @@ export default function CreateProgramScreen() {
                     color="$secondaryButtonText"
                     onPress={() => handleAddWeekToPhase(phase.id)}
                   >
-                    <Entypo name="circle-with-plus" size={20} color={colors.white} /> Add Week
+                    <Entypo name="circle-with-plus" size={20} color={colors.white} />{' '}
+                    {t('program.addWeek')}
                   </Button>
                 </XStack>
 
@@ -1339,7 +1343,7 @@ export default function CreateProgramScreen() {
           disabled={isSaving}
           opacity={isSaving ? 0.6 : 1}
         >
-          {isSaving ? 'Creating...' : 'Create Program'}
+          {isSaving ? t('common.creating') : t('program.create')}
         </Button>
       </YStack>
       <AlertModalComponent />

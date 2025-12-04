@@ -5,6 +5,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 
 import { colors } from '@/theme/colors';
 import type { Program } from '@/domain';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type ProgramHomeScreenProps = {
   programs: Program[];
@@ -17,6 +18,7 @@ export function ProgramHomeScreen({
   onCreateProgram,
   onProgramPress,
 }: ProgramHomeScreenProps) {
+  const { t } = useTranslation();
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.darkerGray }}
@@ -24,7 +26,7 @@ export function ProgramHomeScreen({
     >
       <YStack space="$2" alignItems="flex-start">
         <Text color="$textSecondary" fontSize="$5">
-          Manage your training programs
+          {t('program.manageYourTrainingPrograms')}
         </Text>
       </YStack>
 
@@ -37,7 +39,7 @@ export function ProgramHomeScreen({
           space="$2"
         >
           <Text color="$textSecondary" fontSize="$4" textAlign="center">
-            No programs yet. Create your first program to get started!
+            {t('program.noProgramsYet')}
           </Text>
         </YStack>
       ) : (
@@ -55,11 +57,10 @@ export function ProgramHomeScreen({
                     </Text>
                     <Text color="$textSecondary" fontSize="$2">
                       {program.type === 'simple'
-                        ? 'Simple'
+                        ? t('program.simpleProgram')
                         : program.type === 'alternating'
-                          ? 'Alternating'
-                          : 'Advanced'}{' '}
-                      Program
+                          ? t('program.alternatingProgram')
+                          : t('program.advancedProgram')}
                     </Text>
                   </YStack>
                   <Entypo name="chevron-right" size={24} color={colors.niceOrange} />
@@ -80,7 +81,7 @@ export function ProgramHomeScreen({
         pressStyle={{ opacity: 0.85 }}
         alignSelf="stretch"
       >
-        Create Program
+        {t('program.create')}
       </Button>
     </ScrollView>
   );

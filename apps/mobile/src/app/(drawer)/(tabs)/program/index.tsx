@@ -5,9 +5,11 @@ import { YStack, Text, Button } from 'tamagui';
 import { colors } from '@/theme/colors';
 import { ProgramHomeScreen } from '@/components/program/ProgramHomeScreen';
 import { useUserPrograms } from '@/hooks/useUserPrograms';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ProgramHome() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const { programs, isLoading, isError, refetch } = useUserPrograms();
 
@@ -36,7 +38,7 @@ export default function ProgramHome() {
         padding="$4"
       >
         <Text color="$textPrimary" fontSize="$5">
-          Loading programs...
+          {t('program.loadingPrograms')}
         </Text>
       </YStack>
     );
@@ -54,10 +56,10 @@ export default function ProgramHome() {
         space="$4"
       >
         <Text color="$textPrimary" fontSize="$5" textAlign="center">
-          Failed to load programs
+          {t('program.failedToLoadPrograms')}
         </Text>
         <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => refetch()}>
-          Retry
+          {t('common.retry')}
         </Button>
       </YStack>
     );

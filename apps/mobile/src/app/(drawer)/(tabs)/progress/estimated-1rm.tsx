@@ -16,6 +16,7 @@ import type { Workout } from '@/domain';
 import { buildExerciseE1RMSeries } from '@/utils/strength';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { weightForDisplay } from '@/utils/units';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -34,6 +35,7 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
   const { preferences } = useUserPreferences();
   const weightUnit = preferences?.weightUnit ?? 'kg';
   const [pointSpacing, setPointSpacing] = useState(40); // horizontal spacing (months/dates)
+  const { t } = useTranslation();
 
   const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
     defaultExercise: { id: 'squat', name: 'Squat' },
@@ -109,13 +111,12 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
             </YStack>
             <YStack flex={1} space="$1">
               <Text color="$textPrimary" fontSize="$7" fontWeight="700">
-                Estimated 1RM Trend
+                {t('progress.estimated1RMTrend')}
               </Text>
             </YStack>
           </XStack>
           <Text color="$textSecondary" fontSize="$4">
-            Track your training max (e1RM) per lift (Squat, Bench, Deadlift, OHP). Shows rate of
-            improvement, strength plateau detection, and big jumps from blocks or cycles.
+            {t('progress.estimated1RMTrendDescription')}
           </Text>
         </YStack>
 
@@ -123,7 +124,7 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
           <XStack alignItems="center" justifyContent="space-between" marginBottom="$2" space="$3">
             <YStack flex={1}>
               <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                {selectedExercise.name} - Estimated 1RM
+                {selectedExercise.name} - {t('progress.estimated1RM')}
               </Text>
               <Text color="$textSecondary" fontSize="$3">
                 {dateRangeDisplay}
@@ -138,7 +139,7 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
               paddingVertical="$2"
               onPress={handleOpenExercisePicker}
             >
-              Change Exercise
+              {t('progress.changeExercise')}
             </Button>
           </XStack>
 
@@ -153,7 +154,7 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
           <XStack gap="$4" marginBottom="$3" flexWrap="wrap">
             <YStack gap="$2">
               <Text color="$textSecondary" fontSize="$3">
-                Time scale (spacing between dates):
+                {t('progress.timeScale')}
               </Text>
               <XStack alignItems="center" gap="$2">
                 <Button

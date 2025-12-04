@@ -5,6 +5,7 @@ import { YStack, XStack, Text } from 'tamagui';
 import { BarChart3, TrendingUp, Activity } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type ProgressMetric = {
   id: string;
@@ -14,36 +15,32 @@ type ProgressMetric = {
   color: string;
 };
 
-const progressMetrics: ProgressMetric[] = [
+const getProgressMetrics = (t: any): ProgressMetric[] => [
   {
     id: 'estimated-1rm',
-    title: 'Estimated 1RM Trend',
-    description:
-      'Track your training max (e1RM) per lift (Squat, Bench, Deadlift, OHP). Shows rate of improvement, strength plateau detection, and big jumps from blocks or cycles.',
+    title: t('progress.estimated1RMTrend'),
+    description: t('progress.estimated1RMTrendDescription'),
     icon: TrendingUp,
     color: colors.niceOrange,
   },
   {
     id: 'top-set',
-    title: 'Top Set Progression Chart',
-    description:
-      'Track top weight × reps over time as a bubble chart. X-axis = date, Y-axis = weight, bubble size = reps. See progression like 405×1 → 405×3 → 420×1 → 425×1.',
+    title: t('progress.topSetProgressionChart'),
+    description: t('progress.topSetProgressionDescription'),
     icon: Activity,
     color: '#3b82f6',
   },
   {
     id: 'weekly-volume',
-    title: 'Weekly Volume Load (Per Lift Group)',
-    description:
-      'Chart weekly volume (weight × reps × sets) for Squat family, Bench family, Deadlift family, Accessory volume, and Total volume. Essential for detecting under-training, overtraining, block transitions, deloads, and recovery issues.',
+    title: t('progress.weeklyVolumeLoad'),
+    description: t('progress.weeklyVolumeDescription'),
     icon: BarChart3,
     color: '#10b981',
   },
   {
     id: 'frequency-chart',
-    title: 'Workout Frequency',
-    description:
-      'Bar showing how often you hit Squat, Bench, Deadlift, OHP, Accessory pulls, Core, and Upper back. Reveals training balance and helps coaches spot imbalances.',
+    title: t('progress.workoutFrequency'),
+    description: t('progress.frequencyChartDescription'),
     icon: BarChart3,
     color: '#8b5cf6',
   },
@@ -51,6 +48,7 @@ const progressMetrics: ProgressMetric[] = [
 
 export default function ProgressScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleMetricPress = (metricId: string) => {
     router.push(`/(tabs)/progress/${metricId}` as any);
@@ -64,12 +62,12 @@ export default function ProgressScreen() {
       <YStack space="$4">
         <YStack space="$2">
           <Text color="$textSecondary" fontSize="$5">
-            Explore your training data and insights
+            {t('progress.exploreYourTrainingData')}
           </Text>
         </YStack>
 
         <YStack space="$3">
-          {progressMetrics.map((metric) => {
+          {getProgressMetrics(t).map((metric) => {
             const IconComponent = metric.icon;
             return (
               <Pressable

@@ -5,8 +5,10 @@ import { BackButton } from '@/components/BackButton';
 
 import { colors } from '@/theme/colors';
 import { DrawerButton } from '@/components/DrawerButton';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ProgressLayout() {
+  const { t } = useTranslation();
   return (
     <Stack
       screenOptions={{
@@ -21,7 +23,7 @@ export default function ProgressLayout() {
         name="index"
         options={{
           headerShown: true,
-          headerTitle: 'Progress Analytics',
+          headerTitle: t('progress.progressAnalytics'),
           headerTitleAlign: 'left',
           headerTitleStyle: { fontSize: 28 },
           headerLeft: () => <DrawerButton />,
@@ -30,7 +32,7 @@ export default function ProgressLayout() {
       <Stack.Screen
         name="estimated-1rm"
         options={{
-          headerTitle: 'Estimated 1RM Trend',
+          headerTitle: t('progress.estimated1RMTrend'),
           headerTitleAlign: 'center',
           headerLeft: () => <BackButton />,
         }}
@@ -38,7 +40,7 @@ export default function ProgressLayout() {
       <Stack.Screen
         name="top-set"
         options={{
-          headerTitle: 'Top Set Progression Chart',
+          headerTitle: t('progress.topSetProgressionChart'),
           headerTitleAlign: 'center',
           headerLeft: () => <BackButton />,
         }}
@@ -46,7 +48,7 @@ export default function ProgressLayout() {
       <Stack.Screen
         name="weekly-volume"
         options={{
-          headerTitle: 'Weekly Volume Load',
+          headerTitle: t('progress.weeklyVolumeLoad'),
           headerTitleAlign: 'center',
           headerLeft: () => <BackButton />,
         }}
@@ -54,7 +56,7 @@ export default function ProgressLayout() {
       <Stack.Screen
         name="frequency-chart"
         options={{
-          headerTitle: 'Workout Frequency',
+          headerTitle: t('progress.workoutFrequency'),
           headerTitleAlign: 'center',
           headerLeft: () => <BackButton />,
         }}

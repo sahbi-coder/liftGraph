@@ -10,9 +10,11 @@ import {
   getExercisePickerCallback,
   clearExercisePickerCallback,
 } from '@/contexts/exercisePickerContext';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ScheduleExercisePickerScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const { exercises, isLoading, isError, refetch } = useExercisesWithLibrary();
 
@@ -60,10 +62,10 @@ export default function ScheduleExercisePickerScreen() {
         space="$4"
       >
         <Text color="$textPrimary" fontSize="$5" textAlign="center">
-          Failed to load exercises
+          {t('program.failedToLoadExercises')}
         </Text>
         <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => refetch()}>
-          Retry
+          {t('common.retry')}
         </Button>
       </YStack>
     );

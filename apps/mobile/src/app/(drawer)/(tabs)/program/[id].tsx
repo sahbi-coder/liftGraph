@@ -11,6 +11,7 @@ import { DaySelector, ProgramDay as DaySelectorProgramDay } from '@/components/D
 import { setWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ProgramDetailsScreen() {
   const router = useRouter();
@@ -24,6 +25,7 @@ export default function ProgramDetailsScreen() {
 
   const { services } = useDependencies();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const [program, setProgram] = useState<Program | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,12 +36,12 @@ export default function ProgramDetailsScreen() {
 
   useEffect(() => {
     if (!programId) {
-      showError('Program ID is missing.');
+      showError(t('program.programIdMissing'));
       setTimeout(() => {
         router.back();
       }, 2000);
     }
-  }, [router, programId, showError]);
+  }, [router, programId, showError, t]);
 
   useEffect(() => {
     if (!user || !programId) {
@@ -58,7 +60,7 @@ export default function ProgramDetailsScreen() {
         }
 
         if (!fetchedProgram) {
-          showError('We could not find that program.');
+          showError(t('program.programNotFound'));
           setTimeout(() => {
             router.back();
           }, 2000);
@@ -71,7 +73,7 @@ export default function ProgramDetailsScreen() {
           return;
         }
 
-        const message = error instanceof Error ? error.message : 'Unable to load program.';
+        const message = error instanceof Error ? error.message : t('program.unableToLoadProgram');
         showError(message);
         setTimeout(() => {
           router.back();
@@ -88,7 +90,7 @@ export default function ProgramDetailsScreen() {
     return () => {
       isMounted = false;
     };
-  }, [router, services.firestore, user, programId, showError]);
+  }, [router, services.firestore, user, programId, showError, t]);
 
   // Determine active days for DaySelector
   const activeDays = useMemo<DaySelectorProgramDay[]>(() => {
@@ -205,18 +207,18 @@ export default function ProgramDetailsScreen() {
     setIsDeleting(true);
     try {
       await services.firestore.deleteProgram(user.uid, programId);
-      showSuccess('The program has been deleted successfully.');
+      showSuccess(t('program.programDeletedSuccessfully'));
       // Navigate back after showing success message
       setTimeout(() => {
         router.back();
       }, 2000);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Something went wrong.';
+      const message = error instanceof Error ? error.message : t('program.somethingWentWrong');
       showError(message);
     } finally {
       setIsDeleting(false);
     }
-  }, [user, programId, program, services.firestore, router, showSuccess, showError]);
+  }, [user, programId, program, services.firestore, router, showSuccess, showError, t]);
 
   if (!user) {
     return (
@@ -228,7 +230,7 @@ export default function ProgramDetailsScreen() {
         padding="$4"
       >
         <Text color={colors.white} fontSize="$5" textAlign="center">
-          Please sign in to view programs.
+          {t('program.pleaseSignInToView')}
         </Text>
       </YStack>
     );
@@ -242,7 +244,7 @@ export default function ProgramDetailsScreen() {
         alignItems="center"
         backgroundColor={colors.darkerGray}
       >
-        <Text color={colors.white}>Loading program...</Text>
+        <Text color={colors.white}>{t('program.loadingProgram')}</Text>
       </YStack>
     );
   }
@@ -257,7 +259,7 @@ export default function ProgramDetailsScreen() {
         padding="$4"
       >
         <Text color={colors.white} fontSize="$5" textAlign="center">
-          Program could not be loaded.
+          {t('program.programCouldNotBeLoaded')}
         </Text>
       </YStack>
     );
@@ -284,7 +286,7 @@ export default function ProgramDetailsScreen() {
               paddingVertical="$2"
               onPress={() => {}}
             >
-              Update Program
+              {t('program.updateProgram')}
             </Button>
           </XStack>
           {program.description && (
@@ -306,11 +308,11 @@ export default function ProgramDetailsScreen() {
             >
               {`${
                 program.type === 'simple'
-                  ? 'Simple'
+                  ? t('program.simpleProgram')
                   : program.type === 'alternating'
-                    ? 'Alternating'
-                    : 'Advanced'
-              } Program`}
+                    ? t('program.alternatingProgram')
+                    : t('program.advancedProgram')
+              }`}
             </Button>
             {(program.type === 'simple' || program.type === 'alternating') && (
               <Button
@@ -323,7 +325,9 @@ export default function ProgramDetailsScreen() {
                 cursor="default"
                 height="auto"
               >
-                {program.type === 'simple' ? 'Weekly Schedule' : 'Alternating Weeks'}
+                {program.type === 'simple'
+                  ? t('program.weeklySchedule')
+                  : t('program.alternatingWeeks')}
               </Button>
             )}
           </XStack>
@@ -332,7 +336,9 @@ export default function ProgramDetailsScreen() {
         {program.type === 'simple' || program.type === 'alternating' ? (
           <YStack space="$3">
             <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-              {program.type === 'simple' ? 'Weekly Schedule' : 'Alternating Weeks'}
+              {program.type === 'simple'
+                ? t('program.weeklySchedule')
+                : t('program.alternatingWeeks')}
             </Text>
             {program.type === 'alternating' && (
               <XStack space="$2" alignItems="center">
@@ -348,7 +354,7 @@ export default function ProgramDetailsScreen() {
                   paddingVertical="$2"
                   onPress={() => setSelectedAlternatingWeek(0)}
                 >
-                  Week 1
+                  {t('program.week1')}
                 </Button>
                 <Button
                   backgroundColor={
@@ -362,7 +368,7 @@ export default function ProgramDetailsScreen() {
                   paddingVertical="$2"
                   onPress={() => setSelectedAlternatingWeek(1)}
                 >
-                  Week 2
+                  {t('program.week2')}
                 </Button>
               </XStack>
             )}
@@ -379,11 +385,13 @@ export default function ProgramDetailsScreen() {
                     >
                       <YStack space="$1" flex={1}>
                         <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                          Day {dayData.dayNumber}
+                          {t('common.day')} {dayData.dayNumber}
                         </Text>
                         <Text color="$textSecondary" fontSize="$4">
-                          {dayData.exercises.length} exercise
-                          {dayData.exercises.length !== 1 ? 's' : ''}
+                          {dayData.exercises.length}{' '}
+                          {dayData.exercises.length !== 1
+                            ? t('common.exercises')
+                            : t('common.exercise')}
                         </Text>
                       </YStack>
                       <Button
@@ -396,7 +404,7 @@ export default function ProgramDetailsScreen() {
                         paddingVertical="$1.5"
                         onPress={() => handleApplyDay(dayData.exercises)}
                       >
-                        Apply Day
+                        {t('program.applyDay')}
                       </Button>
                     </XStack>
                     <YStack
@@ -419,7 +427,7 @@ export default function ProgramDetailsScreen() {
                           <XStack gap="$3" flexWrap="wrap">
                             <YStack space="$1">
                               <Text color="$textSecondary" fontSize="$2">
-                                Sets
+                                {t('common.sets')}
                               </Text>
                               <Text color={colors.white} fontSize="$3" fontWeight="500">
                                 {exercise.sets.length}
@@ -428,12 +436,12 @@ export default function ProgramDetailsScreen() {
                             {exercise.sets.map((set, setIndex) => (
                               <YStack key={setIndex} space="$1">
                                 <Text color="$textSecondary" fontSize="$2">
-                                  Set {setIndex + 1}
+                                  {t('common.set')} {setIndex + 1}
                                 </Text>
                                 <XStack gap="$3">
                                   <YStack space="$0.5">
                                     <Text color="$textSecondary" fontSize="$2">
-                                      Reps
+                                      {t('common.reps')}
                                     </Text>
                                     <Text color={colors.white} fontSize="$3" fontWeight="500">
                                       {set.reps}
@@ -462,7 +470,7 @@ export default function ProgramDetailsScreen() {
         ) : (
           <YStack space="$4">
             <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-              Program Phases
+              {t('program.programPhases')}
             </Text>
             {program.phases.map((phase, phaseIndex) => {
               // Use the first week of the phase for display
@@ -518,11 +526,11 @@ export default function ProgramDetailsScreen() {
                     >
                       <XStack alignItems="center" space="$2">
                         <Text color={colors.niceOrange} fontSize="$6" fontWeight="700">
-                          Week 1
+                          {t('program.week1')}
                         </Text>
                         {phase.weeks.length > 1 && (
                           <Text color="$textSecondary" fontSize="$3">
-                            (of {phase.weeks.length} weeks)
+                            ({t('common.of')} {phase.weeks.length} {t('common.weeks')})
                           </Text>
                         )}
                       </XStack>
@@ -645,16 +653,16 @@ export default function ProgramDetailsScreen() {
             opacity={isDeleting ? 0.5 : 1}
             alignSelf="center"
           >
-            {isDeleting ? 'Deleting...' : 'Delete Program'}
+            {isDeleting ? t('common.deleting') : t('program.deleteProgram')}
           </Button>
         </YStack>
       </YStack>
       <ConfirmationModal
         visible={isDeleteModalVisible}
-        title="Delete Program?"
-        message={`Are you sure you want to delete "${program?.name}"? This action cannot be undone.`}
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t('program.deleteProgramConfirm')}
+        message={t('program.deleteProgramMessage', { name: program?.name || '' })}
+        confirmText={t('common.delete')}
+        cancelText={t('common.cancel')}
         onConfirm={handleConfirmDelete}
         onCancel={() => setIsDeleteModalVisible(false)}
         confirmButtonColor="#ef4444"
