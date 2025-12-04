@@ -4,6 +4,7 @@ import { YStack, XStack, Text, Button } from 'tamagui';
 import { AlertTriangle } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const LoadingView = () => {
   return (
@@ -25,6 +26,8 @@ type ErrorViewProps = {
 };
 
 export const ErrorView: React.FC<ErrorViewProps> = ({ onRetry }) => {
+  const { t } = useTranslation();
+
   return (
     <YStack
       flex={1}
@@ -46,7 +49,7 @@ export const ErrorView: React.FC<ErrorViewProps> = ({ onRetry }) => {
       </XStack>
 
       <Text color={colors.white} fontSize="$6" fontWeight="700">
-        Oops! something went wrong.
+        {t('common.oopsSomethingWentWrong')}
       </Text>
 
       <Button
@@ -57,7 +60,7 @@ export const ErrorView: React.FC<ErrorViewProps> = ({ onRetry }) => {
         borderRadius="$3"
         onPress={onRetry}
       >
-        Try Again
+        {t('common.tryAgain')}
       </Button>
     </YStack>
   );

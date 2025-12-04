@@ -7,14 +7,16 @@ import Feather from '@expo/vector-icons/Feather';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function TabsLayout() {
   const { user, loading } = useAuth();
+  const { t } = useTranslation();
 
   if (loading) {
     return (
       <YStack flex={1} justifyContent="center" alignItems="center" backgroundColor="$background">
-        <Text color="$textPrimary">Loading...</Text>
+        <Text color="$textPrimary">{t('common.loading')}</Text>
       </YStack>
     );
   }
@@ -40,7 +42,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="workout"
         options={{
-          title: 'Workouts',
+          title: t('workout.title'),
           tabBarIcon: ({ color, size }) => (
             <Feather name="activity" size={size ?? 24} color={color} />
           ),
@@ -51,7 +53,7 @@ export default function TabsLayout() {
         name="program"
         options={{
           headerShown: false,
-          title: 'Programs',
+          title: t('program.title'),
           tabBarIcon: ({ color, size }) => <Feather name="list" size={size ?? 24} color={color} />,
         }}
       />
@@ -59,7 +61,7 @@ export default function TabsLayout() {
         name="progress"
         options={{
           headerShown: false,
-          title: 'Progress',
+          title: t('progress.title'),
           tabBarIcon: ({ color, size }) => (
             <Foundation name="graph-trend" size={size ?? 24} color={color} />
           ),
@@ -68,7 +70,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="schedule"
         options={{
-          title: 'Schedule',
+          title: t('schedule.title'),
           tabBarIcon: ({ color, size }) => (
             <Entypo name="calendar" size={size ?? 24} color={color} />
           ),

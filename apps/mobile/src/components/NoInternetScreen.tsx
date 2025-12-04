@@ -4,8 +4,11 @@ import { YStack } from 'tamagui';
 import Feather from '@expo/vector-icons/Feather';
 
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function NoInternetScreen() {
+  const { t } = useTranslation();
+
   return (
     <YStack
       flex={1}
@@ -18,7 +21,7 @@ export function NoInternetScreen() {
       <Feather name="wifi-off" size={64} color={colors.niceOrange} />
       <YStack alignItems="center" gap="$2">
         <Text style={{ color: colors.white, fontSize: 24, fontWeight: 'bold' }}>
-          No Internet Connection
+          {t('common.noInternetConnection')}
         </Text>
         <Text
           style={{
@@ -28,7 +31,7 @@ export function NoInternetScreen() {
             maxWidth: 300,
           }}
         >
-          Please check your internet connection and try again.
+          {t('common.checkInternetConnection')}
         </Text>
       </YStack>
     </YStack>

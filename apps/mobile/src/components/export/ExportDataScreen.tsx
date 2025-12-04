@@ -17,6 +17,7 @@ import { colors } from '@/theme/colors';
 import { Calendar } from '@/components/Calendar';
 import type { Workout } from '@/domain';
 import { exportWorkouts, type ExportFormat } from '@/utils/export';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type DataType = 'workoutHistory' | 'personalRecords' | 'progressTracking' | 'trainingPrograms';
 type DateRangePreset = 'last30Days' | 'last6Months' | 'allTime' | 'custom';
@@ -26,6 +27,7 @@ type ExportDataScreenProps = {
 };
 
 export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
+  const { t } = useTranslation();
   const [selectedDataTypes, setSelectedDataTypes] = useState<Set<DataType>>(
     new Set(['workoutHistory', 'personalRecords']),
   );
@@ -87,7 +89,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
 
   const handleExport = useCallback(async () => {
     if (selectedDataTypes.size === 0) {
-      Alert.alert('No Data Selected', 'Please select at least one data type to export.');
+      Alert.alert(t('exportData.noDataSelected'), t('exportData.selectAtLeastOneDataType'));
       return;
     }
 
@@ -97,47 +99,47 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
       // Other data types can be added later
       if (selectedDataTypes.has('workoutHistory')) {
         await exportWorkouts(workouts, exportFormat, fromDate, toDate);
-        Alert.alert('Success', 'Workout data exported successfully!');
+        Alert.alert(t('exportData.success'), t('exportData.workoutDataExportedSuccessfully'));
       } else {
-        Alert.alert('Not Implemented', 'Only workout history export is currently available.');
+        Alert.alert(t('exportData.notImplemented'), t('exportData.onlyWorkoutHistoryAvailable'));
       }
     } catch (error) {
       console.error('Export error:', error);
       Alert.alert(
-        'Export Failed',
-        error instanceof Error ? error.message : 'Failed to export data',
+        t('exportData.exportFailed'),
+        error instanceof Error ? error.message : t('exportData.failedToExportData'),
       );
     } finally {
       setIsExporting(false);
     }
-  }, [workouts, selectedDataTypes, exportFormat, fromDate, toDate]);
+  }, [workouts, selectedDataTypes, exportFormat, fromDate, toDate, t]);
 
   const dataTypes = [
     {
       id: 'workoutHistory' as DataType,
-      label: 'Workout History',
-      description: 'All completed workouts and exercises',
+      label: t('exportData.workoutHistory'),
+      description: t('exportData.workoutHistoryDescription'),
       icon: Dumbbell,
       color: colors.niceOrange,
     },
     {
       id: 'personalRecords' as DataType,
-      label: 'Personal Records',
-      description: '1RM, volume PRs, and achievements',
+      label: t('exportData.personalRecords'),
+      description: t('exportData.personalRecordsDescription'),
       icon: Trophy,
       color: colors.niceOrange,
     },
     {
       id: 'progressTracking' as DataType,
-      label: 'Progress Tracking',
-      description: 'Body weight, measurements, photos',
+      label: t('exportData.progressTracking'),
+      description: t('exportData.progressTrackingDescription'),
       icon: TrendingUp,
       color: colors.niceOrange,
     },
     {
       id: 'trainingPrograms' as DataType,
-      label: 'Training Programs',
-      description: 'Custom routines and templates',
+      label: t('exportData.trainingPrograms'),
+      description: t('exportData.trainingProgramsDescription'),
       icon: CalendarIcon,
       color: colors.niceOrange,
     },
@@ -146,22 +148,22 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
   const exportFormats = [
     {
       id: 'xlsx' as ExportFormat,
-      label: 'Excel (.xlsx)',
-      description: 'Best for analysis and charts',
+      label: t('exportData.excel'),
+      description: t('exportData.excelDescription'),
       icon: FileSpreadsheet,
       color: '#16a34a',
     },
     {
       id: 'csv' as ExportFormat,
-      label: 'CSV (.csv)',
-      description: 'Compatible with most apps',
+      label: t('exportData.csv'),
+      description: t('exportData.csvDescription'),
       icon: FileText,
       color: '#2563eb',
     },
     {
       id: 'json' as ExportFormat,
-      label: 'JSON (.json)',
-      description: 'For developers and advanced users',
+      label: t('exportData.json'),
+      description: t('exportData.jsonDescription'),
       icon: Code,
       color: '#9333ea',
     },
@@ -196,11 +198,10 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
             </YStack>
             <YStack flex={1} space="$1">
               <Text color={colors.white} fontSize="$5" fontWeight="600">
-                Export Your Training Data
+                {t('exportData.exportYourTrainingData')}
               </Text>
               <Text color={colors.midGray} fontSize="$4" lineHeight="$1">
-                Download your complete workout history, personal records, and training statistics in
-                various formats for backup or analysis purposes.
+                {t('exportData.exportDescription')}
               </Text>
             </YStack>
           </XStack>
@@ -208,7 +209,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
           {/* SELECT DATA TYPES */}
           <YStack space="$3">
             <Text color={colors.white} fontSize="$6" fontWeight="600" textTransform="uppercase">
-              Select Data Types
+              {t('exportData.selectDataTypes')}
             </Text>
             <YStack space="$3">
               {dataTypes.map((type) => {
@@ -258,7 +259,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
           {/* EXPORT FORMAT */}
           <YStack space="$3">
             <Text color={colors.white} fontSize="$6" fontWeight="600" textTransform="uppercase">
-              Export Format
+              {t('exportData.exportFormat')}
             </Text>
             <YStack space="$3">
               {exportFormats.map((format) => {
@@ -315,12 +316,12 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
           {/* DATE RANGE */}
           <YStack space="$3">
             <Text color={colors.white} fontSize="$6" fontWeight="600" textTransform="uppercase">
-              Date Range
+              {t('exportData.dateRange')}
             </Text>
             <YStack space="$3">
               <YStack space="$2">
                 <Text color={colors.midGray} fontSize="$4" fontWeight="500">
-                  From Date
+                  {t('exportData.fromDate')}
                 </Text>
                 <TouchableOpacity onPress={() => setIsFromDatePickerVisible(true)}>
                   <Input
@@ -337,7 +338,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
               </YStack>
               <YStack space="$2">
                 <Text color={colors.midGray} fontSize="$4" fontWeight="500">
-                  To Date
+                  {t('exportData.toDate')}
                 </Text>
                 <TouchableOpacity onPress={() => setIsToDatePickerVisible(true)}>
                   <Input
@@ -364,7 +365,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
                   padding="$3"
                 >
                   <Text fontSize="$4" fontWeight="500" color={colors.white}>
-                    Last 30 Days
+                    {t('exportData.last30Days')}
                   </Text>
                 </Button>
                 <Button
@@ -378,7 +379,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
                   padding="$3"
                 >
                   <Text fontSize="$4" fontWeight="500" color={colors.white}>
-                    Last 6 Months
+                    {t('exportData.last6Months')}
                   </Text>
                 </Button>
                 <Button
@@ -392,7 +393,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
                   padding="$3"
                 >
                   <Text fontSize="$4" fontWeight="500" color={colors.white}>
-                    All Time
+                    {t('exportData.allTime')}
                   </Text>
                 </Button>
               </XStack>
@@ -408,7 +409,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
                 disabled={isExporting}
                 opacity={isExporting ? 0.6 : 1}
               >
-                {isExporting ? 'Exporting...' : 'Export data'}
+                {isExporting ? t('exportData.exporting') : t('exportData.exportData')}
               </Button>
             </YStack>
           </YStack>
@@ -439,7 +440,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
           >
             <XStack alignItems="center" justifyContent="space-between">
               <Text color={colors.white} fontSize="$5" fontWeight="600">
-                Select From Date
+                {t('exportData.selectFromDate')}
               </Text>
               <Button
                 size="$2"
@@ -447,7 +448,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
                 color={colors.white}
                 onPress={() => setIsFromDatePickerVisible(false)}
               >
-                Close
+                {t('common.close')}
               </Button>
             </XStack>
             <Calendar
@@ -493,7 +494,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
           >
             <XStack alignItems="center" justifyContent="space-between">
               <Text color={colors.white} fontSize="$5" fontWeight="600">
-                Select To Date
+                {t('exportData.selectToDate')}
               </Text>
               <Button
                 size="$2"
@@ -501,7 +502,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
                 color={colors.white}
                 onPress={() => setIsToDatePickerVisible(false)}
               >
-                Close
+                {t('common.close')}
               </Button>
             </XStack>
             <Calendar

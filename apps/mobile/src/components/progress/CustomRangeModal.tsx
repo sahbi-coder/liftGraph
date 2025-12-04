@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { colors } from '@/theme/colors';
 import { Calendar } from '@/components/Calendar';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface CustomRangeModalProps {
   visible: boolean;
@@ -21,6 +22,7 @@ export function CustomRangeModal({
   initialStartDate,
   initialEndDate,
 }: CustomRangeModalProps) {
+  const { t } = useTranslation();
   const [tempStartDate, setTempStartDate] = useState<string | null>(initialStartDate || null);
   const [tempEndDate, setTempEndDate] = useState<string | null>(initialEndDate || null);
   const { showWarning, AlertModalComponent } = useAlertModal();
@@ -39,12 +41,12 @@ export function CustomRangeModal({
   const handleEndDateSelect = useCallback(
     (day: { dateString: string }) => {
       if (tempStartDate && dayjs(day.dateString).isBefore(dayjs(tempStartDate).add(1, 'day'))) {
-        showWarning('End date must be after the start date. Please select a later date.');
+        showWarning(t('customRange.endDateAfterStart'));
         return;
       }
       setTempEndDate(day.dateString);
     },
-    [tempStartDate, showWarning],
+    [tempStartDate, showWarning, t],
   );
 
   const isValidDateRange = useMemo(() => {
@@ -54,18 +56,18 @@ export function CustomRangeModal({
 
   const handleApply = useCallback(() => {
     if (!tempStartDate || !tempEndDate) {
-      showWarning('Please select both start and end dates.');
+      showWarning(t('customRange.selectBothDates'));
       return;
     }
 
     if (!isValidDateRange) {
-      showWarning('End date must be after the start date. Please select a valid date range.');
+      showWarning(t('customRange.endDateAfterStartValid'));
       return;
     }
 
     onApply(tempStartDate, tempEndDate);
     onClose();
-  }, [tempStartDate, tempEndDate, isValidDateRange, onApply, onClose, showWarning]);
+  }, [tempStartDate, tempEndDate, isValidDateRange, onApply, onClose, showWarning, t]);
 
   const handleClose = useCallback(() => {
     setTempStartDate(initialStartDate || null);
@@ -93,10 +95,10 @@ export function CustomRangeModal({
         >
           <XStack alignItems="center" justifyContent="space-between">
             <Text color={colors.white} fontSize="$5" fontWeight="600">
-              Select Date Range
+              {t('progress.selectDateRange')}
             </Text>
             <Button size="$2" variant="outlined" color={colors.white} onPress={handleClose}>
-              Close
+              {t('common.close')}
             </Button>
           </XStack>
 
@@ -108,7 +110,7 @@ export function CustomRangeModal({
             <YStack space="$3">
               <YStack space="$2">
                 <Text color={colors.white} fontSize="$4" fontWeight="600">
-                  Start Date
+                  {t('progress.startDate')}
                 </Text>
                 <Calendar
                   current={tempStartDate || undefined}
@@ -129,7 +131,7 @@ export function CustomRangeModal({
 
               <YStack space="$2">
                 <Text color={colors.white} fontSize="$4" fontWeight="600">
-                  End Date
+                  {t('progress.endDate')}
                 </Text>
                 <Calendar
                   current={tempEndDate || undefined}
@@ -158,7 +160,7 @@ export function CustomRangeModal({
               borderColor={colors.white}
               onPress={handleClose}
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               backgroundColor={colors.niceOrange}
@@ -167,7 +169,7 @@ export function CustomRangeModal({
               disabled={!isValidDateRange}
               opacity={!isValidDateRange ? 0.5 : 1}
             >
-              Apply
+              {t('common.apply')}
             </Button>
           </XStack>
         </YStack>

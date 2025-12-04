@@ -10,6 +10,7 @@ import { useWorkout } from '@/hooks/useWorkout';
 import { useWorkoutMutations } from '@/hooks/useWorkoutMutations';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function EditWorkoutPage() {
   const router = useRouter();
@@ -45,60 +46,61 @@ export function EditWorkoutPage() {
   } = useWorkoutMutations(workoutId);
 
   const { showSuccess, showError, AlertModalComponent } = useAlertModal();
+  const { t } = useTranslation();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDeletingWorkout, setIsDeletingWorkout] = useState(false);
 
   const handleUpdateWorkout = useCallback(
     async (workoutPayload: Parameters<typeof updateWorkout>[0]) => {
       if (!user || !workoutId) {
-        showError('Please sign in to edit workouts.');
+        showError(t('workout.pleaseSignInToEdit'));
         return;
       }
 
       try {
         await updateWorkout(workoutPayload);
-        showSuccess('Your workout has been updated successfully.');
+        showSuccess(t('workout.workoutUpdatedSuccessfully'));
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Something went wrong.';
+        const message = error instanceof Error ? error.message : t('common.somethingWentWrong');
         showError(message);
       }
     },
-    [user, workoutId, updateWorkout, showSuccess, showError],
+    [user, workoutId, updateWorkout, showSuccess, showError, t],
   );
 
   const handleValidateWorkout = useCallback(async () => {
     if (!user || !workoutId) {
-      showError('Please sign in to validate workouts.');
+      showError(t('workout.pleaseSignInToValidate'));
       return;
     }
 
     try {
       await validateWorkout();
-      showSuccess('Your workout has been marked as complete.');
+      showSuccess(t('workout.workoutMarkedAsComplete'));
       // Navigate back after showing success message
       setTimeout(() => {
         router.back();
       }, 1500);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Something went wrong.';
+      const message = error instanceof Error ? error.message : t('common.somethingWentWrong');
       showError(message);
     }
-  }, [router, user, workoutId, validateWorkout, showSuccess, showError]);
+  }, [router, user, workoutId, validateWorkout, showSuccess, showError, t]);
 
   const handleUnvalidateWorkout = useCallback(async () => {
     if (!user || !workoutId) {
-      showError('Please sign in to unvalidate workouts.');
+      showError(t('workout.pleaseSignInToUnvalidate'));
       return;
     }
 
     try {
       await unvalidateWorkout();
-      showSuccess('You can now edit this workout.');
+      showSuccess(t('workout.canNowEditWorkout'));
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Something went wrong.';
+      const message = error instanceof Error ? error.message : t('common.somethingWentWrong');
       showError(message);
     }
-  }, [user, workoutId, unvalidateWorkout, showSuccess, showError]);
+  }, [user, workoutId, unvalidateWorkout, showSuccess, showError, t]);
 
   const handleDeleteWorkout = useCallback(() => {
     setIsDeleteModalVisible(true);
@@ -107,24 +109,24 @@ export function EditWorkoutPage() {
   const handleConfirmDelete = useCallback(async () => {
     setIsDeleteModalVisible(false);
     if (!user || !workoutId) {
-      showError('Please sign in to delete workouts.');
+      showError(t('workout.pleaseSignInToDelete'));
       return;
     }
 
     try {
       setIsDeletingWorkout(true);
       await deleteWorkout();
-      showSuccess('Workout deleted successfully.');
+      showSuccess(t('workout.workoutDeletedSuccessfully'));
       // Navigate back after alert is shown (2 seconds for success alerts)
       setTimeout(() => {
         router.back();
       }, 2000);
     } catch (error) {
       setIsDeletingWorkout(false);
-      const message = error instanceof Error ? error.message : 'Something went wrong.';
+      const message = error instanceof Error ? error.message : t('common.somethingWentWrong');
       showError(message);
     }
-  }, [router, user, workoutId, deleteWorkout, showSuccess, showError]);
+  }, [router, user, workoutId, deleteWorkout, showSuccess, showError, t]);
 
   // Show loading state
   if (isLoading) {
@@ -135,7 +137,7 @@ export function EditWorkoutPage() {
         alignItems="center"
         backgroundColor={colors.darkerGray}
       >
-        <Text color={colors.white}>Loading workout...</Text>
+        <Text color={colors.white}>{t('workout.loadingWorkout')}</Text>
       </YStack>
     );
   }
@@ -145,10 +147,10 @@ export function EditWorkoutPage() {
     <>
       <ConfirmationModal
         visible={isDeleteModalVisible}
-        title="Delete Workout?"
-        message="Are you sure you want to delete this workout? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t('workout.deleteWorkoutConfirm')}
+        message={t('workout.deleteWorkoutMessage')}
+        confirmText={t('common.delete')}
+        cancelText={t('common.cancel')}
         onConfirm={handleConfirmDelete}
         onCancel={() => setIsDeleteModalVisible(false)}
         confirmButtonColor="#ef4444"
@@ -171,17 +173,17 @@ export function EditWorkoutPage() {
           space="$4"
         >
           <Text color={colors.white} fontSize="$5" textAlign="center">
-            Failed to load workout
+            {t('workout.failedToLoadWorkout')}
           </Text>
           <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => refetch()}>
-            Retry
+            {t('common.retry')}
           </Button>
           <Button
             backgroundColor={colors.midGray}
             color={colors.white}
             onPress={() => router.back()}
           >
-            Go Back
+            {t('common.back')}
           </Button>
         </YStack>
         {modals}

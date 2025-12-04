@@ -7,6 +7,7 @@ import { Calendar, Clock3, Dumbbell } from '@tamagui/lucide-icons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 dayjs.extend(relativeTime);
 
@@ -35,14 +36,15 @@ export function WorkoutSummaryCard({
   title,
   buttonLabel,
 }: WorkoutSummaryCardProps) {
+  const { t } = useTranslation();
   const isToday = dayjs(date).isSame(dayjs(), 'day');
   const isBeforeToday = dayjs(date).isBefore(dayjs(), 'day');
   const timeFromNow = _.upperFirst(useMemo(() => dayjs(date).fromNow(), [date]));
-  const exerciseLabel = exerciseCount === 1 ? 'Exercise' : 'Exercises';
-  const setLabel = setCount === 1 ? 'Set' : 'Sets';
+  const exerciseLabel = exerciseCount === 1 ? t('common.exercise') : t('common.exercises');
+  const setLabel = setCount === 1 ? t('common.set') : t('common.sets');
   const formattedAverageRir =
     typeof averageRir === 'number' && Number.isFinite(averageRir) ? averageRir.toFixed(1) : '--';
-  const timeFromNowLabel = isToday ? 'Today' : timeFromNow;
+  const timeFromNowLabel = isToday ? t('workout.today') : timeFromNow;
 
   // Compute status based on validated and date
   const status: WorkoutStatus = useMemo(() => {
@@ -58,17 +60,17 @@ export function WorkoutSummaryCard({
   // Status display configuration
   const statusConfig = {
     scheduled: {
-      label: 'Scheduled',
+      label: t('workout.scheduled'),
       color: colors.niceOrange,
       backgroundColor: 'rgba(249, 115, 22, 0.15)',
     },
     missed: {
-      label: 'Missed',
+      label: t('workout.missed'),
       color: '#ef4444', // red-500
       backgroundColor: 'rgba(239, 68, 68, 0.15)',
     },
     complete: {
-      label: 'Complete',
+      label: t('workout.complete'),
       color: '#22c55e', // green-500
       backgroundColor: 'rgba(34, 197, 94, 0.15)',
     },
@@ -136,7 +138,7 @@ export function WorkoutSummaryCard({
           </XStack>
           <XStack alignItems="center" space="$2">
             <Text color="$textSecondary" fontSize="$3" fontWeight="600">
-              Avg RIR {formattedAverageRir}
+              {t('workout.avgRir')} {formattedAverageRir}
             </Text>
           </XStack>
         </XStack>
@@ -152,7 +154,7 @@ export function WorkoutSummaryCard({
         opacity={isLoading ? 0.6 : 1}
         alignSelf="stretch"
       >
-        {isLoading ? 'Opening...' : buttonLabel}
+        {isLoading ? t('workout.opening') : buttonLabel}
       </Button>
     </YStack>
   );

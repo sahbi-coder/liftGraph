@@ -1,6 +1,7 @@
 import React from 'react';
 import { XStack, Button } from 'tamagui';
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export type FilterType = 'week' | 'month' | '3months' | '6months' | 'year' | 'all' | 'custom';
 
@@ -13,22 +14,23 @@ interface DurationFilterButtonsProps {
 
 const defaultFilters: FilterType[] = ['month', '3months', '6months', 'year', 'all', 'custom'];
 
-const filterLabels: Record<FilterType, string> = {
-  week: 'Last Week',
-  month: 'Last Month',
-  '3months': '3 Months',
-  '6months': '6 Months',
-  year: 'Last Year',
-  all: 'All Time',
-  custom: 'Custom Range',
-};
-
 export function DurationFilterButtons({
   filterType,
   onFilterChange,
   onCustomRangePress,
   availableFilters = defaultFilters,
 }: DurationFilterButtonsProps) {
+  const { t } = useTranslation();
+
+  const filterLabels: Record<FilterType, string> = {
+    week: t('progress.lastWeek'),
+    month: t('progress.lastMonth'),
+    '3months': t('progress.3Months'),
+    '6months': t('progress.6Months'),
+    year: t('progress.lastYear'),
+    all: t('progress.allTime'),
+    custom: t('progress.customRange'),
+  };
   const handleFilterPress = (type: FilterType) => {
     if (type === 'custom') {
       onCustomRangePress();

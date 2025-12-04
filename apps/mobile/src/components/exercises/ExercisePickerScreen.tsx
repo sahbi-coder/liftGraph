@@ -6,6 +6,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { colors } from '@/theme/colors';
 import type { Exercise } from '@/domain';
 import type { ExerciseSelection } from '@/types/workout';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type ExercisePickerScreenProps = {
   exercises: Exercise[];
@@ -26,6 +27,7 @@ export function ExercisePickerScreen({
   showCreateButton = true,
   title,
 }: ExercisePickerScreenProps) {
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'all' | 'library' | 'custom'>('all');
 
@@ -88,7 +90,7 @@ export function ExercisePickerScreen({
           height={40}
           value={search}
           onChangeText={setSearch}
-          placeholder="Search exercises"
+          placeholder={t('exercise.searchExercises')}
           autoCapitalize="none"
           autoCorrect={false}
           borderColor="$inputFieldBorder"
@@ -104,7 +106,7 @@ export function ExercisePickerScreen({
           onPress={() => setSearch('')}
           disabled={!search}
         >
-          Clear
+          {t('common.clear')}
         </Button>
       </XStack>
 
@@ -117,7 +119,7 @@ export function ExercisePickerScreen({
           color={colors.white}
           onPress={() => setFilter('all')}
         >
-          All
+          {t('exercise.all')}
         </Button>
         <Button
           flex={1}
@@ -127,7 +129,7 @@ export function ExercisePickerScreen({
           color={colors.white}
           onPress={() => setFilter('library')}
         >
-          Library
+          {t('exercise.library')}
         </Button>
         <Button
           flex={1}
@@ -137,24 +139,26 @@ export function ExercisePickerScreen({
           color={colors.white}
           onPress={() => setFilter('custom')}
         >
-          Custom
+          {t('exercise.custom')}
         </Button>
       </XStack>
 
       {isLoading ? (
         <YStack flex={1} justifyContent="center" alignItems="center">
-          <Text color={colors.white}>Loading exercises...</Text>
+          <Text color={colors.white}>{t('exercise.loadingExercises')}</Text>
         </YStack>
       ) : filteredExercises.length === 0 ? (
         <YStack flex={1} justifyContent="center" alignItems="center" space="$4" padding="$4">
           <Entypo name="info" size={48} color={colors.niceOrange} />
           <Text color="$textPrimary" fontSize="$5" fontWeight="600" textAlign="center">
-            {search.trim() || filter !== 'all' ? 'No exercises found' : 'No exercises yet'}
+            {search.trim() || filter !== 'all'
+              ? t('exercise.noExercisesFound')
+              : t('exercise.noExercisesYet')}
           </Text>
           <Text color="$textSecondary" fontSize="$4" textAlign="center">
             {search.trim() || filter !== 'all'
-              ? 'Try adjusting your search or filters, or create a new exercise.'
-              : 'Create your first custom exercise to get started!'}
+              ? t('exercise.tryAdjustingSearch')
+              : t('exercise.createFirstCustomExercise')}
           </Text>
           {showCreateButton && onCreateExercise && (
             <Button
@@ -167,7 +171,7 @@ export function ExercisePickerScreen({
             >
               <Entypo name="circle-with-plus" size={20} color={colors.white} />
               <Text color={colors.white} marginLeft="$2">
-                Create Exercise
+                {t('exercise.create')}
               </Text>
             </Button>
           )}
@@ -184,7 +188,7 @@ export function ExercisePickerScreen({
       )}
 
       <Button backgroundColor={colors.midGray} color={colors.white} onPress={onCancel}>
-        Cancel
+        {t('common.cancel')}
       </Button>
 
       {/* Floating Action Button */}

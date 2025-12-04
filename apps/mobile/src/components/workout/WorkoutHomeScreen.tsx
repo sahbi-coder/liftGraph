@@ -5,6 +5,7 @@ import { YStack, Text, Button } from 'tamagui';
 import { colors } from '@/theme/colors';
 import { WorkoutSummaryCard } from '@/components/workout/WorkoutSummaryCard';
 import type { Workout } from '@/domain';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type WorkoutHomeScreenProps = {
   latestWorkout: Workout | null;
@@ -25,6 +26,8 @@ export function WorkoutHomeScreen({
   onEditWorkout,
   onEditFutureWorkout,
 }: WorkoutHomeScreenProps) {
+  const { t } = useTranslation();
+
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.darkerGray }}
@@ -32,14 +35,14 @@ export function WorkoutHomeScreen({
     >
       <YStack space="$2" alignItems="flex-start">
         <Text color="$textSecondary" fontSize="$5">
-          Let's crush your goals today
+          {t('workout.letsCrushGoals')}
         </Text>
       </YStack>
 
       {earliestFutureWorkout && (
         <WorkoutSummaryCard
-          title="Upcoming workout"
-          buttonLabel="Start Scheduled Workout"
+          title={t('workout.upcomingWorkout')}
+          buttonLabel={t('workout.startScheduledWorkout')}
           date={earliestFutureWorkout.date}
           validated={earliestFutureWorkout.validated}
           exerciseCount={earliestFutureWorkout.exercises.length}
@@ -65,8 +68,8 @@ export function WorkoutHomeScreen({
 
       {latestWorkout && (
         <WorkoutSummaryCard
-          title="Previous workout"
-          buttonLabel="Review Workout"
+          title={t('workout.previousWorkout')}
+          buttonLabel={t('workout.reviewWorkout')}
           date={latestWorkout.date}
           validated={latestWorkout.validated}
           exerciseCount={latestWorkout.exercises.length}
@@ -100,7 +103,7 @@ export function WorkoutHomeScreen({
         pressStyle={{ opacity: 0.85 }}
         alignSelf="stretch"
       >
-        Schedule Workout
+        {t('workout.scheduleWorkout')}
       </Button>
     </ScrollView>
   );

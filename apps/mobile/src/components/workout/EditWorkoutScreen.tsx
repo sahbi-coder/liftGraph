@@ -3,6 +3,7 @@ import React, { useCallback, useState, useMemo, useEffect } from 'react';
 import { WorkoutForm } from '@/components/workout/WorkoutForm';
 import type { Workout, WorkoutInput } from '@/domain';
 import { hasWorkoutChanges } from '@/utils/workout';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type EditWorkoutScreenProps = {
   workout: Workout;
@@ -25,6 +26,7 @@ export function EditWorkoutScreen({
   isValidating,
   exerciseNavigationPath,
 }: EditWorkoutScreenProps) {
+  const { t } = useTranslation();
   const [currentFormState, setCurrentFormState] = useState<WorkoutInput | null>(null);
 
   // Reset form state when workout is updated (after successful save)
@@ -78,7 +80,7 @@ export function EditWorkoutScreen({
       onUnvalidateWorkout={onUnvalidateWorkout}
       onDeleteWorkout={onDeleteWorkout}
       isSubmitting={isUpdating || isValidating}
-      submitLabel="Update Workout"
+      submitLabel={t('workout.updateWorkout')}
       onFormChange={handleFormChange}
       disableValidateButton={hasUnsavedChanges}
       disableSubmitButton={hasNoChanges}
