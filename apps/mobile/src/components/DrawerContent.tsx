@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 import { YStack, XStack, Text, Button } from 'tamagui';
 import { useRouter, usePathname } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
+import { useTranslation } from '@/hooks/useTranslation';
 
 import { useDrawer } from '@/contexts/DrawerContext';
 import { colors } from '@/theme/colors';
@@ -14,36 +15,37 @@ type DrawerContentProps = {
 export function DrawerContent({ onClose }: DrawerContentProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   const { closeDrawer } = useDrawer();
 
   const menuItems = [
     {
-      label: 'Profile',
+      label: t('profile.title'),
       icon: 'user' as const,
       route: '/(drawer)/profile',
       iconComponent: Feather,
     },
     {
-      label: 'Settings',
+      label: t('settings.title'),
       icon: 'settings' as const,
       route: '/(drawer)/settings',
       iconComponent: Feather,
     },
     {
-      label: 'Export Data',
+      label: t('exportData.title'),
       icon: 'download' as const,
       route: '/(drawer)/export-data',
       iconComponent: Feather,
     },
     {
-      label: 'Rate Us',
+      label: t('rateUs.title'),
       icon: 'star' as const,
       route: '/(drawer)/rate-us',
       iconComponent: Feather,
     },
     {
-      label: 'Contact Us',
+      label: t('contactUs.title'),
       icon: 'mail' as const,
       route: '/(drawer)/contact-us',
       iconComponent: Feather,
@@ -63,10 +65,10 @@ export function DrawerContent({ onClose }: DrawerContentProps) {
           {/* Header */}
           <YStack alignItems="center" space="$1" marginBottom="$6">
             <Text color={colors.niceOrange} fontSize="$9" fontWeight="bold">
-              LiftGraph
+              {t('common.appName')}
             </Text>
             <Text color={colors.white} fontSize="$4" textAlign="center" opacity={0.7}>
-              Log and track your progress...
+              {t('profile.logAndTrackProgress')}
             </Text>
           </YStack>
 

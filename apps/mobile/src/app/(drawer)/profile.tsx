@@ -16,18 +16,15 @@ import {
 
 import { colors } from '@/theme/colors';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ProfileScreen() {
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const handleShareProfile = () => {
     // TODO: Implement share profile functionality
     console.log('Share profile');
-  };
-
-  const handleEditProfile = () => {
-    // TODO: Navigate to edit profile screen
-    console.log('Edit profile');
   };
 
   // Mock data - replace with actual data from your data source
@@ -151,12 +148,12 @@ export default function ProfileScreen() {
                 {user?.displayName || 'Marcus Johnson'}
               </Text>
               <Text color={colors.white} fontSize="$5">
-                Powerlifting Enthusiast
+                {t('profile.powerliftingEnthusiast')}
               </Text>
               <XStack space="$2" alignItems="center" marginTop="$1">
                 <Calendar size={16} color={colors.niceOrange} />
                 <Text color={colors.white} fontSize="$4">
-                  Member since Jan 2023
+                  {t('profile.memberSince', { date: 'Jan 2023' })}
                 </Text>
               </XStack>
             </YStack>
@@ -176,7 +173,7 @@ export default function ProfileScreen() {
                 {workoutStats.workouts}
               </Text>
               <Text color={colors.white} fontSize="$4">
-                Workouts
+                {t('profile.workouts')}
               </Text>
             </YStack>
             <YStack
@@ -191,7 +188,7 @@ export default function ProfileScreen() {
                 {workoutStats.daysStreak}
               </Text>
               <Text color={colors.white} fontSize="$4">
-                Days Streak
+                {t('profile.daysStreak')}
               </Text>
             </YStack>
             <YStack
@@ -206,7 +203,7 @@ export default function ProfileScreen() {
                 {workoutStats.totalKg}
               </Text>
               <Text color={colors.white} fontSize="$4">
-                Total kg
+                {t('profile.totalKg')}
               </Text>
             </YStack>
           </XStack>
@@ -214,7 +211,7 @@ export default function ProfileScreen() {
           {/* Personal Records */}
           <YStack space="$3">
             <Text color={colors.white} fontSize="$7" fontWeight="bold">
-              Personal Records
+              {t('profile.personalRecords')}
             </Text>
             <YStack space="$2">
               {personalRecords.map((record) => {
@@ -234,7 +231,7 @@ export default function ProfileScreen() {
                         {record.name}
                       </Text>
                       <Text color={colors.white} fontSize="$4">
-                        Last updated {record.lastUpdated}
+                        {t('profile.lastUpdated', { time: record.lastUpdated })}
                       </Text>
                     </YStack>
                     <YStack alignItems="flex-end" space="$1">
@@ -254,7 +251,7 @@ export default function ProfileScreen() {
           {/* Body Stats */}
           <YStack space="$3">
             <Text color={colors.white} fontSize="$7" fontWeight="bold">
-              Body Stats
+              {t('profile.bodyStats')}
             </Text>
             <YStack space="$2">
               <XStack space="$2" width="100%">
@@ -311,7 +308,7 @@ export default function ProfileScreen() {
           {/* Recent Achievements */}
           <YStack space="$3">
             <Text color={colors.white} fontSize="$7" fontWeight="bold">
-              Recent Achievements
+              {t('profile.recentAchievements')}
             </Text>
             <YStack space="$2">
               {achievements.map((achievement) => {
@@ -362,7 +359,7 @@ export default function ProfileScreen() {
             <XStack space="$2" alignItems="center">
               <Share2 size={20} color={colors.white} />
               <Text fontSize="$5" fontWeight="600" color={colors.white}>
-                Share Profile
+                {t('profile.shareProfile')}
               </Text>
             </XStack>
           </Button>

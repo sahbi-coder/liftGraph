@@ -7,10 +7,12 @@ import { Target, Languages, Shield, Download, Star, Info } from '@tamagui/lucide
 
 import { colors } from '@/theme/colors';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function SettingsScreen() {
   const { user } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleNavigation = (route: string) => {
     router.push(route as any);
@@ -19,7 +21,7 @@ export default function SettingsScreen() {
   const accountSettings = [
     {
       id: 'units',
-      label: 'Units & Measurements',
+      label: t('settings.unitsAndMeasurements'),
       icon: Target,
       onPress: () => handleNavigation('/(drawer)/settings/units'),
     },
@@ -28,9 +30,9 @@ export default function SettingsScreen() {
   const appSettings = [
     {
       id: 'language',
-      label: 'Language',
+      label: t('settings.language'),
       icon: Languages,
-      value: 'English',
+      value: t('settings.english'),
       onPress: () => console.log('Language'),
     },
   ];
@@ -38,13 +40,13 @@ export default function SettingsScreen() {
   const dataPrivacySettings = [
     {
       id: 'privacyPolicy',
-      label: 'Privacy Policy',
+      label: t('settings.privacyPolicy'),
       icon: Shield,
       onPress: () => console.log('Privacy Policy'),
     },
     {
       id: 'exportData',
-      label: 'Export Data',
+      label: t('settings.exportData'),
       icon: Download,
       onPress: () => handleNavigation('/(drawer)/export-data'),
     },
@@ -53,15 +55,15 @@ export default function SettingsScreen() {
   const supportSettings = [
     {
       id: 'rateUs',
-      label: 'Rate Us',
+      label: t('settings.rateUs'),
       icon: Star,
       onPress: () => handleNavigation('/(drawer)/rate-us'),
     },
     {
       id: 'ContactUs',
-      label: 'Contact Us',
+      label: t('settings.contactUs'),
       icon: Info,
-      value: 'v2.4.1',
+      value: t('settings.version'),
       onPress: () => handleNavigation('/(drawer)/contact-us'),
     },
   ];
@@ -140,7 +142,7 @@ export default function SettingsScreen() {
           {/* Account Section */}
           <YStack space="$3">
             <Text color={colors.midGray} fontSize="$5" fontWeight="600" textTransform="uppercase">
-              Account
+              {t('settings.account')}
             </Text>
             <YStack>
               {accountSettings.map((item) => (
@@ -152,7 +154,7 @@ export default function SettingsScreen() {
           {/* App Settings Section */}
           <YStack space="$3">
             <Text color={colors.midGray} fontSize="$5" fontWeight="600" textTransform="uppercase">
-              App Settings
+              {t('settings.appSettings')}
             </Text>
             <YStack>
               {appSettings.map((item) => (
@@ -164,7 +166,7 @@ export default function SettingsScreen() {
           {/* Data & Privacy Section */}
           <YStack space="$3">
             <Text color={colors.midGray} fontSize="$5" fontWeight="600" textTransform="uppercase">
-              Data & Privacy
+              {t('settings.dataPrivacy')}
             </Text>
             <YStack>
               {dataPrivacySettings.map((item) => (
@@ -176,7 +178,7 @@ export default function SettingsScreen() {
           {/* Support Section */}
           <YStack space="$3">
             <Text color={colors.midGray} fontSize="$5" fontWeight="600" textTransform="uppercase">
-              Support
+              {t('settings.support')}
             </Text>
             <YStack>
               {supportSettings.map((item) => (
@@ -188,10 +190,10 @@ export default function SettingsScreen() {
           {/* Footer */}
           <YStack alignItems="center" space="$1" marginTop="$4">
             <Text color={colors.midGray} fontSize="$4">
-              LiftGraph
+              {t('common.appName')}
             </Text>
             <Text color={colors.midGray} fontSize="$3">
-              Version 2.4.1
+              {t('settings.version')}
             </Text>
           </YStack>
         </YStack>

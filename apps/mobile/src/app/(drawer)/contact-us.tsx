@@ -4,11 +4,13 @@ import { YStack, Text, Button, Input } from 'tamagui';
 import { Headphones } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ContactUsScreen() {
   const [subject, setSubject] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const { t } = useTranslation();
 
   const handleSendMessage = () => {
     // TODO: Implement send message functionality
@@ -42,27 +44,27 @@ export default function ContactUsScreen() {
             <Headphones size={60} color={colors.white} />
           </YStack>
           <Text color={colors.white} fontSize="$8" fontWeight="bold" textAlign="center">
-            Get in Touch
+            {t('contactUs.getInTouch')}
           </Text>
           <Text color={colors.midGray} fontSize="$5" textAlign="center" paddingHorizontal="$4">
-            We're here to help you achieve your goals
+            {t('contactUs.hereToHelp')}
           </Text>
         </YStack>
 
         {/* Send Message */}
         <YStack space="$4">
           <Text color={colors.midGray} fontSize="$5" fontWeight="600" textTransform="uppercase">
-            Send Message
+            {t('contactUs.sendMessage')}
           </Text>
           <YStack space="$4">
             <YStack space="$2">
               <Text color={colors.white} fontSize="$4" fontWeight="500">
-                Subject
+                {t('contactUs.subject')}
               </Text>
               <Input
                 value={subject}
                 onChangeText={setSubject}
-                placeholder="General Inquiry"
+                placeholder={t('contactUs.generalInquiry')}
                 backgroundColor={colors.darkGray}
                 borderColor={colors.midGray}
                 color={colors.white}
@@ -73,12 +75,12 @@ export default function ContactUsScreen() {
             </YStack>
             <YStack space="$2">
               <Text color={colors.white} fontSize="$4" fontWeight="500">
-                Email
+                {t('contactUs.email')}
               </Text>
               <Input
                 value={email}
                 onChangeText={setEmail}
-                placeholder="your.email@example.com"
+                placeholder={t('contactUs.emailPlaceholder')}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 backgroundColor={colors.darkGray}
@@ -91,7 +93,7 @@ export default function ContactUsScreen() {
             </YStack>
             <YStack space="$2">
               <Text color={colors.white} fontSize="$4" fontWeight="500">
-                Message
+                {t('contactUs.message')}
               </Text>
               <YStack
                 backgroundColor={colors.darkGray}
@@ -107,7 +109,7 @@ export default function ContactUsScreen() {
                     flex: 1,
                     minHeight: 100,
                   }}
-                  placeholder="Tell us how we can help you..."
+                  placeholder={t('contactUs.messagePlaceholder')}
                   placeholderTextColor={colors.midGray}
                   multiline
                   value={message}
@@ -125,7 +127,7 @@ export default function ContactUsScreen() {
               pressStyle={{ opacity: 0.85 }}
               alignSelf="stretch"
             >
-              Send Message
+              {t('contactUs.sendMessageButton')}
             </Button>
           </YStack>
         </YStack>

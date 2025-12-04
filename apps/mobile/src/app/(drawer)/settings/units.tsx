@@ -7,6 +7,7 @@ import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import type { UserPreferences } from '@/domain';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type UnitOption = {
   value: 'kg' | 'lb' | 'cm' | 'ft' | 'celsius' | 'fahrenheit';
@@ -15,47 +16,47 @@ type UnitOption = {
   icon: React.ComponentType<any>;
 };
 
-const weightOptions: UnitOption[] = [
+const getWeightOptions = (t: any): UnitOption[] => [
   {
     value: 'kg',
-    label: 'Kilograms (kg)',
-    subtitle: 'Metric system',
+    label: t('settings.kilograms'),
+    subtitle: t('settings.metricSystem'),
     icon: Scale,
   },
   {
     value: 'lb',
-    label: 'Pounds (lbs)',
-    subtitle: 'Imperial system',
+    label: t('settings.pounds'),
+    subtitle: t('settings.imperialSystem'),
     icon: Scale,
   },
 ];
 
-const distanceOptions: UnitOption[] = [
+const getDistanceOptions = (t: any): UnitOption[] => [
   {
     value: 'cm',
-    label: 'Centimeters (cm)',
-    subtitle: 'Metric system',
+    label: t('settings.centimeters'),
+    subtitle: t('settings.metricSystem'),
     icon: Ruler,
   },
   {
     value: 'ft',
-    label: 'Feet & Inches',
-    subtitle: 'Imperial system',
+    label: t('settings.feetInches'),
+    subtitle: t('settings.imperialSystem'),
     icon: Ruler,
   },
 ];
 
-const temperatureOptions: UnitOption[] = [
+const getTemperatureOptions = (t: any): UnitOption[] => [
   {
     value: 'celsius',
-    label: 'Celsius (°C)',
-    subtitle: 'Metric system',
+    label: t('settings.celsius'),
+    subtitle: t('settings.metricSystem'),
     icon: Thermometer,
   },
   {
     value: 'fahrenheit',
-    label: 'Fahrenheit (°F)',
-    subtitle: 'Imperial system',
+    label: t('settings.fahrenheit'),
+    subtitle: t('settings.imperialSystem'),
     icon: Thermometer,
   },
 ];
@@ -69,6 +70,11 @@ export default function UnitsSettingsScreen() {
     temperatureUnit: preferences?.temperatureUnit || 'celsius',
   });
   const { showSuccess, showError, AlertModalComponent } = useAlertModal();
+  const { t } = useTranslation();
+
+  const weightOptions = getWeightOptions(t);
+  const distanceOptions = getDistanceOptions(t);
+  const temperatureOptions = getTemperatureOptions(t);
 
   const handleUnitSelect = (
     type: 'weightUnit' | 'distanceUnit' | 'temperatureUnit',
@@ -83,13 +89,13 @@ export default function UnitsSettingsScreen() {
   const handleSave = async () => {
     try {
       await updatePreferences(selectedUnits);
-      showSuccess('Preferences saved successfully!');
+      showSuccess(t('settings.preferencesSavedSuccessfully'));
       setTimeout(() => {
         router.back();
       }, 1500);
     } catch (error) {
       console.error('Error saving preferences:', error);
-      showError('Failed to save preferences. Please try again.');
+      showError(t('settings.failedToSavePreferences'));
     }
   };
 
@@ -157,14 +163,13 @@ export default function UnitsSettingsScreen() {
     <YStack flex={1} backgroundColor={colors.darkerGray}>
       <ScrollView contentContainerStyle={{ padding: 16, paddingTop: 16, paddingBottom: 100 }}>
         <Text color={colors.midGray} fontSize="$4" marginBottom="$6">
-          Select your preferred measurement units. All weights are stored in kilograms and converted
-          for display.
+          {t('settings.selectPreferredUnits')}
         </Text>
 
         {/* Weight Units */}
         <YStack marginBottom="$6">
           <Text color={colors.white} fontSize="$6" fontWeight="600" marginBottom="$3">
-            Weight Units
+            {t('settings.weightUnits')}
           </Text>
           {weightOptions.map((option) =>
             renderUnitOption(option, 'weightUnit', selectedUnits.weightUnit === option.value),
@@ -174,7 +179,7 @@ export default function UnitsSettingsScreen() {
         {/* Distance/Height Units */}
         <YStack marginBottom="$6">
           <Text color={colors.white} fontSize="$6" fontWeight="600" marginBottom="$3">
-            Distance/Height Units
+            {t('settings.distanceHeightUnits')}
           </Text>
           {distanceOptions.map((option) =>
             renderUnitOption(option, 'distanceUnit', selectedUnits.distanceUnit === option.value),
@@ -184,7 +189,7 @@ export default function UnitsSettingsScreen() {
         {/* Temperature Units */}
         <YStack marginBottom="$6">
           <Text color={colors.white} fontSize="$6" fontWeight="600" marginBottom="$3">
-            Temperature Units
+            {t('settings.temperatureUnits')}
           </Text>
           {temperatureOptions.map((option) =>
             renderUnitOption(
@@ -208,7 +213,7 @@ export default function UnitsSettingsScreen() {
             opacity={loading ? 0.6 : 1}
             pressStyle={{ opacity: 0.85 }}
           >
-            {loading ? 'Saving...' : 'Save Changes'}
+            {loading ? t('common.saving') : t('settings.saveChanges')}
           </Button>
         </XStack>
       </ScrollView>

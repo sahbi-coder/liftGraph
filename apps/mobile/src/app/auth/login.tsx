@@ -7,6 +7,7 @@ import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
 import { PasswordInput } from '@/components/PasswordInput';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const logoSource = require('../../../assets/exp-icon.png');
 
@@ -17,10 +18,11 @@ export default function LoginScreen() {
   const { showError, AlertModalComponent } = useAlertModal();
   const { signIn } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleLogin = async () => {
     if (!email || !password) {
-      showError('Please enter email and password');
+      showError(t('auth.pleaseEnterEmailPassword'));
       return;
     }
 
@@ -29,7 +31,7 @@ export default function LoginScreen() {
       await signIn(email, password);
       router.replace('/');
     } catch (error) {
-      showError(error instanceof Error ? error.message : 'Unknown error');
+      showError(error instanceof Error ? error.message : t('auth.unknownError'));
     } finally {
       setLoading(false);
     }
@@ -47,10 +49,10 @@ export default function LoginScreen() {
         resizeMode="contain"
       />
       <H1 color="$textPrimary" fontSize="$10" fontWeight="bold" textAlign="center">
-        LiftGraph
+        {t('common.appName')}
       </H1>
       <Text color="$textSecondary" marginBottom="$4" fontSize="$4" textAlign="center">
-        Built by lifters for lifters, sign in to continue tracking your progress.
+        {t('auth.tagline')}
       </Text>
       <YStack
         space="$4"
@@ -62,12 +64,12 @@ export default function LoginScreen() {
         borderRadius="$4"
       >
         <H3 color="$textPrimary" opacity={0.75} fontSize="$9" fontWeight="bold" textAlign="center">
-          Welcome Back
+          {t('auth.welcomeBack')}
         </H3>
         <YStack space="$3" marginTop="$2">
           <Input
             size="$4"
-            placeholder="Email"
+            placeholder={t('auth.email')}
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
@@ -88,7 +90,7 @@ export default function LoginScreen() {
             alignSelf="flex-end"
             onPress={() => router.push('/auth/forgot-password')}
           >
-            Forgot Password?
+            {t('auth.forgotPassword')}
           </Button>
           <Button
             size="$4"
@@ -99,14 +101,14 @@ export default function LoginScreen() {
             disabled={loading}
             opacity={loading ? 0.5 : 1}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? t('auth.signingIn') : t('auth.signIn')}
           </Button>
         </YStack>
       </YStack>
       <XStack space="$2" justifyContent="center" marginTop="$4">
-        <Text color="$textSecondary">Don't have an account?</Text>
+        <Text color="$textSecondary">{t('auth.dontHaveAccount')}</Text>
         <Text color="$accentColor" fontWeight="600" onPress={() => router.push('/auth/signup')}>
-          Sign Up
+          {t('auth.signUp')}
         </Text>
       </XStack>
       <XStack
@@ -131,7 +133,7 @@ export default function LoginScreen() {
             <Entypo name="calendar" size={32} color={colors.niceOrange} />
           </YStack>
           <Text color="$textSecondary" fontWeight="600">
-            Plan Workouts
+            {t('features.planWorkouts')}
           </Text>
         </YStack>
         <YStack alignItems="center" space="$3">
@@ -149,7 +151,7 @@ export default function LoginScreen() {
             <Foundation name="graph-trend" size={34} color={colors.niceOrange} />
           </YStack>
           <Text color="$textSecondary" fontWeight="600">
-            Track Progress
+            {t('features.trackProgress')}
           </Text>
         </YStack>
       </XStack>

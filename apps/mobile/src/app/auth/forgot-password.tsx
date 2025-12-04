@@ -6,6 +6,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
@@ -13,17 +14,18 @@ export default function ForgotPasswordScreen() {
   const { showSuccess, showError, AlertModalComponent } = useAlertModal();
   const { resetPassword } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleResetPassword = async () => {
     if (!email) {
-      showError('Please enter your email');
+      showError(t('auth.pleaseEnterEmail'));
       return;
     }
 
     setLoading(true);
     try {
       await resetPassword(email);
-      showSuccess('Password reset email sent. Please check your inbox.');
+      showSuccess(t('auth.passwordResetEmailSent'));
       setTimeout(() => {
         router.back();
       }, 3000);
@@ -48,10 +50,10 @@ export default function ForgotPasswordScreen() {
         resizeMode="contain"
       />
       <H1 color="$textPrimary" fontSize="$10" fontWeight="bold" textAlign="center">
-        Reset Password
+        {t('auth.resetPassword')}
       </H1>
       <Text color="$textSecondary" marginBottom="$4" fontSize="$4" textAlign="center">
-        Enter your email to receive password reset instructions.
+        {t('auth.resetPasswordInstructions')}
       </Text>
 
       <YStack
@@ -64,13 +66,13 @@ export default function ForgotPasswordScreen() {
         borderRadius="$4"
       >
         <H3 color="$textPrimary" opacity={0.75} fontSize="$9" fontWeight="bold" textAlign="center">
-          We'll help you get back in
+          {t('auth.wellHelpYouGetBackIn')}
         </H3>
 
         <YStack space="$3" marginTop="$2">
           <Input
             size="$4"
-            placeholder="Email"
+            placeholder={t('auth.email')}
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
@@ -91,7 +93,7 @@ export default function ForgotPasswordScreen() {
             disabled={loading}
             opacity={loading ? 0.5 : 1}
           >
-            {loading ? 'Sending...' : 'Send Reset Link'}
+            {loading ? t('common.sending') : t('auth.sendResetLink')}
           </Button>
 
           <Button
@@ -101,7 +103,7 @@ export default function ForgotPasswordScreen() {
             opacity={0.7}
             onPress={() => router.back()}
           >
-            Back to Login
+            {t('auth.backToLogin')}
           </Button>
         </YStack>
       </YStack>
@@ -127,7 +129,7 @@ export default function ForgotPasswordScreen() {
             <Entypo name="calendar" size={32} color={colors.niceOrange} />
           </YStack>
           <Text color="$textSecondary" fontWeight="600">
-            Plan Workouts
+            {t('features.planWorkouts')}
           </Text>
         </YStack>
         <YStack alignItems="center" space="$3">
@@ -145,7 +147,7 @@ export default function ForgotPasswordScreen() {
             <Foundation name="graph-trend" size={34} color={colors.niceOrange} />
           </YStack>
           <Text color="$textSecondary" fontWeight="600">
-            Track Progress
+            {t('features.trackProgress')}
           </Text>
         </YStack>
       </XStack>

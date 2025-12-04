@@ -15,6 +15,7 @@ import {
 } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type LikeFeature =
   | 'workoutPlans'
@@ -29,6 +30,7 @@ export default function RateUsScreen() {
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [selectedFeatures, setSelectedFeatures] = useState<Set<LikeFeature>>(new Set());
+  const { t } = useTranslation();
 
   const toggleFeature = (feature: LikeFeature) => {
     setSelectedFeatures((prev) => {
@@ -67,32 +69,32 @@ export default function RateUsScreen() {
   const features = [
     {
       id: 'workoutPlans' as LikeFeature,
-      label: 'Workout Plans',
+      label: t('rateUs.workoutPlans'),
       icon: Dumbbell,
     },
     {
       id: 'progressTracking' as LikeFeature,
-      label: 'Progress Tracking',
+      label: t('rateUs.progressTracking'),
       icon: TrendingUp,
     },
     {
       id: 'easyToUse' as LikeFeature,
-      label: 'Easy to Use',
+      label: t('rateUs.easyToUse'),
       icon: Smartphone,
     },
     {
       id: 'design' as LikeFeature,
-      label: 'Design',
+      label: t('rateUs.design'),
       icon: Palette,
     },
     {
       id: 'achievements' as LikeFeature,
-      label: 'Achievements',
+      label: t('rateUs.achievements'),
       icon: Trophy,
     },
     {
       id: 'community' as LikeFeature,
-      label: 'Community',
+      label: t('rateUs.community'),
       icon: Users,
     },
   ];
@@ -117,7 +119,7 @@ export default function RateUsScreen() {
           {/* Main Title */}
           <YStack space="$2" alignItems="center" paddingHorizontal="$4">
             <Text color={colors.white} fontSize="$9" fontWeight="bold" textAlign="center">
-              Enjoying LiftGraph?
+              {t('rateUs.enjoyingLiftGraph')}
             </Text>
             <Text
               color={colors.midGray}
@@ -126,8 +128,7 @@ export default function RateUsScreen() {
               lineHeight="$1"
               paddingHorizontal="$4"
             >
-              Your feedback helps us improve and motivates us to keep building great features for
-              you!
+              {t('rateUs.feedbackHelpsUs')}
             </Text>
           </YStack>
 
@@ -141,7 +142,7 @@ export default function RateUsScreen() {
             marginTop="$2"
           >
             <Text color={colors.white} fontSize="$6" fontWeight="600" textAlign="center">
-              How would you rate your experience?
+              {t('rateUs.howWouldYouRate')}
             </Text>
             <XStack justifyContent="center" space="$2" marginTop="$2">
               {[1, 2, 3, 4, 5].map((star) => (
@@ -159,7 +160,7 @@ export default function RateUsScreen() {
           {/* Feedback Text Area */}
           <YStack width="100%" space="$2">
             <Text color={colors.white} fontSize="$6" fontWeight="600">
-              Tell us more (Optional)
+              {t('rateUs.tellUsMore')}
             </Text>
             <YStack
               backgroundColor={colors.darkGray}
@@ -175,7 +176,7 @@ export default function RateUsScreen() {
                   flex: 1,
                   minHeight: 100,
                 }}
-                placeholder="Share your thoughts, suggestions, or what you love about PowerLift Pro..."
+                placeholder={t('rateUs.shareYourThoughts')}
                 placeholderTextColor={colors.midGray}
                 multiline
                 value={feedback}
@@ -187,7 +188,7 @@ export default function RateUsScreen() {
           {/* What do you like most */}
           <YStack width="100%" space="$3">
             <Text color={colors.white} fontSize="$6" fontWeight="600">
-              What do you like most?
+              {t('rateUs.whatDoYouLikeMost')}
             </Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
               {features.map((feature) => {
@@ -237,13 +238,13 @@ export default function RateUsScreen() {
             pressStyle={{ opacity: 0.85 }}
             alignSelf="stretch"
           >
-            Submit Rating
+            {t('rateUs.submitRating')}
           </Button>
 
           {/* App Store Rating Section */}
           <YStack width="100%" space="$4" marginTop="$4" alignItems="center">
             <Text color={colors.midGray} fontSize="$4" textAlign="center" paddingHorizontal="$4">
-              Love the app? Rate us on your app store!
+              {t('rateUs.loveTheApp')}
             </Text>
             <YStack width="100%" space="$3">
               <Button
@@ -259,7 +260,7 @@ export default function RateUsScreen() {
                 <XStack space="$2" alignItems="center" justifyContent="center">
                   <Apple size={20} color={colors.white} />
                   <Text fontSize="$5" fontWeight="600" color={colors.white}>
-                    Rate on App Store
+                    {t('rateUs.rateOnAppStore')}
                   </Text>
                 </XStack>
               </Button>
@@ -276,7 +277,7 @@ export default function RateUsScreen() {
                 <XStack space="$2" alignItems="center" justifyContent="center">
                   <Play size={20} color={colors.white} />
                   <Text fontSize="$5" fontWeight="600" color={colors.white}>
-                    Rate on Play Store
+                    {t('rateUs.rateOnPlayStore')}
                   </Text>
                 </XStack>
               </Button>

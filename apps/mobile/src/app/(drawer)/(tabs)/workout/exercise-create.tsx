@@ -12,6 +12,7 @@ import {
   clearExercisePickerCallback,
 } from '@/contexts/exercisePickerContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const EXERCISE_CATEGORIES = [
   'Barbell',
@@ -41,6 +42,7 @@ export default function CreateExerciseScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const { services } = useDependencies();
+  const { t } = useTranslation();
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
@@ -51,22 +53,22 @@ export default function CreateExerciseScreen() {
 
   const handleCreate = async () => {
     if (!user) {
-      showError('Please sign in to create exercises.');
+      showError(t('exercise.pleaseSignInToCreate'));
       return;
     }
 
     if (!name.trim()) {
-      showError('Exercise name is required.');
+      showError(t('exercise.exerciseNameRequired'));
       return;
     }
 
     if (!category.trim()) {
-      showError('Category is required.');
+      showError(t('exercise.categoryRequired'));
       return;
     }
 
     if (!bodyPart.trim()) {
-      showError('Body part is required.');
+      showError(t('exercise.bodyPartRequired'));
       return;
     }
 
@@ -99,13 +101,13 @@ export default function CreateExerciseScreen() {
         clearExercisePickerCallback();
       }
 
-      showSuccess('Exercise created successfully!');
+      showSuccess(t('exercise.exerciseCreatedSuccessfully'));
       // Navigate back after showing success message
       setTimeout(() => {
         router.back();
       }, 1500);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to create exercise.';
+      const message = error instanceof Error ? error.message : t('exercise.failedToCreateExercise');
       showError(message);
     } finally {
       setIsCreating(false);
@@ -120,21 +122,21 @@ export default function CreateExerciseScreen() {
       <YStack space="$4">
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-            Create Exercise
+            {t('exercise.create')}
           </Text>
           <Text color="$textSecondary" fontSize="$4">
-            Add a custom exercise to your library
+            {t('exercise.addCustomExercise')}
           </Text>
         </YStack>
 
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-            Exercise Name *
+            {t('exercise.exerciseName')} *
           </Text>
           <Input
             value={name}
             onChangeText={setName}
-            placeholder="e.g., Custom Bench Press"
+            placeholder={t('exercise.exerciseNamePlaceholder')}
             borderColor="$inputFieldBorder"
             backgroundColor="$inputFieldBackground"
             color="$textPrimary"
@@ -144,7 +146,7 @@ export default function CreateExerciseScreen() {
 
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-            Category *
+            {t('exercise.category')} *
           </Text>
           <YStack space="$2">
             {EXERCISE_CATEGORIES.map((cat) => (
@@ -155,7 +157,7 @@ export default function CreateExerciseScreen() {
                 onPress={() => setCategory(cat)}
                 borderRadius="$4"
               >
-                {cat}
+                {t(`exercise.${cat.toLowerCase()}`) || cat}
               </Button>
             ))}
           </YStack>
@@ -163,7 +165,7 @@ export default function CreateExerciseScreen() {
             <Input
               value={category}
               onChangeText={setCategory}
-              placeholder="Enter custom category"
+              placeholder={t('exercise.enterCustomCategory')}
               borderColor="$inputFieldBorder"
               backgroundColor="$inputFieldBackground"
               color="$textPrimary"
@@ -175,7 +177,7 @@ export default function CreateExerciseScreen() {
 
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-            Body Part *
+            {t('exercise.bodyPart')} *
           </Text>
           <YStack space="$2">
             {BODY_PARTS.map((part) => (
@@ -186,7 +188,7 @@ export default function CreateExerciseScreen() {
                 onPress={() => setBodyPart(part)}
                 borderRadius="$4"
               >
-                {part}
+                {t(`exercise.${part.toLowerCase()}`) || part}
               </Button>
             ))}
           </YStack>
@@ -194,7 +196,7 @@ export default function CreateExerciseScreen() {
             <Input
               value={bodyPart}
               onChangeText={setBodyPart}
-              placeholder="Enter custom body part"
+              placeholder={t('exercise.enterCustomBodyPart')}
               borderColor="$inputFieldBorder"
               backgroundColor="$inputFieldBackground"
               color="$textPrimary"
@@ -206,12 +208,12 @@ export default function CreateExerciseScreen() {
 
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-            Description (Optional)
+            {t('exercise.description')}
           </Text>
           <TextArea
             value={description}
             onChangeText={setDescription}
-            placeholder="Add a description or notes about this exercise"
+            placeholder={t('exercise.descriptionPlaceholder')}
             borderColor="$inputFieldBorder"
             backgroundColor="$inputFieldBackground"
             color="$textPrimary"
@@ -228,7 +230,7 @@ export default function CreateExerciseScreen() {
             onPress={() => router.back()}
             disabled={isCreating}
           >
-            Cancel
+            {t('common.cancel')}
           </Button>
           <Button
             flex={1}
@@ -238,7 +240,7 @@ export default function CreateExerciseScreen() {
             disabled={isCreating}
             opacity={isCreating ? 0.6 : 1}
           >
-            {isCreating ? 'Creating...' : 'Create Exercise'}
+            {isCreating ? t('common.creating') : t('exercise.createExerciseButton')}
           </Button>
         </XStack>
       </YStack>

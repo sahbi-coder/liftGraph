@@ -7,6 +7,7 @@ import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
 import { PasswordInput } from '@/components/PasswordInput';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function SignupScreen() {
   const [name, setName] = useState('');
@@ -17,20 +18,21 @@ export default function SignupScreen() {
   const { showError, AlertModalComponent } = useAlertModal();
   const { signUp } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleSignup = async () => {
     if (!name || !email || !password || !confirmPassword) {
-      showError('Please fill in all fields');
+      showError(t('auth.pleaseFillAllFields'));
       return;
     }
 
     if (password !== confirmPassword) {
-      showError('Passwords do not match');
+      showError(t('auth.passwordsDoNotMatch'));
       return;
     }
 
     if (password.length < 6) {
-      showError('Password must be at least 6 characters');
+      showError(t('auth.passwordMinLength'));
       return;
     }
 
@@ -59,10 +61,10 @@ export default function SignupScreen() {
         resizeMode="contain"
       />
       <H1 color="$textPrimary" fontSize="$10" fontWeight="bold" textAlign="center">
-        Create Account
+        {t('auth.createAccount')}
       </H1>
       <Text color="$textSecondary" marginBottom="$2" fontSize="$4" textAlign="center">
-        Join LiftGraph to plan workouts, track PRs, and stay motivated.
+        {t('auth.joinTagline')}
       </Text>
       <YStack
         space="$4"
@@ -74,12 +76,12 @@ export default function SignupScreen() {
         borderRadius="$4"
       >
         <H3 color="$textPrimary" opacity={0.75} fontSize="$9" fontWeight="bold" textAlign="center">
-          Let's Get Started
+          {t('auth.letsGetStarted')}
         </H3>
         <YStack space="$3" marginTop="$2">
           <Input
             size="$4"
-            placeholder="Full Name"
+            placeholder={t('auth.fullName')}
             value={name}
             onChangeText={setName}
             borderColor="$inputFieldBorder"
@@ -91,7 +93,7 @@ export default function SignupScreen() {
 
           <Input
             size="$4"
-            placeholder="Email"
+            placeholder={t('auth.email')}
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
@@ -108,7 +110,7 @@ export default function SignupScreen() {
           <PasswordInput
             value={confirmPassword}
             onChangeText={setConfirmPassword}
-            placeholder="Confirm Password"
+            placeholder={t('auth.confirmPassword')}
           />
 
           <Button
@@ -120,18 +122,18 @@ export default function SignupScreen() {
             disabled={loading}
             opacity={loading ? 0.5 : 1}
           >
-            {loading ? 'Creating Account...' : 'Sign Up'}
+            {loading ? t('auth.creatingAccount') : t('auth.signUp')}
           </Button>
         </YStack>
       </YStack>
       <XStack space="$2" justifyContent="center" marginTop="$4">
-        <Text color="$textSecondary">Already have an account?</Text>
+        <Text color="$textSecondary">{t('auth.alreadyHaveAccount')}</Text>
         <Text
           color="$accentColor"
           fontWeight="600"
           onPress={() => router.push('/auth/login' as any)}
         >
-          Sign In
+          {t('auth.signIn')}
         </Text>
       </XStack>
       <XStack
@@ -156,7 +158,7 @@ export default function SignupScreen() {
             <Entypo name="calendar" size={32} color={colors.niceOrange} />
           </YStack>
           <Text color="$textSecondary" fontWeight="600">
-            Plan Workouts
+            {t('features.planWorkouts')}
           </Text>
         </YStack>
         <YStack alignItems="center" space="$3">
@@ -174,7 +176,7 @@ export default function SignupScreen() {
             <Foundation name="graph-trend" size={34} color={colors.niceOrange} />
           </YStack>
           <Text color="$textSecondary" fontWeight="600">
-            Track Progress
+            {t('features.trackProgress')}
           </Text>
         </YStack>
       </XStack>

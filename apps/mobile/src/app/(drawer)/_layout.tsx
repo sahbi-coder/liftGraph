@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { DrawerContent } from '@/components/DrawerContent';
 import { DrawerProvider, useDrawer } from '@/contexts/DrawerContext';
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 function DrawerContentWrapper() {
   const { closeDrawer } = useDrawer();
@@ -20,7 +21,7 @@ function DrawerInner() {
   const { user, loading } = useAuth();
   const { open, setOpen } = useDrawer();
   const pathname = usePathname();
-
+  const { t } = useTranslation();
   if (loading) {
     return (
       <YStack flex={1} justifyContent="center" alignItems="center" backgroundColor="$background">
@@ -56,7 +57,7 @@ function DrawerInner() {
           name="profile"
           options={{
             headerShown: true,
-            headerTitle: 'Profile',
+            headerTitle: t('profile.title'),
             headerTitleAlign: 'left',
             headerTitleStyle: { fontSize: 28, color: colors.white },
             headerStyle: { backgroundColor: colors.darkerGray },
@@ -85,7 +86,7 @@ function DrawerInner() {
           name="export-data"
           options={{
             headerShown: true,
-            headerTitle: 'Export Data',
+            headerTitle: t('exportData.title'),
             headerTitleAlign: 'left',
             headerTitleStyle: { fontSize: 28, color: colors.white },
             headerStyle: { backgroundColor: colors.darkerGray },
@@ -97,7 +98,7 @@ function DrawerInner() {
           name="rate-us"
           options={{
             headerShown: true,
-            headerTitle: 'Rate Us',
+            headerTitle: t('rateUs.title'),
             headerTitleAlign: 'left',
             headerTitleStyle: { fontSize: 28, color: colors.white },
             headerStyle: { backgroundColor: colors.darkerGray },
@@ -109,7 +110,7 @@ function DrawerInner() {
           name="contact-us"
           options={{
             headerShown: true,
-            headerTitle: 'Contact Us',
+            headerTitle: t('contactUs.title'),
             headerTitleAlign: 'left',
             headerTitleStyle: { fontSize: 28, color: colors.white },
             headerStyle: { backgroundColor: colors.darkerGray },

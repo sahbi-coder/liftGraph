@@ -3,8 +3,10 @@ import React from 'react';
 import { BackButton } from '@/components/BackButton';
 import { colors } from '@/theme/colors';
 import { Platform } from 'react-native';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function SettingsLayout() {
+  const { t } = useTranslation();
   return (
     <Stack
       screenOptions={{
@@ -19,14 +21,14 @@ export default function SettingsLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: 'Settings',
+          headerTitle: t('settings.title'),
           headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
         name="units"
         options={{
-          headerTitle: 'Units & Measurements',
+          headerTitle: t('settings.unitsAndMeasurements'),
         }}
       />
     </Stack>

@@ -18,6 +18,7 @@ import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 import { useUserWorkouts } from '@/hooks/useUserWorkouts';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { weightForDisplay, parseWeightInput, kgToLb, lbToKg } from '@/utils/units';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type WorkoutFormProps = {
   initialValues?: {
@@ -117,6 +118,7 @@ const ExerciseCard = ({
   disabled = false,
   weightUnit,
 }: ExerciseCardProps) => {
+  const { t } = useTranslation();
   return (
     <YStack
       padding="$2"
@@ -164,7 +166,7 @@ const ExerciseCard = ({
               flex={2}
               value={set.weight}
               onChangeText={(value) => onUpdateSetField(exercise.id, set.id, 'weight', value)}
-              placeholder="Weight"
+              placeholder={t('common.weight')}
               keyboardType="numeric"
               borderColor="$inputFieldBorder"
               backgroundColor="$background"
@@ -179,7 +181,7 @@ const ExerciseCard = ({
               height={40}
               value={set.reps}
               onChangeText={(value) => onUpdateSetField(exercise.id, set.id, 'reps', value)}
-              placeholder="Reps"
+              placeholder={t('common.reps')}
               keyboardType="numeric"
               borderColor="$inputFieldBorder"
               backgroundColor="$background"
@@ -245,7 +247,7 @@ const ExerciseCard = ({
           disabled={disabled || exercise.sets.length === 0}
           opacity={disabled || exercise.sets.length === 0 ? 0.6 : 1}
         >
-          <AntDesign name="copy1" size={22} color={colors.white} /> Duplicate previous
+          <AntDesign name="copy1" size={22} color={colors.white} /> Duplicate
         </Button>
       </XStack>
     </YStack>
@@ -272,6 +274,7 @@ export function WorkoutForm({
   const { workouts } = useUserWorkouts();
   const { preferences } = useUserPreferences();
   const weightUnit = preferences?.weightUnit ?? 'kg';
+  const { t } = useTranslation();
 
   const [date, setDate] = useState(() => {
     if (!initialValues?.date) {
@@ -323,11 +326,11 @@ export function WorkoutForm({
   const formattedDisplayDate = useMemo(() => {
     const parsedDate = new Date(date);
     if (Number.isNaN(parsedDate.getTime())) {
-      return 'No date selected';
+      return t('common.noDateSelected');
     }
 
     return dayjs(parsedDate).format('MMMM D, YYYY');
-  }, [date]);
+  }, [date, t]);
 
   const markedDates = useMemo(() => {
     if (!selectedDateKey) {
@@ -515,7 +518,7 @@ export function WorkoutForm({
           }
 
           if (exercise.sets.length === 1) {
-            showWarning('Each exercise must have at least one set.');
+            showWarning(t('workout.eachExerciseMustHaveSet'));
             return exercise;
           }
 
@@ -557,21 +560,21 @@ export function WorkoutForm({
 
   const buildWorkoutPayload = useCallback((): WorkoutInput => {
     if (!date) {
-      throw new Error('Workout date is required.');
+      throw new Error(t('workout.workoutDateRequired'));
     }
 
     const workoutDate = new Date(date);
     if (Number.isNaN(workoutDate.getTime())) {
-      throw new Error('Workout date is invalid. Use ISO 8601 format.');
+      throw new Error(t('workout.workoutDateInvalid'));
     }
 
     if (exercises.length === 0) {
-      throw new Error('Add at least one exercise to the workout.');
+      throw new Error(t('workout.addAtLeastOneExercise'));
     }
 
     const workoutExercises = exercises.map((exercise, index) => {
       if (exercise.sets.length === 0) {
-        throw new Error(`Exercise "${exercise.name}" must have at least one set.`);
+        throw new Error(t('workout.exerciseMustHaveSet', { name: exercise.name }));
       }
 
       return {
@@ -587,7 +590,10 @@ export function WorkoutForm({
 
           if (Number.isNaN(weight) || Number.isNaN(reps) || Number.isNaN(rir)) {
             throw new Error(
-              `Set ${setIndex + 1} in "${exercise.name}" requires numeric weight, reps, and RIR.`,
+              t('workout.setRequiresNumericValues', {
+                setIndex: setIndex + 1,
+                exerciseName: exercise.name,
+              }),
             );
           }
 
@@ -605,7 +611,7 @@ export function WorkoutForm({
       notes,
       exercises: workoutExercises,
     };
-  }, [date, exercises, notes, weightUnit]);
+  }, [date, exercises, notes, weightUnit, t]);
 
   // Validate form and check if it's valid
   const isFormValid = useMemo(() => {
@@ -670,7 +676,7 @@ export function WorkoutForm({
 
   const handleSubmit = useCallback(async () => {
     if (validated) {
-      showWarning('This workout has been validated and cannot be modified.');
+      showWarning(t('workout.workoutValidatedCannotModify'));
       return;
     }
 
@@ -679,7 +685,7 @@ export function WorkoutForm({
     try {
       workoutPayload = buildWorkoutPayload();
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Workout is not valid.';
+      const message = error instanceof Error ? error.message : t('workout.workoutNotValid');
       showError(message);
       return;
     }
@@ -699,7 +705,7 @@ export function WorkoutForm({
       });
 
       if (conflictingWorkout) {
-        showWarning('A workout already exists on this date. Please choose a different date.');
+        showWarning(t('workout.workoutAlreadyExistsOnDate'));
         return;
       }
     }
@@ -707,7 +713,7 @@ export function WorkoutForm({
     try {
       await onSubmit(workoutPayload);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unable to save workout.';
+      const message = error instanceof Error ? error.message : t('workout.unableToSaveWorkout');
       showError(message);
     }
   }, [
@@ -718,6 +724,7 @@ export function WorkoutForm({
     currentWorkoutId,
     showWarning,
     showError,
+    t,
   ]);
 
   return (
@@ -741,7 +748,7 @@ export function WorkoutForm({
             opacity={validated ? 0.6 : 1}
           >
             <Entypo name="circle-with-plus" size={22} color={colors.white} />
-            Add Exercise
+            {t('workout.addExercise')}
           </Button>
 
           <XStack
@@ -753,7 +760,7 @@ export function WorkoutForm({
           >
             <YStack space="$1">
               <Text color="$textSecondary" fontSize="$3">
-                Selected Date
+                {t('common.selectedDate')}
               </Text>
               <Text color="$textPrimary" fontSize="$5" fontWeight="600">
                 {formattedDisplayDate}
@@ -773,13 +780,11 @@ export function WorkoutForm({
             </Button>
           </XStack>
           <Text color={colors.white} fontWeight="600" fontSize="$5">
-            Exercises
+            {t('workout.exercises')}
           </Text>
           {exercises.length === 0 ? (
             <YStack padding="$4" backgroundColor={colors.midGray} borderRadius="$4">
-              <Text color={colors.white}>
-                No exercises yet. Tap Add Exercise” to add one to this workout.
-              </Text>
+              <Text color={colors.white}>{t('workout.noExercisesYet')}</Text>
             </YStack>
           ) : (
             exercises.map((exercise, index) => (
@@ -807,7 +812,7 @@ export function WorkoutForm({
               borderColor="$inputFieldBorder"
               backgroundColor="$inputFieldBackground"
               color="$inputFieldText"
-              placeholder="Optional notes about this workout"
+              placeholder={t('workout.optionalNotes')}
               placeholderTextColor="$inputFieldPlaceholderText"
               minHeight={120}
               autoCapitalize="sentences"
@@ -824,7 +829,7 @@ export function WorkoutForm({
             disabled={isSubmitting || validated || disableSubmitButton || !isFormValid}
             opacity={isSubmitting || validated || disableSubmitButton || !isFormValid ? 0.6 : 1}
           >
-            {isSubmitting ? 'Saving...' : submitLabel}
+            {isSubmitting ? t('common.saving') : submitLabel}
           </Button>
           {shouldShowValidateButton && onValidateWorkout && (
             <Button
@@ -979,7 +984,7 @@ export function WorkoutForm({
                 disabled={isSubmitting}
                 opacity={isSubmitting ? 0.6 : 1}
               >
-                {isSubmitting ? 'Processing...' : 'Mark as Incomplete'}
+                {isSubmitting ? t('common.processing') : t('workout.markAsIncomplete')}
               </Button>
             </XStack>
           </YStack>
