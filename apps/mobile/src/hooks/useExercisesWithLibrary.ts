@@ -23,7 +23,7 @@ export function useExercisesWithLibrary() {
       if (!user?.uid) {
         return [] as Exercise[];
       }
-      return services.firestore.getExercisesWithLibrary(user.uid);
+      return services.firestore.getUserExercises(user.uid);
     },
   });
 

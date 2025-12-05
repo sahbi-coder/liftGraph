@@ -271,6 +271,7 @@
   },
   "profile": {
     "title": "Profile",
+    "logAndTrackProgress": "Log and track your progress",
     "email": "Email",
     "memberSince": "Member Since",
     "subscriptionPlan": "Subscription Plan",

@@ -29,26 +29,20 @@ export function ExercisePickerScreen({
 }: ExercisePickerScreenProps) {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState<'all' | 'library' | 'custom'>('all');
 
   const filteredExercises = useMemo(() => {
     const query = search.trim().toLowerCase();
     return exercises.filter((exercise) => {
       const matchesSearch = !query || exercise.name.toLowerCase().includes(query);
-      const matchesFilter =
-        filter === 'all' ||
-        (filter === 'library' && exercise.source === 'library') ||
-        (filter === 'custom' && exercise.source === 'user');
-      return matchesSearch && matchesFilter;
+      return matchesSearch;
     });
-  }, [exercises, filter, search]);
+  }, [exercises, search]);
 
   const handleSelect = useCallback(
     (exercise: Exercise) => {
       onSelect({
         id: exercise.id,
         name: exercise.name,
-        source: exercise.source,
       });
     },
     [onSelect],
@@ -110,39 +104,6 @@ export function ExercisePickerScreen({
         </Button>
       </XStack>
 
-      <XStack space="$2" justifyContent="center">
-        <Button
-          flex={1}
-          size="$3"
-          height={36}
-          backgroundColor={filter === 'all' ? '$primaryButton' : colors.midGray}
-          color={colors.white}
-          onPress={() => setFilter('all')}
-        >
-          {t('exercise.all')}
-        </Button>
-        <Button
-          flex={1}
-          size="$3"
-          height={36}
-          backgroundColor={filter === 'library' ? '$primaryButton' : colors.midGray}
-          color={colors.white}
-          onPress={() => setFilter('library')}
-        >
-          {t('exercise.library')}
-        </Button>
-        <Button
-          flex={1}
-          size="$3"
-          height={36}
-          backgroundColor={filter === 'custom' ? '$primaryButton' : colors.midGray}
-          color={colors.white}
-          onPress={() => setFilter('custom')}
-        >
-          {t('exercise.custom')}
-        </Button>
-      </XStack>
-
       {isLoading ? (
         <YStack flex={1} justifyContent="center" alignItems="center">
           <Text color={colors.white}>{t('exercise.loadingExercises')}</Text>
@@ -151,12 +112,10 @@ export function ExercisePickerScreen({
         <YStack flex={1} justifyContent="center" alignItems="center" space="$4" padding="$4">
           <Entypo name="info" size={48} color={colors.niceOrange} />
           <Text color="$textPrimary" fontSize="$5" fontWeight="600" textAlign="center">
-            {search.trim() || filter !== 'all'
-              ? t('exercise.noExercisesFound')
-              : t('exercise.noExercisesYet')}
+            {search.trim() ? t('exercise.noExercisesFound') : t('exercise.noExercisesYet')}
           </Text>
           <Text color="$textSecondary" fontSize="$4" textAlign="center">
-            {search.trim() || filter !== 'all'
+            {search.trim()
               ? t('exercise.tryAdjustingSearch')
               : t('exercise.createFirstCustomExercise')}
           </Text>

@@ -7,7 +7,10 @@ const workspaceRoot = path.resolve(projectRoot, '../..');
 
 const config = getDefaultConfig(projectRoot);
 
-config.watchFolders = [workspaceRoot];
+// For monorepo: include workspace root in watch folders
+const defaultWatchFolders = config.watchFolders || [];
+config.watchFolders = [...new Set([...defaultWatchFolders, workspaceRoot])];
+
 config.resolver.nodeModulesPaths = [
   path.resolve(projectRoot, 'node_modules'),
   path.resolve(workspaceRoot, 'node_modules'),

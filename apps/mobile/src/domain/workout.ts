@@ -12,7 +12,6 @@ export const WorkoutSetSchema = z.object({
 
 export const WorkoutExerciseSchema = z.object({
   exerciseId: z.string().min(1, 'Exercise ID is required'),
-  exerciseOwnerId: z.string().nullable(),
   name: z.string().min(1, 'Exercise name is required'),
   order: z.number().int().nonnegative('Order must be non-negative'),
   sets: z.array(WorkoutSetSchema).min(1, 'At least one set is required'),

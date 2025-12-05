@@ -166,7 +166,6 @@ export default function ProgramDetailsScreen() {
     (programExercises: ProgramExercise[]): WorkoutExercise[] => {
       return programExercises.map((exercise, index) => ({
         exerciseId: exercise.id,
-        exerciseOwnerId: exercise.isGlobal ? 'global' : null,
         name: exercise.name,
         order: index + 1,
         sets: exercise.sets.map((set) => ({

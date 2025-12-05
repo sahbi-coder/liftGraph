@@ -27,7 +27,7 @@ const config: ExpoConfig = {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#ffffff',
     },
-    package: 'com.liftgraph.app',
+    package: 'com.kardiServiceInformatique.liftGraph',
     googleServicesFile: './google-services.json',
   },
   web: {
@@ -43,6 +43,9 @@ const config: ExpoConfig = {
   extra: {
     router: {
       origin: false,
+    },
+    eas: {
+      projectId: '73b63277-b469-45a4-966d-8d5a6736c54e',
     },
   },
 };

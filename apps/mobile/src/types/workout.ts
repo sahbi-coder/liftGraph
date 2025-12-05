@@ -1,7 +1,6 @@
 export type ExerciseSelection = {
   id: string;
   name: string;
-  source: 'library' | 'user';
 };
 
 export type ExerciseSelectionContext = {

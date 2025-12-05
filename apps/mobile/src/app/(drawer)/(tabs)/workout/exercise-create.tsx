@@ -90,7 +90,6 @@ export default function CreateExerciseScreen() {
         const newExercise: ExerciseSelection = {
           id: exerciseId,
           name: name.trim(),
-          source: 'user',
         };
 
         try {

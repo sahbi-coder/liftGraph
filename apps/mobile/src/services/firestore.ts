@@ -12,6 +12,7 @@ import {
   setDoc,
   updateDoc,
   where,
+  writeBatch,
 } from 'firebase/firestore';
 
 // Domain models - types
@@ -136,57 +137,62 @@ export class FirestoreService {
     await updateDoc(userRef, updateData);
   }
 
-  async getExercisesWithLibrary(userId: string) {
+  async getUserExercises(userId: string) {
+    const userExercisesRef = collection(this.db, `users/${userId}/exercises`);
+    const userSnapshot = await getDocs(userExercisesRef);
+
+    // If user exercises exist, return them
+    if (!userSnapshot.empty) {
+      return userSnapshot.docs.map((docSnap) => {
+        const data = docSnap.data();
+        const result = ExerciseSchema.safeParse({
+          id: docSnap.id,
+          name: data.name,
+          category: data.category,
+          bodyPart: data.bodyPart,
+          description: data.description,
+        });
+
+        if (!result.success) {
+          throw new Error(`Invalid user exercise (${docSnap.id}): ${result.error.message}`);
+        }
+        return result.data;
+      });
+    }
+
+    // If user exercises don't exist, fetch from library and copy to user's collection
     const librarySnapshot = await getDocs(collection(this.db, 'exercisesLibrary'));
-    const libraryExercises = librarySnapshot.docs
-      .map((docSnap) => {
-        const data = docSnap.data();
-        const exerciseData = {
-          id: docSnap.id,
-          name: data.name,
-          category: data.category,
-          bodyPart: data.bodyPart,
-          description: data.description,
-          source: 'library',
-        };
+    const libraryExercises = librarySnapshot.docs.map((docSnap) => {
+      const data = docSnap.data();
+      const result = ExerciseSchema.safeParse({
+        id: docSnap.id,
+        name: data.name,
+        category: data.category,
+        bodyPart: data.bodyPart,
+        description: data.description,
+      });
 
-        // Validate with schema
-        const result = ExerciseSchema.safeParse(exerciseData);
-        if (!result.success) {
-          console.error(`Invalid exercise from library (${docSnap.id}):`, result.error);
-          return null;
-        }
-        return result.data;
-      })
-      .filter((exercise): exercise is Exercise => exercise !== null);
+      if (!result.success) {
+        throw new Error(`Invalid library exercise (${docSnap.id}): ${result.error.message}`);
+      }
+      return result.data;
+    });
 
-    const userSnapshot = await getDocs(collection(this.db, `users/${userId}/exercises`));
-    const userExercises = userSnapshot.docs
-      .map((docSnap) => {
-        const data = docSnap.data();
-        const createdAtValue = data.createdAt;
+    // Copy library exercises to user's collection using batch write
+    if (libraryExercises.length > 0) {
+      const batch = writeBatch(this.db);
+      for (const exercise of libraryExercises) {
+        batch.set(doc(this.db, `users/${userId}/exercises`, exercise.id), {
+          name: exercise.name,
+          category: exercise.category,
+          bodyPart: exercise.bodyPart,
+          description: exercise.description,
+        });
+      }
+      await batch.commit();
+    }
 
-        const exerciseData = {
-          id: docSnap.id,
-          name: data.name,
-          category: data.category,
-          bodyPart: data.bodyPart,
-          description: data.description,
-          createdAt: createdAtValue instanceof Timestamp ? createdAtValue.toDate() : createdAtValue,
-          source: 'user',
-        };
-
-        // Validate with schema
-        const result = ExerciseSchema.safeParse(exerciseData);
-        if (!result.success) {
-          console.error(`Invalid user exercise (${docSnap.id}):`, result.error);
-          return null;
-        }
-        return result.data;
-      })
-      .filter((exercise): exercise is Exercise => exercise !== null);
-
-    return [...libraryExercises, ...userExercises];
+    return libraryExercises;
   }
 
   async createExercise(
@@ -201,16 +207,6 @@ export class FirestoreService {
     // Generate ID from name: lowercase with spaces replaced by hyphens
     const exerciseId = exercise.name.trim().toLowerCase().replace(/\s+/g, '-');
 
-    // Check if exercise with this ID exists in library
-    const libraryRef = doc(this.db, 'exercisesLibrary', exerciseId);
-    const libraryDoc = await getDoc(libraryRef);
-
-    if (libraryDoc.exists()) {
-      throw new Error(
-        `An exercise with the name "${exercise.name}" already exists in the library.`,
-      );
-    }
-
     // Check if exercise with this ID exists in user's exercises
     const userExerciseRef = doc(this.db, `users/${userId}/exercises`, exerciseId);
     const userExerciseDoc = await getDoc(userExerciseRef);
@@ -222,13 +218,12 @@ export class FirestoreService {
     }
 
     // Create the exercise with the generated ID
-    const now = Timestamp.now();
+
     await setDoc(userExerciseRef, {
       name: exercise.name.trim(),
       category: exercise.category.trim(),
       bodyPart: exercise.bodyPart.trim(),
-      description: exercise.description?.trim() || '',
-      createdAt: now,
+      description: exercise.description?.trim(),
     });
 
     return exerciseId;
@@ -719,7 +714,7 @@ export class FirestoreService {
       notes: workout.notes ?? '',
       exercises: workout.exercises.map((exercise) => ({
         exerciseId: exercise.exerciseId,
-        exerciseOwnerId: exercise.exerciseOwnerId ?? null,
+
         name: exercise.name,
         order: exercise.order,
         sets: exercise.sets.map((set) => ({

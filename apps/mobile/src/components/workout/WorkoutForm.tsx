@@ -51,7 +51,6 @@ type SetForm = {
 type ExerciseForm = {
   id: string;
   exerciseId: string;
-  exerciseOwnerId: string | null;
   name: string;
   sets: SetForm[];
 };
@@ -73,7 +72,6 @@ const createExerciseForm = (
 ): ExerciseForm => ({
   id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
   exerciseId: exercise.id,
-  exerciseOwnerId: exercise.source === 'library' ? 'global' : null,
   name: exercise.name,
   sets: [createSetForm(undefined, weightUnit)],
 });
@@ -85,7 +83,6 @@ const mapExercisesToForm = (
   exercises.map((exercise) => ({
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     exerciseId: exercise.exerciseId,
-    exerciseOwnerId: exercise.exerciseOwnerId ?? null,
     name: exercise.name,
     sets: exercise.sets.map((set) => createSetForm(set, weightUnit)),
   }));
@@ -579,7 +576,7 @@ export function WorkoutForm({
 
       return {
         exerciseId: exercise.exerciseId,
-        exerciseOwnerId: exercise.exerciseOwnerId,
+
         name: exercise.name,
         order: index + 1,
         sets: exercise.sets.map((set, setIndex) => {
@@ -647,7 +644,7 @@ export function WorkoutForm({
       notes,
       exercises: exercises.map((ex) => ({
         exerciseId: ex.exerciseId,
-        exerciseOwnerId: ex.exerciseOwnerId,
+
         name: ex.name,
         sets: ex.sets.map((set) => ({
           weight: set.weight,

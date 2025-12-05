@@ -72,7 +72,7 @@ const createExerciseForm = (exercise: ExerciseSelection): ProgramExerciseForm =>
   id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
   exerciseId: exercise.id,
   name: exercise.name,
-  isGlobal: exercise.source === 'library',
+  isGlobal: false,
   sets: [createSetForm()],
 });
 

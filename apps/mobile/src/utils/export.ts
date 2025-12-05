@@ -149,7 +149,7 @@ export function workoutsToJSON(workouts: Workout[]): string {
     validated: workout.validated,
     exercises: workout.exercises.map((exercise) => ({
       exerciseId: exercise.exerciseId,
-      exerciseOwnerId: exercise.exerciseOwnerId,
+
       name: exercise.name,
       order: exercise.order,
       sets: exercise.sets.map((set) => ({

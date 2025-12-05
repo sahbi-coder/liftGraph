@@ -10,8 +10,6 @@ export const ExerciseSchema = z.object({
   category: z.string().min(1, 'Category is required'),
   bodyPart: z.string().min(1, 'Body part is required'),
   description: z.string().optional(),
-  createdAt: z.date().optional(),
-  source: z.enum(['library', 'user']),
 });
 
 // ============================================

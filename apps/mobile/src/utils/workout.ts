@@ -36,8 +36,7 @@ export function hasWorkoutChanges(workoutInput: WorkoutInput, originalWorkout: W
     // Compare exercise IDs and names
     if (
       inputExercise.exerciseId !== originalExercise.exerciseId ||
-      inputExercise.name !== originalExercise.name ||
-      inputExercise.exerciseOwnerId !== originalExercise.exerciseOwnerId
+      inputExercise.name !== originalExercise.name
     ) {
       return true;
     }
