@@ -39,7 +39,9 @@
     "oopsSomethingWentWrong": "Oups! quelque chose s'est mal passé.",
     "tryAgain": "Réessayer",
     "noInternetConnection": "Pas de Connexion Internet",
-    "checkInternetConnection": "Veuillez vérifier votre connexion Internet et réessayer."
+    "checkInternetConnection": "Veuillez vérifier votre connexion Internet et réessayer.",
+    "unitLbs": "lbs",
+    "unitKg": "kg"
   },
   "auth": {
     "welcomeBack": "Bon Retour",
@@ -65,6 +67,16 @@
     "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
     "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
     "unknownError": "Erreur inconnue",
+    "invalidEmail": "Adresse e-mail invalide",
+    "userNotFound": "Aucun compte trouvé avec cet e-mail",
+    "wrongPassword": "Mot de passe incorrect",
+    "emailAlreadyInUse": "Cet e-mail est déjà enregistré",
+    "weakPassword": "Le mot de passe est trop faible",
+    "tooManyRequests": "Trop de demandes. Veuillez réessayer plus tard",
+    "networkError": "Erreur réseau. Veuillez vérifier votre connexion",
+    "userDisabled": "Ce compte a été désactivé",
+    "operationNotAllowed": "Cette opération n'est pas autorisée",
+    "requiresRecentLogin": "Veuillez vous reconnecter pour continuer",
     "resetPassword": "Réinitialiser le Mot de Passe",
     "resetPasswordInstructions": "Entrez votre e-mail pour recevoir les instructions de réinitialisation du mot de passe.",
     "wellHelpYouGetBackIn": "Nous vous aiderons à revenir",

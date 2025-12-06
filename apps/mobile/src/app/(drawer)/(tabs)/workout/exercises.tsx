@@ -7,6 +7,7 @@ import { colors } from '@/theme/colors';
 import { ExercisePickerScreen } from '@/components/exercises/ExercisePickerScreen';
 import { useExercises } from '@/hooks/useExercises';
 import type { ExerciseSelection } from '@/types/workout';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type ExercisePickerParams = {
   onSelect?: (exercise: ExerciseSelection) => void;
@@ -25,6 +26,7 @@ export default function WorkoutExercisePickerScreen() {
   const router = useRouter();
   const route = useRoute<RouteParams>();
   const onSelect = route.params?.onSelect;
+  const { t } = useTranslation();
 
   const { exercises, isLoading, isError, refetch } = useExercises();
 
@@ -58,10 +60,10 @@ export default function WorkoutExercisePickerScreen() {
         space="$4"
       >
         <Text color="$textPrimary" fontSize="$5" textAlign="center">
-          Failed to load exercises
+          {t('program.failedToLoadExercises')}
         </Text>
         <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => refetch()}>
-          Retry
+          {t('common.retry')}
         </Button>
       </YStack>
     );

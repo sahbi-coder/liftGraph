@@ -39,7 +39,9 @@
     "oopsSomethingWentWrong": "¡Ups! algo salió mal.",
     "tryAgain": "Intentar de Nuevo",
     "noInternetConnection": "Sin Conexión a Internet",
-    "checkInternetConnection": "Por favor verifica tu conexión a internet e intenta de nuevo."
+    "checkInternetConnection": "Por favor verifica tu conexión a internet e intenta de nuevo.",
+    "unitLbs": "lb",
+    "unitKg": "kg"
   },
   "auth": {
     "welcomeBack": "Bienvenido de Nuevo",
@@ -65,6 +67,16 @@
     "passwordsDoNotMatch": "Las contraseñas no coinciden",
     "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
     "unknownError": "Error desconocido",
+    "invalidEmail": "Dirección de correo electrónico inválida",
+    "userNotFound": "No se encontró una cuenta con este correo electrónico",
+    "wrongPassword": "Contraseña incorrecta",
+    "emailAlreadyInUse": "Este correo electrónico ya está registrado",
+    "weakPassword": "La contraseña es demasiado débil",
+    "tooManyRequests": "Demasiadas solicitudes. Por favor intenta más tarde",
+    "networkError": "Error de red. Por favor verifica tu conexión",
+    "userDisabled": "Esta cuenta ha sido deshabilitada",
+    "operationNotAllowed": "Esta operación no está permitida",
+    "requiresRecentLogin": "Por favor inicia sesión nuevamente para continuar",
     "resetPassword": "Restablecer Contraseña",
     "resetPasswordInstructions": "Ingresa tu correo electrónico para recibir instrucciones de restablecimiento de contraseña.",
     "wellHelpYouGetBackIn": "Te ayudaremos a volver",

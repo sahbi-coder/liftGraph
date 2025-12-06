@@ -193,7 +193,7 @@ const ExerciseCard = ({
               height={40}
               value={set.rir}
               onChangeText={(value) => onUpdateSetField(exercise.id, set.id, 'rir', value)}
-              placeholder="RIR"
+              placeholder={t('workout.rir')}
               keyboardType="numeric"
               borderColor="$inputFieldBorder"
               backgroundColor="$background"
@@ -201,7 +201,7 @@ const ExerciseCard = ({
               editable={!disabled}
               opacity={disabled ? 0.6 : 1}
             />
-            <Text color={colors.white}>RIR</Text>
+            <Text color={colors.white}>{t('workout.rir')}</Text>
             <Button
               position="absolute"
               right={-18}

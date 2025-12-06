@@ -176,7 +176,9 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
               noOfSections={4}
               maxValue={maxYValue}
               yAxisLabelWidth={60}
-              yAxisLabelSuffix={weightUnit === 'lb' ? ' lbs' : ' kg'}
+              yAxisLabelSuffix={
+                weightUnit === 'lb' ? ` ${t('common.unitLbs')}` : ` ${t('common.unitKg')}`
+              }
               showGradient
               gradientColor={`${colors.niceOrange}55`}
               onPress={(_item: unknown, index: number) => setSelectedWeekIndex(index)}
@@ -196,7 +198,7 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
                 </Text>
                 <Text color={colors.niceOrange} fontSize="$4" fontWeight="600">
                   {Math.round(weeklyVolumeData[selectedWeekIndex].value)}{' '}
-                  {weightUnit === 'lb' ? 'lbs' : 'kg'}
+                  {weightUnit === 'lb' ? t('common.unitLbs') : t('common.unitKg')}
                 </Text>
               </YStack>
             )}

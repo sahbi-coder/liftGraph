@@ -3,8 +3,10 @@ import { Stack } from 'expo-router';
 
 import { colors } from '@/theme/colors';
 import { DrawerButton } from '@/components/DrawerButton';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function WorkoutLayout() {
+  const { t } = useTranslation();
   return (
     <Stack
       screenOptions={{
@@ -17,15 +19,15 @@ export default function WorkoutLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: 'Workouts',
+          headerTitle: t('workout.title'),
           headerTitleAlign: 'left',
           headerTitleStyle: { fontSize: 28 },
           headerLeft: () => <DrawerButton />,
         }}
       />
-      <Stack.Screen name="create" options={{ title: 'Create Workout' }} />
-      <Stack.Screen name="exercises" options={{ title: 'Select Exercise' }} />
-      <Stack.Screen name="edit" options={{ title: 'Edit Workout' }} />
+      <Stack.Screen name="create" options={{ title: t('workout.create') }} />
+      <Stack.Screen name="exercises" options={{ title: t('workout.exercises') }} />
+      <Stack.Screen name="edit" options={{ title: t('workout.edit') }} />
     </Stack>
   );
 }

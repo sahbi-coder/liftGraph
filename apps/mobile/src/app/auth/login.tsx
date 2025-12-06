@@ -8,6 +8,7 @@ import { colors } from '@/theme/colors';
 import { PasswordInput } from '@/components/PasswordInput';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getAuthErrorMessage } from '@/utils/authErrors';
 
 const logoSource = require('../../../assets/exp-icon.png');
 
@@ -31,7 +32,8 @@ export default function LoginScreen() {
       await signIn(email, password);
       router.replace('/');
     } catch (error) {
-      showError(error instanceof Error ? error.message : t('auth.unknownError'));
+      const errorMessage = getAuthErrorMessage(error, t);
+      showError(errorMessage);
     } finally {
       setLoading(false);
     }

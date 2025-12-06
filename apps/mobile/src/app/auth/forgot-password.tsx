@@ -7,6 +7,7 @@ import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getAuthErrorMessage } from '@/utils/authErrors';
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
@@ -30,7 +31,8 @@ export default function ForgotPasswordScreen() {
         router.back();
       }, 3000);
     } catch (error: any) {
-      showError(error.message);
+      const errorMessage = getAuthErrorMessage(error, t);
+      showError(errorMessage);
     } finally {
       setLoading(false);
     }

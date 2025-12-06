@@ -28,7 +28,7 @@ type ExportDataScreenProps = {
 
 export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
   const { t } = useTranslation();
-  const [selectedDataTypes, setSelectedDataTypes] = useState<Set<DataType>>(
+  const [selectedDataTypes, setSelectedDataTypes] = useState(
     new Set(['workoutHistory', 'personalRecords']),
   );
   const [exportFormat, setExportFormat] = useState<ExportFormat>('xlsx');
@@ -116,28 +116,28 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
 
   const dataTypes = [
     {
-      id: 'workoutHistory' as DataType,
+      id: 'workoutHistory' as const,
       label: t('exportData.workoutHistory'),
       description: t('exportData.workoutHistoryDescription'),
       icon: Dumbbell,
       color: colors.niceOrange,
     },
     {
-      id: 'personalRecords' as DataType,
+      id: 'personalRecords' as const,
       label: t('exportData.personalRecords'),
       description: t('exportData.personalRecordsDescription'),
       icon: Trophy,
       color: colors.niceOrange,
     },
     {
-      id: 'progressTracking' as DataType,
+      id: 'progressTracking' as const,
       label: t('exportData.progressTracking'),
       description: t('exportData.progressTrackingDescription'),
       icon: TrendingUp,
       color: colors.niceOrange,
     },
     {
-      id: 'trainingPrograms' as DataType,
+      id: 'trainingPrograms' as const,
       label: t('exportData.trainingPrograms'),
       description: t('exportData.trainingProgramsDescription'),
       icon: CalendarIcon,
@@ -147,21 +147,21 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
 
   const exportFormats = [
     {
-      id: 'xlsx' as ExportFormat,
+      id: 'xlsx' as const,
       label: t('exportData.excel'),
       description: t('exportData.excelDescription'),
       icon: FileSpreadsheet,
       color: '#16a34a',
     },
     {
-      id: 'csv' as ExportFormat,
+      id: 'csv' as const,
       label: t('exportData.csv'),
       description: t('exportData.csvDescription'),
       icon: FileText,
       color: '#2563eb',
     },
     {
-      id: 'json' as ExportFormat,
+      id: 'json' as const,
       label: t('exportData.json'),
       description: t('exportData.jsonDescription'),
       icon: Code,

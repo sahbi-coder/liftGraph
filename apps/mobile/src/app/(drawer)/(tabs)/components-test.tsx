@@ -1,11 +1,12 @@
 import React from 'react';
 import { YStack, Text } from 'tamagui';
-import { DaySelector, type ProgramDay } from '@/components/DaySelector';
+import { DaySelector } from '@/components/DaySelector';
+import type { ProgramDayLabel } from '@/services';
 import { LoadingView, ErrorView } from '@/components/StatusViews';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ComponentsTestScreen() {
-  const handleSelectionChange = (selectedDays: ProgramDay[]) => {
+  const handleSelectionChange = (selectedDays: ProgramDayLabel[]) => {
     console.log('Selected days:', selectedDays);
   };
   const { i18n } = useTranslation();

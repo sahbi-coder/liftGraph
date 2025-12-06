@@ -39,7 +39,9 @@
     "oopsSomethingWentWrong": "Oops! something went wrong.",
     "tryAgain": "Try Again",
     "noInternetConnection": "No Internet Connection",
-    "checkInternetConnection": "Please check your internet connection and try again."
+    "checkInternetConnection": "Please check your internet connection and try again.",
+    "unitLbs": "lbs",
+    "unitKg": "kg"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -65,6 +67,16 @@
     "passwordsDoNotMatch": "Passwords do not match",
     "passwordMinLength": "Password must be at least 6 characters",
     "unknownError": "Unknown error",
+    "invalidEmail": "Invalid email address",
+    "userNotFound": "No account found with this email",
+    "wrongPassword": "Incorrect password",
+    "emailAlreadyInUse": "This email is already registered",
+    "weakPassword": "Password is too weak",
+    "tooManyRequests": "Too many requests. Please try again later",
+    "networkError": "Network error. Please check your connection",
+    "userDisabled": "This account has been disabled",
+    "operationNotAllowed": "This operation is not allowed",
+    "requiresRecentLogin": "Please sign in again to continue",
     "resetPassword": "Reset Password",
     "resetPasswordInstructions": "Enter your email to receive password reset instructions.",
     "wellHelpYouGetBackIn": "We'll help you get back in",

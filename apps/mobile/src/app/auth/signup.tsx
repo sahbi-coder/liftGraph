@@ -8,6 +8,7 @@ import { colors } from '@/theme/colors';
 import { PasswordInput } from '@/components/PasswordInput';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getAuthErrorMessage } from '@/utils/authErrors';
 
 export default function SignupScreen() {
   const [name, setName] = useState('');
@@ -41,7 +42,8 @@ export default function SignupScreen() {
       await signUp(email, password, name);
       router.replace('/' as any);
     } catch (error: any) {
-      showError(error.message);
+      const errorMessage = getAuthErrorMessage(error, t);
+      showError(errorMessage);
     } finally {
       setLoading(false);
     }

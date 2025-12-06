@@ -211,7 +211,9 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
               noOfSections={4}
               maxValue={maxYValue}
               yAxisLabelWidth={50}
-              yAxisLabelSuffix={weightUnit === 'lb' ? ' lbs' : ' kg'}
+              yAxisLabelSuffix={
+                weightUnit === 'lb' ? ` ${t('common.unitLbs')}` : ` ${t('common.unitKg')}`
+              }
               pointerConfig={{
                 activatePointersOnLongPress: true,
                 pointerStripHeight: 200,
@@ -238,7 +240,8 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
                       minHeight={60}
                     >
                       <Text color={colors.niceOrange} fontSize="$4" fontWeight="600">
-                        {Math.round(item.value)} {weightUnit === 'lb' ? 'lbs' : 'kg'}
+                        {Math.round(item.value)}{' '}
+                        {weightUnit === 'lb' ? t('common.unitLbs') : t('common.unitKg')}
                       </Text>
                       <Text color={colors.white} fontSize="$3">
                         {item.label}

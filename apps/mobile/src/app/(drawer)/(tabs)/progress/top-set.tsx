@@ -216,7 +216,9 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
               noOfSections={4}
               maxValue={maxYValue}
               yAxisLabelWidth={50}
-              yAxisLabelSuffix={weightUnit === 'lb' ? ' lbs' : ' kg'}
+              yAxisLabelSuffix={
+                weightUnit === 'lb' ? ` ${t('common.unitLbs')}` : ` ${t('common.unitKg')}`
+              }
               pointerConfig={{
                 activatePointersOnLongPress: true,
                 pointerStripHeight: 200,
@@ -243,7 +245,8 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
                       minHeight={60}
                     >
                       <Text color={colors.niceOrange} fontSize="$4" fontWeight="600">
-                        {Math.round(item.value)} {weightUnit === 'lb' ? 'lbs' : 'kg'}
+                        {Math.round(item.value)}{' '}
+                        {weightUnit === 'lb' ? t('common.unitLbs') : t('common.unitKg')}
                       </Text>
                       {typeof item.reps === 'number' && (
                         <Text color={colors.white} fontSize="$3">
