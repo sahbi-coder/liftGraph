@@ -6,7 +6,7 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import type { Exercise } from '@/services';
 
-export function useExercisesWithLibrary() {
+export function useExercises() {
   const { services } = useDependencies();
   const { user } = useAuth();
 

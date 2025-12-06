@@ -4,7 +4,7 @@ import { YStack, Text, Button } from 'tamagui';
 
 import { colors } from '@/theme/colors';
 import { ExercisePickerScreen } from '@/components/exercises/ExercisePickerScreen';
-import { useExercisesWithLibrary } from '@/hooks/useExercisesWithLibrary';
+import { useExercises } from '@/hooks/useExercises';
 import type { ExerciseSelection } from '@/types/workout';
 import {
   getExercisePickerCallback,
@@ -16,7 +16,7 @@ export default function ScheduleExercisePickerScreen() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  const { exercises, isLoading, isError, refetch } = useExercisesWithLibrary();
+  const { exercises, isLoading, isError, refetch } = useExercises();
 
   // Get the callback from context (set by WorkoutForm when navigating via router.push)
   const exercisePickerContext = getExercisePickerCallback();

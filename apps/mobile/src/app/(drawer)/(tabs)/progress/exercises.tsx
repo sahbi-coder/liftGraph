@@ -4,7 +4,7 @@ import { YStack, Text, Button } from 'tamagui';
 
 import { colors } from '@/theme/colors';
 import { ExercisePickerScreen } from '@/components/exercises/ExercisePickerScreen';
-import { useExercisesWithLibrary } from '@/hooks/useExercisesWithLibrary';
+import { useExercises } from '@/hooks/useExercises';
 import type { ExerciseSelection } from '@/types/workout';
 import {
   getExercisePickerCallback,
@@ -15,7 +15,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 export default function ProgressExercisePickerScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { exercises, isLoading, isError, refetch } = useExercisesWithLibrary();
+  const { exercises, isLoading, isError, refetch } = useExercises();
 
   const handleSelect = useCallback(
     (exercise: ExerciseSelection) => {

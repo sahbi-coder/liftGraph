@@ -924,7 +924,7 @@ export default function CreateProgramScreen() {
 
       return advancedProgram;
     }
-  }, [name, description, programType, weeks, alternatingWeeks, phases, showError]);
+  }, [name, description, programType, weeks, alternatingWeeks, phases, showError, t]);
 
   const handleSave = useCallback(async () => {
     if (!user) {
@@ -1049,7 +1049,7 @@ export default function CreateProgramScreen() {
         </Button>
       </YStack>
     ),
-    [handleRemoveExercise, handleAddSet, handleRemoveSet, handleUpdateSetField],
+    [handleRemoveExercise, handleAddSet, handleRemoveSet, handleUpdateSetField, t],
   );
 
   const renderWeek = useCallback(
@@ -1142,6 +1142,7 @@ export default function CreateProgramScreen() {
       handleRemoveWeek,
       handleRemoveWeekFromPhase,
       handleDaySelectionChange,
+      t,
     ],
   );
 

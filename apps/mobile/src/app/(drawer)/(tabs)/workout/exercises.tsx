@@ -5,7 +5,7 @@ import { YStack, Text, Button } from 'tamagui';
 
 import { colors } from '@/theme/colors';
 import { ExercisePickerScreen } from '@/components/exercises/ExercisePickerScreen';
-import { useExercisesWithLibrary } from '@/hooks/useExercisesWithLibrary';
+import { useExercises } from '@/hooks/useExercises';
 import type { ExerciseSelection } from '@/types/workout';
 
 type ExercisePickerParams = {
@@ -26,7 +26,7 @@ export default function WorkoutExercisePickerScreen() {
   const route = useRoute<RouteParams>();
   const onSelect = route.params?.onSelect;
 
-  const { exercises, isLoading, isError, refetch } = useExercisesWithLibrary();
+  const { exercises, isLoading, isError, refetch } = useExercises();
 
   const handleSelect = useCallback(
     (exercise: ExerciseSelection) => {
