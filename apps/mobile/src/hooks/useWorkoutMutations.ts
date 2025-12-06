@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { WorkoutInput } from '@/domain';
+import type { WorkoutInput } from '@/services';
 
 /**
  * Helper function to invalidate all workout-related queries.

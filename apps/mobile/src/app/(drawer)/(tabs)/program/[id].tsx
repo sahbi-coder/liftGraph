@@ -5,9 +5,9 @@ import { YStack, Text, XStack, Button } from 'tamagui';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Program, ProgramExercise, WorkoutExercise } from '@/domain';
+import type { Program, ProgramExercise, WorkoutExercise, ProgramDayLabel } from '@/services';
 import { colors } from '@/theme/colors';
-import { DaySelector, ProgramDay as DaySelectorProgramDay } from '@/components/DaySelector';
+import { DaySelector } from '@/components/DaySelector';
 import { setWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
@@ -93,25 +93,23 @@ export default function ProgramDetailsScreen() {
   }, [router, services.firestore, user, programId, showError, t]);
 
   // Determine active days for DaySelector
-  const activeDays = useMemo<DaySelectorProgramDay[]>(() => {
+  const activeDays = useMemo<ProgramDayLabel[]>(() => {
     if (!program) return [];
     if (program.type === 'simple') {
       return program.week.days
-        .map((day, index) => (day !== 'rest' ? (`Day${index + 1}` as DaySelectorProgramDay) : null))
-        .filter((day): day is DaySelectorProgramDay => day !== null);
+        .map((day, index) => (day !== 'rest' ? `Day${index + 1}` : null))
+        .filter((day): day is ProgramDayLabel => day !== null);
     } else if (program.type === 'alternating') {
       // For alternating programs, use the selected week
       return program.alternatingWeeks[selectedAlternatingWeek].days
-        .map((day, index) => (day !== 'rest' ? (`Day${index + 1}` as DaySelectorProgramDay) : null))
-        .filter((day): day is DaySelectorProgramDay => day !== null);
+        .map((day, index) => (day !== 'rest' ? `Day${index + 1}` : null))
+        .filter((day): day is ProgramDayLabel => day !== null);
     } else {
       // For advanced programs, use the first week of the first phase
       if (program.phases.length > 0 && program.phases[0].weeks.length > 0) {
         return program.phases[0].weeks[0].days
-          .map((day, index) =>
-            day !== 'rest' ? (`Day${index + 1}` as DaySelectorProgramDay) : null,
-          )
-          .filter((day): day is DaySelectorProgramDay => day !== null);
+          .map((day, index) => (day !== 'rest' ? `Day${index + 1}` : null))
+          .filter((day): day is ProgramDayLabel => day !== null);
       }
       return [];
     }
@@ -476,10 +474,8 @@ export default function ProgramDetailsScreen() {
               const firstWeek = phase.weeks.length > 0 ? phase.weeks[0] : null;
               const phaseActiveDays = firstWeek
                 ? firstWeek.days
-                    .map((day, index) =>
-                      day !== 'rest' ? (`Day${index + 1}` as DaySelectorProgramDay) : null,
-                    )
-                    .filter((day): day is DaySelectorProgramDay => day !== null)
+                    .map((day, index) => (day !== 'rest' ? `Day${index + 1}` : null))
+                    .filter((day): day is ProgramDayLabel => day !== null)
                 : [];
 
               const phaseActiveDayExercises = firstWeek

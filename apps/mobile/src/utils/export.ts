@@ -2,7 +2,7 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as XLSX from 'xlsx';
 import dayjs from 'dayjs';
-import type { Workout } from '@/domain';
+import type { Workout } from '@/services';
 
 export type ExportFormat = 'csv' | 'xlsx' | 'json';
 

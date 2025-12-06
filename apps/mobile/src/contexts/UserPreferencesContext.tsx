@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useAuth } from './AuthContext';
 import { useDependencies } from '@/dependencies/provider';
-import type { UserPreferences } from '@/domain';
+import type { UserPreferences } from '@/services';
 
 type UserPreferencesContextType = {
   preferences: UserPreferences | null;

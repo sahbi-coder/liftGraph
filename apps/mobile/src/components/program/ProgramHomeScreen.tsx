@@ -4,7 +4,7 @@ import { YStack, Text, Button, XStack } from 'tamagui';
 import Entypo from '@expo/vector-icons/Entypo';
 
 import { colors } from '@/theme/colors';
-import type { Program } from '@/domain';
+import type { Program } from '@/services';
 import { useTranslation } from '@/hooks/useTranslation';
 
 type ProgramHomeScreenProps = {

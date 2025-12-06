@@ -1,4 +1,4 @@
-import type { Workout, WorkoutExercise, WorkoutSet } from '@/domain';
+import type { Workout, WorkoutExercise, WorkoutSet } from '@/services';
 
 // Common Epley formula: 1RM = weight * (1 + reps / 30)
 export function calculateEstimated1RM(weight: number, reps: number, rir: number): number {

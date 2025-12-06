@@ -1,4 +1,4 @@
-import type { Workout, WorkoutInput } from '@/domain';
+import type { Workout, WorkoutInput } from '@/services';
 import dayjs from 'dayjs';
 
 /**

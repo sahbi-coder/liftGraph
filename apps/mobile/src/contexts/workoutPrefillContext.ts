@@ -1,5 +1,5 @@
 // Temporary storage for pre-filled workout data from programs
-import type { WorkoutExercise } from '@/domain';
+import type { WorkoutExercise } from '@/services';
 
 type WorkoutPrefillData = {
   exercises: WorkoutExercise[];

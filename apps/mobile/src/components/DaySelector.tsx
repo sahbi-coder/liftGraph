@@ -3,28 +3,27 @@ import { Pressable } from 'react-native';
 import { XStack, Text } from 'tamagui';
 import { colors } from '@/theme/colors';
 import { useTranslation } from '@/hooks/useTranslation';
-
-export type ProgramDay = 'Day1' | 'Day2' | 'Day3' | 'Day4' | 'Day5' | 'Day6' | 'Day7';
+import { ProgramDayLabel } from '@/services';
 
 export interface DaySelectorProps {
-  value?: ProgramDay[];
-  onSelectionChange?: (selectedDays: ProgramDay[]) => void;
+  value?: ProgramDayLabel[];
+  onSelectionChange?: (selectedDays: ProgramDayLabel[]) => void;
   disabled?: boolean;
 }
 
-const DAYS: ProgramDay[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
+const DAYS: ProgramDayLabel[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
 
 export function DaySelector({ value, onSelectionChange, disabled = false }: DaySelectorProps) {
   const { t } = useTranslation();
-  const [internalSelectedDays, setInternalSelectedDays] = useState<ProgramDay[]>([]);
+  const [internalSelectedDays, setInternalSelectedDays] = useState<ProgramDayLabel[]>([]);
   const selectedDays = value !== undefined ? value : internalSelectedDays;
 
-  const getDayLabel = (day: ProgramDay): string => {
+  const getDayLabel = (day: ProgramDayLabel): string => {
     const dayNumber = day.replace('Day', '');
     return t('common.day') + ' ' + dayNumber;
   };
 
-  const handleDayPress = (day: ProgramDay) => {
+  const handleDayPress = (day: ProgramDayLabel) => {
     if (disabled) {
       return;
     }

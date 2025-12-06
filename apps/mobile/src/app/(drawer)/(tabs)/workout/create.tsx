@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { WorkoutForm } from '@/components/workout/WorkoutForm';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { WorkoutInput } from '@/domain';
+import type { WorkoutInput } from '@/services';
 import { getWorkoutPrefillData, clearWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -19,9 +19,7 @@ export default function CreateWorkoutScreen() {
 
   // Check for prefill data synchronously before first render
   const prefillData = getWorkoutPrefillData();
-  const [initialExercises] = useState<WorkoutInput['exercises'] | undefined>(
-    prefillData ? prefillData.exercises : undefined,
-  );
+  const [initialExercises] = useState(prefillData ? prefillData.exercises : undefined);
 
   // Clear prefill data after reading it
   useEffect(() => {

@@ -13,6 +13,7 @@ export type {
   ProgramWeek,
   ProgramPhase,
   SimpleProgramInput,
+  AlternatingWeeks,
   AlternatingProgramInput,
   AdvancedProgramInput,
   ProgramInput,
@@ -20,6 +21,7 @@ export type {
   AlternatingProgram,
   AdvancedProgram,
   Program,
+  ProgramDayLabel,
 } from '@/domain';
 
 // Re-export services

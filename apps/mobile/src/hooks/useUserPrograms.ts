@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Program } from '@/domain';
+import type { Program } from '@/services';
 
 export function useUserPrograms() {
   const { services } = useDependencies();

@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
-import type { Workout } from '@/domain';
+import type { Workout } from '@/services';
 import type { FilterType } from '@/components/progress/DurationFilterButtons';
 
 export interface UseDateRangeFilterOptions {

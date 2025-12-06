@@ -9,24 +9,15 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
-import type {
-  ProgramInput,
-  SimpleProgramInput,
-  AlternatingProgramInput,
-  AdvancedProgramInput,
-  ProgramExercise,
-  ProgramSet,
-  ProgramWeek,
-  ProgramPhase,
-  ProgramDay,
-} from '@/domain';
+import type { ProgramSet, AlternatingWeeks } from '@/services';
 import { colors } from '@/theme/colors';
 import { ExerciseSelection, ExerciseSelectionContext } from '@/types/workout';
 import {
   setExercisePickerCallback,
   clearExercisePickerCallback,
 } from '@/contexts/exercisePickerContext';
-import { DaySelector, type ProgramDay as DaySelectorDay } from '@/components/DaySelector';
+import { DaySelector } from '@/components/DaySelector';
+import { ProgramDayLabel } from '@/services';
 
 type ProgramType = 'simple' | 'alternating' | 'advanced';
 
@@ -40,7 +31,6 @@ type ProgramExerciseForm = {
   id: string;
   exerciseId: string;
   name: string;
-  isGlobal: boolean;
   sets: ProgramSetForm[];
 };
 
@@ -52,7 +42,7 @@ type ProgramWeekForm = {
   id: string;
   name: string;
   days: ('rest' | ProgramDayForm)[];
-  selectedDays: DaySelectorDay[];
+  selectedDays: ProgramDayLabel[];
 };
 
 type ProgramPhaseForm = {
@@ -72,7 +62,7 @@ const createExerciseForm = (exercise: ExerciseSelection): ProgramExerciseForm =>
   id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
   exerciseId: exercise.id,
   name: exercise.name,
-  isGlobal: false,
+
   sets: [createSetForm()],
 });
 
@@ -115,8 +105,8 @@ export default function CreateProgramScreen() {
   const [phases, setPhases] = useState<ProgramPhaseForm[]>([]);
 
   const handleDaySelectionChange = useCallback(
-    (weekId: string, selectedDays: DaySelectorDay[], phaseId?: string) => {
-      const dayMap: Record<DaySelectorDay, number> = {
+    (weekId: string, selectedDays: ProgramDayLabel[], phaseId?: string) => {
+      const dayMap: Record<ProgramDayLabel, number> = {
         Day1: 0,
         Day2: 1,
         Day3: 2,
@@ -213,7 +203,7 @@ export default function CreateProgramScreen() {
       const newExercise = createExerciseForm(exercise);
       const weekId = context.weekId;
       const phaseId = context.phaseId;
-      const dayId = context.dayId as DaySelectorDay;
+      const dayId = context.dayId as ProgramDayLabel;
       const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
 
       if (dayIndex === undefined) {
@@ -301,7 +291,7 @@ export default function CreateProgramScreen() {
   );
 
   const handleOpenExercisePicker = useCallback(
-    (weekId: string, dayId: DaySelectorDay, phaseId?: string) => {
+    (weekId: string, dayId: ProgramDayLabel, phaseId?: string) => {
       const context: ExerciseSelectionContext = { weekId, phaseId, dayId };
       setExercisePickerCallback(handleSelectExercise, context, '/(drawer)/(tabs)/program/create');
       router.push('/(drawer)/(tabs)/program/exercises');
@@ -425,7 +415,7 @@ export default function CreateProgramScreen() {
   );
 
   const handleRemoveExercise = useCallback(
-    (weekId: string, dayId: DaySelectorDay, exerciseId: string, phaseId?: string) => {
+    (weekId: string, dayId: ProgramDayLabel, exerciseId: string, phaseId?: string) => {
       const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
       if (dayIndex === undefined) return;
 
@@ -486,7 +476,7 @@ export default function CreateProgramScreen() {
   );
 
   const handleAddSet = useCallback(
-    (weekId: string, dayId: DaySelectorDay, exerciseId: string, phaseId?: string) => {
+    (weekId: string, dayId: ProgramDayLabel, exerciseId: string, phaseId?: string) => {
       const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
       if (dayIndex === undefined) return;
 
@@ -555,7 +545,7 @@ export default function CreateProgramScreen() {
   const handleRemoveSet = useCallback(
     (
       weekId: string,
-      dayId: DaySelectorDay,
+      dayId: ProgramDayLabel,
       exerciseId: string,
       setId: string,
       phaseId?: string,
@@ -643,7 +633,7 @@ export default function CreateProgramScreen() {
   const handleUpdateSetField = useCallback(
     (
       weekId: string,
-      dayId: DaySelectorDay,
+      dayId: ProgramDayLabel,
       exerciseId: string,
       setId: string,
       field: 'reps' | 'rir',
@@ -736,7 +726,7 @@ export default function CreateProgramScreen() {
     [programType],
   );
 
-  const validateAndConvert = useCallback((): ProgramInput | null => {
+  const validateAndConvert = useCallback(() => {
     if (!name.trim()) {
       showError(t('program.programNameRequired'));
       return null;
@@ -755,14 +745,14 @@ export default function CreateProgramScreen() {
 
       // Simple programs use only the first week
       const week = weeks[0];
-      const dayLabels: DaySelectorDay[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
-      const convertedDays: ProgramDay[] = week.days.map((day, dayIndex) => {
+      const dayLabels: ProgramDayLabel[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
+      const convertedDays = week.days.map((day, dayIndex) => {
         if (day === 'rest') {
           return 'rest' as const;
         }
 
-        const exercises: ProgramExercise[] = day.exercises.map((ex) => {
-          const sets: ProgramSet[] = ex.sets
+        const exercises = day.exercises.map((ex) => {
+          const sets = ex.sets
             .filter((set) => set.reps.trim() && set.rir.trim())
             .map((set) => ({
               reps: Number(set.reps),
@@ -776,7 +766,7 @@ export default function CreateProgramScreen() {
           return {
             name: ex.name,
             id: ex.exerciseId,
-            isGlobal: ex.isGlobal,
+
             sets,
           };
         });
@@ -787,14 +777,14 @@ export default function CreateProgramScreen() {
         };
       });
 
-      const convertedWeek: ProgramWeek = {
+      const convertedWeek = {
         days: convertedDays,
       };
 
-      const simpleProgram: SimpleProgramInput = {
+      const simpleProgram = {
         name: name.trim(),
         description: description.trim(),
-        type: 'simple',
+        type: 'simple' as const,
         week: convertedWeek,
       };
 
@@ -805,16 +795,16 @@ export default function CreateProgramScreen() {
         return null;
       }
 
-      const dayLabels: DaySelectorDay[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
+      const dayLabels: ProgramDayLabel[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
 
-      const convertWeek = (week: ProgramWeekForm): ProgramWeek => {
-        const convertedDays: ProgramDay[] = week.days.map((day, dayIndex) => {
+      const convertWeek = (week: ProgramWeekForm) => {
+        const convertedDays = week.days.map((day, dayIndex) => {
           if (day === 'rest') {
             return 'rest' as const;
           }
 
-          const exercises: ProgramExercise[] = day.exercises.map((ex) => {
-            const sets: ProgramSet[] = ex.sets
+          const exercises = day.exercises.map((ex) => {
+            const sets = ex.sets
               .filter((set) => set.reps.trim() && set.rir.trim())
               .map((set) => ({
                 reps: Number(set.reps),
@@ -828,7 +818,7 @@ export default function CreateProgramScreen() {
             return {
               name: ex.name,
               id: ex.exerciseId,
-              isGlobal: ex.isGlobal,
+
               sets,
             };
           });
@@ -844,15 +834,15 @@ export default function CreateProgramScreen() {
         };
       };
 
-      const convertedWeeks: [ProgramWeek, ProgramWeek] = [
+      const convertedWeeks: AlternatingWeeks = [
         convertWeek(alternatingWeeks[0]),
         convertWeek(alternatingWeeks[1]),
       ];
 
-      const alternatingProgram: AlternatingProgramInput = {
+      const alternatingProgram = {
         name: name.trim(),
         description: description.trim(),
-        type: 'alternating',
+        type: 'alternating' as const,
         alternatingWeeks: convertedWeeks,
       };
 
@@ -863,7 +853,7 @@ export default function CreateProgramScreen() {
         return null;
       }
 
-      const convertedPhases: ProgramPhase[] = phases.map((phase) => {
+      const convertedPhases = phases.map((phase) => {
         if (!phase.name.trim()) {
           throw new Error(t('program.allPhasesMustHaveName'));
         }
@@ -872,7 +862,7 @@ export default function CreateProgramScreen() {
           throw new Error(t('program.phaseMustHaveWeek', { name: phase.name }));
         }
 
-        const dayLabels: DaySelectorDay[] = [
+        const dayLabels: ProgramDayLabel[] = [
           'Day1',
           'Day2',
           'Day3',
@@ -881,14 +871,14 @@ export default function CreateProgramScreen() {
           'Day6',
           'Day7',
         ];
-        const convertedWeeks: ProgramWeek[] = phase.weeks.map((week) => {
-          const convertedDays: ProgramDay[] = week.days.map((day, dayIndex) => {
+        const convertedWeeks = phase.weeks.map((week) => {
+          const convertedDays = week.days.map((day, dayIndex) => {
             if (day === 'rest') {
               return 'rest' as const;
             }
 
-            const exercises: ProgramExercise[] = day.exercises.map((ex) => {
-              const sets: ProgramSet[] = ex.sets
+            const exercises = day.exercises.map((ex) => {
+              const sets = ex.sets
                 .filter((set) => set.reps.trim() && set.rir.trim())
                 .map((set) => ({
                   reps: Number(set.reps),
@@ -902,7 +892,7 @@ export default function CreateProgramScreen() {
               return {
                 name: ex.name,
                 id: ex.exerciseId,
-                isGlobal: ex.isGlobal,
+
                 sets,
               };
             });
@@ -925,10 +915,10 @@ export default function CreateProgramScreen() {
         };
       });
 
-      const advancedProgram: AdvancedProgramInput = {
+      const advancedProgram = {
         name: name.trim(),
         description: description.trim(),
-        type: 'advanced',
+        type: 'advanced' as const,
         phases: convertedPhases,
       };
 
@@ -944,7 +934,6 @@ export default function CreateProgramScreen() {
 
     try {
       const programData = validateAndConvert();
-      // console.log('programData', programData.phases[0].weeks);
 
       if (!programData) {
         return;
@@ -952,6 +941,7 @@ export default function CreateProgramScreen() {
 
       setIsSaving(true);
       await services.firestore.createProgram(user.uid, programData);
+
       showSuccess(t('program.programSavedSuccessfully'));
       // Navigate back after showing success message
       setTimeout(() => {
@@ -969,7 +959,7 @@ export default function CreateProgramScreen() {
     (
       exercise: ProgramExerciseForm,
       weekId: string,
-      dayId: DaySelectorDay,
+      dayId: ProgramDayLabel,
       exerciseIndex: number,
       phaseId?: string,
     ) => (
@@ -1064,7 +1054,7 @@ export default function CreateProgramScreen() {
 
   const renderWeek = useCallback(
     (week: ProgramWeekForm, weekIndex: number, phaseId?: string) => {
-      const dayLabels: DaySelectorDay[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
+      const dayLabels: ProgramDayLabel[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
 
       return (
         <YStack

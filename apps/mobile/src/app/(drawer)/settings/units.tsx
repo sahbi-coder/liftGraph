@@ -5,7 +5,6 @@ import { useRouter } from 'expo-router';
 import { colors } from '@/theme/colors';
 import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
-import type { UserPreferences } from '@/domain';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -64,7 +63,7 @@ const getTemperatureOptions = (t: any): UnitOption[] => [
 export default function UnitsSettingsScreen() {
   const router = useRouter();
   const { preferences, updatePreferences, loading } = useUserPreferences();
-  const [selectedUnits, setSelectedUnits] = useState<Partial<UserPreferences>>({
+  const [selectedUnits, setSelectedUnits] = useState({
     weightUnit: preferences?.weightUnit || 'kg',
     distanceUnit: preferences?.distanceUnit || 'cm',
     temperatureUnit: preferences?.temperatureUnit || 'celsius',

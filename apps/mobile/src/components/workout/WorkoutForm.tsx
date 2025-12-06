@@ -7,7 +7,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 
 import dayjs from 'dayjs';
 
-import type { WorkoutExercise, WorkoutInput } from '@/domain';
+import type { WorkoutExercise, WorkoutInput } from '@/services';
 import { colors } from '@/theme/colors';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { ExerciseSelection, WorkoutStackParamList } from '@/types/workout';
@@ -555,7 +555,7 @@ export function WorkoutForm({
     [validated],
   );
 
-  const buildWorkoutPayload = useCallback((): WorkoutInput => {
+  const buildWorkoutPayload = useCallback(() => {
     if (!date) {
       throw new Error(t('workout.workoutDateRequired'));
     }
@@ -677,7 +677,7 @@ export function WorkoutForm({
       return;
     }
 
-    let workoutPayload: WorkoutInput;
+    let workoutPayload;
 
     try {
       workoutPayload = buildWorkoutPayload();

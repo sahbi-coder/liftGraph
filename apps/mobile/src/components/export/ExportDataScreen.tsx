@@ -15,7 +15,7 @@ import dayjs from 'dayjs';
 
 import { colors } from '@/theme/colors';
 import { Calendar } from '@/components/Calendar';
-import type { Workout } from '@/domain';
+import type { Workout } from '@/services';
 import { exportWorkouts, type ExportFormat } from '@/utils/export';
 import { useTranslation } from '@/hooks/useTranslation';
 

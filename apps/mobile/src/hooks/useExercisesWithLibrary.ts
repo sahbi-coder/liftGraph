@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Exercise } from '@/domain';
+import type { Exercise } from '@/services';
 
 export function useExercisesWithLibrary() {
   const { services } = useDependencies();

@@ -9,22 +9,28 @@ export const ProgramSetSchema = z.object({
   rir: z.number().int().min(0).max(10, 'RIR must be between 0-10'),
 });
 
+export const ProgramDayLabelSchema = z.enum([
+  'Day1',
+  'Day2',
+  'Day3',
+  'Day4',
+  'Day5',
+  'Day6',
+  'Day7',
+]);
+
+export type ProgramDayLabel = z.infer<typeof ProgramDayLabelSchema>;
+
 export const ProgramExerciseSchema = z.object({
   name: z.string().min(1, 'Exercise name is required'),
   id: z.string().min(1, 'Exercise ID is required'),
-  isGlobal: z.boolean(),
+
   sets: z.array(ProgramSetSchema).min(1, 'At least one set is required'),
 });
 
-export const ProgramDaySchema: z.ZodType<
-  | {
-      name: string;
-      exercises: z.infer<typeof ProgramExerciseSchema>[];
-    }
-  | 'rest'
-> = z.union([
+export const ProgramDaySchema = z.union([
   z.object({
-    name: z.string().min(1, 'Day name is required'),
+    name: ProgramDayLabelSchema,
     exercises: z.array(ProgramExerciseSchema),
   }),
   z.literal('rest'),
@@ -46,12 +52,13 @@ export const SimpleProgramInputSchema = z.object({
   type: z.literal('simple'),
   week: ProgramWeekSchema,
 });
-
+const AlternatingWeeksSchema = z.tuple([ProgramWeekSchema, ProgramWeekSchema]);
+export type AlternatingWeeks = z.infer<typeof AlternatingWeeksSchema>;
 export const AlternatingProgramInputSchema = z.object({
   name: z.string().min(1, 'Program name is required'),
   description: z.string(),
   type: z.literal('alternating'),
-  alternatingWeeks: z.tuple([ProgramWeekSchema, ProgramWeekSchema]),
+  alternatingWeeks: AlternatingWeeksSchema,
 });
 
 export const AdvancedProgramInputSchema = z.object({
@@ -90,8 +97,6 @@ export const AlternatingProgramSchema = z.object({
   description: z.string(),
   type: z.literal('alternating'),
   alternatingWeeks: z.tuple([ProgramWeekSchema, ProgramWeekSchema]),
-  createdAt: z.date(),
-  updatedAt: z.date(),
 });
 
 export const AdvancedProgramSchema = z.object({
@@ -100,8 +105,6 @@ export const AdvancedProgramSchema = z.object({
   description: z.string(),
   type: z.literal('advanced'),
   phases: z.array(ProgramPhaseSchema).min(1, 'At least one phase is required'),
-  createdAt: z.date(),
-  updatedAt: z.date(),
 });
 
 export const ProgramSchema: z.ZodDiscriminatedUnion<

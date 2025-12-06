@@ -7,7 +7,6 @@ import { colors } from '@/theme/colors';
 import Feather from '@expo/vector-icons/Feather';
 import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
-import type { UserPreferences } from '@/domain';
 import { useTranslation } from '@/hooks/useTranslation';
 
 type UnitOption = {
@@ -67,7 +66,7 @@ export default function UnitsOnboardingScreen() {
     },
   ];
 
-  const [selectedUnits, setSelectedUnits] = useState<Partial<UserPreferences>>({
+  const [selectedUnits, setSelectedUnits] = useState({
     weightUnit: preferences?.weightUnit || 'kg',
     distanceUnit: preferences?.distanceUnit || 'cm',
     temperatureUnit: preferences?.temperatureUnit || 'celsius',

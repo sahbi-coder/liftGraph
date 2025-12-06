@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo, useEffect } from 'react';
 
 import { WorkoutForm } from '@/components/workout/WorkoutForm';
-import type { Workout, WorkoutInput } from '@/domain';
+import type { Workout, WorkoutInput } from '@/services';
 import { hasWorkoutChanges } from '@/utils/workout';
 import { useTranslation } from '@/hooks/useTranslation';
 

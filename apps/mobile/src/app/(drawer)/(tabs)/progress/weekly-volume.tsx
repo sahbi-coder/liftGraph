@@ -12,7 +12,7 @@ import { DurationFilterButtons } from '@/components/progress/DurationFilterButto
 import { useValidatedWorkouts } from '@/hooks/useValidatedWorkouts';
 import { useDateRangeFilter } from '@/hooks/useDateRangeFilter';
 import { useExerciseSelection } from '@/hooks/useExerciseSelection';
-import type { Workout } from '@/domain';
+import type { Workout } from '@/services';
 import { buildWeeklyExerciseVolumeByWeek } from '@/utils/strength';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { weightForDisplay } from '@/utils/units';
