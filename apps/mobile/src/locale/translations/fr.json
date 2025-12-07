@@ -82,7 +82,17 @@
     "wellHelpYouGetBackIn": "Nous vous aiderons à revenir",
     "sendResetLink": "Envoyer le Lien de Réinitialisation",
     "backToLogin": "Retour à la Connexion",
-    "passwordResetEmailSent": "E-mail de réinitialisation du mot de passe envoyé. Veuillez vérifier votre boîte de réception."
+    "passwordResetEmailSent": "E-mail de réinitialisation du mot de passe envoyé. Veuillez vérifier votre boîte de réception.",
+    "validation": {
+      "emailRequired": "L'e-mail est requis",
+      "emailInvalid": "Format d'e-mail invalide",
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
+      "nameRequired": "Le nom est requis",
+      "nameMinLength": "Le nom doit contenir au moins 2 caractères",
+      "confirmPasswordRequired": "Veuillez confirmer votre mot de passe",
+      "passwordsDoNotMatch": "Les mots de passe ne correspondent pas"
+    }
   },
   "features": {
     "planWorkouts": "Planifier les Entraînements",

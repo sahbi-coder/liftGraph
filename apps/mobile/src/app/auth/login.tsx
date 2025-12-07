@@ -9,6 +9,8 @@ import { PasswordInput } from '@/components/PasswordInput';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getAuthErrorMessage } from '@/utils/authErrors';
+import { useValidateAuthScreen } from '@/hooks/useValidateAuthScreen';
+import { getEmailSchema, getPasswordSchema } from '@/utils/authSchemas';
 
 const logoSource = require('../../../assets/exp-icon.png');
 
@@ -21,9 +23,32 @@ export default function LoginScreen() {
   const router = useRouter();
   const { t } = useTranslation();
 
+  const { error } = useValidateAuthScreen([
+    {
+      schema: getEmailSchema(t),
+      getValue: () => email,
+    },
+    {
+      schema: getPasswordSchema(t),
+      getValue: () => password,
+    },
+  ]);
+
+  const handleEmailChange = (text: string) => {
+    setEmail(text);
+  };
+
+  const handlePasswordChange = (text: string) => {
+    setPassword(text);
+  };
+
   const handleLogin = async () => {
     if (!email || !password) {
       showError(t('auth.pleaseEnterEmailPassword'));
+      return;
+    }
+    if (error) {
+      showError(error);
       return;
     }
 
@@ -38,6 +63,8 @@ export default function LoginScreen() {
       setLoading(false);
     }
   };
+
+  const buttonDisabled = loading || !!error;
 
   return (
     <YStack flex={1} backgroundColor="$background" padding="$4" paddingTop="$10">
@@ -73,7 +100,7 @@ export default function LoginScreen() {
             size="$4"
             placeholder={t('auth.email')}
             value={email}
-            onChangeText={setEmail}
+            onChangeText={handleEmailChange}
             autoCapitalize="none"
             keyboardType="email-address"
             borderColor="$inputFieldBorder"
@@ -83,8 +110,14 @@ export default function LoginScreen() {
             focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
           />
 
-          <PasswordInput value={password} onChangeText={setPassword} />
-
+          <PasswordInput value={password} onChangeText={handlePasswordChange} />
+          <XStack justifyContent="center">
+            {error && (
+              <Text color="$errorColor" fontSize="$3" textAlign="center">
+                {error}
+              </Text>
+            )}
+          </XStack>
           <Button
             size="$3"
             color="$textTertiary"
@@ -100,16 +133,17 @@ export default function LoginScreen() {
             color="$primaryButtonText"
             fontWeight="600"
             onPress={handleLogin}
-            disabled={loading}
-            opacity={loading ? 0.5 : 1}
+            disabled={buttonDisabled}
+            opacity={buttonDisabled ? 0.5 : 1}
           >
-            {loading ? t('auth.signingIn') : t('auth.signIn')}
+            {buttonDisabled ? t('auth.signingIn') : t('auth.signIn')}
           </Button>
         </YStack>
       </YStack>
+
       <XStack space="$2" justifyContent="center" marginTop="$4">
         <Text color="$textSecondary">{t('auth.dontHaveAccount')}</Text>
-        <Text color="$accentColor" fontWeight="600" onPress={() => router.push('/auth/signup')}>
+        <Text color="$textTertiary" fontWeight="600" onPress={() => router.push('/auth/signup')}>
           {t('auth.signUp')}
         </Text>
       </XStack>

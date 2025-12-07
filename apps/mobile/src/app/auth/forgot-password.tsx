@@ -8,6 +8,8 @@ import { colors } from '@/theme/colors';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getAuthErrorMessage } from '@/utils/authErrors';
+import { useValidateAuthScreen } from '@/hooks/useValidateAuthScreen';
+import { getEmailSchema } from '@/utils/authSchemas';
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
@@ -17,9 +19,24 @@ export default function ForgotPasswordScreen() {
   const router = useRouter();
   const { t } = useTranslation();
 
+  const { error } = useValidateAuthScreen([
+    {
+      schema: getEmailSchema(t),
+      getValue: () => email,
+    },
+  ]);
+
+  const handleEmailChange = (text: string) => {
+    setEmail(text);
+  };
+
   const handleResetPassword = async () => {
     if (!email) {
       showError(t('auth.pleaseEnterEmail'));
+      return;
+    }
+    if (error) {
+      showError(error);
       return;
     }
 
@@ -30,7 +47,7 @@ export default function ForgotPasswordScreen() {
       setTimeout(() => {
         router.back();
       }, 3000);
-    } catch (error: any) {
+    } catch (error) {
       const errorMessage = getAuthErrorMessage(error, t);
       showError(errorMessage);
     } finally {
@@ -39,6 +56,7 @@ export default function ForgotPasswordScreen() {
   };
 
   const logoSource = require('../../../assets/exp-icon.png');
+  const buttonDisabled = loading || !!error;
 
   return (
     <YStack flex={1} backgroundColor="$background" padding="$4" paddingTop="$10">
@@ -76,7 +94,7 @@ export default function ForgotPasswordScreen() {
             size="$4"
             placeholder={t('auth.email')}
             value={email}
-            onChangeText={setEmail}
+            onChangeText={handleEmailChange}
             autoCapitalize="none"
             keyboardType="email-address"
             borderColor="$inputFieldBorder"
@@ -86,16 +104,24 @@ export default function ForgotPasswordScreen() {
             focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
           />
 
+          <XStack justifyContent="center">
+            {error && (
+              <Text color="$errorColor" fontSize="$3" textAlign="center">
+                {error}
+              </Text>
+            )}
+          </XStack>
+
           <Button
             size="$4"
             backgroundColor="$primaryButton"
             color="$primaryButtonText"
             fontWeight="600"
             onPress={handleResetPassword}
-            disabled={loading}
-            opacity={loading ? 0.5 : 1}
+            disabled={buttonDisabled}
+            opacity={buttonDisabled ? 0.5 : 1}
           >
-            {loading ? t('common.sending') : t('auth.sendResetLink')}
+            {buttonDisabled ? t('common.sending') : t('auth.sendResetLink')}
           </Button>
 
           <Button

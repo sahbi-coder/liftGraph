@@ -82,7 +82,17 @@
     "wellHelpYouGetBackIn": "Te ayudaremos a volver",
     "sendResetLink": "Enviar Enlace de Restablecimiento",
     "backToLogin": "Volver al Inicio de Sesión",
-    "passwordResetEmailSent": "Correo de restablecimiento de contraseña enviado. Por favor revisa tu bandeja de entrada."
+    "passwordResetEmailSent": "Correo de restablecimiento de contraseña enviado. Por favor revisa tu bandeja de entrada.",
+    "validation": {
+      "emailRequired": "El correo electrónico es requerido",
+      "emailInvalid": "Formato de correo electrónico inválido",
+      "passwordRequired": "La contraseña es requerida",
+      "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+      "nameRequired": "El nombre es requerido",
+      "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "confirmPasswordRequired": "Por favor confirma tu contraseña",
+      "passwordsDoNotMatch": "Las contraseñas no coinciden"
+    }
   },
   "features": {
     "planWorkouts": "Planificar Entrenamientos",

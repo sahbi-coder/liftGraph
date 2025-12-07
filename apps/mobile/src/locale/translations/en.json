@@ -82,7 +82,17 @@
     "wellHelpYouGetBackIn": "We'll help you get back in",
     "sendResetLink": "Send Reset Link",
     "backToLogin": "Back to Login",
-    "passwordResetEmailSent": "Password reset email sent. Please check your inbox."
+    "passwordResetEmailSent": "Password reset email sent. Please check your inbox.",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "confirmPasswordRequired": "Please confirm your password",
+      "passwordsDoNotMatch": "Passwords do not match"
+    }
   },
   "features": {
     "planWorkouts": "Plan Workouts",
