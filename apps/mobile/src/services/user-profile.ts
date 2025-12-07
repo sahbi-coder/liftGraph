@@ -1,6 +1,7 @@
 import { Firestore, Timestamp, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import type { UserProfile } from '@/domain';
 import { UserProfileSchema, UserPreferencesSchema } from '@/domain';
+import { ServiceError } from '@/utils/serviceErrors';
 
 export class UserProfileService {
   constructor(private readonly db: Firestore) {}
@@ -10,7 +11,7 @@ export class UserProfileService {
     if (data.preferences) {
       const preferencesResult = UserPreferencesSchema.safeParse(data.preferences);
       if (!preferencesResult.success) {
-        throw new Error(`Invalid user preferences: ${preferencesResult.error.message}`);
+        throw new ServiceError('userPreferences.invalid');
       }
     }
 
@@ -47,7 +48,7 @@ export class UserProfileService {
     const result = UserProfileSchema.safeParse(profileData);
     if (!result.success) {
       console.error('Invalid user profile from Firestore:', result.error);
-      throw new Error(`Invalid user profile data: ${result.error.message}`);
+      throw new ServiceError('userProfile.invalidData');
     }
 
     return result.data;

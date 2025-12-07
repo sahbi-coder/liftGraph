@@ -12,6 +12,7 @@ import {
 } from 'firebase/firestore';
 import type { Program, ProgramInput, ProgramWeek, ProgramPhase } from '@/domain';
 import { ProgramSchema, ProgramInputSchema } from '@/domain';
+import { ServiceError } from '@/utils/serviceErrors';
 
 // Firestore-specific type for program data storage
 type ProgramFirestoreData = {
@@ -32,7 +33,7 @@ export class ProgramsService {
     // Validate input with schema
     const inputResult = ProgramInputSchema.safeParse(program);
     if (!inputResult.success) {
-      throw new Error(`Invalid program input: ${inputResult.error.message}`);
+      throw new ServiceError('program.invalidInput');
     }
 
     const programsCollection = collection(this.db, `users/${userId}/programs`);
@@ -141,7 +142,7 @@ export class ProgramsService {
     let programData: Program;
     if (data.type === 'simple') {
       if (!data.week) {
-        throw new Error(`Invalid simple program: missing week`);
+        throw new ServiceError('program.missingWeek');
       }
       programData = {
         ...baseProgram,
@@ -150,7 +151,7 @@ export class ProgramsService {
       };
     } else if (data.type === 'alternating') {
       if (!data.alternatingWeeks) {
-        throw new Error(`Invalid alternating program: missing alternatingWeeks`);
+        throw new ServiceError('program.missingAlternatingWeeks');
       }
       programData = {
         ...baseProgram,
@@ -159,7 +160,7 @@ export class ProgramsService {
       };
     } else {
       if (!data.phases) {
-        throw new Error(`Invalid advanced program: missing phases`);
+        throw new ServiceError('program.missingPhases');
       }
       programData = {
         ...baseProgram,
@@ -172,7 +173,7 @@ export class ProgramsService {
     const result = ProgramSchema.safeParse(programData);
     if (!result.success) {
       console.error('Invalid program from Firestore:', result.error);
-      throw new Error(`Invalid program data: ${result.error.message}`);
+      throw new ServiceError('program.invalidData');
     }
 
     return result.data;
@@ -183,7 +184,7 @@ export class ProgramsService {
     const existingProgram = await getDoc(programRef);
 
     if (!existingProgram.exists()) {
-      throw new Error('Program not found');
+      throw new ServiceError('program.notFound');
     }
 
     await deleteDoc(programRef);

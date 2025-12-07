@@ -9,6 +9,7 @@ import 'dayjs/locale/fr';
 import { colors } from '@/theme/colors';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getAuthErrorMessage } from '@/utils/authErrors';
 
 export default function ProfileScreen() {
   const { user, signOut } = useAuth();
@@ -18,7 +19,7 @@ export default function ProfileScreen() {
     try {
       await signOut();
     } catch (error) {
-      console.error('Error signing out:', error);
+      getAuthErrorMessage(error, t);
     }
   };
 

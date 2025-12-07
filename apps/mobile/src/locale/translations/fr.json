@@ -138,7 +138,10 @@
     "createWorkoutBeforeEdit": "Créez un entraînement avant d'essayer de modifier.",
     "noUpcomingWorkoutsToEdit": "Aucun entraînement à venir à modifier.",
     "loadingWorkouts": "Chargement des entraînements...",
-    "failedToLoadWorkouts": "Échec du chargement des entraînements"
+    "failedToLoadWorkouts": "Échec du chargement des entraînements",
+    "invalidInput": "Entrée d'entraînement invalide. Veuillez vérifier vos données et réessayer.",
+    "notFound": "Nous n'avons pas pu trouver cet entraînement.",
+    "invalidData": "Les données de l'entraînement sont invalides. Veuillez réessayer."
   },
   "program": {
     "title": "Programme",
@@ -197,7 +200,13 @@
     "noProgramsYet": "Aucun programme pour le moment. Créez votre premier programme pour commencer!",
     "exerciseMustHaveValidSet": "L'exercice \"{{name}}\" doit avoir au moins une série valide.",
     "phaseMustHaveWeek": "La phase \"{{name}}\" doit avoir au moins une semaine.",
-    "failedToLoadExercises": "Échec du chargement des exercices"
+    "failedToLoadExercises": "Échec du chargement des exercices",
+    "invalidInput": "Entrée de programme invalide. Veuillez vérifier vos données et réessayer.",
+    "missingWeek": "Ce programme manque les données de semaine requises.",
+    "missingAlternatingWeeks": "Ce programme manque les données de semaines alternées requises.",
+    "missingPhases": "Ce programme manque les données de phases requises.",
+    "invalidData": "Les données du programme sont invalides. Veuillez réessayer.",
+    "notFound": "Nous n'avons pas pu trouver ce programme."
   },
   "schedule": {
     "title": "Horaire",
@@ -293,6 +302,12 @@
       "premium": "Premium",
       "pro": "Pro"
     }
+  },
+  "userProfile": {
+    "invalidData": "Données de profil utilisateur invalides. Veuillez réessayer."
+  },
+  "userPreferences": {
+    "invalid": "Préférences utilisateur invalides. Veuillez réessayer."
   },
   "contactUs": {
     "title": "Nous Contacter",
@@ -408,7 +423,9 @@
     "noExercisesFound": "Aucun exercice trouvé",
     "noExercisesYet": "Aucun exercice pour le moment",
     "tryAdjustingSearch": "Essayez d'ajuster votre recherche ou vos filtres, ou créez un nouvel exercice.",
-    "createFirstCustomExercise": "Créez votre premier exercice personnalisé pour commencer!"
+    "createFirstCustomExercise": "Créez votre premier exercice personnalisé pour commencer!",
+    "invalidData": "Les données de l'exercice sont invalides. Veuillez vérifier votre saisie et réessayer.",
+    "alreadyExists": "Un exercice avec ce nom existe déjà."
   },
   "customRange": {
     "endDateAfterStart": "La date de fin doit être postérieure à la date de début. Veuillez sélectionner une date ultérieure.",

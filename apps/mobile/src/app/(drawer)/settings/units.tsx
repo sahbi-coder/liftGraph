@@ -7,6 +7,7 @@ import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getServiceErrorMessage } from '@/utils/serviceErrors';
 
 type UnitOption = {
   value: 'kg' | 'lb' | 'cm' | 'ft' | 'celsius' | 'fahrenheit';
@@ -93,8 +94,8 @@ export default function UnitsSettingsScreen() {
         router.back();
       }, 1500);
     } catch (error) {
-      console.error('Error saving preferences:', error);
-      showError(t('settings.failedToSavePreferences'));
+      const message = getServiceErrorMessage(error, t);
+      showError(message);
     }
   };
 

@@ -13,6 +13,7 @@ import {
 } from '@/contexts/exercisePickerContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getServiceErrorMessage } from '@/utils/serviceErrors';
 
 const EXERCISE_CATEGORIES = [
   'Barbell',
@@ -106,7 +107,7 @@ export default function CreateExerciseScreen() {
         router.back();
       }, 1500);
     } catch (error) {
-      const message = error instanceof Error ? error.message : t('exercise.failedToCreateExercise');
+      const message = getServiceErrorMessage(error, t);
       showError(message);
     } finally {
       setIsCreating(false);

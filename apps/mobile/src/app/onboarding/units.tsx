@@ -8,6 +8,8 @@ import Feather from '@expo/vector-icons/Feather';
 import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getServiceErrorMessage } from '@/utils/serviceErrors';
+import { useAlertModal } from '@/hooks/useAlertModal';
 
 type UnitOption = {
   value: 'kg' | 'lb' | 'cm' | 'ft' | 'celsius' | 'fahrenheit';
@@ -20,6 +22,7 @@ export default function UnitsOnboardingScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const { preferences, updatePreferences, loading } = useUserPreferences();
+  const { showError, AlertModalComponent } = useAlertModal();
 
   const weightOptions: UnitOption[] = [
     {
@@ -92,7 +95,8 @@ export default function UnitsOnboardingScreen() {
       });
       router.replace('/');
     } catch (error) {
-      console.error('Error saving preferences:', error);
+      const errorMessage = getServiceErrorMessage(error, t);
+      showError(errorMessage);
     }
   };
 
@@ -245,6 +249,7 @@ export default function UnitsOnboardingScreen() {
           </Button>
         </YStack>
       </ScrollView>
+      <AlertModalComponent />
     </YStack>
   );
 }

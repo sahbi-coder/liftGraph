@@ -7,6 +7,7 @@ import type { WorkoutInput } from '@/services';
 import { getWorkoutPrefillData, clearWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getServiceErrorMessage } from '@/utils/serviceErrors';
 
 export default function CreateWorkoutScreen() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function CreateWorkoutScreen() {
           router.back();
         }, 1500);
       } catch (error) {
-        const message = error instanceof Error ? error.message : t('common.somethingWentWrong');
+        const message = getServiceErrorMessage(error, t);
         showError(message);
       } finally {
         setIsSaving(false);

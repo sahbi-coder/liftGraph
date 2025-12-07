@@ -12,6 +12,7 @@ import { setWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getServiceErrorMessage } from '@/utils/serviceErrors';
 
 export default function ProgramDetailsScreen() {
   const router = useRouter();
@@ -73,7 +74,7 @@ export default function ProgramDetailsScreen() {
           return;
         }
 
-        const message = error instanceof Error ? error.message : t('program.unableToLoadProgram');
+        const message = getServiceErrorMessage(error, t);
         showError(message);
         setTimeout(() => {
           router.back();
@@ -210,7 +211,7 @@ export default function ProgramDetailsScreen() {
         router.back();
       }, 2000);
     } catch (error) {
-      const message = error instanceof Error ? error.message : t('program.somethingWentWrong');
+      const message = getServiceErrorMessage(error, t);
       showError(message);
     } finally {
       setIsDeleting(false);

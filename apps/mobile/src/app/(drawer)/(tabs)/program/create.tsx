@@ -9,6 +9,7 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import type { ProgramSet, AlternatingWeeks } from '@/services';
 import { colors } from '@/theme/colors';
 import { ExerciseSelection, ExerciseSelectionContext } from '@/types/workout';
@@ -948,7 +949,7 @@ export default function CreateProgramScreen() {
         router.back();
       }, 1500);
     } catch (error) {
-      const message = error instanceof Error ? error.message : t('program.somethingWentWrong');
+      const message = getServiceErrorMessage(error, t);
       showError(message);
     } finally {
       setIsSaving(false);

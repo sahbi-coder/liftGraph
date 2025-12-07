@@ -15,6 +15,7 @@ import {
 } from 'firebase/firestore';
 import type { WorkoutInput, Workout } from '@/domain';
 import { WorkoutSchema, WorkoutInputSchema } from '@/domain';
+import { ServiceError } from '@/utils/serviceErrors';
 
 export class WorkoutsService {
   constructor(private readonly db: Firestore) {}
@@ -23,7 +24,7 @@ export class WorkoutsService {
     // Validate input with schema
     const inputResult = WorkoutInputSchema.safeParse(workout);
     if (!inputResult.success) {
-      throw new Error(`Invalid workout input: ${inputResult.error.message}`);
+      throw new ServiceError('workout.invalidInput');
     }
 
     const workoutsCollection = collection(this.db, `users/${userId}/workouts`);
@@ -43,14 +44,14 @@ export class WorkoutsService {
     // Validate input with schema
     const inputResult = WorkoutInputSchema.safeParse(workout);
     if (!inputResult.success) {
-      throw new Error(`Invalid workout input: ${inputResult.error.message}`);
+      throw new ServiceError('workout.invalidInput');
     }
 
     const workoutRef = doc(this.db, `users/${userId}/workouts/${workoutId}`);
     const existingWorkout = await getDoc(workoutRef);
 
     if (!existingWorkout.exists()) {
-      throw new Error('Workout not found');
+      throw new ServiceError('workout.notFound');
     }
 
     const existingData = existingWorkout.data();
@@ -73,7 +74,7 @@ export class WorkoutsService {
     const existingWorkout = await getDoc(workoutRef);
 
     if (!existingWorkout.exists()) {
-      throw new Error('Workout not found');
+      throw new ServiceError('workout.notFound');
     }
 
     await updateDoc(workoutRef, {
@@ -87,7 +88,7 @@ export class WorkoutsService {
     const existingWorkout = await getDoc(workoutRef);
 
     if (!existingWorkout.exists()) {
-      throw new Error('Workout not found');
+      throw new ServiceError('workout.notFound');
     }
 
     await updateDoc(workoutRef, {
@@ -101,7 +102,7 @@ export class WorkoutsService {
     const existingWorkout = await getDoc(workoutRef);
 
     if (!existingWorkout.exists()) {
-      throw new Error('Workout not found');
+      throw new ServiceError('workout.notFound');
     }
 
     await deleteDoc(workoutRef);
@@ -143,7 +144,7 @@ export class WorkoutsService {
     const result = WorkoutSchema.safeParse(workoutData);
     if (!result.success) {
       console.error('Invalid workout from Firestore:', result.error);
-      throw new Error(`Invalid workout data: ${result.error.message}`);
+      throw new ServiceError('workout.invalidData');
     }
 
     return result.data;
@@ -206,7 +207,7 @@ export class WorkoutsService {
     const result = WorkoutSchema.safeParse(workoutData);
     if (!result.success) {
       console.error('Invalid workout from Firestore:', result.error);
-      throw new Error(`Invalid workout data: ${result.error.message}`);
+      throw new ServiceError('workout.invalidData');
     }
 
     return result.data;
@@ -267,7 +268,7 @@ export class WorkoutsService {
     const result = WorkoutSchema.safeParse(workoutData);
     if (!result.success) {
       console.error('Invalid workout from Firestore:', result.error);
-      throw new Error(`Invalid workout data: ${result.error.message}`);
+      throw new ServiceError('workout.invalidData');
     }
 
     return result.data;
@@ -296,7 +297,7 @@ export class WorkoutsService {
     const result = WorkoutSchema.safeParse(workoutData);
     if (!result.success) {
       console.error('Invalid workout from Firestore:', result.error);
-      throw new Error(`Invalid workout data: ${result.error.message}`);
+      throw new ServiceError('workout.invalidData');
     }
 
     return result.data;

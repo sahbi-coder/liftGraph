@@ -138,7 +138,10 @@
     "createWorkoutBeforeEdit": "Create a workout before trying to edit.",
     "noUpcomingWorkoutsToEdit": "No upcoming workouts to edit.",
     "loadingWorkouts": "Loading workouts...",
-    "failedToLoadWorkouts": "Failed to load workouts"
+    "failedToLoadWorkouts": "Failed to load workouts",
+    "invalidInput": "Invalid workout input. Please check your data and try again.",
+    "notFound": "We couldn't find that workout.",
+    "invalidData": "The workout data is invalid. Please try again."
   },
   "program": {
     "title": "Program",
@@ -197,7 +200,13 @@
     "noProgramsYet": "No programs yet. Create your first program to get started!",
     "exerciseMustHaveValidSet": "Exercise \"{{name}}\" must have at least one valid set.",
     "phaseMustHaveWeek": "Phase \"{{name}}\" must have at least one week.",
-    "failedToLoadExercises": "Failed to load exercises"
+    "failedToLoadExercises": "Failed to load exercises",
+    "invalidInput": "Invalid program input. Please check your data and try again.",
+    "missingWeek": "This program is missing required week data.",
+    "missingAlternatingWeeks": "This program is missing required alternating weeks data.",
+    "missingPhases": "This program is missing required phases data.",
+    "invalidData": "The program data is invalid. Please try again.",
+    "notFound": "We couldn't find that program."
   },
   "schedule": {
     "title": "Schedule",
@@ -293,6 +302,12 @@
       "premium": "Premium",
       "pro": "Pro"
     }
+  },
+  "userProfile": {
+    "invalidData": "Invalid user profile data. Please try again."
+  },
+  "userPreferences": {
+    "invalid": "Invalid user preferences. Please try again."
   },
   "contactUs": {
     "title": "Contact Us",
@@ -408,7 +423,9 @@
     "noExercisesFound": "No exercises found",
     "noExercisesYet": "No exercises yet",
     "tryAdjustingSearch": "Try adjusting your search or filters, or create a new exercise.",
-    "createFirstCustomExercise": "Create your first custom exercise to get started!"
+    "createFirstCustomExercise": "Create your first custom exercise to get started!",
+    "invalidData": "The exercise data is invalid. Please check your input and try again.",
+    "alreadyExists": "An exercise with this name already exists."
   },
   "customRange": {
     "endDateAfterStart": "End date must be after the start date. Please select a later date.",

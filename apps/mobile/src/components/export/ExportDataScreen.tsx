@@ -105,10 +105,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
       }
     } catch (error) {
       console.error('Export error:', error);
-      Alert.alert(
-        t('exportData.exportFailed'),
-        error instanceof Error ? error.message : t('exportData.failedToExportData'),
-      );
+      Alert.alert(t('exportData.exportFailed'), t('exportData.failedToExportData'));
     } finally {
       setIsExporting(false);
     }

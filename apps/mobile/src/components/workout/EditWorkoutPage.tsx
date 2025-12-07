@@ -11,6 +11,7 @@ import { useWorkoutMutations } from '@/hooks/useWorkoutMutations';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getServiceErrorMessage } from '@/utils/serviceErrors';
 
 export function EditWorkoutPage() {
   const router = useRouter();
@@ -61,7 +62,7 @@ export function EditWorkoutPage() {
         await updateWorkout(workoutPayload);
         showSuccess(t('workout.workoutUpdatedSuccessfully'));
       } catch (error) {
-        const message = error instanceof Error ? error.message : t('common.somethingWentWrong');
+        const message = getServiceErrorMessage(error, t);
         showError(message);
       }
     },
@@ -82,7 +83,7 @@ export function EditWorkoutPage() {
         router.back();
       }, 1500);
     } catch (error) {
-      const message = error instanceof Error ? error.message : t('common.somethingWentWrong');
+      const message = getServiceErrorMessage(error, t);
       showError(message);
     }
   }, [router, user, workoutId, validateWorkout, showSuccess, showError, t]);
@@ -97,7 +98,7 @@ export function EditWorkoutPage() {
       await unvalidateWorkout();
       showSuccess(t('workout.canNowEditWorkout'));
     } catch (error) {
-      const message = error instanceof Error ? error.message : t('common.somethingWentWrong');
+      const message = getServiceErrorMessage(error, t);
       showError(message);
     }
   }, [user, workoutId, unvalidateWorkout, showSuccess, showError, t]);
@@ -123,7 +124,7 @@ export function EditWorkoutPage() {
       }, 2000);
     } catch (error) {
       setIsDeletingWorkout(false);
-      const message = error instanceof Error ? error.message : t('common.somethingWentWrong');
+      const message = getServiceErrorMessage(error, t);
       showError(message);
     }
   }, [router, user, workoutId, deleteWorkout, showSuccess, showError, t]);

@@ -14,6 +14,7 @@ import { ExerciseSelection, WorkoutStackParamList } from '@/types/workout';
 import { Calendar } from '@/components/Calendar';
 import { Calendar as CalendarIcon } from '@tamagui/lucide-icons';
 import { useAlertModal } from '@/hooks/useAlertModal';
+import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 import { useUserWorkouts } from '@/hooks/useUserWorkouts';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
@@ -682,7 +683,7 @@ export function WorkoutForm({
     try {
       workoutPayload = buildWorkoutPayload();
     } catch (error) {
-      const message = error instanceof Error ? error.message : t('workout.workoutNotValid');
+      const message = getServiceErrorMessage(error, t);
       showError(message);
       return;
     }
@@ -710,7 +711,7 @@ export function WorkoutForm({
     try {
       await onSubmit(workoutPayload);
     } catch (error) {
-      const message = error instanceof Error ? error.message : t('workout.unableToSaveWorkout');
+      const message = getServiceErrorMessage(error, t);
       showError(message);
     }
   }, [

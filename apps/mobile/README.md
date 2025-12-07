@@ -44,4 +44,3 @@ yarn mobile:start
 - Expo Router (file-based routing)
 - Tamagui (UI components and styling)
 - TypeScript
-

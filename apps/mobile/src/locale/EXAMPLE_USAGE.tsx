@@ -1,6 +1,6 @@
 /**
  * Example usage of translations in components
- * 
+ *
  * This file demonstrates how to use the i18n system in your React Native components.
  * Copy these patterns to your actual components.
  */
@@ -41,15 +41,9 @@ export function LanguageSwitcher() {
   return (
     <>
       <Text>Current language: {i18n.language}</Text>
-      <Button onPress={() => changeLanguage('en')}>
-        English
-      </Button>
-      <Button onPress={() => changeLanguage('es')}>
-        Español
-      </Button>
-      <Button onPress={() => changeLanguage('fr')}>
-        Français
-      </Button>
+      <Button onPress={() => changeLanguage('en')}>English</Button>
+      <Button onPress={() => changeLanguage('es')}>Español</Button>
+      <Button onPress={() => changeLanguage('fr')}>Français</Button>
     </>
   );
 }
@@ -59,13 +53,7 @@ export function FormWithTranslations() {
   const { t } = useTranslation();
   const [email, setEmail] = React.useState('');
 
-  return (
-    <Input
-      placeholder={t('auth.email')}
-      value={email}
-      onChangeText={setEmail}
-    />
-  );
+  return <Input placeholder={t('auth.email')} value={email} onChangeText={setEmail} />;
 }
 
 // Example 5: Conditional translations
@@ -73,11 +61,7 @@ export function ConditionalTranslation() {
   const { t } = useTranslation();
   const isLoading = false;
 
-  return (
-    <Button>
-      {isLoading ? t('auth.signingIn') : t('auth.signIn')}
-    </Button>
-  );
+  return <Button>{isLoading ? t('auth.signingIn') : t('auth.signIn')}</Button>;
 }
 
 // Example 6: Complete login form example (how you would update login.tsx)
@@ -108,4 +92,3 @@ export function LoginFormExample() {
     </>
   );
 }
-

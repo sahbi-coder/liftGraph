@@ -9,6 +9,7 @@ import {
 } from 'firebase/firestore';
 
 import { ExerciseSchema } from '@/domain';
+import { ServiceError } from '@/utils/serviceErrors';
 
 export class ExercisesService {
   constructor(private readonly db: Firestore) {}
@@ -30,7 +31,7 @@ export class ExercisesService {
         });
 
         if (!result.success) {
-          throw new Error(`Invalid user exercise (${docSnap.id}): ${result.error.message}`);
+          throw new ServiceError('exercise.invalidData');
         }
         return result.data;
       });
@@ -49,7 +50,7 @@ export class ExercisesService {
       });
 
       if (!result.success) {
-        throw new Error(`Invalid library exercise (${docSnap.id}): ${result.error.message}`);
+        throw new ServiceError('exercise.invalidData');
       }
       return result.data;
     });
@@ -88,9 +89,7 @@ export class ExercisesService {
     const userExerciseDoc = await getDoc(userExerciseRef);
 
     if (userExerciseDoc.exists()) {
-      throw new Error(
-        `An exercise with the name "${exercise.name}" already exists in your exercises.`,
-      );
+      throw new ServiceError('exercise.alreadyExists');
     }
 
     // Create the exercise with the generated ID
