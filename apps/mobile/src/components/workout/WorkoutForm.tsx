@@ -232,7 +232,7 @@ const ExerciseCard = ({
           disabled={disabled}
           opacity={disabled ? 0.6 : 1}
         >
-          <Entypo name="circle-with-plus" size={22} color={colors.white} /> Add Set
+          <Entypo name="circle-with-plus" size={22} color={colors.white} /> {t('workout.addSet')}
         </Button>
         <Button
           size="$3"
@@ -245,7 +245,7 @@ const ExerciseCard = ({
           disabled={disabled || exercise.sets.length === 0}
           opacity={disabled || exercise.sets.length === 0 ? 0.6 : 1}
         >
-          <AntDesign name="copy1" size={22} color={colors.white} /> Duplicate
+          <AntDesign name="copy1" size={22} color={colors.white} /> {t('workout.duplicate')}
         </Button>
       </XStack>
     </YStack>

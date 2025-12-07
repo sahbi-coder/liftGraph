@@ -151,7 +151,9 @@
     "failedToLoadWorkouts": "Failed to load workouts",
     "invalidInput": "Invalid workout input. Please check your data and try again.",
     "notFound": "We couldn't find that workout.",
-    "invalidData": "The workout data is invalid. Please try again."
+    "invalidData": "The workout data is invalid. Please try again.",
+    "addSet": "Add Set",
+    "duplicate": "Duplicate"
   },
   "program": {
     "title": "Program",

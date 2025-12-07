@@ -151,7 +151,9 @@
     "failedToLoadWorkouts": "Échec du chargement des entraînements",
     "invalidInput": "Entrée d'entraînement invalide. Veuillez vérifier vos données et réessayer.",
     "notFound": "Nous n'avons pas pu trouver cet entraînement.",
-    "invalidData": "Les données de l'entraînement sont invalides. Veuillez réessayer."
+    "invalidData": "Les données de l'entraînement sont invalides. Veuillez réessayer.",
+    "addSet": "Ajouter Série",
+    "duplicate": "Dupliquer"
   },
   "program": {
     "title": "Programme",
