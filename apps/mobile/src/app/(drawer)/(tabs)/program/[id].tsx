@@ -182,7 +182,7 @@ export default function ProgramDetailsScreen() {
     (exercises: ProgramExercise[]) => {
       const workoutExercises = transformProgramExercisesToWorkoutExercises(exercises);
       setWorkoutPrefillData(workoutExercises);
-      router.push('/(drawer)/(tabs)/workout/create');
+      router.push('./apply-workout');
     },
     [router, transformProgramExercisesToWorkoutExercises],
   );

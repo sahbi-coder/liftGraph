@@ -158,6 +158,7 @@
   "program": {
     "title": "Program",
     "create": "Create Program",
+    "applyWorkout": "Apply Workout",
     "exercises": "Exercises",
     "addExercise": "Add Exercise",
     "programNameRequired": "Program name is required.",

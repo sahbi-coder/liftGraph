@@ -1,5 +1,5 @@
 import { CreateWorkoutPage } from '@/components/workout/CreateWorkoutPage';
 
-export default function CreateWorkout() {
+export default function ApplyWorkout() {
   return <CreateWorkoutPage />;
 }

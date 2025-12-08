@@ -28,6 +28,7 @@ export default function ProgramLayout() {
       <Stack.Screen name="create" options={{ title: t('program.create') }} />
       <Stack.Screen name="exercises" options={{ title: t('program.exercises') }} />
       <Stack.Screen name="[id]" options={{ title: t('program.title') }} />
+      <Stack.Screen name="apply-workout" options={{ title: t('program.applyWorkout') }} />
     </Stack>
   );
 }

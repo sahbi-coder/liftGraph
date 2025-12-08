@@ -158,6 +158,7 @@
   "program": {
     "title": "Programme",
     "create": "Créer un Programme",
+    "applyWorkout": "Appliquer la Séance",
     "exercises": "Exercices",
     "addExercise": "Ajouter un Exercice",
     "programNameRequired": "Le nom du programme est requis.",
