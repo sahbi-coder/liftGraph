@@ -153,7 +153,17 @@
     "notFound": "No pudimos encontrar ese entrenamiento.",
     "invalidData": "Los datos del entrenamiento son inválidos. Por favor intenta de nuevo.",
     "addSet": "Agregar Serie",
-    "duplicate": "Duplicar"
+    "duplicate": "Duplicar",
+    "notes": "Notas",
+    "validateWorkout": "Validar Entrenamiento",
+    "deleteWorkout": "Eliminar Entrenamiento",
+    "selectWorkoutDate": "Seleccionar Fecha del Entrenamiento",
+    "markWorkoutAsIncomplete": "¿Marcar Entrenamiento como Incompleto?",
+    "markWorkoutAsIncompleteMessage": "Esto te permitirá editar el entrenamiento nuevamente. ¿Estás seguro de que quieres marcar este entrenamiento como incompleto?",
+    "unsavedChanges": "Cambios Sin Guardar",
+    "unsavedChangesMessage": "Tienes cambios sin guardar. ¿Quieres conservar tu borrador?",
+    "discard": "Descartar",
+    "keepDraft": "Conservar"
   },
   "program": {
     "title": "Programa",

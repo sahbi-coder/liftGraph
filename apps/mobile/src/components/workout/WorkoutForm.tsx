@@ -802,7 +802,7 @@ export function WorkoutForm({
           )}
           <YStack space="$3">
             <Text color={colors.white} fontWeight="600" fontSize="$5">
-              Notes
+              {t('workout.notes')}
             </Text>
             <TextArea
               value={notes}
@@ -841,14 +841,14 @@ export function WorkoutForm({
               disabled={isSubmitting || disableValidateButton}
               opacity={isSubmitting || disableValidateButton ? 0.6 : 1}
             >
-              Validate Workout
+              {t('workout.validateWorkout')}
             </Button>
           )}
 
           {validated && onUnvalidateWorkout && (
             <Button
               alignSelf="center"
-              width="50%"
+              minWidth="50%"
               backgroundColor="#ef4444"
               color={colors.white}
               fontWeight="600"
@@ -857,14 +857,14 @@ export function WorkoutForm({
               disabled={isSubmitting}
               opacity={isSubmitting ? 0.6 : 1}
             >
-              Mark as Incomplete
+              {t('workout.markAsIncomplete')}
             </Button>
           )}
 
           {onDeleteWorkout && (
             <Button
               alignSelf="center"
-              width="50%"
+              minWidth="50%"
               backgroundColor="#ef4444"
               color={colors.white}
               fontWeight="600"
@@ -873,7 +873,7 @@ export function WorkoutForm({
               disabled={isSubmitting}
               opacity={isSubmitting ? 0.6 : 1}
             >
-              Delete Workout
+              {t('workout.deleteWorkout')}
             </Button>
           )}
         </YStack>
@@ -902,7 +902,7 @@ export function WorkoutForm({
           >
             <XStack alignItems="center" justifyContent="space-between">
               <Text color={colors.white} fontSize="$5" fontWeight="600">
-                Select Workout Date
+                {t('workout.selectWorkoutDate')}
               </Text>
               <Button
                 size="$2"
@@ -910,7 +910,7 @@ export function WorkoutForm({
                 color={colors.white}
                 onPress={() => setIsCalendarVisible(false)}
               >
-                Close
+                {t('common.close')}
               </Button>
             </XStack>
             <Calendar
@@ -953,11 +953,10 @@ export function WorkoutForm({
             space="$4"
           >
             <Text color={colors.white} fontSize="$6" fontWeight="600">
-              Mark Workout as Incomplete?
+              {t('workout.markWorkoutAsIncomplete')}
             </Text>
             <Text color="$textSecondary" fontSize="$4">
-              This will allow you to edit the workout again. Are you sure you want to mark this
-              workout as incomplete?
+              {t('workout.markWorkoutAsIncompleteMessage')}
             </Text>
             <XStack space="$3" justifyContent="flex-end">
               <Button
@@ -968,7 +967,7 @@ export function WorkoutForm({
                 onPress={() => setIsUnvalidateModalVisible(false)}
                 disabled={isSubmitting}
               >
-                Cancel
+                {t('common.cancel')}
               </Button>
               <Button
                 backgroundColor="#ef4444"
@@ -982,7 +981,7 @@ export function WorkoutForm({
                 disabled={isSubmitting}
                 opacity={isSubmitting ? 0.6 : 1}
               >
-                {isSubmitting ? t('common.processing') : t('workout.markAsIncomplete')}
+                {isSubmitting ? t('common.processing') : t('common.yes')}
               </Button>
             </XStack>
           </YStack>
