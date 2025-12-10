@@ -403,6 +403,9 @@
     "rateOnAppStore": "Noter sur l'App Store",
     "rateOnPlayStore": "Noter sur le Play Store"
   },
+  "exercises": {
+    "title": "Exercices"
+  },
   "exercise": {
     "create": "Créer un Exercice",
     "addCustomExercise": "Ajoutez un exercice personnalisé à votre bibliothèque",
@@ -448,7 +451,13 @@
     "tryAdjustingSearch": "Essayez d'ajuster votre recherche ou vos filtres, ou créez un nouvel exercice.",
     "createFirstCustomExercise": "Créez votre premier exercice personnalisé pour commencer!",
     "invalidData": "Les données de l'exercice sont invalides. Veuillez vérifier votre saisie et réessayer.",
-    "alreadyExists": "Un exercice avec ce nom existe déjà."
+    "alreadyExists": "Un exercice avec ce nom existe déjà.",
+    "edit": "Modifier l'Exercice",
+    "editCustomExercise": "Modifiez votre exercice personnalisé",
+    "exerciseUpdatedSuccessfully": "Exercice mis à jour avec succès!",
+    "failedToLoadExercise": "Échec du chargement de l'exercice",
+    "manageExercises": "Gérer les Exercices",
+    "notFound": "Exercice introuvable"
   },
   "customRange": {
     "endDateAfterStart": "La date de fin doit être postérieure à la date de début. Veuillez sélectionner une date ultérieure.",

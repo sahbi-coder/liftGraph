@@ -50,6 +50,23 @@ export class FirestoreService {
     return this.exercises.createExercise(userId, exercise);
   }
 
+  async updateExercise(
+    userId: string,
+    exerciseId: string,
+    exercise: {
+      name: string;
+      category: string;
+      bodyPart: string;
+      description?: string;
+    },
+  ): Promise<void> {
+    return this.exercises.updateExercise(userId, exerciseId, exercise);
+  }
+
+  async getExercise(userId: string, exerciseId: string) {
+    return this.exercises.getExercise(userId, exerciseId);
+  }
+
   // Workout methods (delegated)
   async createWorkout(userId: string, workout: WorkoutInput) {
     return this.workouts.createWorkout(userId, workout);

@@ -403,6 +403,9 @@
     "rateOnAppStore": "Rate on App Store",
     "rateOnPlayStore": "Rate on Play Store"
   },
+  "exercises": {
+    "title": "Exercises"
+  },
   "exercise": {
     "create": "Create Exercise",
     "addCustomExercise": "Add a custom exercise to your library",
@@ -448,7 +451,13 @@
     "tryAdjustingSearch": "Try adjusting your search or filters, or create a new exercise.",
     "createFirstCustomExercise": "Create your first custom exercise to get started!",
     "invalidData": "The exercise data is invalid. Please check your input and try again.",
-    "alreadyExists": "An exercise with this name already exists."
+    "alreadyExists": "An exercise with this name already exists.",
+    "edit": "Edit Exercise",
+    "editCustomExercise": "Modify your custom exercise",
+    "exerciseUpdatedSuccessfully": "Exercise updated successfully!",
+    "failedToLoadExercise": "Failed to load exercise",
+    "manageExercises": "Manage Exercises",
+    "notFound": "Exercise not found"
   },
   "customRange": {
     "endDateAfterStart": "End date must be after the start date. Please select a later date.",

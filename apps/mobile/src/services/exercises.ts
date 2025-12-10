@@ -28,6 +28,7 @@ export class ExercisesService {
           category: data.category,
           bodyPart: data.bodyPart,
           description: data.description,
+          isCustom: data.isCustom ?? false,
         });
 
         if (!result.success) {
@@ -64,6 +65,7 @@ export class ExercisesService {
           category: exercise.category,
           bodyPart: exercise.bodyPart,
           description: exercise.description,
+          isCustom: false,
         });
       }
       await batch.commit();
@@ -98,8 +100,65 @@ export class ExercisesService {
       category: exercise.category.trim(),
       bodyPart: exercise.bodyPart.trim(),
       description: exercise.description?.trim(),
+      isCustom: true,
     });
 
     return exerciseId;
+  }
+
+  async updateExercise(
+    userId: string,
+    exerciseId: string,
+    exercise: {
+      name: string;
+      category: string;
+      bodyPart: string;
+      description?: string;
+    },
+  ): Promise<void> {
+    const userExerciseRef = doc(this.db, `users/${userId}/exercises`, exerciseId);
+    const userExerciseDoc = await getDoc(userExerciseRef);
+
+    if (!userExerciseDoc.exists()) {
+      throw new ServiceError('exercise.notFound');
+    }
+
+    // Update the exercise and mark it as custom
+    await setDoc(
+      userExerciseRef,
+      {
+        name: exercise.name.trim(),
+        category: exercise.category.trim(),
+        bodyPart: exercise.bodyPart.trim(),
+        description: exercise.description?.trim(),
+        isCustom: true,
+      },
+      { merge: false },
+    );
+  }
+
+  async getExercise(userId: string, exerciseId: string) {
+    const userExerciseRef = doc(this.db, `users/${userId}/exercises`, exerciseId);
+    const userExerciseDoc = await getDoc(userExerciseRef);
+
+    if (!userExerciseDoc.exists()) {
+      throw new ServiceError('exercise.notFound');
+    }
+
+    const data = userExerciseDoc.data();
+    const result = ExerciseSchema.safeParse({
+      id: userExerciseDoc.id,
+      name: data.name,
+      category: data.category,
+      bodyPart: data.bodyPart,
+      description: data.description,
+      isCustom: data.isCustom ?? false,
+    });
+
+    if (!result.success) {
+      throw new ServiceError('exercise.invalidData');
+    }
+
+    return result.data;
   }
 }

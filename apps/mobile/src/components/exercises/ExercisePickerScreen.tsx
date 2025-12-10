@@ -15,6 +15,7 @@ type ExercisePickerScreenProps = {
   onCancel: () => void;
   onCreateExercise?: () => void;
   showCreateButton?: boolean;
+  showCancelButton?: boolean;
   title?: string;
 };
 
@@ -25,6 +26,7 @@ export function ExercisePickerScreen({
   onCancel,
   onCreateExercise,
   showCreateButton = true,
+  showCancelButton = true,
   title,
 }: ExercisePickerScreenProps) {
   const { t } = useTranslation();
@@ -146,9 +148,11 @@ export function ExercisePickerScreen({
         />
       )}
 
-      <Button backgroundColor={colors.midGray} color={colors.white} onPress={onCancel}>
-        {t('common.cancel')}
-      </Button>
+      {showCancelButton && (
+        <Button backgroundColor={colors.midGray} color={colors.white} onPress={onCancel}>
+          {t('common.cancel')}
+        </Button>
+      )}
 
       {/* Floating Action Button */}
       {showCreateButton && onCreateExercise && (

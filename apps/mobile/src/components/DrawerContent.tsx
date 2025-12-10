@@ -33,6 +33,12 @@ export function DrawerContent({ onClose }: DrawerContentProps) {
       iconComponent: Feather,
     },
     {
+      label: t('exercises.title'),
+      icon: 'activity' as const,
+      route: '/(drawer)/exercises',
+      iconComponent: Feather,
+    },
+    {
       label: t('exportData.title'),
       icon: 'download' as const,
       route: '/(drawer)/export-data',

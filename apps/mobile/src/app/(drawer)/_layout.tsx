@@ -106,6 +106,12 @@ function DrawerInner() {
             headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
           }}
         />
+        <Stack.Screen
+          name="exercises"
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </Drawer>
   );
