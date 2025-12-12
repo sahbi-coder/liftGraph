@@ -1,0 +1,2011 @@
+[
+  {
+    "id": "bench-press",
+    "name": "Développé couché",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc et poussez la barre vers le haut depuis le niveau de la poitrine jusqu'à ce que les bras soient complètement étendus."
+  },
+  {
+    "id": "squat",
+    "name": "Squat",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Tenez-vous debout avec les pieds écartés à la largeur des épaules, abaissez vos hanches en arrière et vers le bas, puis revenez à la position debout."
+  },
+  {
+    "id": "deadlift",
+    "name": "Soulevé de terre",
+    "category": "Barbell",
+    "body_part": "Back",
+    "description": "Soulevez la barre du sol jusqu'au niveau des hanches tout en gardant le dos droit."
+  },
+  {
+    "id": "shoulder-press",
+    "name": "Développé épaule",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Poussez la barre au-dessus de votre tête depuis la hauteur des épaules jusqu'à ce que les bras soient complètement étendus."
+  },
+  {
+    "id": "pull-ups",
+    "name": "Tractions",
+    "category": "Bodyweight",
+    "body_part": "Back",
+    "description": "Suspendez-vous à une barre et tirez votre corps vers le haut jusqu'à ce que votre menton soit au-dessus de la barre."
+  },
+  {
+    "id": "dumbbell-bench-press",
+    "name": "Développé couché avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc et poussez les haltères vers le haut depuis le niveau de la poitrine jusqu'à ce que les bras soient complètement étendus."
+  },
+  {
+    "id": "dumbbell-curl",
+    "name": "Curl avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Biceps",
+    "description": "Tenez des haltères à vos côtés et enroulez-les vers vos épaules."
+  },
+  {
+    "id": "push-ups",
+    "name": "Pompes",
+    "category": "Bodyweight",
+    "body_part": "Chest",
+    "description": "Abaissez et relevez votre corps en utilisant vos bras tout en gardant votre corps droit."
+  },
+  {
+    "id": "sled-leg-press",
+    "name": "Presse à jambes sur traîneau",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Poussez le traîneau avec vos pieds en étant assis, en étendant complètement vos jambes."
+  },
+  {
+    "id": "barbell-curl",
+    "name": "Curl avec barre",
+    "category": "Barbell",
+    "body_part": "Biceps",
+    "description": "Tenez-vous debout avec les pieds écartés à la largeur des épaules et enroulez la barre vers vos épaules."
+  },
+  {
+    "id": "incline-dumbbell-bench-press",
+    "name": "Développé couché incliné avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc incliné et poussez les haltères vers le haut depuis le niveau de la poitrine."
+  },
+  {
+    "id": "bent-over-row",
+    "name": "Tirage penché",
+    "category": "Barbell",
+    "body_part": "Back",
+    "description": "Penchez-vous à la taille et tirez la barre vers votre bas de poitrine."
+  },
+  {
+    "id": "dips",
+    "name": "Dips",
+    "category": "Bodyweight",
+    "body_part": "Triceps",
+    "description": "Abaissez et relevez votre corps en utilisant vos bras sur des barres parallèles."
+  },
+  {
+    "id": "incline-bench-press",
+    "name": "Développé incliné",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc incliné et poussez la barre vers le haut depuis le niveau de la poitrine."
+  },
+  {
+    "id": "dumbbell-shoulder-press",
+    "name": "Développé épaule avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Poussez les haltères au-dessus de votre tête depuis la hauteur des épaules jusqu'à ce que les bras soient complètement étendus."
+  },
+  {
+    "id": "lat-pulldown",
+    "name": "Tirage vertical",
+    "category": "Cable",
+    "body_part": "Back",
+    "description": "Tirez la barre vers votre poitrine en étant assis, en gardant le dos droit."
+  },
+  {
+    "id": "front-squat",
+    "name": "Squat avant",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Tenez la barre à hauteur d'épaules et accroupissez-vous, en gardant la poitrine relevée."
+  },
+  {
+    "id": "hex-bar-deadlift",
+    "name": "Soulevé de terre avec barre hexagonale",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Tenez-vous à l'intérieur d'une barre hexagonale et soulevez-la en étendant vos hanches et vos genoux."
+  },
+  {
+    "id": "chin-ups",
+    "name": "Chin-ups",
+    "category": "Bodyweight",
+    "body_part": "Back",
+    "description": "Suspendez-vous à une barre avec les paumes face à vous et tirez votre corps vers le haut jusqu'à ce que votre menton soit au-dessus de la barre."
+  },
+  {
+    "id": "hip-thrust",
+    "name": "Hip thrust",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Reposez votre dos supérieur sur un banc et poussez vos hanches vers le haut avec une barre sur vos hanches."
+  },
+  {
+    "id": "dumbbell-lateral-raise",
+    "name": "Élévation latérale avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Soulevez les haltères sur les côtés jusqu'à ce que les bras soient parallèles au sol."
+  },
+  {
+    "id": "leg-extension",
+    "name": "Extension des jambes",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Étendez vos jambes en poussant contre une barre rembourrée en position assise."
+  },
+  {
+    "id": "romanian-deadlift",
+    "name": "Soulevé de terre roumain",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Abaissez la barre en vous penchant aux hanches tout en gardant le dos droit."
+  },
+  {
+    "id": "power-clean",
+    "name": "Élévation explosive",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez la barre du sol à la hauteur des épaules en un seul mouvement explosif."
+  },
+  {
+    "id": "horizontal-leg-press",
+    "name": "Presse à jambes horizontale",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Poussez une plateforme lestée avec vos pieds en position assise."
+  },
+  {
+    "id": "dumbbell-row",
+    "name": "Tirage avec haltère",
+    "category": "Dumbbell",
+    "body_part": "Back",
+    "description": "Inclinez-vous en avant et tirez un haltère vers votre bas de poitrine."
+  },
+  {
+    "id": "military-press",
+    "name": "Développé militaire",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Pressez la barre au-dessus de votre tête à partir de la hauteur des épaules en position debout."
+  },
+  {
+    "id": "sumo-deadlift",
+    "name": "Soulevé de terre sumo",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Tenez-vous avec un large écart et soulevez la barre du sol à la hauteur des hanches."
+  },
+  {
+    "id": "chest-press",
+    "name": "Presse pour la poitrine",
+    "category": "Machine",
+    "body_part": "Chest",
+    "description": "Pressez les poignées vers l'avant à partir du niveau de la poitrine en position assise."
+  },
+  {
+    "id": "tricep-pushdown",
+    "name": "Extension des triceps",
+    "category": "Cable",
+    "body_part": "Triceps",
+    "description": "Poussez la poignée du câble vers le bas jusqu'à ce que vos bras soient complètement étendus."
+  },
+  {
+    "id": "hammer-curl",
+    "name": "Curl marteau",
+    "category": "Dumbbell",
+    "body_part": "Biceps",
+    "description": "Curl les haltères vers vos épaules avec les paumes face à face."
+  },
+  {
+    "id": "seated-cable-row",
+    "name": "Tirage assis avec câble",
+    "category": "Cable",
+    "body_part": "Back",
+    "description": "Tirez la poignée du câble vers votre torse en position assise, en gardant le dos droit."
+  },
+  {
+    "id": "crunches",
+    "name": "Crunchs",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Allongez-vous sur le dos et soulevez vos épaules du sol en contractant vos abdominaux."
+  },
+  {
+    "id": "sit-ups",
+    "name": "Relevés de buste",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Allongez-vous sur le dos et soulevez votre torse vers vos genoux."
+  },
+  {
+    "id": "muscle-ups",
+    "name": "Muscle-ups",
+    "category": "Bodyweight",
+    "body_part": "Whole Body",
+    "description": "Effectuez une traction suivie d'un dip pour passer au-dessus de la barre."
+  },
+  {
+    "id": "seated-dumbbell-shoulder-press",
+    "name": "Développé épaules assis avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Pressez les haltères au-dessus de votre tête à partir de la hauteur des épaules en position assise."
+  },
+  {
+    "id": "bodyweight-squat",
+    "name": "Squat poids du corps",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Abaissez vos hanches en arrière et vers le bas, puis revenez à la position debout sans poids."
+  },
+  {
+    "id": "hack-squat",
+    "name": "Squat hack",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Poussez la plateforme avec vos pieds en étant allongé sur une machine avec support dorsal."
+  },
+  {
+    "id": "machine-shoulder-press",
+    "name": "Développé épaules à la machine",
+    "category": "Machine",
+    "body_part": "Shoulders",
+    "description": "Pressez les poignées au-dessus de votre tête à partir de la hauteur des épaules en position assise."
+  },
+  {
+    "id": "clean-and-jerk",
+    "name": "Élévation et jeté",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez la barre du sol à la hauteur des épaules, puis pressez-la au-dessus de votre tête."
+  },
+  {
+    "id": "machine-chest-fly",
+    "name": "Écarté couché à la machine",
+    "category": "Machine",
+    "body_part": "Chest",
+    "description": "Asseyez-vous à la machine avec les bras étendus et rapprochez les poignées devant votre poitrine."
+  },
+  {
+    "id": "dumbbell-bulgarian-split-squat",
+    "name": "Squat bulgare avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Placez un pied derrière vous sur un banc et accroupissez-vous avec des haltères dans chaque main."
+  },
+  {
+    "id": "one-arm-push-ups",
+    "name": "Pompes sur une bras",
+    "category": "Bodyweight",
+    "body_part": "Whole Body",
+    "description": "Effectuez une pompe en utilisant un seul bras, en gardant votre corps droit et le tronc engagé."
+  },
+  {
+    "id": "lying-tricep-extension",
+    "name": "Extension triceps couché",
+    "category": "Barbell",
+    "body_part": "Triceps",
+    "description": "Allongez-vous sur un banc et étendez une barre au-dessus de votre poitrine depuis l'arrière de votre tête."
+  },
+  {
+    "id": "seated-leg-curl",
+    "name": "Curl des jambes assis",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Asseyez-vous sur la machine et ramenez vos jambes vers vos cuisses."
+  },
+  {
+    "id": "ez-bar-curl",
+    "name": "Curl avec barre EZ",
+    "category": "Barbell",
+    "body_part": "Biceps",
+    "description": "Tenez-vous debout et courbez la barre EZ vers vos épaules, en gardant les coudes près de votre corps."
+  },
+  {
+    "id": "snatch",
+    "name": "Arraché",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez la barre du sol au-dessus de votre tête en un mouvement continu."
+  },
+  {
+    "id": "close-grip-bench-press",
+    "name": "Développé couché prise serrée",
+    "category": "Barbell",
+    "body_part": "Triceps",
+    "description": "Allongez-vous sur un banc et poussez la barre avec une prise serrée pour cibler les triceps."
+  },
+  {
+    "id": "preacher-curl",
+    "name": "Curl au pupitre",
+    "category": "Barbell",
+    "body_part": "Biceps",
+    "description": "Effectuez des curls avec vos bras reposant sur un banc à pupitre pour isoler les biceps."
+  },
+  {
+    "id": "seated-shoulder-press",
+    "name": "Développé épaule assis",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Asseyez-vous et poussez des haltères au-dessus de votre tête, en gardant le dos droit et le tronc engagé."
+  },
+  {
+    "id": "goblet-squat",
+    "name": "Squat goblet",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Tenez un haltère près de votre poitrine et accroupissez-vous, en gardant le dos droit."
+  },
+  {
+    "id": "barbell-shrug",
+    "name": "Haussement d'épaules avec barre",
+    "category": "Barbell",
+    "body_part": "Traps",
+    "description": "Tenez-vous debout et soulevez vos épaules vers vos oreilles tout en tenant une barre."
+  },
+  {
+    "id": "clean",
+    "name": "Épaulé",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez la barre du sol à vos épaules en un mouvement rapide."
+  },
+  {
+    "id": "t-bar-row",
+    "name": "Tirage T",
+    "category": "Barbell",
+    "body_part": "Back",
+    "description": "Penchez-vous et tirez la barre T vers votre poitrine pour travailler les muscles du dos."
+  },
+  {
+    "id": "lying-leg-curl",
+    "name": "Curl des jambes couché",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Allongez-vous face contre terre sur la machine et ramenez vos jambes vers vos fesses."
+  },
+  {
+    "id": "neutral-grip-pull-ups",
+    "name": "Tractions prise neutre",
+    "category": "Bodyweight",
+    "body_part": "Back",
+    "description": "Tirez votre corps vers le haut en utilisant une prise neutre, en vous concentrant sur l'engagement de vos muscles du dos."
+  },
+  {
+    "id": "diamond-push-ups",
+    "name": "Pompes diamant",
+    "category": "Bodyweight",
+    "body_part": "Triceps",
+    "description": "Effectuez des pompes avec vos mains rapprochées en forme de diamant pour cibler les triceps."
+  },
+  {
+    "id": "machine-calf-raise",
+    "name": "Élévation des mollets à la machine",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Utilisez la machine pour élever vos talons, en vous concentrant sur la contraction des muscles des mollets."
+  },
+  {
+    "id": "push-press",
+    "name": "Développé épaules avec élan",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Utilisez vos jambes pour aider à pousser la barre au-dessus de votre tête, en engageant vos épaules."
+  },
+  {
+    "id": "dumbbell-fly",
+    "name": "Écarté avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc et ouvrez vos bras largement avec des haltères, puis rapprochez-les au-dessus de votre poitrine."
+  },
+  {
+    "id": "hip-adduction",
+    "name": "Adduction de la hanche",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Utilisez la machine pour rapprocher vos jambes, en vous concentrant sur les muscles de l'intérieur des cuisses."
+  },
+  {
+    "id": "dumbbell-shrug",
+    "name": "Haussement d'épaules avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Traps",
+    "description": "Tenez des haltères et soulevez vos épaules vers vos oreilles, en vous concentrant sur les trapèzes."
+  },
+  {
+    "id": "decline-bench-press",
+    "name": "Développé couché décliné",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc décliné et poussez la barre vers le haut pour cibler le bas de la poitrine."
+  },
+  {
+    "id": "smith-machine-bench-press",
+    "name": "Développé couché Smith",
+    "category": "Machine",
+    "body_part": "Chest",
+    "description": "Utilisez la machine Smith pour pousser la barre vers le haut, en vous concentrant sur les muscles de la poitrine."
+  },
+  {
+    "id": "dumbbell-lunge",
+    "name": "Fente avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Faites un pas en avant avec une jambe et abaissez vos hanches tout en tenant des haltères dans chaque main."
+  },
+  {
+    "id": "pistol-squat",
+    "name": "Squat sur une jambe",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Effectuez un squat sur une jambe, en gardant l'autre jambe étendue vers l'avant."
+  },
+  {
+    "id": "hanging-leg-raise",
+    "name": "Élévation des jambes suspendue",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Suspendez-vous à une barre et soulevez vos jambes vers votre poitrine, en engageant votre tronc."
+  },
+  {
+    "id": "machine-row",
+    "name": "Tirage machine",
+    "category": "Machine",
+    "body_part": "Back",
+    "description": "Asseyez-vous à la machine et tirez les poignées vers votre poitrine pour travailler les muscles du dos."
+  },
+  {
+    "id": "tricep-rope-pushdown",
+    "name": "Extension triceps à la corde",
+    "category": "Cable",
+    "body_part": "Triceps",
+    "description": "Utilisez une machine à câbles avec un accessoire en corde pour pousser vers le bas, ciblant les triceps."
+  },
+  {
+    "id": "chest-supported-dumbbell-row",
+    "name": "Tirage haltères supporté par la poitrine",
+    "category": "Dumbbell",
+    "body_part": "Back",
+    "description": "Allongez-vous face contre terre sur un banc incliné et tirez des haltères vers votre poitrine."
+  },
+  {
+    "id": "clean-and-press",
+    "name": "Épaulé-jeté",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez la barre du sol à vos épaules, puis poussez-la au-dessus de votre tête."
+  },
+  {
+    "id": "dumbbell-romanian-deadlift",
+    "name": "Soulevé de terre roumain avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Tenez des haltères et abaissez-les vers vos pieds, en gardant le dos droit."
+  },
+  {
+    "id": "rack-pull",
+    "name": "Tirage à la barre depuis un support",
+    "category": "Barbell",
+    "body_part": "Back",
+    "description": "Soulevez la barre depuis un support, en vous concentrant sur l'engagement des muscles du dos."
+  },
+  {
+    "id": "bulgarian-split-squat",
+    "name": "Squat bulgare",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Placez un pied derrière vous sur un banc et accroupissez-vous, en vous concentrant sur la jambe avant."
+  },
+  {
+    "id": "smith-machine-squat",
+    "name": "Squat Smith",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Utilisez la machine Smith pour effectuer des squats, en vous concentrant sur la forme et la profondeur appropriées."
+  },
+  {
+    "id": "dumbbell-tricep-extension",
+    "name": "Extension triceps avec haltère",
+    "category": "Dumbbell",
+    "body_part": "Triceps",
+    "description": "Tenez un haltère au-dessus de votre tête et abaissez-le derrière votre tête, en étendant vos bras."
+  },
+  {
+    "id": "pendlay-row",
+    "name": "Tirage Pendlay",
+    "category": "Barbell",
+    "body_part": "Back",
+    "description": "Penchez-vous et tirez la barre du sol vers votre poitrine, en vous concentrant sur le dos."
+  },
+  {
+    "id": "box-squat",
+    "name": "Squat sur boîte",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Effectuez un squat jusqu'à une boîte, en vous concentrant sur une descente et une montée contrôlées."
+  },
+  {
+    "id": "cable-bicep-curl",
+    "name": "Curl biceps à la machine à câbles",
+    "category": "Cable",
+    "body_part": "Biceps",
+    "description": "Utilisez une machine à câbles pour courber la poignée vers vos épaules, en vous concentrant sur les biceps."
+  },
+  {
+    "id": "incline-dumbbell-curl",
+    "name": "Curl haltères incliné",
+    "category": "Dumbbell",
+    "body_part": "Biceps",
+    "description": "Asseyez-vous sur un banc incliné et courbez des haltères vers vos épaules, en isolant les biceps."
+  },
+  {
+    "id": "seated-calf-raise",
+    "name": "Élévation de mollet assis",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Asseyez-vous sur la machine avec vos pieds sur la plateforme et poussez à travers les balles de vos pieds pour soulever vos talons."
+  },
+  {
+    "id": "close-grip-lat-pulldown",
+    "name": "Tirage latéral prise serrée",
+    "category": "Cable",
+    "body_part": "Back",
+    "description": "Asseyez-vous à une machine à câbles et tirez la barre vers votre poitrine avec une prise serrée pour cibler les dorsaux."
+  },
+  {
+    "id": "upright-row",
+    "name": "Tirage vertical",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Tenez-vous debout en tenant une barre et soulevez-la verticalement vers votre poitrine, en gardant les coudes plus hauts que les poignets."
+  },
+  {
+    "id": "vertical-leg-press",
+    "name": "Presse à jambes verticale",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Allongez-vous sur le dos et poussez la plateforme vers le haut avec vos pieds pour travailler vos muscles des jambes."
+  },
+  {
+    "id": "machine-bicep-curl",
+    "name": "Curl biceps à la machine",
+    "category": "Machine",
+    "body_part": "Biceps",
+    "description": "Asseyez-vous à la machine et courbez les poignées vers vous pour isoler les biceps."
+  },
+  {
+    "id": "machine-seated-crunch",
+    "name": "Crunch assis à la machine",
+    "category": "Machine",
+    "body_part": "Core",
+    "description": "Asseyez-vous sur la machine et contractez vos abdominaux pour amener votre poitrine vers vos genoux."
+  },
+  {
+    "id": "jumping-jack",
+    "name": "Jumping Jack",
+    "category": "Bodyweight",
+    "body_part": "Whole Body",
+    "description": "Sautez dans une position avec les jambes écartées et les mains touchant au-dessus de la tête, puis revenez à la position de départ."
+  },
+  {
+    "id": "cable-lateral-raise",
+    "name": "Élévation latérale à la machine à câbles",
+    "category": "Cable",
+    "body_part": "Shoulders",
+    "description": "Tenez-vous à côté d'une machine à câbles et soulevez la poignée sur le côté jusqu'à la hauteur des épaules."
+  },
+  {
+    "id": "zercher-squat",
+    "name": "Squat Zercher",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Tenez la barre dans le creux de vos coudes et accroupissez-vous, en gardant le dos droit."
+  },
+  {
+    "id": "arnold-press",
+    "name": "Press Arnold",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Asseyez-vous ou tenez-vous debout avec des haltères, faites pivoter les paumes en appuyant au-dessus de la tête, puis abaissez-les."
+  },
+  {
+    "id": "stiff-leg-deadlift",
+    "name": "Soulevé de terre jambes raides",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Avec une légère flexion des genoux, inclinez-vous au niveau des hanches pour abaisser la barre, puis revenez."
+  },
+  {
+    "id": "incline-dumbbell-fly",
+    "name": "Écarté couché incliné avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc incliné et ouvrez les bras largement avec des haltères, puis ramenez-les ensemble."
+  },
+  {
+    "id": "dumbbell-reverse-fly",
+    "name": "Écarté inversé avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Inclinez-vous légèrement et soulevez des haltères sur les côtés pour cibler les deltoïdes arrière."
+  },
+  {
+    "id": "hang-clean",
+    "name": "Hang Clean",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez la barre depuis une position suspendue jusqu'à vos épaules en un seul mouvement explosif."
+  },
+  {
+    "id": "dumbbell-concentration-curl",
+    "name": "Curl concentration avec haltère",
+    "category": "Dumbbell",
+    "body_part": "Biceps",
+    "description": "Asseyez-vous et courbez un haltère avec un bras, en vous concentrant sur la contraction du biceps au sommet."
+  },
+  {
+    "id": "decline-push-up",
+    "name": "Pompes déclinées",
+    "category": "Bodyweight",
+    "body_part": "Chest",
+    "description": "Placez vos pieds sur une surface surélevée et effectuez une pompe pour cibler le haut de la poitrine."
+  },
+  {
+    "id": "cable-crunch",
+    "name": "Crunch à la machine à câbles",
+    "category": "Cable",
+    "body_part": "Core",
+    "description": "Mettez-vous à genoux face à la machine à câbles et tirez la corde vers le bas tout en contractant vos abdominaux."
+  },
+  {
+    "id": "dumbbell-front-raise",
+    "name": "Élévation frontale avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Soulevez des haltères devant vous jusqu'à la hauteur des épaules, en gardant les bras droits."
+  },
+  {
+    "id": "back-extension",
+    "name": "Extension du dos",
+    "category": "Bodyweight",
+    "body_part": "Back",
+    "description": "Allongez-vous face contre terre sur un banc d'hyperextension et soulevez votre haut du corps en utilisant votre bas du dos."
+  },
+  {
+    "id": "one-arm-pull-ups",
+    "name": "Tractions à un bras",
+    "category": "Bodyweight",
+    "body_part": "Back",
+    "description": "Effectuez une traction en utilisant uniquement un bras pour soulever votre corps."
+  },
+  {
+    "id": "tricep-extension",
+    "name": "Extension des triceps",
+    "category": "Cable",
+    "body_part": "Triceps",
+    "description": "Utilisez une machine à câbles pour étendre vos bras vers le bas, en isolant les triceps."
+  },
+  {
+    "id": "seated-dip-machine",
+    "name": "Machine à dips assis",
+    "category": "Machine",
+    "body_part": "Triceps",
+    "description": "Asseyez-vous sur la machine et appuyez vers le bas avec vos bras pour travailler les triceps."
+  },
+  {
+    "id": "good-morning",
+    "name": "Bonjour",
+    "category": "Barbell",
+    "body_part": "Back",
+    "description": "Avec une barre sur votre dos, pliez-vous aux hanches pour abaisser votre torse, puis revenez."
+  },
+  {
+    "id": "floor-press",
+    "name": "Développé couché au sol",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur le sol et poussez la barre de votre poitrine vers le haut."
+  },
+  {
+    "id": "dumbbell-pullover",
+    "name": "Pullover avec haltère",
+    "category": "Dumbbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc et déplacez un haltère de votre poitrine vers derrière votre tête."
+  },
+  {
+    "id": "hip-abduction",
+    "name": "Abduction de la hanche",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Asseyez-vous sur la machine et poussez vos jambes pour travailler l'extérieur des cuisses."
+  },
+  {
+    "id": "cable-fly",
+    "name": "Écarté couché avec câbles",
+    "category": "Cable",
+    "body_part": "Chest",
+    "description": "Tenez-vous entre des machines à câbles et rapprochez les poignées devant vous."
+  },
+  {
+    "id": "lunge",
+    "name": "Fente",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Avancez d'une jambe et abaissez vos hanches jusqu'à ce que les deux genoux soient pliés à 90 degrés."
+  },
+  {
+    "id": "single-leg-squat",
+    "name": "Squat sur une jambe",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Équilibrez-vous sur une jambe et abaissez votre corps en position de squat, puis revenez."
+  },
+  {
+    "id": "dumbbell-floor-press",
+    "name": "Développé couché avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur le sol et poussez des haltères de votre poitrine vers le haut."
+  },
+  {
+    "id": "barbell-lunge",
+    "name": "Fente avec barre",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Tenez une barre sur votre dos et avancez en position de fente."
+  },
+  {
+    "id": "handstand-push-ups",
+    "name": "Pompes en équilibre sur les mains",
+    "category": "Bodyweight",
+    "body_part": "Shoulders",
+    "description": "Effectuez une pompe en position d'équilibre sur les mains contre un mur."
+  },
+  {
+    "id": "thruster",
+    "name": "Thruster",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Effectuez un squat avec une barre puis poussez-la au-dessus de votre tête en un seul mouvement."
+  },
+  {
+    "id": "dumbbell-squat",
+    "name": "Squat avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Tenez des haltères à vos côtés et effectuez un squat, en gardant le dos droit."
+  },
+  {
+    "id": "burpees",
+    "name": "Burpees",
+    "category": "Bodyweight",
+    "body_part": "Whole Body",
+    "description": "Descendez en squat, poussez vos pieds en arrière en position de planche, revenez en squat et sautez."
+  },
+  {
+    "id": "barbell-calf-raise",
+    "name": "Élévation des mollets avec barre",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Tenez-vous avec une barre sur votre dos et élevez vos talons pour travailler les mollets."
+  },
+  {
+    "id": "face-pull",
+    "name": "Tirage visage",
+    "category": "Cable",
+    "body_part": "Shoulders",
+    "description": "Tirez le câble vers votre visage, en gardant les coudes hauts pour cibler les deltoïdes arrière."
+  },
+  {
+    "id": "close-grip-push-up",
+    "name": "Pompes prise serrée",
+    "category": "Bodyweight",
+    "body_part": "Triceps",
+    "description": "Effectuez une pompe avec les mains proches l'une de l'autre pour accentuer les triceps."
+  },
+  {
+    "id": "bodyweight-calf-raise",
+    "name": "Élévation des mollets poids du corps",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Tenez-vous sur la pointe des pieds et élevez vos talons pour travailler les mollets."
+  },
+  {
+    "id": "wrist-curl",
+    "name": "Curl des poignets",
+    "category": "Dumbbell",
+    "body_part": "Forearms",
+    "description": "Asseyez-vous et courbez un haltère en utilisant uniquement votre poignet pour renforcer les avant-bras."
+  },
+  {
+    "id": "overhead-squat",
+    "name": "Squat au-dessus de la tête",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Effectuez un squat en tenant une barre au-dessus de la tête, en engageant le tronc et en maintenant l'équilibre."
+  },
+  {
+    "id": "russian-twist",
+    "name": "Torsion Russe",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Asseyez-vous avec les genoux pliés, penchez-vous légèrement en arrière et tournez votre torse d'un côté à l'autre."
+  },
+  {
+    "id": "decline-sit-up",
+    "name": "Sit-up en déclin",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Effectuez un sit-up sur un banc en déclin pour cibler les muscles abdominaux de manière plus intense."
+  },
+  {
+    "id": "lying-leg-raise",
+    "name": "Élévation de jambes allongées",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Allongez-vous à plat et levez vos jambes vers le plafond, en les gardant droites pour engager les abdominaux inférieurs."
+  },
+  {
+    "id": "lying-dumbbell-tricep-extension",
+    "name": "Extension triceps avec haltères allongés",
+    "category": "Dumbbell",
+    "body_part": "Triceps",
+    "description": "Allongez-vous sur un banc et étendez les haltères derrière votre tête jusqu'au-dessus de votre poitrine."
+  },
+  {
+    "id": "glute-bridge",
+    "name": "Pont fessier",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Allongez-vous sur le dos et soulevez vos hanches en contractant vos fessiers, en gardant vos pieds à plat."
+  },
+  {
+    "id": "paused-bench-press",
+    "name": "Développé couché avec pause",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Effectuez un développé couché avec une pause en bas pour augmenter la force et le contrôle."
+  },
+  {
+    "id": "power-snatch",
+    "name": "Arraché explosif",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez une barre du sol au-dessus de la tête en un seul mouvement explosif."
+  },
+  {
+    "id": "bench-dips",
+    "name": "Dips sur banc",
+    "category": "Bodyweight",
+    "body_part": "Triceps",
+    "description": "Utilisez un banc pour abaisser et soulever votre corps, en vous concentrant sur les triceps."
+  },
+  {
+    "id": "behind-the-neck-press",
+    "name": "Développé derrière la nuque",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Pressez une barre au-dessus de la tête depuis derrière la nuque, en engageant les muscles des épaules."
+  },
+  {
+    "id": "split-squat",
+    "name": "Squat en fente",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Effectuez un squat avec une jambe en avant et l'autre en arrière, en vous concentrant sur l'équilibre et la force."
+  },
+  {
+    "id": "cable-reverse-fly",
+    "name": "Écarté inversé à la machine à câbles",
+    "category": "Cable",
+    "body_part": "Shoulders",
+    "description": "Utilisez une machine à câbles pour tirer les poignées à l'écart, ciblant les deltoïdes arrière."
+  },
+  {
+    "id": "machine-reverse-fly",
+    "name": "Écarté inversé à la machine",
+    "category": "Machine",
+    "body_part": "Shoulders",
+    "description": "Asseyez-vous à une machine et tirez les poignées vers l'arrière pour travailler les muscles arrière des épaules."
+  },
+  {
+    "id": "cable-overhead-tricep-extension",
+    "name": "Extension triceps au-dessus de la tête avec câble",
+    "category": "Cable",
+    "body_part": "Triceps",
+    "description": "Étendez vos bras au-dessus de la tête en utilisant une machine à câbles pour cibler les triceps."
+  },
+  {
+    "id": "dumbbell-deadlift",
+    "name": "Soulevé de terre avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Soulevez des haltères du sol à une position debout, en engageant les jambes et le dos."
+  },
+  {
+    "id": "push-jerk",
+    "name": "Poussée-élan",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Effectuez une légère flexion et poussez pour soulever une barre au-dessus de la tête, en utilisant la puissance des jambes."
+  },
+  {
+    "id": "dumbbell-calf-raise",
+    "name": "Élévation des mollets avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Tenez des haltères et élevez vos talons du sol pour travailler les muscles des mollets."
+  },
+  {
+    "id": "squat-jump",
+    "name": "Saut en squat",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Effectuez un squat puis sautez de manière explosive, en atterrissant doucement et en répétant."
+  },
+  {
+    "id": "sissy-squat",
+    "name": "Squat Sissy",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Penchez-vous en arrière tout en squattant pour cibler intensément les quadriceps."
+  },
+  {
+    "id": "reverse-barbell-curl",
+    "name": "Curl inversé avec barre",
+    "category": "Barbell",
+    "body_part": "Forearms",
+    "description": "Curl une barre avec une prise en pronation pour cibler les avant-bras et les biceps."
+  },
+  {
+    "id": "dumbbell-tricep-kickback",
+    "name": "Kickback triceps avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Triceps",
+    "description": "Inclinez-vous en avant et étendez les haltères derrière vous, en vous concentrant sur les triceps."
+  },
+  {
+    "id": "decline-dumbbell-bench-press",
+    "name": "Développé couché avec haltères en déclin",
+    "category": "Dumbbell",
+    "body_part": "Chest",
+    "description": "Pressez des haltères en étant allongé sur un banc en déclin pour cibler le bas de la poitrine."
+  },
+  {
+    "id": "close-grip-dumbbell-bench-press",
+    "name": "Développé couché avec haltères prise serrée",
+    "category": "Dumbbell",
+    "body_part": "Triceps",
+    "description": "Pressez des haltères avec une prise serrée pour mettre l'accent sur les triceps."
+  },
+  {
+    "id": "reverse-grip-lat-pulldown",
+    "name": "Tirage vertical prise inversée",
+    "category": "Cable",
+    "body_part": "Back",
+    "description": "Tirez la barre vers le bas avec une prise inversée pour cibler le haut du dos et les biceps."
+  },
+  {
+    "id": "sled-press-calf-raise",
+    "name": "Élévation de mollets sur presse à traîneau",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Utilisez une machine à traîneau pour presser avec vos pieds, en vous concentrant sur les mollets."
+  },
+  {
+    "id": "single-leg-press",
+    "name": "Presse unilatérale",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Effectuez une presse avec une jambe à la fois pour isoler chaque jambe."
+  },
+  {
+    "id": "incline-push-up",
+    "name": "Pompes inclinées",
+    "category": "Bodyweight",
+    "body_part": "Chest",
+    "description": "Effectuez une pompe avec les mains surélevées pour cibler le haut de la poitrine."
+  },
+  {
+    "id": "barbell-reverse-lunge",
+    "name": "Fente arrière avec barre",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Reculez dans une position de fente en tenant une barre pour travailler les jambes et les fessiers."
+  },
+  {
+    "id": "belt-squat",
+    "name": "Squat ceinture",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Utilisez une machine à squat ceinture pour effectuer des squats sans charger la colonne vertébrale."
+  },
+  {
+    "id": "reverse-grip-bench-press",
+    "name": "Développé couché prise inversée",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Pressez une barre avec une prise inversée pour cibler le haut de la poitrine et les triceps."
+  },
+  {
+    "id": "barbell-glute-bridge",
+    "name": "Pont fessier avec barre",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Effectuez un pont fessier avec une barre sur vos hanches pour cibler les fessiers."
+  },
+  {
+    "id": "reverse-lunge",
+    "name": "Fente arrière",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Reculez dans une position de fente, en vous concentrant sur l'équilibre et la force des jambes."
+  },
+  {
+    "id": "standing-leg-curl",
+    "name": "Curl des jambes debout",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Utilisez une machine pour courber une jambe à la fois, ciblant les ischio-jambiers."
+  },
+  {
+    "id": "cable-pull-through",
+    "name": "Tirage à la corde entre les jambes",
+    "category": "Cable",
+    "body_part": "Legs",
+    "description": "Tirez une corde entre vos jambes en vous penchant en avant pour cibler les fessiers et les ischio-jambiers."
+  },
+  {
+    "id": "landmine-squat",
+    "name": "Squat avec landmine",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Effectuez un squat en utilisant un accessoire landmine pour plus de stabilité et d'engagement du tronc."
+  },
+  {
+    "id": "one-arm-dumbbell-preacher-curl",
+    "name": "Curl haltère un bras sur banc à prêcheur",
+    "category": "Dumbbell",
+    "body_part": "Biceps",
+    "description": "Curl un haltère avec un bras sur un banc à prêcheur pour isoler les biceps."
+  },
+  {
+    "id": "straight-arm-pulldown",
+    "name": "Tirage vertical bras tendus",
+    "category": "Cable",
+    "body_part": "Back",
+    "description": "Tirez une corde vers le bas avec les bras tendus pour cibler les dorsaux et le haut du dos."
+  },
+  {
+    "id": "safety-bar-squat",
+    "name": "Squat avec barre de sécurité",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Effectuez un squat en utilisant une barre de sécurité pour plus de confort et de stabilité au niveau des épaules."
+  },
+  {
+    "id": "deficit-deadlift",
+    "name": "Soulevé de terre en déficit",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Tenez-vous sur une plateforme et effectuez un soulevé de terre pour augmenter l'amplitude de mouvement et la difficulté."
+  },
+  {
+    "id": "dumbbell-upright-row",
+    "name": "Tirage vertical avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Soulevez des haltères verticalement jusqu'à la hauteur des épaules pour cibler les épaules et les trapèzes."
+  },
+  {
+    "id": "dumbbell-wrist-curl",
+    "name": "Flexion des poignets avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Forearms",
+    "description": "Asseyez-vous sur un banc et reposez vos avant-bras sur vos cuisses, tenant un haltère dans chaque main. Fléchissez vos poignets vers le haut, puis redescendez."
+  },
+  {
+    "id": "snatch-deadlift",
+    "name": "Soulevé de terre en arraché",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Avec une prise large, soulevez la barre du sol jusqu'à une position debout, en vous concentrant sur l'engagement de vos jambes et de votre dos."
+  },
+  {
+    "id": "strict-curl",
+    "name": "Curl strict",
+    "category": "Barbell",
+    "body_part": "Biceps",
+    "description": "Tenez-vous debout avec le dos contre un mur, tenant une barre. Fléchissez la barre vers le haut sans bouger vos bras supérieurs."
+  },
+  {
+    "id": "machine-back-extension",
+    "name": "Extension du dos à la machine",
+    "category": "Machine",
+    "body_part": "Back",
+    "description": "Asseyez-vous sur la machine avec le dos contre le coussin. Étendez votre dos en poussant contre le coussin, puis revenez à la position de départ."
+  },
+  {
+    "id": "decline-crunch",
+    "name": "Crunch en déclin",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Allongez-vous sur un banc en déclin avec vos pieds sécurisés. Crunch votre torse vers le haut, en engageant vos abdominaux, puis redescendez."
+  },
+  {
+    "id": "sumo-squat",
+    "name": "Squat sumo",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Tenez-vous debout avec les pieds écartés et les orteils pointés vers l'extérieur. Descendez en squat, en gardant le dos droit, puis revenez à la position debout."
+  },
+  {
+    "id": "hang-power-clean",
+    "name": "Clean explosif",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Commencez avec la barre à hauteur de cuisse. Soulevez-la de manière explosive jusqu'à vos épaules, en utilisant vos hanches et vos jambes pour l'élan."
+  },
+  {
+    "id": "pause-deadlift",
+    "name": "Soulevé de terre avec pause",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez la barre du sol, faites une pause au niveau des genoux, puis complétez le levé jusqu'à une position debout."
+  },
+  {
+    "id": "one-arm-cable-bicep-curl",
+    "name": "Curl biceps à un bras avec câble",
+    "category": "Cable",
+    "body_part": "Biceps",
+    "description": "Tenez-vous face à une machine à câble, tenant la poignée d'une main. Fléchissez la poignée vers votre épaule, puis redescendez."
+  },
+  {
+    "id": "single-leg-romanian-deadlift",
+    "name": "Soulevé de terre roumain sur une jambe",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Tenez-vous sur une jambe, penchez-vous au niveau des hanches pour abaisser votre torse, puis revenez à la position debout, en gardant le dos droit."
+  },
+  {
+    "id": "barbell-hack-squat",
+    "name": "Squat hack avec barre",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Tenez une barre derrière vos jambes et descendez en squat, en gardant le dos droit, puis revenez à la position debout."
+  },
+  {
+    "id": "bench-pull",
+    "name": "Tirage sur banc",
+    "category": "Barbell",
+    "body_part": "Back",
+    "description": "Allongez-vous face contre terre sur un banc et tirez une barre du sol vers votre poitrine, en engageant vos muscles du dos."
+  },
+  {
+    "id": "machine-tricep-extension",
+    "name": "Extension des triceps à la machine",
+    "category": "Machine",
+    "body_part": "Triceps",
+    "description": "Asseyez-vous à la machine et poussez les poignées vers le bas, en étendant complètement vos bras, puis revenez à la position de départ."
+  },
+  {
+    "id": "side-lunge",
+    "name": "Fente latérale",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Faites un pas sur le côté et abaissez votre corps en fente, en gardant l'autre jambe droite, puis revenez à la position debout."
+  },
+  {
+    "id": "jefferson-deadlift",
+    "name": "Soulevé de terre Jefferson",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Tenez-vous au-dessus de la barre avec un pied devant et un derrière. Soulevez la barre en étendant vos jambes et votre dos."
+  },
+  {
+    "id": "bicycle-crunch",
+    "name": "Crunch à la bicyclette",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Allongez-vous sur le dos, levez vos jambes et alternez en amenant vos coudes vers les genoux opposés dans un mouvement de pédalage."
+  },
+  {
+    "id": "reverse-wrist-curl",
+    "name": "Flexion inverse des poignets",
+    "category": "Dumbbell",
+    "body_part": "Forearms",
+    "description": "Asseyez-vous sur un banc avec vos avant-bras sur vos cuisses, tenant des haltères. Fléchissez vos poignets vers le haut, puis redescendez."
+  },
+  {
+    "id": "pin-squat",
+    "name": "Squat avec pin",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Effectuez un squat avec la barre reposant sur des épingles de sécurité en position basse, puis relevez-vous."
+  },
+  {
+    "id": "side-crunch",
+    "name": "Crunch latéral",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Allongez-vous sur le côté et soulevez votre torse vers vos hanches, en engageant vos muscles obliques, puis redescendez."
+  },
+  {
+    "id": "seated-dumbbell-tricep-extension",
+    "name": "Extension des triceps assis avec haltère",
+    "category": "Dumbbell",
+    "body_part": "Triceps",
+    "description": "Asseyez-vous sur un banc et tenez un haltère au-dessus de votre tête avec les deux mains. Abaissez-le derrière votre tête, puis étendez vos bras."
+  },
+  {
+    "id": "yates-row",
+    "name": "Tirage Yates",
+    "category": "Barbell",
+    "body_part": "Back",
+    "description": "Avec une barre, penchez-vous légèrement en avant et tirez la barre vers votre bas-ventre, en gardant les coudes près de votre corps."
+  },
+  {
+    "id": "pause-squat",
+    "name": "Squat en Pause",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Effectuez un squat, en faisant une pause en position basse pendant quelques secondes avant de revenir à la position debout."
+  },
+  {
+    "id": "inverted-row",
+    "name": "Tirage Inversé",
+    "category": "Bodyweight",
+    "body_part": "Back",
+    "description": "Suspendez-vous sous une barre avec votre corps droit et tirez votre poitrine vers la barre, puis redescendez."
+  },
+  {
+    "id": "hex-bar-shrug",
+    "name": "Hausse d'Épaules avec Barre Hexagonale",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Tenez-vous à l'intérieur d'une barre hexagonale et soulevez vos épaules vers vos oreilles, puis redescendez."
+  },
+  {
+    "id": "single-leg-dumbbell-deadlift",
+    "name": "Soulevé de Terre à Une Jambe avec Haltère",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Tenez un haltère dans une main, tenez-vous sur une jambe, et inclinez-vous aux hanches pour abaisser le poids, puis revenez à la position debout."
+  },
+  {
+    "id": "smith-machine-shrug",
+    "name": "Hausse d'Épaules à la Machine Smith",
+    "category": "Machine",
+    "body_part": "Shoulders",
+    "description": "Tenez-vous dans une machine Smith et soulevez vos épaules vers vos oreilles, puis redescendez."
+  },
+  {
+    "id": "barbell-front-raise",
+    "name": "Élévation Frontale avec Barre",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Tenez-vous en tenant une barre devant vos cuisses. Soulevez-la à hauteur d'épaule, puis redescendez."
+  },
+  {
+    "id": "machine-lateral-raise",
+    "name": "Élévation Latérale à la Machine",
+    "category": "Machine",
+    "body_part": "Shoulders",
+    "description": "Asseyez-vous à la machine et soulevez les poignées sur le côté, en gardant les bras droits, puis redescendez."
+  },
+  {
+    "id": "half-squat",
+    "name": "Squat Partiel",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Abaissez votre corps en position de squat à mi-chemin, puis revenez à la position debout, en gardant le dos droit."
+  },
+  {
+    "id": "dumbbell-side-bend",
+    "name": "Flexion Latérale avec Haltère",
+    "category": "Dumbbell",
+    "body_part": "Core",
+    "description": "Tenez-vous en tenant un haltère dans une main. Inclinez-vous sur le côté à la taille, puis revenez à la position droite."
+  },
+  {
+    "id": "split-jerk",
+    "name": "Élan Séparé",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez la barre à hauteur d'épaule, puis poussez-la explosivement au-dessus de votre tête en écartant les jambes."
+  },
+  {
+    "id": "log-press",
+    "name": "Presse de Bûche",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Soulevez une barre en forme de bûche vers votre poitrine, puis pressez-la au-dessus de votre tête, en engageant vos épaules et vos bras."
+  },
+  {
+    "id": "bench-pin-press",
+    "name": "Presse sur Banc avec Épingles",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Effectuez un développé couché avec la barre reposant sur des épingles de sécurité à hauteur de poitrine, puis poussez-la vers le haut."
+  },
+  {
+    "id": "barbell-power-shrug",
+    "name": "Hausse d'Épaules Puissante avec Barre",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Tenez une barre et haussez explosivement vos épaules tout en étendant vos chevilles, puis redescendez."
+  },
+  {
+    "id": "jm-press",
+    "name": "Presse JM",
+    "category": "Barbell",
+    "body_part": "Triceps",
+    "description": "Allongez-vous sur un banc et abaissez la barre vers votre nez, puis étendez vos bras pour la repousser vers le haut."
+  },
+  {
+    "id": "behind-the-back-barbell-shrug",
+    "name": "Hausse d'Épaules avec Barre Derrière le Dos",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Tenez une barre derrière votre dos et soulevez vos épaules vers vos oreilles, puis redescendez."
+  },
+  {
+    "id": "ab-wheel-rollout",
+    "name": "Roulement de Roue Abdominale",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Mettez-vous à genoux sur le sol et faites rouler la roue abdominale vers l'avant, en étendant votre corps, puis faites-la revenir au départ."
+  },
+  {
+    "id": "neck-curl",
+    "name": "Flexion du Cou",
+    "category": "Bodyweight",
+    "body_part": "Neck",
+    "description": "Allongez-vous sur un banc avec votre tête pendante au bord. Fléchissez votre cou vers l'avant, puis revenez à la position de départ."
+  },
+  {
+    "id": "clean-high-pull",
+    "name": "Tirage Haut Éclair",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez la barre du sol à votre poitrine avec un tirage explosif, en utilisant vos jambes et votre dos pour la puissance."
+  },
+  {
+    "id": "hanging-knee-raise",
+    "name": "Élévation de Genoux Suspendus",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Suspendez-vous à une barre et soulevez vos genoux vers votre poitrine, en engageant vos abdominaux, puis redescendez."
+  },
+  {
+    "id": "glute-kickback",
+    "name": "Coup de pied fessier",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Effectué à quatre pattes, étendez une jambe vers l'arrière et vers le haut pour engager les fessiers."
+  },
+  {
+    "id": "behind-the-back-deadlift",
+    "name": "Soulevé de terre derrière le dos",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Soulevez une barre du sol avec celle-ci positionnée derrière vos jambes, en vous concentrant sur la chaîne postérieure."
+  },
+  {
+    "id": "clean-pull",
+    "name": "Tirage propre",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Tirez une barre du sol jusqu'à la poitrine dans un mouvement puissant, engageant plusieurs groupes musculaires."
+  },
+  {
+    "id": "ring-dips",
+    "name": "Dips sur anneaux",
+    "category": "Bodyweight",
+    "body_part": "Triceps",
+    "description": "Effectuez des dips en utilisant des anneaux de gymnastique pour cibler les triceps et la poitrine."
+  },
+  {
+    "id": "jefferson-squat",
+    "name": "Squat Jefferson",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Écartez une barre et accroupissez-vous, en gardant le torse droit pour engager les jambes et le tronc."
+  },
+  {
+    "id": "hip-extension",
+    "name": "Extension de la hanche",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Allongez-vous sur le ventre et levez les jambes vers le haut pour engager les fessiers et le bas du dos."
+  },
+  {
+    "id": "wide-grip-bench-press",
+    "name": "Développé couché prise large",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Pressez une barre depuis la poitrine avec une prise large pour cibler les muscles de la poitrine."
+  },
+  {
+    "id": "squat-thrust",
+    "name": "Squat thrust",
+    "category": "Bodyweight",
+    "body_part": "Whole Body",
+    "description": "Depuis une position debout, accroupissez-vous, poussez les pieds en arrière dans une planche, puis revenez à la position debout."
+  },
+  {
+    "id": "single-leg-deadlift",
+    "name": "Soulevé de terre sur une jambe",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Équilibrez-vous sur une jambe et inclinez-vous aux hanches pour abaisser le torse, engageant les ischio-jambiers et les fessiers."
+  },
+  {
+    "id": "bent-over-dumbbell-row",
+    "name": "Tirage haltère penché",
+    "category": "Dumbbell",
+    "body_part": "Back",
+    "description": "Inclinez-vous à la taille et tirez des haltères vers le torse pour engager les muscles du dos."
+  },
+  {
+    "id": "pike-push-up",
+    "name": "Pompes en pike",
+    "category": "Bodyweight",
+    "body_part": "Shoulders",
+    "description": "Effectuez une pompe avec les hanches élevées, ciblant les épaules."
+  },
+  {
+    "id": "viking-press",
+    "name": "Presse viking",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Pressez une barre au-dessus de la tête en utilisant un accessoire de mine terrestre pour cibler les épaules."
+  },
+  {
+    "id": "walking-lunge",
+    "name": "Fente marchée",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Faites un pas en avant dans une fente, en alternant les jambes, pour engager les quadriceps et les fessiers."
+  },
+  {
+    "id": "archer-push-ups",
+    "name": "Pompes archer",
+    "category": "Bodyweight",
+    "body_part": "Chest",
+    "description": "Effectuez une pompe avec un bras étendu sur le côté, en vous concentrant sur un côté de la poitrine."
+  },
+  {
+    "id": "reverse-grip-tricep-pushdown",
+    "name": "Poussée triceps prise inversée",
+    "category": "Cable",
+    "body_part": "Triceps",
+    "description": "Utilisez une machine à câbles avec une prise inversée pour pousser vers le bas et engager les triceps."
+  },
+  {
+    "id": "muscle-snatch",
+    "name": "Arraché musculaire",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez une barre du sol au-dessus de la tête en un seul mouvement, engageant tout le corps."
+  },
+  {
+    "id": "glute-ham-raise",
+    "name": "Élévation fessiers-ischio-jambiers",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Ancrez les pieds et abaissez le torse vers l'avant, puis relevez-vous pour engager les ischio-jambiers et les fessiers."
+  },
+  {
+    "id": "z-press",
+    "name": "Presse Z",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Asseyez-vous sur le sol et pressez une barre au-dessus de la tête pour cibler les épaules et le tronc."
+  },
+  {
+    "id": "reverse-crunches",
+    "name": "Crunch inversé",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Allongez-vous sur le dos et soulevez les hanches du sol pour engager les abdominaux inférieurs."
+  },
+  {
+    "id": "cheat-curl",
+    "name": "Curl triché",
+    "category": "Barbell",
+    "body_part": "Biceps",
+    "description": "Utilisez l'élan pour soulever une barre, en vous concentrant sur les biceps pendant le curl."
+  },
+  {
+    "id": "close-grip-incline-bench-press",
+    "name": "Développé couché incliné prise serrée",
+    "category": "Barbell",
+    "body_part": "Triceps",
+    "description": "Pressez une barre depuis un banc incliné avec une prise serrée pour cibler les triceps."
+  },
+  {
+    "id": "reverse-hyperextension",
+    "name": "Hyperextension inversée",
+    "category": "Machine",
+    "body_part": "Back",
+    "description": "Utilisez une machine pour soulever les jambes derrière le corps, engageant le bas du dos et les fessiers."
+  },
+  {
+    "id": "side-leg-raise",
+    "name": "Élévation de jambe latérale",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Allongez-vous sur le côté et soulevez la jambe du dessus pour engager les cuisses externes et les hanches."
+  },
+  {
+    "id": "shoulder-pin-press",
+    "name": "Presse à épaule avec goupille",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Pressez une barre depuis une position de goupille pour cibler les épaules avec une amplitude de mouvement limitée."
+  },
+  {
+    "id": "zercher-deadlift",
+    "name": "Soulevé de terre Zercher",
+    "category": "Barbell",
+    "body_part": "Legs",
+    "description": "Soulevez une barre du sol en la tenant dans le creux des coudes, engageant les jambes et le tronc."
+  },
+  {
+    "id": "snatch-pull",
+    "name": "Tirage au snatch",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Tirez une barre du sol jusqu'à la poitrine, en vous concentrant sur la puissance explosive et l'engagement du corps entier."
+  },
+  {
+    "id": "nordic-hamstring-curl",
+    "name": "Curl nordique des ischio-jambiers",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Ancrez les pieds et abaissez le torse vers l'avant, puis revenez à la position de départ pour engager les ischio-jambiers."
+  },
+  {
+    "id": "cable-upright-row",
+    "name": "Tirage vertical à la machine",
+    "category": "Cable",
+    "body_part": "Shoulders",
+    "description": "Utilisez une machine à câbles pour tirer la poignée vers le haut, engageant les épaules et les trapèzes."
+  },
+  {
+    "id": "barbell-pullover",
+    "name": "Pullover avec barre",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc et déplacez une barre de derrière la tête au-dessus de la poitrine, engageant la poitrine et les dorsaux."
+  },
+  {
+    "id": "machine-shrug",
+    "name": "Haussement d'épaules à la machine",
+    "category": "Machine",
+    "body_part": "Shoulders",
+    "description": "Utilisez une machine pour soulever les épaules vers les oreilles, ciblant les trapèzes."
+  },
+  {
+    "id": "toes-to-bar",
+    "name": "Doigts de pied à la barre",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Suspendez-vous à une barre et soulevez les orteils pour toucher la barre, engageant les muscles du tronc."
+  },
+  {
+    "id": "dumbbell-snatch",
+    "name": "Snatch avec haltère",
+    "category": "Dumbbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez un haltère du sol au-dessus de la tête en un seul mouvement, engageant tout le corps."
+  },
+  {
+    "id": "landmine-press",
+    "name": "Presse avec attache de landmine",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Pressez une barre attachée à un accessoire de landmine au-dessus de la tête, ciblant les épaules."
+  },
+  {
+    "id": "incline-hammer-curl",
+    "name": "Curl marteau incliné",
+    "category": "Dumbbell",
+    "body_part": "Biceps",
+    "description": "Effectuez un curl avec des haltères sur un banc incliné, en vous concentrant sur les biceps."
+  },
+  {
+    "id": "cable-kickback",
+    "name": "Extension à la machine",
+    "category": "Cable",
+    "body_part": "Triceps",
+    "description": "Utilisez une machine à câbles pour étendre le bras derrière le corps, engageant les triceps."
+  },
+  {
+    "id": "neck-extension",
+    "name": "Extension du cou",
+    "category": "Bodyweight",
+    "body_part": "Forearms",
+    "description": "Utilisez votre poids corporel ou une résistance pour étendre le cou vers l'arrière, ciblant les muscles du cou."
+  },
+  {
+    "id": "seated-dumbbell-curl",
+    "name": "Curl assis avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Biceps",
+    "description": "Asseyez-vous et faites un curl avec des haltères vers les épaules, en vous concentrant sur les biceps."
+  },
+  {
+    "id": "cable-leg-extension",
+    "name": "Extension de jambe à la machine",
+    "category": "Cable",
+    "body_part": "Legs",
+    "description": "Utilisez une machine à câbles pour étendre la jambe, ciblant les quadriceps."
+  },
+  {
+    "id": "meadows-row",
+    "name": "Tirage Meadows",
+    "category": "Barbell",
+    "body_part": "Back",
+    "description": "Effectuez un tirage avec une barre ancrée dans un accessoire de landmine, en vous concentrant sur le dos."
+  },
+  {
+    "id": "cable-shrug",
+    "name": "Haussement d'épaules à la machine",
+    "category": "Cable",
+    "body_part": "Shoulders",
+    "description": "Utilisez une machine à câbles pour soulever les épaules vers les oreilles, ciblant les trapèzes."
+  },
+  {
+    "id": "single-leg-seated-calf-raise",
+    "name": "Élévation de mollet assis sur une jambe",
+    "category": "Machine",
+    "body_part": "Legs",
+    "description": "Asseyez-vous sur une machine à élévation de mollet et effectuez une élévation de mollet en utilisant une jambe à la fois."
+  },
+  {
+    "id": "cable-woodchopper",
+    "name": "Coupeur de bois avec câble",
+    "category": "Cable",
+    "body_part": "Core",
+    "description": "Tenez-vous debout, les pieds écartés à la largeur des épaules, et tirez un câble de haut en bas à travers votre corps dans un mouvement de coupe."
+  },
+  {
+    "id": "one-arm-pulldown",
+    "name": "Tirage vertical à un bras",
+    "category": "Cable",
+    "body_part": "Back",
+    "description": "Utilisez une machine à câble pour tirer la poignée vers le bas avec un bras, en vous concentrant sur l'engagement des muscles du dos."
+  },
+  {
+    "id": "hang-snatch",
+    "name": "Arraché en suspension",
+    "category": "Barbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez une barre à partir d'une position suspendue jusqu'au-dessus de la tête en un mouvement explosif."
+  },
+  {
+    "id": "spoto-press",
+    "name": "Développé Spoto",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Effectuez un développé couché mais faites une pause avec la barre juste au-dessus de la poitrine avant de pousser vers le haut."
+  },
+  {
+    "id": "one-arm-lat-pulldown",
+    "name": "Tirage vertical un bras",
+    "category": "Cable",
+    "body_part": "Back",
+    "description": "Asseyez-vous sur une machine à tirage vertical et tirez la poignée vers le bas avec un bras, en vous concentrant sur les muscles du dos."
+  },
+  {
+    "id": "spider-curl",
+    "name": "Curl araignée",
+    "category": "Dumbbell",
+    "body_part": "Biceps",
+    "description": "Allongez-vous face contre terre sur un banc incliné et courbez les haltères vers vos épaules."
+  },
+  {
+    "id": "standing-cable-crunch",
+    "name": "Crunch debout avec câble",
+    "category": "Cable",
+    "body_part": "Core",
+    "description": "Tenez-vous face à une machine à câble et effectuez un crunch en tirant le câble vers le bas avec votre tronc."
+  },
+  {
+    "id": "high-pulley-crunch",
+    "name": "Crunch avec poulie haute",
+    "category": "Cable",
+    "body_part": "Core",
+    "description": "Mettez-vous à genoux face à une poulie haute et effectuez un crunch vers le bas, en engageant les muscles abdominaux."
+  },
+  {
+    "id": "overhead-cable-curl",
+    "name": "Curl avec câble au-dessus de la tête",
+    "category": "Cable",
+    "body_part": "Biceps",
+    "description": "Tenez-vous dos à une machine à câble et courbez la poignée au-dessus de la tête pour travailler les biceps."
+  },
+  {
+    "id": "roman-chair-side-bend",
+    "name": "Flexion latérale sur chaise romaine",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Positionnez-vous sur une chaise romaine et penchez-vous sur le côté pour travailler les muscles obliques."
+  },
+  {
+    "id": "dumbbell-reverse-wrist-curl",
+    "name": "Curl inverse de poignet avec haltère",
+    "category": "Dumbbell",
+    "body_part": "Forearms",
+    "description": "Tenez un haltère avec une prise en pronation et courbez votre poignet vers le haut pour cibler les avant-bras."
+  },
+  {
+    "id": "zottman-curl",
+    "name": "Curl Zottman",
+    "category": "Dumbbell",
+    "body_part": "Biceps",
+    "description": "Effectuez un curl de biceps avec une rotation en haut, puis abaissez avec une prise inversée."
+  },
+  {
+    "id": "incline-cable-curl",
+    "name": "Curl avec câble incliné",
+    "category": "Cable",
+    "body_part": "Biceps",
+    "description": "Asseyez-vous sur un banc incliné et courbez la poignée du câble vers vos épaules."
+  },
+  {
+    "id": "renegade-row",
+    "name": "Rameur renégat",
+    "category": "Dumbbell",
+    "body_part": "Back",
+    "description": "En position de planche, ramez un haltère sur le côté tout en maintenant la stabilité du tronc."
+  },
+  {
+    "id": "lying-cable-curl",
+    "name": "Curl avec câble allongé",
+    "category": "Cable",
+    "body_part": "Biceps",
+    "description": "Allongez-vous sur un banc et courbez la poignée du câble vers vos épaules."
+  },
+  {
+    "id": "dumbbell-bench-pull",
+    "name": "Tirage sur banc avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Back",
+    "description": "Allongez-vous face contre terre sur un banc et tirez les haltères vers votre poitrine."
+  },
+  {
+    "id": "one-arm-landmine-press",
+    "name": "Développé avec barre en terre à un bras",
+    "category": "Barbell",
+    "body_part": "Shoulders",
+    "description": "Poussez une barre ancrée dans un accessoire de terre au-dessus de la tête avec un bras."
+  },
+  {
+    "id": "dumbbell-front-squat",
+    "name": "Squat avant avec haltères",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Tenez des haltères à hauteur d'épaules et effectuez un squat."
+  },
+  {
+    "id": "one-arm-seated-cable-row",
+    "name": "Tirage assis avec câble à un bras",
+    "category": "Cable",
+    "body_part": "Back",
+    "description": "Asseyez-vous sur une machine à tirage avec câble et tirez la poignée vers vous avec un bras."
+  },
+  {
+    "id": "tate-press",
+    "name": "Press Tate",
+    "category": "Dumbbell",
+    "body_part": "Triceps",
+    "description": "Allongez-vous sur un banc et poussez des haltères vers le haut avec les coudes écartés pour cibler les triceps."
+  },
+  {
+    "id": "cable-hammer-curl",
+    "name": "Curl Marteau avec Câble",
+    "category": "Cable",
+    "body_part": "Biceps",
+    "description": "Utilisez une machine à câbles pour effectuer un curl avec une prise neutre, ciblant les biceps."
+  },
+  {
+    "id": "floor-hip-extension",
+    "name": "Extension de Hanche au Sol",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Allongez-vous sur le dos et soulevez vos hanches vers le plafond, en engageant les fessiers."
+  },
+  {
+    "id": "dumbbell-z-press",
+    "name": "Press Z avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Asseyez-vous sur le sol avec les jambes étendues et poussez des haltères au-dessus de votre tête."
+  },
+  {
+    "id": "dumbbell-split-squat",
+    "name": "Squat Fendu avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Tenez des haltères à vos côtés et effectuez un squat fendu, en vous concentrant sur une jambe à la fois."
+  },
+  {
+    "id": "wall-ball",
+    "name": "Ballon contre le Mur",
+    "category": "Bodyweight",
+    "body_part": "Whole Body",
+    "description": "Accroupissez-vous et lancez un ballon médicinal contre un mur, en le rattrapant en vous relevant."
+  },
+  {
+    "id": "floor-hip-abduction",
+    "name": "Abduction de Hanche au Sol",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Allongez-vous sur le côté et soulevez votre jambe supérieure vers le haut pour travailler les abducteurs de la hanche."
+  },
+  {
+    "id": "dumbbell-reverse-curl",
+    "name": "Curl Inversé avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Biceps",
+    "description": "Tenez des haltères avec une prise en pronation et courbez-les vers vos épaules."
+  },
+  {
+    "id": "clap-pull-up",
+    "name": "Traction avec Applaudissement",
+    "category": "Bodyweight",
+    "body_part": "Back",
+    "description": "Effectuez une traction et applaudit vos mains en haut avant de revenir au départ."
+  },
+  {
+    "id": "bent-arm-barbell-pullover",
+    "name": "Pullover avec Barre et Bras Fléchis",
+    "category": "Barbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc et tirez une barre au-dessus de votre tête vers votre poitrine avec les bras fléchis."
+  },
+  {
+    "id": "ring-muscle-ups",
+    "name": "Muscle Ups aux Anneaux",
+    "category": "Bodyweight",
+    "body_part": "Whole Body",
+    "description": "Effectuez une traction sur des anneaux suivie d'une dips pour passer au-dessus des anneaux."
+  },
+  {
+    "id": "dumbbell-thruster",
+    "name": "Thruster avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Whole Body",
+    "description": "Effectuez un squat avec des haltères et poussez-les au-dessus de votre tête en vous levant."
+  },
+  {
+    "id": "decline-dumbbell-fly",
+    "name": "Écarté Décliné avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Chest",
+    "description": "Allongez-vous sur un banc décliné et effectuez un mouvement d'écarté avec des haltères pour cibler la poitrine."
+  },
+  {
+    "id": "dumbbell-high-pull",
+    "name": "Tirage Haut avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Tirez des haltères de la taille à la hauteur de la poitrine avec les coudes en tête du mouvement."
+  },
+  {
+    "id": "dumbbell-face-pull",
+    "name": "Tirage vers le Visage avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Tirez des haltères vers votre visage, en gardant les coudes hauts pour cibler les deltoïdes postérieurs."
+  },
+  {
+    "id": "dumbbell-external-rotation",
+    "name": "Rotation Externe avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Tenez un haltère et faites pivoter votre bras vers l'extérieur pour renforcer la coiffe des rotateurs."
+  },
+  {
+    "id": "dumbbell-hang-clean",
+    "name": "Hang Clean avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez des haltères d'une position suspendue à la hauteur des épaules en un mouvement fluide."
+  },
+  {
+    "id": "dumbbell-walking-calf-raise",
+    "name": "Élévation des Mollets en Marchant avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Legs",
+    "description": "Tenez des haltères et effectuez des élévations de mollets tout en marchant en avant."
+  },
+  {
+    "id": "dumbbell-push-press",
+    "name": "Push Press avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Inclinez-vous légèrement et utilisez vos jambes pour aider à pousser des haltères au-dessus de votre tête."
+  },
+  {
+    "id": "dumbbell-incline-y-raise",
+    "name": "Élévation en Y Incliné avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Shoulders",
+    "description": "Allongez-vous sur un banc incliné et élevez des haltères en forme de Y pour cibler les épaules."
+  },
+  {
+    "id": "dumbbell-clean-and-press",
+    "name": "Élévation et Presse avec Haltères",
+    "category": "Dumbbell",
+    "body_part": "Whole Body",
+    "description": "Soulevez les haltères du sol jusqu'à vos épaules, puis pressez-les au-dessus de votre tête en un mouvement fluide."
+  },
+  {
+    "id": "cable-external-rotation",
+    "name": "Rotation Externe avec Câble",
+    "category": "Cable",
+    "body_part": "Shoulders",
+    "description": "Fixez un câble à une poulie basse, tenez la poignée avec votre coude plié et faites pivoter votre bras vers l'extérieur."
+  },
+  {
+    "id": "flutter-kicks",
+    "name": "Coup de Pieds Flottants",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Allongez-vous sur le dos et alternez en levant vos jambes vers le haut et vers le bas dans un mouvement flottant."
+  },
+  {
+    "id": "mountain-climbers",
+    "name": "Grimpeurs de Montagne",
+    "category": "Bodyweight",
+    "body_part": "Whole Body",
+    "description": "Commencez en position de planche et alternez rapidement en amenant vos genoux vers votre poitrine."
+  },
+  {
+    "id": "donkey-calf-raise",
+    "name": "Élévation de Mollet en Position de Donkey",
+    "category": "Bodyweight",
+    "body_part": "Legs",
+    "description": "Inclinez-vous en avant avec vos mains sur un support et soulevez vos talons pour travailler vos mollets."
+  },
+  {
+    "id": "superman",
+    "name": "Superman",
+    "category": "Bodyweight",
+    "body_part": "Back",
+    "description": "Allongez-vous face contre terre et soulevez simultanément vos bras et vos jambes du sol, en maintenant brièvement."
+  },
+  {
+    "id": "scissor-kicks",
+    "name": "Coup de Pieds en Ciseaux",
+    "category": "Bodyweight",
+    "body_part": "Core",
+    "description": "Allongez-vous sur le dos et croisez vos jambes l'une sur l'autre dans un mouvement semblable à des ciseaux."
+  }
+]

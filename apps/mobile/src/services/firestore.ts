@@ -1,6 +1,6 @@
 import { Firestore } from 'firebase/firestore';
 import type { UserProfile, WorkoutInput, ProgramInput } from '@/domain';
-
+import { SupportedLanguage } from '@/locale/i18n';
 // Service classes
 import { UserProfileService } from './user-profile';
 import { ExercisesService } from './exercises';
@@ -34,12 +34,13 @@ export class FirestoreService {
   }
 
   // Exercise methods (delegated)
-  async getUserExercises(userId: string) {
-    return this.exercises.getUserExercises(userId);
+  async getUserExercises(userId: string, language: SupportedLanguage) {
+    return this.exercises.getUserExercises(userId, language);
   }
 
   async createExercise(
     userId: string,
+    language: SupportedLanguage,
     exercise: {
       name: string;
       category: string;
@@ -47,24 +48,25 @@ export class FirestoreService {
       description?: string;
     },
   ): Promise<string> {
-    return this.exercises.createExercise(userId, exercise);
+    return this.exercises.createExercise(userId, language, exercise);
   }
 
   async updateExercise(
     userId: string,
     exerciseId: string,
+    language: SupportedLanguage,
     exercise: {
       name: string;
       category: string;
       bodyPart: string;
       description?: string;
     },
-  ): Promise<void> {
-    return this.exercises.updateExercise(userId, exerciseId, exercise);
+  ) {
+    return this.exercises.updateExercise(userId, language, exerciseId, exercise);
   }
 
-  async getExercise(userId: string, exerciseId: string) {
-    return this.exercises.getExercise(userId, exerciseId);
+  async getExercise(userId: string, exerciseId: string, language: SupportedLanguage) {
+    return this.exercises.getExercise(userId, exerciseId, language);
   }
 
   // Workout methods (delegated)
@@ -76,15 +78,15 @@ export class FirestoreService {
     return this.workouts.updateWorkout(userId, workoutId, workout);
   }
 
-  async validateWorkout(userId: string, workoutId: string): Promise<void> {
+  async validateWorkout(userId: string, workoutId: string) {
     return this.workouts.validateWorkout(userId, workoutId);
   }
 
-  async unvalidateWorkout(userId: string, workoutId: string): Promise<void> {
+  async unvalidateWorkout(userId: string, workoutId: string) {
     return this.workouts.unvalidateWorkout(userId, workoutId);
   }
 
-  async deleteWorkout(userId: string, workoutId: string): Promise<void> {
+  async deleteWorkout(userId: string, workoutId: string) {
     return this.workouts.deleteWorkout(userId, workoutId);
   }
 
@@ -121,7 +123,7 @@ export class FirestoreService {
     return this.programs.getProgram(userId, programId);
   }
 
-  async deleteProgram(userId: string, programId: string): Promise<void> {
+  async deleteProgram(userId: string, programId: string) {
     return this.programs.deleteProgram(userId, programId);
   }
 }

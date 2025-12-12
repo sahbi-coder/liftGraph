@@ -1,3 +1,3 @@
-import CreateExerciseScreen from '@/app/(drawer)/(tabs)/workout/exercise-create';
+import CreateExerciseScreen from '@/components/CreateExercise';
 
 export default CreateExerciseScreen;

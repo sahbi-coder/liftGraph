@@ -1,88 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
+import { ExerciseSelection } from '@/types/workout';
+import {
+  getExercisePickerCallback,
+  clearExercisePickerCallback,
+} from '@/contexts/exercisePickerContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
-import { useQuery } from '@tanstack/react-query';
 import { getDeviceLanguage } from '@/locale/i18n';
 import { EXERCISE_CATEGORIES, BODY_PARTS } from '@/services';
 
-const language = getDeviceLanguage();
-
-export default function EditExerciseScreen() {
+export default function CreateExerciseScreen() {
   const router = useRouter();
-  const { id } = useLocalSearchParams<{ id: string }>();
   const { user } = useAuth();
   const { services } = useDependencies();
   const { t } = useTranslation();
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
-  const [customCategory, setCustomCategory] = useState('');
   const [bodyPart, setBodyPart] = useState('');
-  const [customBodyPart, setCustomBodyPart] = useState('');
   const [description, setDescription] = useState('');
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const { showSuccess, showError, AlertModalComponent } = useAlertModal();
 
-  // Fetch exercise data
-  const {
-    data: exercise,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ['exercise', user?.uid, id],
-    queryFn: async () => {
-      if (!user?.uid || !id) {
-        return null;
-      }
-      return services.firestore.getExercise(user.uid, id, language);
-    },
-    enabled: !!user?.uid && !!id,
-  });
-
-  // Populate form when exercise data is loaded
-  useEffect(() => {
-    if (exercise) {
-      setName(exercise.name);
-      // Check if category/bodyPart is in the predefined lists
-      const isCustomCategory = !EXERCISE_CATEGORIES.includes(exercise.category);
-      const isCustomBodyPart = !BODY_PARTS.includes(exercise.bodyPart);
-
-      if (isCustomCategory) {
-        setCategory('Other');
-        setCustomCategory(exercise.category);
-      } else {
-        setCategory(exercise.category);
-        setCustomCategory('');
-      }
-
-      if (isCustomBodyPart) {
-        setBodyPart('Other');
-        setCustomBodyPart(exercise.bodyPart);
-      } else {
-        setBodyPart(exercise.bodyPart);
-        setCustomBodyPart('');
-      }
-
-      setDescription(exercise.description || '');
-    }
-  }, [exercise]);
-
-  const handleUpdate = async () => {
+  const handleCreate = async () => {
     if (!user) {
       showError(t('exercise.pleaseSignInToCreate'));
-      return;
-    }
-
-    if (!id) {
-      showError('Exercise ID is missing');
       return;
     }
 
@@ -91,30 +41,45 @@ export default function EditExerciseScreen() {
       return;
     }
 
-    const finalCategory = category === 'Other' ? customCategory.trim() : category.trim();
-    const finalBodyPart = bodyPart === 'Other' ? customBodyPart.trim() : bodyPart.trim();
-
-    if (!finalCategory) {
+    if (!category.trim()) {
       showError(t('exercise.categoryRequired'));
       return;
     }
 
-    if (!finalBodyPart) {
+    if (!bodyPart.trim()) {
       showError(t('exercise.bodyPartRequired'));
       return;
     }
 
     try {
-      setIsUpdating(true);
-
-      await services.firestore.updateExercise(user.uid, id, language, {
+      setIsCreating(true);
+      const exerciseId = await services.firestore.createExercise(user.uid, getDeviceLanguage(), {
         name: name.trim(),
-        category: finalCategory,
-        bodyPart: finalBodyPart,
-        description: description.trim(),
+        category: category.trim(),
+        bodyPart: bodyPart.trim(),
+        description: description.trim() ?? '',
       });
 
-      showSuccess(t('exercise.exerciseUpdatedSuccessfully'));
+      // Get the callback and auto-select the newly created exercise
+      const contextCallback = getExercisePickerCallback();
+      const effectiveOnSelect = contextCallback.callback;
+      const effectiveContext = contextCallback.context;
+
+      if (effectiveOnSelect) {
+        const newExercise: ExerciseSelection = {
+          id: exerciseId,
+          name: name.trim(),
+        };
+
+        try {
+          effectiveOnSelect(newExercise, effectiveContext || undefined);
+        } catch (error) {
+          console.error('Error executing callback:', error);
+        }
+        clearExercisePickerCallback();
+      }
+
+      showSuccess(t('exercise.exerciseCreatedSuccessfully'));
       // Navigate back after showing success message
       setTimeout(() => {
         router.back();
@@ -123,42 +88,9 @@ export default function EditExerciseScreen() {
       const message = getServiceErrorMessage(error, t);
       showError(message);
     } finally {
-      setIsUpdating(false);
+      setIsCreating(false);
     }
   };
-
-  if (isLoading) {
-    return (
-      <YStack
-        flex={1}
-        backgroundColor={colors.darkerGray}
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Text color={colors.white}>{t('exercise.loadingExercises')}</Text>
-      </YStack>
-    );
-  }
-
-  if (isError || !exercise) {
-    return (
-      <YStack
-        flex={1}
-        backgroundColor={colors.darkerGray}
-        justifyContent="center"
-        alignItems="center"
-        padding="$4"
-        space="$4"
-      >
-        <Text color="$textPrimary" fontSize="$5" textAlign="center">
-          {t('exercise.failedToLoadExercise') || 'Failed to load exercise'}
-        </Text>
-        <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => router.back()}>
-          {t('common.back')}
-        </Button>
-      </YStack>
-    );
-  }
 
   return (
     <ScrollView
@@ -168,10 +100,10 @@ export default function EditExerciseScreen() {
       <YStack space="$4">
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-            {t('exercise.edit') || 'Edit Exercise'}
+            {t('exercise.create')}
           </Text>
           <Text color="$textSecondary" fontSize="$4">
-            {t('exercise.editCustomExercise') || 'Modify your custom exercise'}
+            {t('exercise.addCustomExercise')}
           </Text>
         </YStack>
 
@@ -209,8 +141,8 @@ export default function EditExerciseScreen() {
           </YStack>
           {category === 'Other' && (
             <Input
-              value={customCategory}
-              onChangeText={setCustomCategory}
+              value={category}
+              onChangeText={setCategory}
               placeholder={t('exercise.enterCustomCategory')}
               borderColor="$inputFieldBorder"
               backgroundColor="$inputFieldBackground"
@@ -240,8 +172,8 @@ export default function EditExerciseScreen() {
           </YStack>
           {bodyPart === 'Other' && (
             <Input
-              value={customBodyPart}
-              onChangeText={setCustomBodyPart}
+              value={bodyPart}
+              onChangeText={setBodyPart}
               placeholder={t('exercise.enterCustomBodyPart')}
               borderColor="$inputFieldBorder"
               backgroundColor="$inputFieldBackground"
@@ -274,7 +206,7 @@ export default function EditExerciseScreen() {
             backgroundColor={colors.midGray}
             color={colors.white}
             onPress={() => router.back()}
-            disabled={isUpdating}
+            disabled={isCreating}
           >
             {t('common.cancel')}
           </Button>
@@ -282,11 +214,11 @@ export default function EditExerciseScreen() {
             flex={1}
             backgroundColor="$primaryButton"
             color={colors.white}
-            onPress={handleUpdate}
-            disabled={isUpdating}
-            opacity={isUpdating ? 0.6 : 1}
+            onPress={handleCreate}
+            disabled={isCreating}
+            opacity={isCreating ? 0.6 : 1}
           >
-            {isUpdating ? t('common.saving') : t('common.save')}
+            {isCreating ? t('common.creating') : t('exercise.createExerciseButton')}
           </Button>
         </XStack>
       </YStack>

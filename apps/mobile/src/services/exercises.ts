@@ -10,12 +10,47 @@ import {
 
 import { ExerciseSchema } from '@/domain';
 import { ServiceError } from '@/utils/serviceErrors';
+import { SupportedLanguage } from '@/locale/i18n';
 
 export class ExercisesService {
   constructor(private readonly db: Firestore) {}
+  private getExerciseLibraryName(language: SupportedLanguage) {
+    switch (language) {
+      case 'es':
+        return 'exercisesLibraryEs';
+      case 'fr':
+        return 'exercisesLibraryFr';
+      default:
+        return 'exercisesLibrary';
+    }
+  }
+  private getAllExerciseLibraries() {
+    return ['exercisesLibrary', 'exercisesLibraryEs', 'exercisesLibraryFr'];
+  }
+  private getUserExerciseCollectionName(userId: string, language: SupportedLanguage) {
+    switch (language) {
+      case 'es':
+        return `users/${userId}/exercisesEs`;
+      case 'fr':
+        return `users/${userId}/exercisesFr`;
+      default:
+        return `users/${userId}/exercises`;
+    }
+  }
+  private getAllUserExerciseCollections(userId: string) {
+    return [
+      `users/${userId}/exercises`,
+      `users/${userId}/exercisesEs`,
+      `users/${userId}/exercisesFr`,
+    ];
+  }
 
-  async getUserExercises(userId: string) {
-    const userExercisesRef = collection(this.db, `users/${userId}/exercises`);
+  async getUserExercises(userId: string, language: SupportedLanguage) {
+    const userExercisesRef = collection(
+      this.db,
+      this.getUserExerciseCollectionName(userId, language),
+    );
+
     const userSnapshot = await getDocs(userExercisesRef);
 
     // If user exercises exist, return them
@@ -28,7 +63,6 @@ export class ExercisesService {
           category: data.category,
           bodyPart: data.bodyPart,
           description: data.description,
-          isCustom: data.isCustom ?? false,
         });
 
         if (!result.success) {
@@ -39,7 +73,9 @@ export class ExercisesService {
     }
 
     // If user exercises don't exist, fetch from library and copy to user's collection
-    const librarySnapshot = await getDocs(collection(this.db, 'exercisesLibrary'));
+    const librarySnapshot = await getDocs(
+      collection(this.db, this.getExerciseLibraryName(language)),
+    );
     const libraryExercises = librarySnapshot.docs.map((docSnap) => {
       const data = docSnap.data();
       const result = ExerciseSchema.safeParse({
@@ -48,6 +84,7 @@ export class ExercisesService {
         category: data.category,
         bodyPart: data.bodyPart,
         description: data.description,
+        isCustom: false,
       });
 
       if (!result.success) {
@@ -60,7 +97,7 @@ export class ExercisesService {
     if (libraryExercises.length > 0) {
       const batch = writeBatch(this.db);
       for (const exercise of libraryExercises) {
-        batch.set(doc(this.db, `users/${userId}/exercises`, exercise.id), {
+        batch.set(doc(this.db, this.getUserExerciseCollectionName(userId, language), exercise.id), {
           name: exercise.name,
           category: exercise.category,
           bodyPart: exercise.bodyPart,
@@ -76,6 +113,7 @@ export class ExercisesService {
 
   async createExercise(
     userId: string,
+    language: SupportedLanguage,
     exercise: {
       name: string;
       category: string;
@@ -86,28 +124,40 @@ export class ExercisesService {
     // Generate ID from name: lowercase with spaces replaced by hyphens
     const exerciseId = exercise.name.trim().toLowerCase().replace(/\s+/g, '-');
 
-    // Check if exercise with this ID exists in user's exercises
-    const userExerciseRef = doc(this.db, `users/${userId}/exercises`, exerciseId);
-    const userExerciseDoc = await getDoc(userExerciseRef);
+    // Check if exercise with this ID exists in English list (users/${userId}/exercises)
+    const englishExerciseRef = doc(
+      this.db,
+      this.getUserExerciseCollectionName(userId, language),
+      exerciseId,
+    );
+    const englishExerciseDoc = await getDoc(englishExerciseRef);
 
-    if (userExerciseDoc.exists()) {
+    if (englishExerciseDoc.exists()) {
       throw new ServiceError('exercise.alreadyExists');
     }
 
-    // Create the exercise with the generated ID
-    await setDoc(userExerciseRef, {
+    // Prepare exercise data
+    const exerciseData = {
       name: exercise.name.trim(),
       category: exercise.category.trim(),
       bodyPart: exercise.bodyPart.trim(),
       description: exercise.description?.trim(),
       isCustom: true,
-    });
+    };
+
+    const exerciseRef = doc(
+      this.db,
+      this.getUserExerciseCollectionName(userId, language),
+      exerciseId,
+    );
+    await setDoc(exerciseRef, exerciseData);
 
     return exerciseId;
   }
 
   async updateExercise(
     userId: string,
+    language: SupportedLanguage,
     exerciseId: string,
     exercise: {
       name: string;
@@ -116,14 +166,17 @@ export class ExercisesService {
       description?: string;
     },
   ): Promise<void> {
-    const userExerciseRef = doc(this.db, `users/${userId}/exercises`, exerciseId);
+    const userExerciseRef = doc(
+      this.db,
+      this.getUserExerciseCollectionName(userId, language),
+      exerciseId,
+    );
     const userExerciseDoc = await getDoc(userExerciseRef);
 
     if (!userExerciseDoc.exists()) {
       throw new ServiceError('exercise.notFound');
     }
 
-    // Update the exercise and mark it as custom
     await setDoc(
       userExerciseRef,
       {
@@ -131,14 +184,18 @@ export class ExercisesService {
         category: exercise.category.trim(),
         bodyPart: exercise.bodyPart.trim(),
         description: exercise.description?.trim(),
-        isCustom: true,
+        isCustom: userExerciseDoc.data().isCustom,
       },
       { merge: false },
     );
   }
 
-  async getExercise(userId: string, exerciseId: string) {
-    const userExerciseRef = doc(this.db, `users/${userId}/exercises`, exerciseId);
+  async getExercise(userId: string, exerciseId: string, language: SupportedLanguage) {
+    const userExerciseRef = doc(
+      this.db,
+      this.getUserExerciseCollectionName(userId, language),
+      exerciseId,
+    );
     const userExerciseDoc = await getDoc(userExerciseRef);
 
     if (!userExerciseDoc.exists()) {
@@ -152,7 +209,6 @@ export class ExercisesService {
       category: data.category,
       bodyPart: data.bodyPart,
       description: data.description,
-      isCustom: data.isCustom ?? false,
     });
 
     if (!result.success) {

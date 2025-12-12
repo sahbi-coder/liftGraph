@@ -14,17 +14,17 @@ const resources = {
 };
 
 // Supported languages
-const SUPPORTED_LANGUAGES = ['en', 'es', 'fr'] as const;
-type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
+export const SUPPORTED_LANGUAGES = ['en', 'es', 'fr'] as const;
+export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 // Check if a language is supported
-const isSupportedLanguage = (lang: string): lang is SupportedLanguage => {
-  return SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage);
+const isSupportedLanguage = (lang: any): lang is SupportedLanguage => {
+  return SUPPORTED_LANGUAGES.includes(lang);
 };
 
 // Get device language or default to 'en'
 // If device language is not supported, falls back to 'en'
-const getDeviceLanguage = (): string => {
+export const getDeviceLanguage = () => {
   const locales = getLocales();
   const deviceLanguage = locales[0]?.languageCode?.toLowerCase() ?? 'en';
   // Check if we support this language, otherwise default to 'en'

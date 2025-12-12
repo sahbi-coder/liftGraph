@@ -23,6 +23,7 @@ export type {
   Program,
   ProgramDayLabel,
 } from '@/domain';
+export { EXERCISE_CATEGORIES, BODY_PARTS } from '@/domain/exercise';
 
 // Re-export services
 export { FirestoreService } from './firestore';

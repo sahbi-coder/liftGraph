@@ -18,3 +18,27 @@ export const ExerciseSchema = z.object({
 // ============================================
 
 export type Exercise = z.infer<typeof ExerciseSchema>;
+
+export const EXERCISE_CATEGORIES = [
+  'Barbell',
+  'Dumbbell',
+  'Bodyweight',
+  'Machine',
+  'Cable',
+  'Kettlebell',
+  'Other',
+];
+
+export const BODY_PARTS = [
+  'Chest',
+  'Back',
+  'Shoulders',
+  'Legs',
+  'Biceps',
+  'Triceps',
+  'Forearms',
+  'Abs',
+  'Glutes',
+  'Calves',
+  'Other',
+];

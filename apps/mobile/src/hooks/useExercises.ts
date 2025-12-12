@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
-
+import { getDeviceLanguage } from '@/locale/i18n';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuth } from '@/contexts/AuthContext';
 import type { Exercise } from '@/services';
+
+const language = getDeviceLanguage();
 
 export function useExercises() {
   const { services } = useDependencies();
@@ -23,7 +25,7 @@ export function useExercises() {
       if (!user?.uid) {
         return [] as Exercise[];
       }
-      return services.firestore.getUserExercises(user.uid);
+      return services.firestore.getUserExercises(user.uid, language);
     },
   });
 

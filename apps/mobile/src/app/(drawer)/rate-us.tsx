@@ -68,32 +68,32 @@ export default function RateUsScreen() {
 
   const features = [
     {
-      id: 'workoutPlans' as LikeFeature,
+      id: 'workoutPlans' as const,
       label: t('rateUs.workoutPlans'),
       icon: Dumbbell,
     },
     {
-      id: 'progressTracking' as LikeFeature,
+      id: 'progressTracking' as const,
       label: t('rateUs.progressTracking'),
       icon: TrendingUp,
     },
     {
-      id: 'easyToUse' as LikeFeature,
+      id: 'easyToUse' as const,
       label: t('rateUs.easyToUse'),
       icon: Smartphone,
     },
     {
-      id: 'design' as LikeFeature,
+      id: 'design' as const,
       label: t('rateUs.design'),
       icon: Palette,
     },
     {
-      id: 'achievements' as LikeFeature,
+      id: 'achievements' as const,
       label: t('rateUs.achievements'),
       icon: Trophy,
     },
     {
-      id: 'community' as LikeFeature,
+      id: 'community' as const,
       label: t('rateUs.community'),
       icon: Users,
     },
