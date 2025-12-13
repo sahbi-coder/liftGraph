@@ -34,7 +34,7 @@ export function useLatestValidatedWorkout() {
   );
 
   return {
-    workout: data ?? null,
+    workout: data,
     isLoading,
     isError,
     error,
