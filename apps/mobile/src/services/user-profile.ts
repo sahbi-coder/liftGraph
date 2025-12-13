@@ -47,7 +47,6 @@ export class UserProfileService {
     // Validate with schema
     const result = UserProfileSchema.safeParse(profileData);
     if (!result.success) {
-      console.error('Invalid user profile from Firestore:', result.error);
       throw new ServiceError('userProfile.invalidData');
     }
 

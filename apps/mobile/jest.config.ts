@@ -1,4 +1,5 @@
 import { Config } from 'jest';
+import path from 'path';
 
 const config: Config = {
   preset: 'jest-expo',
@@ -12,6 +13,9 @@ const config: Config = {
     '!**/babel.config.js',
     '!**/jest.setup.js',
   ],
+  moduleNameMapper: {
+    '^@/(.*)$': path.join(__dirname, 'src', '$1'),
+  },
 };
 
 export default config;

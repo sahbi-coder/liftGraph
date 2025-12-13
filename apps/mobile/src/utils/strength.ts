@@ -2,8 +2,11 @@ import type { Workout, WorkoutExercise, WorkoutSet } from '@/services';
 
 // Common Epley formula: 1RM = weight * (1 + reps / 30)
 export function calculateEstimated1RM(weight: number, reps: number, rir: number): number {
-  if (weight <= 0 || reps <= 0 || rir <= 0) {
+  if (weight <= 0 || reps <= 0 || rir < 0) {
     return 0;
+  }
+  if (reps === 1 && rir === 0) {
+    return weight;
   }
 
   return weight * (1 + (reps + rir) / 30);

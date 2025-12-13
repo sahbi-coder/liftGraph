@@ -79,7 +79,6 @@ export class ProgramsService {
         let programData: Program;
         if (data.type === 'simple') {
           if (!data.week) {
-            console.error(`Invalid simple program (${docSnap.id}): missing week`);
             return null;
           }
           programData = {
@@ -89,7 +88,6 @@ export class ProgramsService {
           };
         } else if (data.type === 'alternating') {
           if (!data.alternatingWeeks) {
-            console.error(`Invalid alternating program (${docSnap.id}): missing alternatingWeeks`);
             return null;
           }
           programData = {
@@ -99,7 +97,6 @@ export class ProgramsService {
           };
         } else {
           if (!data.phases) {
-            console.error(`Invalid advanced program (${docSnap.id}): missing phases`);
             return null;
           }
           programData = {
@@ -112,7 +109,6 @@ export class ProgramsService {
         // Validate with schema
         const result = ProgramSchema.safeParse(programData);
         if (!result.success) {
-          console.error(`Invalid program (${docSnap.id}):`, result.error);
           return null;
         }
         return result.data;
@@ -172,7 +168,6 @@ export class ProgramsService {
     // Validate with schema
     const result = ProgramSchema.safeParse(programData);
     if (!result.success) {
-      console.error('Invalid program from Firestore:', result.error);
       throw new ServiceError('program.invalidData');
     }
 

@@ -143,7 +143,6 @@ export class WorkoutsService {
     // Validate with schema
     const result = WorkoutSchema.safeParse(workoutData);
     if (!result.success) {
-      console.error('Invalid workout from Firestore:', result.error);
       throw new ServiceError('workout.invalidData');
     }
 
@@ -206,7 +205,6 @@ export class WorkoutsService {
     // Validate with schema
     const result = WorkoutSchema.safeParse(workoutData);
     if (!result.success) {
-      console.error('Invalid workout from Firestore:', result.error);
       throw new ServiceError('workout.invalidData');
     }
 
@@ -267,7 +265,6 @@ export class WorkoutsService {
     // Validate with schema
     const result = WorkoutSchema.safeParse(workoutData);
     if (!result.success) {
-      console.error('Invalid workout from Firestore:', result.error);
       throw new ServiceError('workout.invalidData');
     }
 
@@ -296,7 +293,6 @@ export class WorkoutsService {
     // Validate with schema
     const result = WorkoutSchema.safeParse(workoutData);
     if (!result.success) {
-      console.error('Invalid workout from Firestore:', result.error);
       throw new ServiceError('workout.invalidData');
     }
 
@@ -324,7 +320,6 @@ export class WorkoutsService {
         // Validate with schema
         const result = WorkoutSchema.safeParse(workoutData);
         if (!result.success) {
-          console.error(`Invalid workout (${docSnap.id}):`, result.error);
           return null;
         }
         return result.data;
