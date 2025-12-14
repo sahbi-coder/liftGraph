@@ -1,9 +1,11 @@
-import React, { useCallback, useState, useMemo, useEffect } from 'react';
+import React from 'react';
 
 import { WorkoutForm } from '@/components/workout/WorkoutForm';
 import type { Workout, WorkoutInput } from '@/services';
-import { hasWorkoutChanges } from '@/utils/workout';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useEditWorkoutFormState } from '@/hooks/useEditWorkoutFormState';
+import { useWorkoutFormChanges } from '@/hooks/useWorkoutFormChanges';
+import { useWorkoutFormInitialValues } from '@/hooks/useWorkoutFormInitialValues';
 
 type EditWorkoutScreenProps = {
   workout: Workout;
@@ -27,50 +29,19 @@ export function EditWorkoutScreen({
   exerciseNavigationPath,
 }: EditWorkoutScreenProps) {
   const { t } = useTranslation();
-  const [currentFormState, setCurrentFormState] = useState<WorkoutInput | null>(null);
 
-  // Reset form state when workout is updated (after successful save)
-  useEffect(() => {
-    if (!isUpdating) {
-      setCurrentFormState(null);
-    }
-  }, [workout.id, workout.updatedAt, isUpdating]);
+  const { currentFormState, handleFormChange } = useEditWorkoutFormState({
+    workoutId: workout.id,
+    workoutUpdatedAt: workout.updatedAt,
+    isUpdating,
+  });
 
-  const handleFormChange = useCallback((payload: WorkoutInput | null) => {
-    setCurrentFormState(payload);
-  }, []);
+  const { hasUnsavedChanges, hasNoChanges } = useWorkoutFormChanges({
+    currentFormState,
+    workout,
+  });
 
-  const hasUnsavedChanges = useMemo(() => {
-    if (!currentFormState) {
-      return false;
-    }
-    return hasWorkoutChanges(currentFormState, workout);
-  }, [currentFormState, workout]);
-
-  // Disable submit button when there are no changes (converse of hasUnsavedChanges)
-  const hasNoChanges = useMemo(() => {
-    if (!currentFormState) {
-      return true; // No form state yet, disable button
-    }
-    return !hasWorkoutChanges(currentFormState, workout);
-  }, [currentFormState, workout]);
-
-  // Memoize initialValues to prevent unnecessary re-renders and form resets
-  const initialValues = useMemo(
-    () => ({
-      date: workout.date,
-      notes: workout.notes,
-      exercises: workout.exercises,
-      validated: workout.validated,
-    }),
-    [workout.id, workout.updatedAt],
-  );
-
-  // Create a stable workout key that only changes when workout actually changes
-  const workoutKey = useMemo(
-    () => `${workout.id}-${workout.updatedAt.getTime()}`,
-    [workout.id, workout.updatedAt],
-  );
+  const { initialValues, workoutKey } = useWorkoutFormInitialValues({ workout });
 
   return (
     <WorkoutForm

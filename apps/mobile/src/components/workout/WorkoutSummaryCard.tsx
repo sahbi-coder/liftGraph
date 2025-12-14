@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import _ from 'lodash';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Button, Text, XStack, YStack } from 'tamagui';
-import { Calendar, Clock3, Dumbbell } from '@tamagui/lucide-icons';
+import { Clock3, Dumbbell } from '@tamagui/lucide-icons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { colors } from '@/theme/colors';
@@ -104,16 +104,6 @@ export function WorkoutSummaryCard({
               <Text color={currentStatus.color} fontSize="$3" fontWeight="600">
                 {currentStatus.label}
               </Text>
-            </YStack>
-            <YStack
-              padding="$2"
-              borderRadius="$3"
-              backgroundColor="rgba(249, 115, 22, 0.15)"
-              alignItems="center"
-              justifyContent="center"
-              space="$1"
-            >
-              <Calendar size={24} color={colors.niceOrange} />
             </YStack>
           </XStack>
         </XStack>

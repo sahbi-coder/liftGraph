@@ -1,9 +1,8 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useLocalSearchParams, useRouter, useSegments } from 'expo-router';
+import React, { useCallback } from 'react';
+import { useRouter } from 'expo-router';
 import { YStack, Text, Button } from 'tamagui';
 import { ActivityIndicator } from 'react-native';
 
-import { useAuth } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
 import { EditWorkoutScreen } from '@/components/workout/EditWorkoutScreen';
 import { useWorkout } from '@/hooks/useWorkout';
@@ -11,123 +10,52 @@ import { useWorkoutMutations } from '@/hooks/useWorkoutMutations';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { useTranslation } from '@/hooks/useTranslation';
-import { getServiceErrorMessage } from '@/utils/serviceErrors';
+import { useWorkoutIdFromParams } from '@/hooks/useWorkoutIdFromParams';
+import { useEditWorkoutHandlers } from '@/hooks/useEditWorkoutHandlers';
+import { useWorkoutDeleteModal } from '@/hooks/useWorkoutDeleteModal';
 
-export function EditWorkoutPage() {
+interface EditWorkoutPageProps {
+  exerciseNavigationPath: string;
+}
+
+export function EditWorkoutPage({ exerciseNavigationPath }: EditWorkoutPageProps) {
   const router = useRouter();
-  const segments = useSegments();
-  const { workoutId: workoutIdParam } = useLocalSearchParams<{ workoutId?: string | string[] }>();
-  const workoutId = useMemo(() => {
-    if (Array.isArray(workoutIdParam)) {
-      return workoutIdParam[0];
-    }
-    return workoutIdParam;
-  }, [workoutIdParam]);
+  const workoutId = useWorkoutIdFromParams();
 
-  // Detect if we're in schedule or workout context based on route segments
-  const exerciseNavigationPath = useMemo(() => {
-    const pathString = segments.join('/');
-    if (pathString.includes('schedule')) {
-      return '/(drawer)/(tabs)/schedule/exercises';
-    }
-    return '/(drawer)/(tabs)/workout/exercises';
-  }, [segments]);
-
-  const { user } = useAuth();
   const { workout, isLoading, isError, refetch } = useWorkout(workoutId);
-  const {
-    updateWorkout,
-    isUpdating,
-    validateWorkout,
-    isValidating,
-    unvalidateWorkout,
-    isUnvalidating,
-    deleteWorkout,
-    isDeleting,
-  } = useWorkoutMutations(workoutId);
+  const { isUpdating, isValidating, isUnvalidating, isDeleting } = useWorkoutMutations(workoutId);
 
-  const { showSuccess, showError, AlertModalComponent } = useAlertModal();
+  const { AlertModalComponent } = useAlertModal();
   const { t } = useTranslation();
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [isDeletingWorkout, setIsDeletingWorkout] = useState(false);
 
-  const handleUpdateWorkout = useCallback(
-    async (workoutPayload: Parameters<typeof updateWorkout>[0]) => {
-      if (!user || !workoutId) {
-        showError(t('workout.pleaseSignInToEdit'));
-        return;
-      }
+  const {
+    isDeleteModalVisible,
+    openDeleteModal,
+    closeDeleteModal,
+    isDeleting: isDeletingWorkout,
+    setIsDeleting,
+  } = useWorkoutDeleteModal();
 
-      try {
-        await updateWorkout(workoutPayload);
-        showSuccess(t('workout.workoutUpdatedSuccessfully'));
-      } catch (error) {
-        const message = getServiceErrorMessage(error, t);
-        showError(message);
-      }
-    },
-    [user, workoutId, updateWorkout, showSuccess, showError, t],
-  );
-
-  const handleValidateWorkout = useCallback(async () => {
-    if (!user || !workoutId) {
-      showError(t('workout.pleaseSignInToValidate'));
-      return;
-    }
-
-    try {
-      await validateWorkout();
-      showSuccess(t('workout.workoutMarkedAsComplete'));
-      // Navigate back after showing success message
-      setTimeout(() => {
-        router.back();
-      }, 1500);
-    } catch (error) {
-      const message = getServiceErrorMessage(error, t);
-      showError(message);
-    }
-  }, [router, user, workoutId, validateWorkout, showSuccess, showError, t]);
-
-  const handleUnvalidateWorkout = useCallback(async () => {
-    if (!user || !workoutId) {
-      showError(t('workout.pleaseSignInToUnvalidate'));
-      return;
-    }
-
-    try {
-      await unvalidateWorkout();
-      showSuccess(t('workout.canNowEditWorkout'));
-    } catch (error) {
-      const message = getServiceErrorMessage(error, t);
-      showError(message);
-    }
-  }, [user, workoutId, unvalidateWorkout, showSuccess, showError, t]);
+  const {
+    handleUpdateWorkout,
+    handleValidateWorkout,
+    handleUnvalidateWorkout,
+    handleConfirmDelete: handleConfirmDeleteFromHook,
+  } = useEditWorkoutHandlers({ workoutId });
 
   const handleDeleteWorkout = useCallback(() => {
-    setIsDeleteModalVisible(true);
-  }, []);
+    openDeleteModal();
+  }, [openDeleteModal]);
 
   const handleConfirmDelete = useCallback(async () => {
-    setIsDeleteModalVisible(false);
-    if (!user || !workoutId) {
-      showError(t('workout.pleaseSignInToDelete'));
-      return;
-    }
-
+    closeDeleteModal();
     try {
-      setIsDeletingWorkout(true);
-      await deleteWorkout();
-      showSuccess(t('workout.workoutDeletedSuccessfully'));
-      // Navigate back after alert is shown (2 seconds for success alerts)
-      setTimeout(() => {
-        router.back();
-      }, 2000);
-    } catch (error) {
-      setIsDeletingWorkout(false);
-      const message = getServiceErrorMessage(error, t);
-      showError(message);
+      setIsDeleting(true);
+      await handleConfirmDeleteFromHook();
+    } catch {
+      setIsDeleting(false);
     }
-  }, [router, user, workoutId, deleteWorkout, showSuccess, showError, t]);
+  }, [closeDeleteModal, handleConfirmDeleteFromHook, setIsDeleting]);
 
   // Show loading state
   if (isLoading) {
@@ -153,7 +81,7 @@ export function EditWorkoutPage() {
         confirmText={t('common.delete')}
         cancelText={t('common.cancel')}
         onConfirm={handleConfirmDelete}
-        onCancel={() => setIsDeleteModalVisible(false)}
+        onCancel={closeDeleteModal}
         confirmButtonColor="#ef4444"
         cancelButtonColor={colors.midGray}
       />
