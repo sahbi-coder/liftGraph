@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState, useMemo, useRef } from 'react';
-import { useRouter, useSegments } from 'expo-router';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
+import { useRouter } from 'expo-router';
 import { useNavigation } from '@react-navigation/native';
 import { Modal } from 'react-native';
 import { WorkoutForm } from '@/components/workout/WorkoutForm';
@@ -18,10 +18,13 @@ import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import { Button, Text, XStack, YStack } from 'tamagui';
 import { colors } from '@/theme/colors';
 
-export function CreateWorkoutPage() {
+type CreateWorkoutPageProps = {
+  exerciseNavigationPath: string;
+};
+
+export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageProps) {
   const router = useRouter();
   const navigation = useNavigation();
-  const segments = useSegments();
   const { services } = useDependencies();
   const { user } = useAuth();
   const { t } = useTranslation();
@@ -57,17 +60,6 @@ export function CreateWorkoutPage() {
       clearWorkoutPrefillData();
     }
   }, [prefillData]);
-
-  // Detect exercise navigation path based on route segments
-  const exerciseNavigationPath = useMemo(() => {
-    const pathString = segments.join('/');
-    if (pathString.includes('program')) {
-      return '/(drawer)/(tabs)/program/exercises';
-    } else if (pathString.includes('schedule')) {
-      return '/(drawer)/(tabs)/schedule/exercises';
-    }
-    return '/(drawer)/(tabs)/workout/exercises';
-  }, [segments]);
 
   // Intercept navigation to show discard confirmation
   useEffect(() => {

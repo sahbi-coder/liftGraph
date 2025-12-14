@@ -48,9 +48,9 @@ const createSetForm = (
 ): SetForm => ({
   id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
   // Convert weight from kg (storage) to display unit
-  weight: set ? String(weightForDisplay(set.weight, weightUnit)) : '',
-  reps: set ? String(set.reps) : '',
-  rir: set ? String(set.rir) : '',
+  weight: set ? String(weightForDisplay(set.weight, weightUnit)) : '0',
+  reps: set ? String(set.reps) : '0',
+  rir: set ? String(set.rir) : '0',
 });
 
 const createExerciseForm = (
@@ -417,6 +417,36 @@ export function WorkoutForm({
             );
           }
 
+          // Validate reps is positive
+          if (reps <= 0) {
+            throw new Error(
+              t('workout.repsMustBePositive', {
+                setIndex: setIndex + 1,
+                exerciseName: exercise.name,
+              }),
+            );
+          }
+
+          // Validate weight is positive
+          if (weight <= 0) {
+            throw new Error(
+              t('workout.weightMustBePositive', {
+                setIndex: setIndex + 1,
+                exerciseName: exercise.name,
+              }),
+            );
+          }
+
+          // Validate RIR is between 0 and 10
+          if (rir < 0 || rir > 10) {
+            throw new Error(
+              t('workout.rirMustBeBetween0And10', {
+                setIndex: setIndex + 1,
+                exerciseName: exercise.name,
+              }),
+            );
+          }
+
           return {
             weight,
             reps,
@@ -443,10 +473,28 @@ export function WorkoutForm({
       for (const exercise of exercises) {
         if (exercise.sets.length === 0) return false;
         for (const set of exercise.sets) {
-          const weight = Number(set.weight);
+          // Parse weight considering weight unit
+          const weight = parseWeightInput(set.weight, weightUnit);
           const reps = Number(set.reps);
           const rir = Number(set.rir);
+
+          // Check if values are valid numbers
           if (Number.isNaN(weight) || Number.isNaN(reps) || Number.isNaN(rir)) {
+            return false;
+          }
+
+          // Validate reps is positive
+          if (reps <= 0) {
+            return false;
+          }
+
+          // Validate weight is positive
+          if (weight <= 0) {
+            return false;
+          }
+
+          // Validate RIR is between 0 and 10
+          if (rir < 0 || rir > 10) {
             return false;
           }
         }
@@ -455,7 +503,7 @@ export function WorkoutForm({
     } catch {
       return false;
     }
-  }, [date, exercises]);
+  }, [date, exercises, weightUnit]);
 
   // Notify parent of form changes
   useEffect(() => {

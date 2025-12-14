@@ -55,8 +55,8 @@ type ProgramPhaseForm = {
 
 const createSetForm = (set?: ProgramSet): ProgramSetForm => ({
   id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-  reps: set ? String(set.reps) : '',
-  rir: set ? String(set.rir) : '',
+  reps: set ? String(set.reps) : '0',
+  rir: set ? String(set.rir) : '0',
 });
 
 const createExerciseForm = (exercise: ExerciseSelection): ProgramExerciseForm => ({
@@ -1205,7 +1205,7 @@ export default function CreateProgramScreen() {
 
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-            {t('program.programName')}
+            {t('program.programName')} *
           </Text>
           <Input
             value={name}
@@ -1219,7 +1219,7 @@ export default function CreateProgramScreen() {
 
         <YStack space="$2">
           <Text color="$textPrimary" fontSize="$6" fontWeight="600">
-            {t('program.description')}
+            {t('program.description')} *
           </Text>
           <TextArea
             value={description}
@@ -1277,35 +1277,45 @@ export default function CreateProgramScreen() {
                 space="$3"
                 marginBottom="$3"
               >
-                <XStack space="$2" alignItems="center">
-                  <Input
-                    flex={1}
-                    value={phase.name}
-                    onChangeText={(value) => handleUpdatePhaseName(phase.id, value)}
-                    placeholder={`${t('program.phases')} ${phaseIndex + 1}`}
+                <YStack space="$2">
+                  <Text color="$textPrimary" fontSize="$5" fontWeight="600">
+                    {t('program.phaseName', { index: phaseIndex + 1 })} *
+                  </Text>
+                  <XStack space="$2" alignItems="center">
+                    <Input
+                      flex={1}
+                      value={phase.name}
+                      onChangeText={(value) => handleUpdatePhaseName(phase.id, value)}
+                      placeholder={`${t('program.phases')} ${phaseIndex + 1}`}
+                      borderColor="$inputFieldBorder"
+                      backgroundColor="$background"
+                      color="$textPrimary"
+                    />
+                    <Button
+                      size="$2"
+                      variant="outlined"
+                      color={colors.white}
+                      onPress={() => handleRemovePhase(phase.id)}
+                    >
+                      <Entypo name="circle-with-cross" size={24} color={colors.niceOrange} />
+                    </Button>
+                  </XStack>
+                </YStack>
+
+                <YStack space="$2">
+                  <Text color="$textPrimary" fontSize="$5" fontWeight="600">
+                    {t('program.phaseDescription')}
+                  </Text>
+                  <TextArea
+                    value={phase.description}
+                    onChangeText={(value) => handleUpdatePhaseDescription(phase.id, value)}
+                    placeholder={t('program.phaseDescription')}
                     borderColor="$inputFieldBorder"
                     backgroundColor="$background"
                     color="$textPrimary"
+                    minHeight={80}
                   />
-                  <Button
-                    size="$2"
-                    variant="outlined"
-                    color={colors.white}
-                    onPress={() => handleRemovePhase(phase.id)}
-                  >
-                    <Entypo name="circle-with-cross" size={24} color={colors.niceOrange} />
-                  </Button>
-                </XStack>
-
-                <TextArea
-                  value={phase.description}
-                  onChangeText={(value) => handleUpdatePhaseDescription(phase.id, value)}
-                  placeholder={t('program.phaseDescription')}
-                  borderColor="$inputFieldBorder"
-                  backgroundColor="$background"
-                  color="$textPrimary"
-                  minHeight={80}
-                />
+                </YStack>
 
                 <XStack alignItems="center" justifyContent="space-between">
                   <Text color="$textPrimary" fontSize="$5" fontWeight="600">
