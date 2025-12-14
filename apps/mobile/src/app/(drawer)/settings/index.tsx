@@ -6,11 +6,11 @@ import Feather from '@expo/vector-icons/Feather';
 import { Target, Languages, Shield, Download, Star, Info } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export default function SettingsScreen() {
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -131,10 +131,10 @@ export default function SettingsScreen() {
           >
             <YStack flex={1} space="$1">
               <Text color={colors.white} fontSize="$6" fontWeight="bold">
-                {user?.displayName || 'Marcus Johnson'}
+                {user.displayName}
               </Text>
               <Text color={colors.midGray} fontSize="$4">
-                {user?.email || 'marcus.j@email.com'}
+                {user.email}
               </Text>
             </YStack>
           </XStack>

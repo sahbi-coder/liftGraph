@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
 
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
 import { ExerciseSelection } from '@/types/workout';
 import {
@@ -19,7 +19,7 @@ import { EXERCISE_CATEGORIES, BODY_PARTS } from '@/services';
 
 export default function CreateExerciseScreen() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
   const { services } = useDependencies();
   const { t } = useTranslation();
 
@@ -31,11 +31,6 @@ export default function CreateExerciseScreen() {
   const { showSuccess, showError, AlertModalComponent } = useAlertModal();
 
   const handleCreate = async () => {
-    if (!user) {
-      showError(t('exercise.pleaseSignInToCreate'));
-      return;
-    }
-
     if (!name.trim()) {
       showError(t('exercise.exerciseNameRequired'));
       return;

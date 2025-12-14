@@ -3,11 +3,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 
 export function useEarliestFutureWorkout() {
   const { services } = useDependencies();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
 
   const {
     data,
@@ -17,11 +17,8 @@ export function useEarliestFutureWorkout() {
     refetch: reactQueryRefetch,
   } = useQuery({
     queryKey: ['earliestFutureWorkout', user?.uid],
-    enabled: !!user?.uid,
+    enabled: !!user.uid,
     queryFn: async () => {
-      if (!user?.uid) {
-        return null;
-      }
       return services.firestore.getEarliestNonValidatedFutureWorkout(user.uid);
     },
   });
@@ -34,7 +31,7 @@ export function useEarliestFutureWorkout() {
   );
 
   return {
-    workout: data ?? null,
+    workout: data,
     isLoading,
     isError,
     error,

@@ -3,12 +3,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
-import type { Workout } from '@/services';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 
 export function useUserWorkouts() {
   const { services } = useDependencies();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
 
   const {
     data,
@@ -17,12 +16,8 @@ export function useUserWorkouts() {
     error,
     refetch: reactQueryRefetch,
   } = useQuery({
-    queryKey: ['workouts', user?.uid],
-    enabled: !!user?.uid,
+    queryKey: ['workouts', user.uid],
     queryFn: async () => {
-      if (!user?.uid) {
-        return [] as Workout[];
-      }
       return services.firestore.getWorkouts(user.uid);
     },
   });

@@ -4,7 +4,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
 
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -18,7 +18,7 @@ const language = getDeviceLanguage();
 export default function EditExerciseScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
   const { services } = useDependencies();
   const { t } = useTranslation();
 
@@ -37,14 +37,14 @@ export default function EditExerciseScreen() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['exercise', user?.uid, id],
+    queryKey: ['exercise', user.uid, id],
     queryFn: async () => {
-      if (!user?.uid || !id) {
+      if (!id) {
         return null;
       }
       return services.firestore.getExercise(user.uid, id, language);
     },
-    enabled: !!user?.uid && !!id,
+    enabled: !!id,
   });
 
   // Populate form when exercise data is loaded
@@ -76,11 +76,6 @@ export default function EditExerciseScreen() {
   }, [exercise]);
 
   const handleUpdate = async () => {
-    if (!user) {
-      showError(t('exercise.pleaseSignInToCreate'));
-      return;
-    }
-
     if (!id) {
       showError('Exercise ID is missing');
       return;

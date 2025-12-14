@@ -21,7 +21,7 @@ type WorkoutSummaryCardProps = {
   validated: boolean;
   exerciseCount: number;
   onPress: () => void;
-  isLoading?: boolean;
+
   setCount: number;
   averageRir: number;
   buttonLabel: string;
@@ -32,7 +32,7 @@ export function WorkoutSummaryCard({
   validated,
   exerciseCount,
   onPress,
-  isLoading = false,
+
   setCount,
   averageRir,
   title,
@@ -149,11 +149,10 @@ export function WorkoutSummaryCard({
         borderRadius="$4"
         onPress={onPress}
         pressStyle={{ opacity: 0.85 }}
-        disabled={isLoading}
-        opacity={isLoading ? 0.6 : 1}
+        opacity={1}
         alignSelf="stretch"
       >
-        {isLoading ? t('workout.opening') : buttonLabel}
+        {buttonLabel}
       </Button>
     </YStack>
   );

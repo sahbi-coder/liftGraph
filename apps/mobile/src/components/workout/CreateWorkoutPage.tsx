@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Modal } from 'react-native';
 import { WorkoutForm } from '@/components/workout/WorkoutForm';
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import type { WorkoutInput } from '@/services';
 import { getWorkoutPrefillData, clearWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 import {
@@ -26,7 +26,7 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
   const router = useRouter();
   const navigation = useNavigation();
   const { services } = useDependencies();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
   const { t } = useTranslation();
   const { showSuccess, showError, AlertModalComponent } = useAlertModal();
 
@@ -101,11 +101,6 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
 
   const handleCreateWorkout = useCallback(
     async (workoutPayload: WorkoutInput) => {
-      if (!user) {
-        showError(t('workout.pleaseSignInToSave'));
-        return;
-      }
-
       setIsSaving(true);
       try {
         await services.firestore.createWorkout(user.uid, workoutPayload);
@@ -124,7 +119,7 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
         setIsSaving(false);
       }
     },
-    [router, services.firestore, user, showSuccess, showError, t],
+    [router, services.firestore, user.uid, showSuccess, showError, t],
   );
 
   const handleDiscardDraft = useCallback(() => {

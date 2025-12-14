@@ -6,7 +6,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
@@ -84,7 +84,7 @@ const createPhaseForm = (name: string = '', description: string = ''): ProgramPh
 export default function CreateProgramScreen() {
   const router = useRouter();
   const { services } = useDependencies();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
   const { t } = useTranslation();
 
   const [programType, setProgramType] = useState<ProgramType>('simple');
@@ -928,11 +928,6 @@ export default function CreateProgramScreen() {
   }, [name, description, programType, weeks, alternatingWeeks, phases, showError, t]);
 
   const handleSave = useCallback(async () => {
-    if (!user) {
-      showError(t('program.pleaseSignInToCreate'));
-      return;
-    }
-
     try {
       const programData = validateAndConvert();
 
@@ -954,7 +949,7 @@ export default function CreateProgramScreen() {
     } finally {
       setIsSaving(false);
     }
-  }, [user, services.firestore, router, validateAndConvert, showError, showSuccess, t]);
+  }, [user.uid, services.firestore, router, validateAndConvert, showError, showSuccess, t]);
 
   const renderExerciseCard = useCallback(
     (

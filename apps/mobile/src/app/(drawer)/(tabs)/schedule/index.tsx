@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import { YStack, Text, Button } from 'tamagui';
 
-import { useAuth } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
 import { ScheduleScreen } from '@/components/schedule/ScheduleScreen';
 import { useUserWorkouts } from '@/hooks/useUserWorkouts';
@@ -10,7 +9,6 @@ import { useTranslation } from '@/hooks/useTranslation';
 
 export default function Schedule() {
   const router = useRouter();
-  const { user } = useAuth();
   const { t } = useTranslation();
 
   const { workouts, isLoading, isError, refetch } = useUserWorkouts();
@@ -59,22 +57,6 @@ export default function Schedule() {
         <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => refetch()}>
           {t('common.retry')}
         </Button>
-      </YStack>
-    );
-  }
-
-  if (!user) {
-    return (
-      <YStack
-        flex={1}
-        justifyContent="center"
-        alignItems="center"
-        backgroundColor={colors.darkerGray}
-        padding="$4"
-      >
-        <Text color={colors.white} fontSize="$5" textAlign="center">
-          {t('schedule.pleaseSignInToViewSchedule')}
-        </Text>
       </YStack>
     );
   }

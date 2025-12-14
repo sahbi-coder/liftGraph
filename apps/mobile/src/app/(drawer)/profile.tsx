@@ -7,12 +7,12 @@ import 'dayjs/locale/es';
 import 'dayjs/locale/fr';
 
 import { colors } from '@/theme/colors';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getAuthErrorMessage } from '@/utils/authErrors';
 
 export default function ProfileScreen() {
-  const { user, signOut } = useAuth();
+  const { user, signOut } = useAuthenticatedUser();
   const { t, i18n } = useTranslation();
 
   const handleLogout = async () => {
@@ -25,7 +25,7 @@ export default function ProfileScreen() {
 
   // Format member since date using dayjs with locale support
   const memberSinceDate = useMemo(() => {
-    if (!user?.createdAt) return '-';
+    if (!user.createdAt) return '-';
 
     // Get dayjs locale based on current i18n language
     const currentLang = i18n.language || 'en';
@@ -33,7 +33,7 @@ export default function ProfileScreen() {
 
     // Use localized dayjs instance without changing global locale
     return dayjs(user.createdAt).locale(dayjsLocale).format('MMM YYYY');
-  }, [user?.createdAt, i18n.language]);
+  }, [user.createdAt, i18n.language]);
 
   // Get subscription plan type - TODO: Get actual subscription plan from user profile
   const subscriptionPlanType = 'free'; // This should come from user profile
@@ -50,7 +50,7 @@ export default function ProfileScreen() {
             </Text>
             <YStack backgroundColor={colors.darkGray} borderRadius="$3" padding="$4">
               <Text color={colors.white} fontSize="$5">
-                {user?.email || '-'}
+                {user.email || '-'}
               </Text>
             </YStack>
           </YStack>

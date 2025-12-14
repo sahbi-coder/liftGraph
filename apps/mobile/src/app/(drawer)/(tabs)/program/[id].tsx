@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { YStack, Text, XStack, Button } from 'tamagui';
 
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import type { Program, ProgramExercise, WorkoutExercise, ProgramDayLabel } from '@/services';
 import { colors } from '@/theme/colors';
 import { DaySelector } from '@/components/DaySelector';
@@ -25,7 +25,7 @@ export default function ProgramDetailsScreen() {
   }, [programIdParam]);
 
   const { services } = useDependencies();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
   const { t } = useTranslation();
 
   const [program, setProgram] = useState<Program | null>(null);
@@ -45,7 +45,7 @@ export default function ProgramDetailsScreen() {
   }, [router, programId, showError, t]);
 
   useEffect(() => {
-    if (!user || !programId) {
+    if (!programId) {
       setIsLoading(false);
       return;
     }
@@ -91,7 +91,7 @@ export default function ProgramDetailsScreen() {
     return () => {
       isMounted = false;
     };
-  }, [router, services.firestore, user, programId, showError, t]);
+  }, [router, services.firestore, user.uid, programId, showError, t]);
 
   // Determine active days for DaySelector
   const activeDays = useMemo<ProgramDayLabel[]>(() => {
@@ -189,16 +189,16 @@ export default function ProgramDetailsScreen() {
 
   // Handle Delete Program
   const handleDeleteProgram = useCallback(() => {
-    if (!user || !programId || !program) {
+    if (!programId || !program) {
       return;
     }
 
     setIsDeleteModalVisible(true);
-  }, [user, programId, program]);
+  }, [programId, program]);
 
   const handleConfirmDelete = useCallback(async () => {
     setIsDeleteModalVisible(false);
-    if (!user || !programId || !program) {
+    if (!programId || !program) {
       return;
     }
 
@@ -216,23 +216,7 @@ export default function ProgramDetailsScreen() {
     } finally {
       setIsDeleting(false);
     }
-  }, [user, programId, program, services.firestore, router, showSuccess, showError, t]);
-
-  if (!user) {
-    return (
-      <YStack
-        flex={1}
-        justifyContent="center"
-        alignItems="center"
-        backgroundColor={colors.darkerGray}
-        padding="$4"
-      >
-        <Text color={colors.white} fontSize="$5" textAlign="center">
-          {t('program.pleaseSignInToView')}
-        </Text>
-      </YStack>
-    );
-  }
+  }, [user.uid, programId, program, services.firestore, router, showSuccess, showError, t]);
 
   if (isLoading) {
     return (

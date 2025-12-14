@@ -8,10 +8,8 @@ import type { Workout } from '@/services';
 import { useTranslation } from '@/hooks/useTranslation';
 
 type WorkoutHomeScreenProps = {
-  latestWorkout: Workout | null;
-  earliestFutureWorkout: Workout | null;
-  isLoadingLatest: boolean;
-  isLoadingFuture: boolean;
+  latestWorkout?: Workout | null;
+  earliestFutureWorkout?: Workout | null;
   onCreateWorkout: () => void;
   onEditWorkout: () => void;
   onEditFutureWorkout: () => void;
@@ -20,8 +18,7 @@ type WorkoutHomeScreenProps = {
 export function WorkoutHomeScreen({
   latestWorkout,
   earliestFutureWorkout,
-  isLoadingLatest,
-  isLoadingFuture,
+
   onCreateWorkout,
   onEditWorkout,
   onEditFutureWorkout,
@@ -62,7 +59,6 @@ export function WorkoutHomeScreen({
             return totalSets > 0 ? totalRir / totalSets : 0;
           })()}
           onPress={onEditFutureWorkout}
-          isLoading={isLoadingFuture}
         />
       )}
 
@@ -89,7 +85,6 @@ export function WorkoutHomeScreen({
             return totalSets > 0 ? totalRir / totalSets : 0;
           })()}
           onPress={onEditWorkout}
-          isLoading={isLoadingLatest}
         />
       )}
 

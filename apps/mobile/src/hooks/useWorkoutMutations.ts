@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import type { WorkoutInput } from '@/services';
 
 /**
@@ -21,54 +21,54 @@ function invalidateWorkoutQueries(
 
 export function useWorkoutMutations(workoutId: string | undefined) {
   const { services } = useDependencies();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
   const queryClient = useQueryClient();
 
   const updateWorkoutMutation = useMutation({
     mutationFn: async (workout: WorkoutInput) => {
-      if (!user?.uid || !workoutId) {
-        throw new Error('User or workout ID is missing');
+      if (!workoutId) {
+        throw new Error('Workout ID is missing');
       }
       return services.firestore.updateWorkout(user.uid, workoutId, workout);
     },
     onSuccess: () => {
-      invalidateWorkoutQueries(queryClient, user?.uid, workoutId);
+      invalidateWorkoutQueries(queryClient, user.uid, workoutId);
     },
   });
 
   const validateWorkoutMutation = useMutation({
     mutationFn: async () => {
-      if (!user?.uid || !workoutId) {
-        throw new Error('User or workout ID is missing');
+      if (!workoutId) {
+        throw new Error('Workout ID is missing');
       }
       return services.firestore.validateWorkout(user.uid, workoutId);
     },
     onSuccess: () => {
-      invalidateWorkoutQueries(queryClient, user?.uid, workoutId);
+      invalidateWorkoutQueries(queryClient, user.uid, workoutId);
     },
   });
 
   const unvalidateWorkoutMutation = useMutation({
     mutationFn: async () => {
-      if (!user?.uid || !workoutId) {
-        throw new Error('User or workout ID is missing');
+      if (!workoutId) {
+        throw new Error('Workout ID is missing');
       }
       return services.firestore.unvalidateWorkout(user.uid, workoutId);
     },
     onSuccess: () => {
-      invalidateWorkoutQueries(queryClient, user?.uid, workoutId);
+      invalidateWorkoutQueries(queryClient, user.uid, workoutId);
     },
   });
 
   const deleteWorkoutMutation = useMutation({
     mutationFn: async () => {
-      if (!user?.uid || !workoutId) {
-        throw new Error('User or workout ID is missing');
+      if (!workoutId) {
+        throw new Error('Workout ID is missing');
       }
       return services.firestore.deleteWorkout(user.uid, workoutId);
     },
     onSuccess: () => {
-      invalidateWorkoutQueries(queryClient, user?.uid, workoutId);
+      invalidateWorkoutQueries(queryClient, user.uid, workoutId);
     },
   });
 

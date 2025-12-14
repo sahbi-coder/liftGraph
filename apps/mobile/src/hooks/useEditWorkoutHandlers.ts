@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { useRouter } from 'expo-router';
 
-import { useAuth } from '@/contexts/AuthContext';
 import { useWorkoutMutations } from '@/hooks/useWorkoutMutations';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
@@ -19,15 +18,15 @@ export function useEditWorkoutHandlers({
   showError,
 }: UseEditWorkoutHandlersProps) {
   const router = useRouter();
-  const { user } = useAuth();
+
   const { t } = useTranslation();
   const { updateWorkout, validateWorkout, unvalidateWorkout, deleteWorkout } =
     useWorkoutMutations(workoutId);
 
   const handleUpdateWorkout = useCallback(
     async (workoutPayload: WorkoutInput) => {
-      if (!user || !workoutId) {
-        showError(t('workout.pleaseSignInToEdit'));
+      if (!workoutId) {
+        showError(t('workout.workoutIdMissing'));
         return;
       }
 
@@ -39,12 +38,12 @@ export function useEditWorkoutHandlers({
         showError(message);
       }
     },
-    [user, workoutId, updateWorkout, showSuccess, showError, t],
+    [workoutId, updateWorkout, showSuccess, showError, t],
   );
 
   const handleValidateWorkout = useCallback(async () => {
-    if (!user || !workoutId) {
-      showError(t('workout.pleaseSignInToValidate'));
+    if (!workoutId) {
+      showError(t('workout.workoutIdMissing'));
       return;
     }
 
@@ -59,11 +58,11 @@ export function useEditWorkoutHandlers({
       const message = getServiceErrorMessage(error, t);
       showError(message);
     }
-  }, [router, user, workoutId, validateWorkout, showSuccess, showError, t]);
+  }, [router, workoutId, validateWorkout, showSuccess, showError, t]);
 
   const handleUnvalidateWorkout = useCallback(async () => {
-    if (!user || !workoutId) {
-      showError(t('workout.pleaseSignInToUnvalidate'));
+    if (!workoutId) {
+      showError(t('workout.workoutIdMissing'));
       return;
     }
 
@@ -74,11 +73,11 @@ export function useEditWorkoutHandlers({
       const message = getServiceErrorMessage(error, t);
       showError(message);
     }
-  }, [user, workoutId, unvalidateWorkout, showSuccess, showError, t]);
+  }, [workoutId, unvalidateWorkout, showSuccess, showError, t]);
 
   const handleConfirmDelete = useCallback(async () => {
-    if (!user || !workoutId) {
-      showError(t('workout.pleaseSignInToDelete'));
+    if (!workoutId) {
+      showError(t('workout.workoutIdMissing'));
       return;
     }
 
@@ -94,7 +93,7 @@ export function useEditWorkoutHandlers({
       showError(message);
       throw error; // Re-throw so caller can handle loading state
     }
-  }, [router, user, workoutId, deleteWorkout, showSuccess, showError, t]);
+  }, [router, workoutId, deleteWorkout, showSuccess, showError, t]);
 
   return {
     handleUpdateWorkout,

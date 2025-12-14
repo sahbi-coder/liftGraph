@@ -3,11 +3,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 
 export function useLatestValidatedWorkout() {
   const { services } = useDependencies();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
 
   const {
     data,
@@ -16,12 +16,8 @@ export function useLatestValidatedWorkout() {
     error,
     refetch: reactQueryRefetch,
   } = useQuery({
-    queryKey: ['latestValidatedWorkout', user?.uid],
-    enabled: !!user?.uid,
+    queryKey: ['latestValidatedWorkout', user.uid],
     queryFn: async () => {
-      if (!user?.uid) {
-        return null;
-      }
       return services.firestore.getLatestValidatedWorkout(user.uid);
     },
   });

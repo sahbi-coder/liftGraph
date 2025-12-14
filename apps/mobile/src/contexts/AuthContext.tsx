@@ -95,3 +95,33 @@ export const useAuth = () => {
   }
   return context;
 };
+
+/**
+ * Hook that returns a non-nullable authenticated user.
+ * Use this in protected routes where user authentication is guaranteed.
+ * Throws an error if user is null (should not happen in protected routes).
+ */
+export const useAuthenticatedUser = () => {
+  const { user, loading, signIn, signUp, signOut, resetPassword } = useAuth();
+
+  if (loading) {
+    // Still loading, user state not yet determined
+    throw new Error(
+      'useAuthenticatedUser called while auth is loading. Use useAuth() and check loading state instead.',
+    );
+  }
+
+  if (!user) {
+    throw new Error(
+      'useAuthenticatedUser called but user is not authenticated. This hook should only be used in protected routes.',
+    );
+  }
+
+  return {
+    user,
+    signIn,
+    signUp,
+    signOut,
+    resetPassword,
+  };
+};

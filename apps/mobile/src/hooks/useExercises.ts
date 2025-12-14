@@ -3,14 +3,13 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import { getDeviceLanguage } from '@/locale/i18n';
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
-import type { Exercise } from '@/services';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 
 const language = getDeviceLanguage();
 
 export function useExercises() {
   const { services } = useDependencies();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
 
   const {
     data,
@@ -19,12 +18,8 @@ export function useExercises() {
     error,
     refetch: reactQueryRefetch,
   } = useQuery({
-    queryKey: ['exercisesWithLibrary', user?.uid],
-    enabled: !!user?.uid,
+    queryKey: ['exercisesWithLibrary', user.uid],
     queryFn: async () => {
-      if (!user?.uid) {
-        return [] as Exercise[];
-      }
       return services.firestore.getUserExercises(user.uid, language);
     },
   });

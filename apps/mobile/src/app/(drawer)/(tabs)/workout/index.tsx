@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import { YStack, Text, Button } from 'tamagui';
 
-import { useAuth } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
 import { WorkoutHomeScreen } from '@/components/workout/WorkoutHomeScreen';
 import { useLatestValidatedWorkout } from '@/hooks/useLatestValidatedWorkout';
@@ -12,9 +11,8 @@ import { useTranslation } from '@/hooks/useTranslation';
 
 export default function WorkoutHome() {
   const router = useRouter();
-  const { user } = useAuth();
   const { t } = useTranslation();
-  const { showWarning, showInfo, AlertModalComponent } = useAlertModal();
+  const { showInfo, AlertModalComponent } = useAlertModal();
 
   const {
     workout: latestWorkout,
@@ -37,11 +35,6 @@ export default function WorkoutHome() {
   }, [router]);
 
   const handleEditWorkout = useCallback(() => {
-    if (!user) {
-      showWarning(t('workout.pleaseSignInToEdit'));
-      return;
-    }
-
     if (!latestWorkout) {
       showInfo(t('workout.createWorkoutBeforeEdit'));
       return;
@@ -51,14 +44,9 @@ export default function WorkoutHome() {
       pathname: '/(drawer)/(tabs)/workout/edit',
       params: { workoutId: latestWorkout.id },
     });
-  }, [latestWorkout, router, user, showWarning, showInfo]);
+  }, [latestWorkout, router, showInfo]);
 
   const handleEditFutureWorkout = useCallback(() => {
-    if (!user) {
-      showWarning(t('workout.pleaseSignInToEdit'));
-      return;
-    }
-
     if (!earliestFutureWorkout) {
       showInfo(t('workout.noUpcomingWorkoutsToEdit'));
       return;
@@ -68,7 +56,7 @@ export default function WorkoutHome() {
       pathname: '/(drawer)/(tabs)/workout/edit',
       params: { workoutId: earliestFutureWorkout.id },
     });
-  }, [earliestFutureWorkout, router, user, showWarning, showInfo]);
+  }, [earliestFutureWorkout, router, showInfo]);
 
   // Show loading state
   if (isLoadingLatest || isLoadingFuture) {
@@ -118,10 +106,8 @@ export default function WorkoutHome() {
   return (
     <>
       <WorkoutHomeScreen
-        latestWorkout={latestWorkout ?? null}
-        earliestFutureWorkout={earliestFutureWorkout ?? null}
-        isLoadingLatest={isLoadingLatest}
-        isLoadingFuture={isLoadingFuture}
+        latestWorkout={latestWorkout}
+        earliestFutureWorkout={earliestFutureWorkout}
         onCreateWorkout={handleCreateWorkout}
         onEditWorkout={handleEditWorkout}
         onEditFutureWorkout={handleEditFutureWorkout}
