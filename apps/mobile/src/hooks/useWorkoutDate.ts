@@ -10,7 +10,7 @@ type UseWorkoutDateProps = {
 };
 
 export const useWorkoutDate = ({ date, validated, onValidateWorkout }: UseWorkoutDateProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
 
   const selectedDateKey = useMemo(() => {
@@ -28,8 +28,8 @@ export const useWorkoutDate = ({ date, validated, onValidateWorkout }: UseWorkou
       return t('common.noDateSelected');
     }
 
-    return dayjs(parsedDate).format('MMMM D, YYYY');
-  }, [date, t]);
+    return dayjs(parsedDate).locale(i18n.language).format('MMMM D, YYYY');
+  }, [date, t, i18n.language]);
 
   const markedDates = useMemo(() => {
     if (!selectedDateKey) {

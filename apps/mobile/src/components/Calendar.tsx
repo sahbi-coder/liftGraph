@@ -6,8 +6,11 @@ import {
 import { Text, XStack, YStack } from 'tamagui';
 import { Calendar as CalendarIcon } from '@tamagui/lucide-icons';
 import dayjs from 'dayjs';
+import 'dayjs/locale/es';
+import 'dayjs/locale/fr';
 
 import { colors } from '@/theme/colors';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export type CalendarProps = RNCalendarProps;
 
@@ -39,6 +42,8 @@ export function Calendar({
   style,
   ...rest
 }: CalendarProps) {
+  const { i18n } = useTranslation();
+
   const mergedTheme = useMemo<CalendarTheme>(
     () => ({
       ...baseTheme,
@@ -49,6 +54,11 @@ export function Calendar({
   const defaultDate = rest.current
     ? new Date(rest.current).toISOString()
     : new Date().toISOString();
+
+  const formattedDate = useMemo(() => {
+    if (!rest.current) return '';
+    return dayjs(rest.current).locale(i18n.language).format('MMMM D, YYYY');
+  }, [rest.current, i18n.language]);
 
   return (
     <YStack space="$3">
@@ -61,7 +71,7 @@ export function Calendar({
           padding="$2"
         >
           <Text color="$textPrimary" fontSize="$4" fontWeight="600">
-            {dayjs(rest.current).format('MMMM D, YYYY')}
+            {formattedDate}
           </Text>
           <CalendarIcon size={22} color={colors.niceOrange} />
         </XStack>

@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/es';
+import 'dayjs/locale/fr';
 import { Button, Text, XStack, YStack } from 'tamagui';
 import { Clock3, Dumbbell } from '@tamagui/lucide-icons';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -36,10 +38,17 @@ export function WorkoutSummaryCard({
   title,
   buttonLabel,
 }: WorkoutSummaryCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isToday = dayjs(date).isSame(dayjs(), 'day');
   const isBeforeToday = dayjs(date).isBefore(dayjs(), 'day');
-  const timeFromNow = _.upperFirst(useMemo(() => dayjs(date).fromNow(), [date]));
+
+  // Get dayjs locale based on current i18n language
+  const currentLang = i18n.language || 'en';
+  const dayjsLocale = currentLang;
+
+  const timeFromNow = _.upperFirst(
+    useMemo(() => dayjs(date).locale(dayjsLocale).fromNow(), [date, dayjsLocale]),
+  );
   const exerciseLabel = exerciseCount === 1 ? t('common.exercise') : t('common.exercises');
   const setLabel = setCount === 1 ? t('common.set') : t('common.sets');
   const formattedAverageRir =

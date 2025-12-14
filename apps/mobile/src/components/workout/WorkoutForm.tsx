@@ -238,8 +238,8 @@ export function WorkoutForm({
           {shouldShowValidateButton && onValidateWorkout && (
             <Button
               alignSelf="center"
-              width="50%"
-              backgroundColor="#22c55e"
+              minWidth="50%"
+              backgroundColor="#1ABC9C"
               color={colors.white}
               fontWeight="600"
               borderRadius="$4"
@@ -310,14 +310,6 @@ export function WorkoutForm({
               <Text color={colors.white} fontSize="$5" fontWeight="600">
                 {t('workout.selectWorkoutDate')}
               </Text>
-              <Button
-                size="$2"
-                variant="outlined"
-                color={colors.white}
-                onPress={() => setIsCalendarVisible(false)}
-              >
-                {t('common.close')}
-              </Button>
             </XStack>
             <Calendar
               current={selectedDateKey}
@@ -333,6 +325,19 @@ export function WorkoutForm({
               }}
               hideExtraDays
             />
+            <Button
+              size="$2"
+              backgroundColor={colors.niceOrange}
+              height={40}
+              width="50%"
+              fontWeight="600"
+              fontSize="$3"
+              borderRadius="$4"
+              color={colors.white}
+              onPress={() => setIsCalendarVisible(false)}
+            >
+              {t('common.close')}
+            </Button>
           </YStack>
         </YStack>
       </Modal>
