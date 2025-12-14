@@ -3,19 +3,23 @@ import { useRouter } from 'expo-router';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { useWorkoutMutations } from '@/hooks/useWorkoutMutations';
-import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import type { WorkoutInput } from '@/services';
 
 interface UseEditWorkoutHandlersProps {
   workoutId: string | undefined;
+  showSuccess: (message: string, duration?: number) => void;
+  showError: (message: string, duration?: number) => void;
 }
 
-export function useEditWorkoutHandlers({ workoutId }: UseEditWorkoutHandlersProps) {
+export function useEditWorkoutHandlers({
+  workoutId,
+  showSuccess,
+  showError,
+}: UseEditWorkoutHandlersProps) {
   const router = useRouter();
   const { user } = useAuth();
-  const { showSuccess, showError } = useAlertModal();
   const { t } = useTranslation();
   const { updateWorkout, validateWorkout, unvalidateWorkout, deleteWorkout } =
     useWorkoutMutations(workoutId);

@@ -19,6 +19,7 @@ import { useThemeFonts } from '@/theme/fonts';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { UserPreferencesProvider } from '@/contexts/UserPreferencesContext';
 import { NoInternetScreen } from '@/components/NoInternetScreen';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 const config = createConfig({
   firebase: {
@@ -83,17 +84,19 @@ function RootLayout() {
   }
 
   return (
-    <DependenciesProvider dependencies={dependencies}>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <UserPreferencesProvider>
-            <Theme>
-              <Screen />
-            </Theme>
-          </UserPreferencesProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </DependenciesProvider>
+    <ErrorBoundary>
+      <DependenciesProvider dependencies={dependencies}>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <UserPreferencesProvider>
+              <Theme>
+                <Screen />
+              </Theme>
+            </UserPreferencesProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </DependenciesProvider>
+    </ErrorBoundary>
   );
 }
 

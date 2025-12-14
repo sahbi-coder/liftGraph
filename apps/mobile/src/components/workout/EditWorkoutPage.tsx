@@ -25,7 +25,7 @@ export function EditWorkoutPage({ exerciseNavigationPath }: EditWorkoutPageProps
   const { workout, isLoading, isError, refetch } = useWorkout(workoutId);
   const { isUpdating, isValidating, isUnvalidating, isDeleting } = useWorkoutMutations(workoutId);
 
-  const { AlertModalComponent } = useAlertModal();
+  const { showSuccess, showError, AlertModalComponent } = useAlertModal();
   const { t } = useTranslation();
 
   const {
@@ -41,7 +41,7 @@ export function EditWorkoutPage({ exerciseNavigationPath }: EditWorkoutPageProps
     handleValidateWorkout,
     handleUnvalidateWorkout,
     handleConfirmDelete: handleConfirmDeleteFromHook,
-  } = useEditWorkoutHandlers({ workoutId });
+  } = useEditWorkoutHandlers({ workoutId, showSuccess, showError });
 
   const handleDeleteWorkout = useCallback(() => {
     openDeleteModal();
