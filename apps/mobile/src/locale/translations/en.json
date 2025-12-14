@@ -118,6 +118,7 @@
     "exerciseMustHaveSet": "Exercise \"{{name}}\" must have at least one set.",
     "setRequiresNumericValues": "Set {{setIndex}} in \"{{exerciseName}}\" requires numeric weight, reps, and RIR.",
     "repsMustBePositive": "Set {{setIndex}} in \"{{exerciseName}}\" must have positive reps.",
+    "repsMustBeWholeNumber": "Set {{setIndex}} in \"{{exerciseName}}\" must have whole number reps (no decimals).",
     "weightMustBePositive": "Set {{setIndex}} in \"{{exerciseName}}\" must have positive weight.",
     "rirMustBeBetween0And10": "Set {{setIndex}} in \"{{exerciseName}}\" must have RIR between 0 and 10.",
     "rir": "RIR",

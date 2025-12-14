@@ -118,6 +118,7 @@
     "exerciseMustHaveSet": "El ejercicio \"{{name}}\" debe tener al menos una serie.",
     "setRequiresNumericValues": "La serie {{setIndex}} en \"{{exerciseName}}\" requiere peso, reps y RIR numéricos.",
     "repsMustBePositive": "La serie {{setIndex}} en \"{{exerciseName}}\" debe tener reps positivas.",
+    "repsMustBeWholeNumber": "La serie {{setIndex}} en \"{{exerciseName}}\" debe tener reps enteras (sin decimales).",
     "weightMustBePositive": "La serie {{setIndex}} en \"{{exerciseName}}\" debe tener peso positivo.",
     "rirMustBeBetween0And10": "La serie {{setIndex}} en \"{{exerciseName}}\" debe tener RIR entre 0 y 10.",
     "rir": "RIR",
