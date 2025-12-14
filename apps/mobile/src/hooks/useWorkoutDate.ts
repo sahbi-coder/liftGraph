@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import { colors } from '@/theme/colors';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useUserWorkouts } from '@/hooks/useUserWorkouts';
+import type { Workout } from '@/services';
 
 type UseWorkoutDateProps = {
   date: string;
@@ -12,6 +14,7 @@ type UseWorkoutDateProps = {
 export const useWorkoutDate = ({ date, validated, onValidateWorkout }: UseWorkoutDateProps) => {
   const { t, i18n } = useTranslation();
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+  const { workouts } = useUserWorkouts();
 
   const selectedDateKey = useMemo(() => {
     const parsedDate = new Date(date);
@@ -31,19 +34,42 @@ export const useWorkoutDate = ({ date, validated, onValidateWorkout }: UseWorkou
     return dayjs(parsedDate).locale(i18n.language).format('MMMM D, YYYY');
   }, [date, t, i18n.language]);
 
-  const markedDates = useMemo(() => {
-    if (!selectedDateKey) {
-      return undefined;
-    }
+  // Create a map of dates to workouts for quick lookup
+  const workoutsByDate = useMemo(() => {
+    const map = new Map<string, Workout>();
+    workouts?.forEach((workout) => {
+      const dateKey = dayjs(workout.date).format('YYYY-MM-DD');
+      map.set(dateKey, workout);
+    });
+    return map;
+  }, [workouts]);
 
-    return {
-      [selectedDateKey]: {
+  const markedDates = useMemo(() => {
+    const marked: Record<
+      string,
+      { selected: boolean; selectedColor: string; selectedTextColor: string }
+    > = {};
+
+    // Mark all workout dates
+    workoutsByDate.forEach((workout, dateKey) => {
+      marked[dateKey] = {
+        selected: true,
+        selectedColor: workout.validated ? colors.niceOrange : colors.white,
+        selectedTextColor: workout.validated ? colors.white : colors.darkerGray,
+      };
+    });
+
+    // Mark the selected date (override if it exists, or add if it doesn't)
+    if (selectedDateKey) {
+      marked[selectedDateKey] = {
         selected: true,
         selectedColor: colors.niceOrange,
-        selectedTextColor: colors.white,
-      },
-    };
-  }, [selectedDateKey]);
+        selectedTextColor: colors.darkerGray,
+      };
+    }
+
+    return marked;
+  }, [workoutsByDate, selectedDateKey]);
 
   // Check if validate button should be shown
   const shouldShowValidateButton = useMemo(() => {
