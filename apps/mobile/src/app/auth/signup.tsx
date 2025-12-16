@@ -16,6 +16,7 @@ import {
   getPasswordSchemaForSignup,
   getConfirmPasswordSchema,
 } from '@/utils/authSchemas';
+import { KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 
 export default function SignupScreen() {
   const [name, setName] = useState('');
@@ -94,140 +95,158 @@ export default function SignupScreen() {
   const buttonDisabled = loading || !!error;
 
   return (
-    <YStack flex={1} backgroundColor="$background" padding="$4" paddingTop="$10">
-      <Image
-        source={logoSource}
-        width={100}
-        height={100}
-        alignSelf="center"
-        marginBottom="$2"
-        borderRadius="$4"
-        resizeMode="contain"
-      />
-      <H1 color="$textPrimary" fontSize="$10" fontWeight="bold" textAlign="center">
-        {t('auth.createAccount')}
-      </H1>
-      <Text color="$textSecondary" marginBottom="$2" fontSize="$4" textAlign="center">
-        {t('auth.joinTagline')}
-      </Text>
-      <YStack
-        space="$4"
-        maxWidth={400}
-        width="100%"
-        alignSelf="center"
-        padding="$4"
-        backgroundColor="$secondarybackground"
-        borderRadius="$4"
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
-        <H3 color="$textPrimary" opacity={0.75} fontSize="$9" fontWeight="bold" textAlign="center">
-          {t('auth.letsGetStarted')}
-        </H3>
-        <YStack space="$3" marginTop="$2">
-          <Input
-            size="$4"
-            placeholder={t('auth.fullName')}
-            value={name}
-            onChangeText={handleNameChange}
-            borderColor="$inputFieldBorder"
-            backgroundColor="$inputFieldBackground"
-            placeholderTextColor="$inputFieldPlaceholderText"
-            color="$inputFieldText"
-            focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
+        <YStack flex={1} backgroundColor="$background" padding="$4" paddingTop="$10">
+          <Image
+            source={logoSource}
+            width={100}
+            height={100}
+            alignSelf="center"
+            marginBottom="$2"
+            borderRadius="$4"
+            resizeMode="contain"
           />
-
-          <Input
-            size="$4"
-            placeholder={t('auth.email')}
-            value={email}
-            onChangeText={handleEmailChange}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            borderColor="$inputFieldBorder"
-            backgroundColor="$inputFieldBackground"
-            placeholderTextColor="$inputFieldPlaceholderText"
-            color="$inputFieldText"
-            focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
-          />
-
-          <PasswordInput value={password} onChangeText={handlePasswordChange} />
-          <PasswordInput
-            value={confirmPassword}
-            onChangeText={handleConfirmPasswordChange}
-            placeholder={t('auth.confirmPassword')}
-          />
-
-          <XStack justifyContent="center">
-            {error && (
-              <Text color="$errorColor" fontSize="$3" textAlign="center">
-                {t(error)}
-              </Text>
-            )}
-          </XStack>
-          <Button
-            size="$4"
-            backgroundColor="$primaryButton"
-            color="$primaryButtonText"
-            fontWeight="600"
-            onPress={handleSignup}
-            disabled={buttonDisabled}
-            opacity={buttonDisabled ? 0.5 : 1}
+          <H1 color="$textPrimary" fontSize="$10" fontWeight="bold" textAlign="center">
+            {t('auth.createAccount')}
+          </H1>
+          <Text color="$textSecondary" marginBottom="$2" fontSize="$4" textAlign="center">
+            {t('auth.joinTagline')}
+          </Text>
+          <YStack
+            space="$4"
+            maxWidth={400}
+            width="100%"
+            alignSelf="center"
+            padding="$4"
+            backgroundColor="$secondarybackground"
+            borderRadius="$4"
           >
-            {buttonDisabled ? t('auth.creatingAccount') : t('auth.signUp')}
-          </Button>
-        </YStack>
-      </YStack>
+            <H3
+              color="$textPrimary"
+              opacity={0.75}
+              fontSize="$9"
+              fontWeight="bold"
+              textAlign="center"
+            >
+              {t('auth.letsGetStarted')}
+            </H3>
+            <YStack space="$3" marginTop="$2">
+              <Input
+                size="$4"
+                placeholder={t('auth.fullName')}
+                value={name}
+                onChangeText={handleNameChange}
+                borderColor="$inputFieldBorder"
+                backgroundColor="$inputFieldBackground"
+                placeholderTextColor="$inputFieldPlaceholderText"
+                color="$inputFieldText"
+                focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
+              />
 
-      <XStack space="$2" justifyContent="center" marginTop="$4">
-        <Text color="$textSecondary">{t('auth.alreadyHaveAccount')}</Text>
-        <Text color="$textTertiary" fontWeight="600" onPress={() => router.push('/auth/login')}>
-          {t('auth.signIn')}
-        </Text>
-      </XStack>
-      <XStack
-        space="$6"
-        justifyContent="center"
-        alignItems="flex-start"
-        marginTop="$2"
-        marginBottom="$6"
-      >
-        <YStack alignItems="center" space="$3">
-          <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
-            <View
-              backgroundColor="$primaryButton"
-              position="absolute"
-              borderRadius="$5"
-              top={0}
-              left={0}
-              right={0}
-              bottom={0}
-              opacity={0.3}
-            />
-            <Entypo name="calendar" size={32} color={colors.niceOrange} />
+              <Input
+                size="$4"
+                placeholder={t('auth.email')}
+                value={email}
+                onChangeText={handleEmailChange}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                borderColor="$inputFieldBorder"
+                backgroundColor="$inputFieldBackground"
+                placeholderTextColor="$inputFieldPlaceholderText"
+                color="$inputFieldText"
+                focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
+              />
+
+              <PasswordInput value={password} onChangeText={handlePasswordChange} />
+              <PasswordInput
+                value={confirmPassword}
+                onChangeText={handleConfirmPasswordChange}
+                placeholder={t('auth.confirmPassword')}
+              />
+
+              <XStack justifyContent="center">
+                {error && (
+                  <Text color="$errorColor" fontSize="$3" textAlign="center">
+                    {t(error)}
+                  </Text>
+                )}
+              </XStack>
+              <Button
+                size="$4"
+                backgroundColor="$primaryButton"
+                color="$primaryButtonText"
+                fontWeight="600"
+                onPress={handleSignup}
+                disabled={buttonDisabled}
+                opacity={buttonDisabled ? 0.5 : 1}
+              >
+                {buttonDisabled ? t('auth.creatingAccount') : t('auth.signUp')}
+              </Button>
+            </YStack>
           </YStack>
-          <Text color="$textSecondary" fontWeight="600">
-            {t('features.planWorkouts')}
-          </Text>
+
+          <XStack space="$2" justifyContent="center" marginTop="$4">
+            <Text color="$textSecondary">{t('auth.alreadyHaveAccount')}</Text>
+            <Text color="$textTertiary" fontWeight="600" onPress={() => router.push('/auth/login')}>
+              {t('auth.signIn')}
+            </Text>
+          </XStack>
+          <XStack
+            space="$6"
+            justifyContent="center"
+            alignItems="flex-start"
+            marginTop="$2"
+            marginBottom="$6"
+          >
+            <YStack alignItems="center" space="$3">
+              <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
+                <View
+                  backgroundColor="$primaryButton"
+                  position="absolute"
+                  borderRadius="$5"
+                  top={0}
+                  left={0}
+                  right={0}
+                  bottom={0}
+                  opacity={0.3}
+                />
+                <Entypo name="calendar" size={32} color={colors.niceOrange} />
+              </YStack>
+              <Text color="$textSecondary" fontWeight="600">
+                {t('features.planWorkouts')}
+              </Text>
+            </YStack>
+            <YStack alignItems="center" space="$3">
+              <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
+                <View
+                  backgroundColor="$primaryButton"
+                  position="absolute"
+                  borderRadius="$5"
+                  top={0}
+                  left={0}
+                  right={0}
+                  bottom={0}
+                  opacity={0.3}
+                />
+                <Foundation name="graph-trend" size={34} color={colors.niceOrange} />
+              </YStack>
+              <Text color="$textSecondary" fontWeight="600">
+                {t('features.trackProgress')}
+              </Text>
+            </YStack>
+          </XStack>
+          <AlertModalComponent />
         </YStack>
-        <YStack alignItems="center" space="$3">
-          <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
-            <View
-              backgroundColor="$primaryButton"
-              position="absolute"
-              borderRadius="$5"
-              top={0}
-              left={0}
-              right={0}
-              bottom={0}
-              opacity={0.3}
-            />
-            <Foundation name="graph-trend" size={34} color={colors.niceOrange} />
-          </YStack>
-          <Text color="$textSecondary" fontWeight="600">
-            {t('features.trackProgress')}
-          </Text>
-        </YStack>
-      </XStack>
-      <AlertModalComponent />
-    </YStack>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

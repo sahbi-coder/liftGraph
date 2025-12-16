@@ -11,6 +11,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { getAuthErrorMessage } from '@/utils/authErrors';
 import { useValidateAuthScreen } from '@/hooks/useValidateAuthScreen';
 import { getEmailSchema, getPasswordSchema } from '@/utils/authSchemas';
+import { KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 
 const logoSource = require('../../../assets/exp-icon.png');
 
@@ -67,131 +68,153 @@ export default function LoginScreen() {
   const buttonDisabled = loading || !!error;
 
   return (
-    <YStack flex={1} backgroundColor="$background" padding="$4" paddingTop="$10">
-      <Image
-        source={logoSource}
-        width={100}
-        height={100}
-        alignSelf="center"
-        marginBottom="$2"
-        borderRadius="$4"
-        resizeMode="contain"
-      />
-      <H1 color="$textPrimary" fontSize="$10" fontWeight="bold" textAlign="center">
-        {t('common.appName')}
-      </H1>
-      <Text color="$textSecondary" marginBottom="$4" fontSize="$4" textAlign="center">
-        {t('auth.tagline')}
-      </Text>
-      <YStack
-        space="$4"
-        maxWidth={400}
-        width="100%"
-        alignSelf="center"
-        padding="$4"
-        backgroundColor="$secondarybackground"
-        borderRadius="$4"
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
-        <H3 color="$textPrimary" opacity={0.75} fontSize="$9" fontWeight="bold" textAlign="center">
-          {t('auth.welcomeBack')}
-        </H3>
-        <YStack space="$3" marginTop="$2">
-          <Input
-            size="$4"
-            placeholder={t('auth.email')}
-            value={email}
-            onChangeText={handleEmailChange}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            borderColor="$inputFieldBorder"
-            backgroundColor="$inputFieldBackground"
-            placeholderTextColor="$inputFieldPlaceholderText"
-            color="$inputFieldText"
-            focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
+        <YStack flex={1} backgroundColor="$background" padding="$4" paddingTop="$10">
+          <Image
+            source={logoSource}
+            width={100}
+            height={100}
+            alignSelf="center"
+            marginBottom="$2"
+            borderRadius="$4"
+            resizeMode="contain"
           />
+          <H1 color="$textPrimary" fontSize="$10" fontWeight="bold" textAlign="center">
+            {t('common.appName')}
+          </H1>
+          <Text color="$textSecondary" marginBottom="$4" fontSize="$4" textAlign="center">
+            {t('auth.tagline')}
+          </Text>
+          <YStack
+            space="$4"
+            maxWidth={400}
+            width="100%"
+            alignSelf="center"
+            padding="$4"
+            backgroundColor="$secondarybackground"
+            borderRadius="$4"
+          >
+            <H3
+              color="$textPrimary"
+              opacity={0.75}
+              fontSize="$9"
+              fontWeight="bold"
+              textAlign="center"
+            >
+              {t('auth.welcomeBack')}
+            </H3>
+            <YStack space="$3" marginTop="$2">
+              <Input
+                size="$4"
+                placeholder={t('auth.email')}
+                value={email}
+                onChangeText={handleEmailChange}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                borderColor="$inputFieldBorder"
+                backgroundColor="$inputFieldBackground"
+                placeholderTextColor="$inputFieldPlaceholderText"
+                color="$inputFieldText"
+                focusStyle={{ borderColor: '$inputFieldFocusBorder' }}
+              />
 
-          <PasswordInput value={password} onChangeText={handlePasswordChange} />
-          <XStack justifyContent="center">
-            {error && (
-              <Text color="$errorColor" fontSize="$3" textAlign="center">
-                {error}
-              </Text>
-            )}
+              <PasswordInput value={password} onChangeText={handlePasswordChange} />
+              <XStack justifyContent="center">
+                {error && (
+                  <Text color="$errorColor" fontSize="$3" textAlign="center">
+                    {error}
+                  </Text>
+                )}
+              </XStack>
+              <Button
+                size="$3"
+                color="$textTertiary"
+                variant="outlined"
+                alignSelf="flex-end"
+                onPress={() => router.push('/auth/forgot-password')}
+              >
+                {t('auth.forgotPassword')}
+              </Button>
+              <Button
+                size="$4"
+                backgroundColor="$primaryButton"
+                color="$primaryButtonText"
+                fontWeight="600"
+                onPress={handleLogin}
+                disabled={buttonDisabled}
+                opacity={buttonDisabled ? 0.5 : 1}
+              >
+                {buttonDisabled ? t('auth.signingIn') : t('auth.signIn')}
+              </Button>
+            </YStack>
+          </YStack>
+
+          <XStack space="$2" justifyContent="center" marginTop="$4">
+            <Text color="$textSecondary">{t('auth.dontHaveAccount')}</Text>
+            <Text
+              color="$textTertiary"
+              fontWeight="600"
+              onPress={() => router.push('/auth/signup')}
+            >
+              {t('auth.signUp')}
+            </Text>
           </XStack>
-          <Button
-            size="$3"
-            color="$textTertiary"
-            variant="outlined"
-            alignSelf="flex-end"
-            onPress={() => router.push('/auth/forgot-password')}
+          <XStack
+            space="$6"
+            justifyContent="center"
+            alignItems="flex-start"
+            marginTop="$4"
+            marginBottom="$4"
           >
-            {t('auth.forgotPassword')}
-          </Button>
-          <Button
-            size="$4"
-            backgroundColor="$primaryButton"
-            color="$primaryButtonText"
-            fontWeight="600"
-            onPress={handleLogin}
-            disabled={buttonDisabled}
-            opacity={buttonDisabled ? 0.5 : 1}
-          >
-            {buttonDisabled ? t('auth.signingIn') : t('auth.signIn')}
-          </Button>
+            <YStack alignItems="center" space="$3">
+              <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
+                <View
+                  backgroundColor="$primaryButton"
+                  position="absolute"
+                  borderRadius="$5"
+                  top={0}
+                  left={0}
+                  right={0}
+                  bottom={0}
+                  opacity={0.3}
+                />
+                <Entypo name="calendar" size={32} color={colors.niceOrange} />
+              </YStack>
+              <Text color="$textSecondary" fontWeight="600">
+                {t('features.planWorkouts')}
+              </Text>
+            </YStack>
+            <YStack alignItems="center" space="$3">
+              <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
+                <View
+                  backgroundColor="$primaryButton"
+                  position="absolute"
+                  borderRadius="$5"
+                  top={0}
+                  left={0}
+                  right={0}
+                  bottom={0}
+                  opacity={0.3}
+                />
+                <Foundation name="graph-trend" size={34} color={colors.niceOrange} />
+              </YStack>
+              <Text color="$textSecondary" fontWeight="600">
+                {t('features.trackProgress')}
+              </Text>
+            </YStack>
+          </XStack>
+          <AlertModalComponent />
         </YStack>
-      </YStack>
-
-      <XStack space="$2" justifyContent="center" marginTop="$4">
-        <Text color="$textSecondary">{t('auth.dontHaveAccount')}</Text>
-        <Text color="$textTertiary" fontWeight="600" onPress={() => router.push('/auth/signup')}>
-          {t('auth.signUp')}
-        </Text>
-      </XStack>
-      <XStack
-        space="$6"
-        justifyContent="center"
-        alignItems="flex-start"
-        marginTop="$4"
-        marginBottom="$4"
-      >
-        <YStack alignItems="center" space="$3">
-          <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
-            <View
-              backgroundColor="$primaryButton"
-              position="absolute"
-              borderRadius="$5"
-              top={0}
-              left={0}
-              right={0}
-              bottom={0}
-              opacity={0.3}
-            />
-            <Entypo name="calendar" size={32} color={colors.niceOrange} />
-          </YStack>
-          <Text color="$textSecondary" fontWeight="600">
-            {t('features.planWorkouts')}
-          </Text>
-        </YStack>
-        <YStack alignItems="center" space="$3">
-          <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
-            <View
-              backgroundColor="$primaryButton"
-              position="absolute"
-              borderRadius="$5"
-              top={0}
-              left={0}
-              right={0}
-              bottom={0}
-              opacity={0.3}
-            />
-            <Foundation name="graph-trend" size={34} color={colors.niceOrange} />
-          </YStack>
-          <Text color="$textSecondary" fontWeight="600">
-            {t('features.trackProgress')}
-          </Text>
-        </YStack>
-      </XStack>
-      <AlertModalComponent />
-    </YStack>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
