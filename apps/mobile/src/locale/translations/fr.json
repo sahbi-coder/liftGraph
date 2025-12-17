@@ -95,7 +95,7 @@
     }
   },
   "features": {
-    "planWorkouts": "Planifier les Entraînements",
+    "planWorkouts": "Planifier Séances",
     "trackProgress": "Suivre les Progrès"
   },
   "workout": {
