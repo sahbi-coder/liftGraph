@@ -29,21 +29,20 @@ export default function WelcomeOnboardingScreen() {
           width={100}
           height={100}
           borderRadius="$4"
-          backgroundColor={colors.darkGray}
           justifyContent="center"
           alignItems="center"
           marginBottom="$4"
         >
           <Image
             source={logoSource}
-            style={{ width: 80, height: 80, borderRadius: 8 }}
+            style={{ width: 100, height: 100, borderRadius: 8 }}
             resizeMode="contain"
           />
         </YStack>
         <H1 color={colors.white} fontSize="$10" fontWeight="bold" textAlign="center">
           {t('onboarding.welcomeToLiftGraph')}
         </H1>
-        <Text color={colors.midGray} fontSize="$5" textAlign="center" marginTop="$2">
+        <Text color={colors.midGray} fontSize="$5" textAlign="center" marginVertical="$3.5">
           {t('onboarding.personalPowerliftingCompanion')}
         </Text>
       </YStack>
@@ -54,7 +53,7 @@ export default function WelcomeOnboardingScreen() {
           space="$4"
           alignItems="center"
           backgroundColor={colors.darkGray}
-          padding="$4"
+          padding="$2.5"
           borderRadius="$4"
         >
           <YStack
@@ -82,7 +81,7 @@ export default function WelcomeOnboardingScreen() {
           space="$4"
           alignItems="center"
           backgroundColor={colors.darkGray}
-          padding="$4"
+          padding="$2.5"
           borderRadius="$4"
         >
           <YStack
@@ -110,7 +109,7 @@ export default function WelcomeOnboardingScreen() {
           space="$4"
           alignItems="center"
           backgroundColor={colors.darkGray}
-          padding="$4"
+          padding="$2.5"
           borderRadius="$4"
         >
           <YStack
@@ -133,22 +132,22 @@ export default function WelcomeOnboardingScreen() {
             </Text>
           </YStack>
         </XStack>
+        <YStack space="$3">
+          <Button
+            size="$5"
+            backgroundColor={colors.niceOrange}
+            color={colors.white}
+            fontWeight="600"
+            borderRadius="$4"
+            onPress={() => router.push('/onboarding/units')}
+            pressStyle={{ opacity: 0.85 }}
+          >
+            {t('onboarding.getStarted')}
+          </Button>
+        </YStack>
       </YStack>
 
       {/* Action Buttons */}
-      <YStack space="$3" marginBottom="$6">
-        <Button
-          size="$5"
-          backgroundColor={colors.niceOrange}
-          color={colors.white}
-          fontWeight="600"
-          borderRadius="$4"
-          onPress={() => router.push('/onboarding/units')}
-          pressStyle={{ opacity: 0.85 }}
-        >
-          {t('onboarding.getStarted')}
-        </Button>
-      </YStack>
     </YStack>
   );
 }

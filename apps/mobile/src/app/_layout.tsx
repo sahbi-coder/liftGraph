@@ -20,6 +20,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import { UserPreferencesProvider } from '@/contexts/UserPreferencesContext';
 import { NoInternetScreen } from '@/components/NoInternetScreen';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { colors } from '@/theme/colors';
 
 const config = createConfig({
   firebase: {
@@ -42,7 +43,14 @@ SplashScreen.preventAutoHideAsync().catch(console.error);
 function Theme({ children }: PropsWithChildren) {
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme="light">
-      <ThemeProvider value={DefaultTheme}>{children}</ThemeProvider>
+      <ThemeProvider
+        value={{
+          ...DefaultTheme,
+          colors: { ...DefaultTheme.colors, background: colors.darkerGray },
+        }}
+      >
+        {children}
+      </ThemeProvider>
     </TamaguiProvider>
   );
 }

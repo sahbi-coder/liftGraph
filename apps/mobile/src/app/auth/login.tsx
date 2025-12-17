@@ -11,7 +11,9 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { getAuthErrorMessage } from '@/utils/authErrors';
 import { useValidateAuthScreen } from '@/hooks/useValidateAuthScreen';
 import { getEmailSchema, getPasswordSchema } from '@/utils/authSchemas';
-import { KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { ScrollView } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { useKeyboardAnimation } from '@/hooks/useKeyboardAnimation';
 
 const logoSource = require('../../../assets/exp-icon.png');
 
@@ -23,6 +25,11 @@ export default function LoginScreen() {
   const { signIn } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
+  const { animatedStyle } = useKeyboardAnimation({
+    translateY: -100,
+    durationUp: 250,
+    durationDown: 100,
+  });
 
   const { error } = useValidateAuthScreen([
     {
@@ -68,16 +75,14 @@ export default function LoginScreen() {
   const buttonDisabled = loading || !!error;
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
+      showsVerticalScrollIndicator={false}
+      style={{ backgroundColor: colors.darkerGray }}
     >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
+      <Animated.View style={[{ flex: 1 }, animatedStyle]}>
         <YStack flex={1} backgroundColor="$background" padding="$4" paddingTop="$10">
           <Image
             source={logoSource}
@@ -91,7 +96,7 @@ export default function LoginScreen() {
           <H1 color="$textPrimary" fontSize="$10" fontWeight="bold" textAlign="center">
             {t('common.appName')}
           </H1>
-          <Text color="$textSecondary" marginBottom="$4" fontSize="$4" textAlign="center">
+          <Text color="$textSecondary" marginVertical="$3.5" fontSize="$4" textAlign="center">
             {t('auth.tagline')}
           </Text>
           <YStack
@@ -153,7 +158,7 @@ export default function LoginScreen() {
                 disabled={buttonDisabled}
                 opacity={buttonDisabled ? 0.5 : 1}
               >
-                {buttonDisabled ? t('auth.signingIn') : t('auth.signIn')}
+                {loading ? t('auth.signingIn') : t('auth.signIn')}
               </Button>
             </YStack>
           </YStack>
@@ -175,8 +180,15 @@ export default function LoginScreen() {
             marginTop="$4"
             marginBottom="$4"
           >
-            <YStack alignItems="center" space="$3">
-              <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
+            <YStack alignItems="center" space="$1.5" flex={1}>
+              <YStack
+                padding="$2"
+                alignItems="center"
+                justifyContent="center"
+                position="relative"
+                height={56}
+                width={56}
+              >
                 <View
                   backgroundColor="$primaryButton"
                   position="absolute"
@@ -189,12 +201,19 @@ export default function LoginScreen() {
                 />
                 <Entypo name="calendar" size={32} color={colors.niceOrange} />
               </YStack>
-              <Text color="$textSecondary" fontWeight="600">
+              <Text color="$textSecondary" fontWeight="600" textAlign="center">
                 {t('features.planWorkouts')}
               </Text>
             </YStack>
-            <YStack alignItems="center" space="$3">
-              <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
+            <YStack alignItems="center" space="$1.5" flex={1}>
+              <YStack
+                padding="$2"
+                alignItems="center"
+                justifyContent="center"
+                position="relative"
+                height={56}
+                width={56}
+              >
                 <View
                   backgroundColor="$primaryButton"
                   position="absolute"
@@ -207,14 +226,14 @@ export default function LoginScreen() {
                 />
                 <Foundation name="graph-trend" size={34} color={colors.niceOrange} />
               </YStack>
-              <Text color="$textSecondary" fontWeight="600">
+              <Text color="$textSecondary" fontWeight="600" textAlign="center">
                 {t('features.trackProgress')}
               </Text>
             </YStack>
           </XStack>
           <AlertModalComponent />
         </YStack>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      </Animated.View>
+    </ScrollView>
   );
 }

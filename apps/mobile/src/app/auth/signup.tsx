@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import { YStack, XStack, Text, Input, Button, H1, H3, Image, View } from 'tamagui';
+import { YStack, XStack, Text, Input, Button, H1, H3, Image } from 'tamagui';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
-import Entypo from '@expo/vector-icons/Entypo';
-import Foundation from '@expo/vector-icons/Foundation';
-import { colors } from '@/theme/colors';
 import { PasswordInput } from '@/components/PasswordInput';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -16,7 +13,9 @@ import {
   getPasswordSchemaForSignup,
   getConfirmPasswordSchema,
 } from '@/utils/authSchemas';
-import { KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { ScrollView } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { useKeyboardAnimation } from '@/hooks/useKeyboardAnimation';
 
 export default function SignupScreen() {
   const [name, setName] = useState('');
@@ -28,6 +27,11 @@ export default function SignupScreen() {
   const { signUp } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
+  const { animatedStyle } = useKeyboardAnimation({
+    translateY: -200,
+    durationUp: 250,
+    durationDown: 100,
+  });
 
   const { error } = useValidateAuthScreen([
     {
@@ -95,16 +99,14 @@ export default function SignupScreen() {
   const buttonDisabled = loading || !!error;
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
+      showsVerticalScrollIndicator={false}
+      style={{ backgroundColor: '$background' }}
     >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
+      <Animated.View style={[{ flex: 1 }, animatedStyle]}>
         <YStack flex={1} backgroundColor="$background" padding="$4" paddingTop="$10">
           <Image
             source={logoSource}
@@ -118,7 +120,7 @@ export default function SignupScreen() {
           <H1 color="$textPrimary" fontSize="$10" fontWeight="bold" textAlign="center">
             {t('auth.createAccount')}
           </H1>
-          <Text color="$textSecondary" marginBottom="$2" fontSize="$4" textAlign="center">
+          <Text color="$textSecondary" marginVertical="$3.5" fontSize="$4" textAlign="center">
             {t('auth.joinTagline')}
           </Text>
           <YStack
@@ -189,7 +191,7 @@ export default function SignupScreen() {
                 disabled={buttonDisabled}
                 opacity={buttonDisabled ? 0.5 : 1}
               >
-                {buttonDisabled ? t('auth.creatingAccount') : t('auth.signUp')}
+                {loading ? t('auth.creatingAccount') : t('auth.signUp')}
               </Button>
             </YStack>
           </YStack>
@@ -200,53 +202,10 @@ export default function SignupScreen() {
               {t('auth.signIn')}
             </Text>
           </XStack>
-          <XStack
-            space="$6"
-            justifyContent="center"
-            alignItems="flex-start"
-            marginTop="$2"
-            marginBottom="$6"
-          >
-            <YStack alignItems="center" space="$3">
-              <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
-                <View
-                  backgroundColor="$primaryButton"
-                  position="absolute"
-                  borderRadius="$5"
-                  top={0}
-                  left={0}
-                  right={0}
-                  bottom={0}
-                  opacity={0.3}
-                />
-                <Entypo name="calendar" size={32} color={colors.niceOrange} />
-              </YStack>
-              <Text color="$textSecondary" fontWeight="600">
-                {t('features.planWorkouts')}
-              </Text>
-            </YStack>
-            <YStack alignItems="center" space="$3">
-              <YStack padding="$2" alignItems="center" justifyContent="center" position="relative">
-                <View
-                  backgroundColor="$primaryButton"
-                  position="absolute"
-                  borderRadius="$5"
-                  top={0}
-                  left={0}
-                  right={0}
-                  bottom={0}
-                  opacity={0.3}
-                />
-                <Foundation name="graph-trend" size={34} color={colors.niceOrange} />
-              </YStack>
-              <Text color="$textSecondary" fontWeight="600">
-                {t('features.trackProgress')}
-              </Text>
-            </YStack>
-          </XStack>
+
           <AlertModalComponent />
         </YStack>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      </Animated.View>
+    </ScrollView>
   );
 }

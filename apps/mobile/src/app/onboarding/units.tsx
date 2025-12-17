@@ -116,7 +116,7 @@ export default function UnitsOnboardingScreen() {
         <XStack
           backgroundColor={isSelected ? colors.darkGray : colors.midGray}
           borderRadius="$4"
-          padding="$4"
+          padding="$2"
           space="$3"
           alignItems="center"
           borderWidth={isSelected ? 2 : 0}
@@ -137,7 +137,7 @@ export default function UnitsOnboardingScreen() {
             <Text color={colors.white} fontSize="$5" fontWeight="600" marginBottom="$1">
               {option.label}
             </Text>
-            <Text color={colors.midGray} fontSize="$4">
+            <Text color={colors.white} fontSize="$4" opacity={0.75}>
               {option.subtitle}
             </Text>
           </YStack>
@@ -177,24 +177,23 @@ export default function UnitsOnboardingScreen() {
         {/* Logo/Icon */}
         <YStack alignItems="center" marginBottom="$6">
           <YStack
-            width={80}
-            height={80}
+            width={100}
+            height={100}
             borderRadius="$4"
-            backgroundColor={colors.darkGray}
             justifyContent="center"
             alignItems="center"
             marginBottom="$4"
           >
             <Image
               source={logoSource}
-              style={{ width: 60, height: 60, borderRadius: 8 }}
+              style={{ width: 100, height: 100, borderRadius: 8 }}
               resizeMode="contain"
             />
           </YStack>
-          <Text color={colors.white} fontSize="$9" fontWeight="bold" textAlign="center">
+          <Text color={colors.white} fontSize="$10" fontWeight="bold" textAlign="center">
             {t('onboarding.chooseYourUnits')}
           </Text>
-          <Text color={colors.midGray} fontSize="$4" textAlign="center" marginTop="$2">
+          <Text color={colors.midGray} fontSize="$4" textAlign="center" marginVertical="$3.5">
             {t('onboarding.chooseYourUnitsDescription')}
           </Text>
         </YStack>
