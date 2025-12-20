@@ -315,7 +315,10 @@
     "rateUs": "Rate Us",
     "contactUs": "Contact Us",
     "version": "Version 2.4.1",
-    "english": "English"
+    "english": "English",
+    "spanish": "Spanish",
+    "french": "French",
+    "selectPreferredLanguage": "Select your preferred language"
   },
   "profile": {
     "title": "Profile",

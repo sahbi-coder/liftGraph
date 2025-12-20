@@ -115,7 +115,7 @@ export default function UnitsSettingsScreen() {
         <XStack
           backgroundColor={isSelected ? colors.darkGray : colors.midGray}
           borderRadius="$4"
-          padding="$4"
+          padding="$2"
           space="$3"
           alignItems="center"
           borderWidth={isSelected ? 2 : 0}
@@ -136,7 +136,7 @@ export default function UnitsSettingsScreen() {
             <Text color={colors.white} fontSize="$5" fontWeight="600" marginBottom="$1">
               {option.label}
             </Text>
-            <Text color={colors.midGray} fontSize="$4">
+            <Text color={colors.white} fontSize="$4" opacity={0.75}>
               {option.subtitle}
             </Text>
           </YStack>
@@ -161,7 +161,7 @@ export default function UnitsSettingsScreen() {
 
   return (
     <YStack flex={1} backgroundColor={colors.darkerGray}>
-      <ScrollView contentContainerStyle={{ padding: 16, paddingTop: 16, paddingBottom: 100 }}>
+      <ScrollView contentContainerStyle={{ padding: 16, paddingTop: 40, paddingBottom: 40 }}>
         <Text color={colors.midGray} fontSize="$4" marginBottom="$6">
           {t('settings.selectPreferredUnits')}
         </Text>
@@ -200,10 +200,9 @@ export default function UnitsSettingsScreen() {
           )}
         </YStack>
         {/* Save Button */}
-        <XStack backgroundColor={colors.darkerGray}>
+        <YStack space="$3">
           <Button
             size="$5"
-            flex={1}
             backgroundColor={colors.niceOrange}
             color={colors.white}
             fontWeight="600"
@@ -215,7 +214,7 @@ export default function UnitsSettingsScreen() {
           >
             {loading ? t('common.saving') : t('settings.saveChanges')}
           </Button>
-        </XStack>
+        </YStack>
       </ScrollView>
 
       <AlertModalComponent />

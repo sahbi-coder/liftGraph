@@ -10,10 +10,10 @@ import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import { useQuery } from '@tanstack/react-query';
-import { getDeviceLanguage } from '@/locale/i18n';
+import { getCurrentLanguage } from '@/locale/i18n';
 import { EXERCISE_CATEGORIES, BODY_PARTS } from '@/services';
 
-const language = getDeviceLanguage();
+const language = getCurrentLanguage();
 
 export default function EditExerciseScreen() {
   const router = useRouter();

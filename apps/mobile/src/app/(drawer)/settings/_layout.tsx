@@ -7,6 +7,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 
 export default function SettingsLayout() {
   const { t } = useTranslation();
+  const titlePadding = Platform.OS === 'android' ? '    ' : '';
   return (
     <Stack
       screenOptions={{
@@ -15,20 +16,31 @@ export default function SettingsLayout() {
         headerTitleStyle: { fontSize: 28, color: colors.white },
         headerStyle: { backgroundColor: colors.darkerGray },
         headerTintColor: colors.white,
-        headerBackVisible: true,
+        headerBackVisible: false,
       }}
     >
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: t('settings.title'),
-          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
+          headerTitleAlign: 'left',
+          headerTitle: `${titlePadding}${t('settings.title')}`,
+          headerLeft: () => <BackButton />,
+        }}
+      />
+      <Stack.Screen
+        name="language"
+        options={{
+          headerTitleAlign: 'left',
+          headerLeft: () => <BackButton />,
+          headerTitle: `${titlePadding}${t('settings.language')}`,
         }}
       />
       <Stack.Screen
         name="units"
         options={{
-          headerTitle: t('settings.unitsAndMeasurements'),
+          headerTitleAlign: 'left',
+          headerLeft: () => <BackButton />,
+          headerTitle: `${titlePadding}${t('settings.unitsAndMeasurements')}`,
         }}
       />
     </Stack>

@@ -14,7 +14,7 @@ import {
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
-import { getDeviceLanguage } from '@/locale/i18n';
+import { getCurrentLanguage } from '@/locale/i18n';
 import { EXERCISE_CATEGORIES, BODY_PARTS } from '@/services';
 
 export default function CreateExerciseScreen() {
@@ -48,7 +48,7 @@ export default function CreateExerciseScreen() {
 
     try {
       setIsCreating(true);
-      const exerciseId = await services.firestore.createExercise(user.uid, getDeviceLanguage(), {
+      const exerciseId = await services.firestore.createExercise(user.uid, getCurrentLanguage(), {
         name: name.trim(),
         category: category.trim(),
         bodyPart: bodyPart.trim(),

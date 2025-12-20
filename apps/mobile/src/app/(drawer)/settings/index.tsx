@@ -15,7 +15,7 @@ export default function SettingsScreen() {
   const { t } = useTranslation();
 
   const handleNavigation = (route: string) => {
-    router.push(route as any);
+    router.push(route);
   };
 
   const accountSettings = [
@@ -32,8 +32,8 @@ export default function SettingsScreen() {
       id: 'language',
       label: t('settings.language'),
       icon: Languages,
-      value: t('settings.english'),
-      onPress: () => console.log('Language'),
+
+      onPress: () => handleNavigation('/(drawer)/settings/language'),
     },
   ];
 

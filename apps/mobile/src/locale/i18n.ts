@@ -25,7 +25,7 @@ const isSupportedLanguage = (lang: any): lang is SupportedLanguage => {
 
 // Get device language or default to 'en'
 // If device language is not supported, falls back to 'en'
-export const getDeviceLanguage = () => {
+const getDeviceLanguage = () => {
   const locales = getLocales();
   const deviceLanguage = locales[0]?.languageCode?.toLowerCase() ?? 'en';
   // Check if we support this language, otherwise default to 'en'
@@ -64,6 +64,11 @@ export const changeLanguage = async (languageCode: string) => {
     // Fallback to 'en' on error
     await i18n.changeLanguage('en');
   }
+};
+
+// Get the current i18n language
+export const getCurrentLanguage = (): SupportedLanguage => {
+  return (i18n.language as SupportedLanguage) || 'en';
 };
 
 // Load saved language preference

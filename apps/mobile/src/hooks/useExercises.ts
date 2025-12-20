@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
-import { getDeviceLanguage } from '@/locale/i18n';
+import { getCurrentLanguage } from '@/locale/i18n';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
 
-const language = getDeviceLanguage();
+const language = getCurrentLanguage();
 
 export function useExercises() {
   const { services } = useDependencies();

@@ -315,7 +315,10 @@
     "rateUs": "Noter l'Application",
     "contactUs": "Nous Contacter",
     "version": "Version 2.4.1",
-    "english": "Anglais"
+    "english": "Anglais",
+    "spanish": "Espagnol",
+    "french": "Français",
+    "selectPreferredLanguage": "Sélectionnez votre langue préférée"
   },
   "profile": {
     "title": "Profil",
