@@ -10,11 +10,10 @@ import {
 
 import { ExerciseSchema } from '@/domain';
 import { ServiceError } from '@/utils/serviceErrors';
-import { SupportedLanguage } from '@/locale/i18n';
 
 export class ExercisesService {
   constructor(private readonly db: Firestore) {}
-  private getExerciseLibraryName(language: SupportedLanguage) {
+  private getExerciseLibraryName(language: string) {
     switch (language) {
       case 'es':
         return 'exercisesLibraryEs';
@@ -24,10 +23,8 @@ export class ExercisesService {
         return 'exercisesLibrary';
     }
   }
-  private getAllExerciseLibraries() {
-    return ['exercisesLibrary', 'exercisesLibraryEs', 'exercisesLibraryFr'];
-  }
-  private getUserExerciseCollectionName(userId: string, language: SupportedLanguage) {
+
+  private getUserExerciseCollectionName(userId: string, language: string) {
     switch (language) {
       case 'es':
         return `users/${userId}/exercisesEs`;
@@ -37,15 +34,8 @@ export class ExercisesService {
         return `users/${userId}/exercises`;
     }
   }
-  private getAllUserExerciseCollections(userId: string) {
-    return [
-      `users/${userId}/exercises`,
-      `users/${userId}/exercisesEs`,
-      `users/${userId}/exercisesFr`,
-    ];
-  }
 
-  async getUserExercises(userId: string, language: SupportedLanguage) {
+  async getUserExercises(userId: string, language: string) {
     const userExercisesRef = collection(
       this.db,
       this.getUserExerciseCollectionName(userId, language),
@@ -113,7 +103,7 @@ export class ExercisesService {
 
   async createExercise(
     userId: string,
-    language: SupportedLanguage,
+    language: string,
     exercise: {
       name: string;
       category: string;
@@ -157,7 +147,7 @@ export class ExercisesService {
 
   async updateExercise(
     userId: string,
-    language: SupportedLanguage,
+    language: string,
     exerciseId: string,
     exercise: {
       name: string;
@@ -190,7 +180,7 @@ export class ExercisesService {
     );
   }
 
-  async getExercise(userId: string, exerciseId: string, language: SupportedLanguage) {
+  async getExercise(userId: string, exerciseId: string, language: string) {
     const userExerciseRef = doc(
       this.db,
       this.getUserExerciseCollectionName(userId, language),

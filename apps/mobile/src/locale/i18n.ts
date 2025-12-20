@@ -66,11 +66,6 @@ export const changeLanguage = async (languageCode: string) => {
   }
 };
 
-// Get the current i18n language
-export const getCurrentLanguage = (): SupportedLanguage => {
-  return (i18n.language as SupportedLanguage) || 'en';
-};
-
 // Load saved language preference
 const loadSavedLanguage = async () => {
   try {

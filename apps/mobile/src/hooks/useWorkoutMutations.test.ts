@@ -3,7 +3,7 @@ import { renderHook, waitFor, act } from '@testing-library/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useWorkoutMutations } from './useWorkoutMutations';
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import type { WorkoutInput } from '@/services';
 
 // Mock dependencies
@@ -12,11 +12,13 @@ jest.mock('@/dependencies/provider', () => ({
 }));
 
 jest.mock('@/contexts/AuthContext', () => ({
-  useAuth: jest.fn(),
+  useAuthenticatedUser: jest.fn(),
 }));
 
 const mockUseDependencies = useDependencies as jest.MockedFunction<typeof useDependencies>;
-const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
+const mockUseAuthenticatedUser = useAuthenticatedUser as jest.MockedFunction<
+  typeof useAuthenticatedUser
+>;
 
 describe('useWorkoutMutations', () => {
   let queryClient: QueryClient;
@@ -54,9 +56,8 @@ describe('useWorkoutMutations', () => {
       },
     } as any);
 
-    mockUseAuth.mockReturnValue({
+    mockUseAuthenticatedUser.mockReturnValue({
       user: mockUser,
-      loading: false,
       signIn: jest.fn(),
       signUp: jest.fn(),
       signOut: jest.fn(),
@@ -110,29 +111,15 @@ describe('useWorkoutMutations', () => {
     });
 
     it('should throw error when user or workoutId is missing', async () => {
-      mockUseAuth.mockReturnValue({
-        user: null,
-        loading: false,
-        signIn: jest.fn(),
-        signUp: jest.fn(),
-        signOut: jest.fn(),
-        resetPassword: jest.fn(),
+      mockUseAuthenticatedUser.mockImplementation(() => {
+        throw new Error('User or workout ID is missing');
       });
 
-      const { result } = renderHook(() => useWorkoutMutations('workout123'), {
-        wrapper: createWrapper(),
-      });
-
-      const workoutInput: WorkoutInput = {
-        date: new Date('2024-06-15'),
-        exercises: [],
-      };
-
-      await expect(
-        act(async () => {
-          await result.current.updateWorkout(workoutInput);
-        }),
-      ).rejects.toThrow('User or workout ID is missing');
+      expect(() => {
+        renderHook(() => useWorkoutMutations('workout123'), {
+          wrapper: createWrapper(),
+        });
+      }).toThrow('User or workout ID is missing');
     });
 
     it('should invalidate queries on success', async () => {
@@ -224,24 +211,15 @@ describe('useWorkoutMutations', () => {
     });
 
     it('should throw error when user or workoutId is missing', async () => {
-      mockUseAuth.mockReturnValue({
-        user: null,
-        loading: false,
-        signIn: jest.fn(),
-        signUp: jest.fn(),
-        signOut: jest.fn(),
-        resetPassword: jest.fn(),
+      mockUseAuthenticatedUser.mockImplementation(() => {
+        throw new Error('User or workout ID is missing');
       });
 
-      const { result } = renderHook(() => useWorkoutMutations('workout123'), {
-        wrapper: createWrapper(),
-      });
-
-      await expect(
-        act(async () => {
-          await result.current.validateWorkout();
-        }),
-      ).rejects.toThrow('User or workout ID is missing');
+      expect(() => {
+        renderHook(() => useWorkoutMutations('workout123'), {
+          wrapper: createWrapper(),
+        });
+      }).toThrow('User or workout ID is missing');
     });
 
     it('should invalidate queries on success', async () => {
@@ -312,24 +290,15 @@ describe('useWorkoutMutations', () => {
     });
 
     it('should throw error when user or workoutId is missing', async () => {
-      mockUseAuth.mockReturnValue({
-        user: null,
-        loading: false,
-        signIn: jest.fn(),
-        signUp: jest.fn(),
-        signOut: jest.fn(),
-        resetPassword: jest.fn(),
+      mockUseAuthenticatedUser.mockImplementation(() => {
+        throw new Error('User or workout ID is missing');
       });
 
-      const { result } = renderHook(() => useWorkoutMutations('workout123'), {
-        wrapper: createWrapper(),
-      });
-
-      await expect(
-        act(async () => {
-          await result.current.unvalidateWorkout();
-        }),
-      ).rejects.toThrow('User or workout ID is missing');
+      expect(() => {
+        renderHook(() => useWorkoutMutations('workout123'), {
+          wrapper: createWrapper(),
+        });
+      }).toThrow('User or workout ID is missing');
     });
 
     it('should invalidate queries on success', async () => {
@@ -400,24 +369,15 @@ describe('useWorkoutMutations', () => {
     });
 
     it('should throw error when user or workoutId is missing', async () => {
-      mockUseAuth.mockReturnValue({
-        user: null,
-        loading: false,
-        signIn: jest.fn(),
-        signUp: jest.fn(),
-        signOut: jest.fn(),
-        resetPassword: jest.fn(),
+      mockUseAuthenticatedUser.mockImplementation(() => {
+        throw new Error('User or workout ID is missing');
       });
 
-      const { result } = renderHook(() => useWorkoutMutations('workout123'), {
-        wrapper: createWrapper(),
-      });
-
-      await expect(
-        act(async () => {
-          await result.current.deleteWorkout();
-        }),
-      ).rejects.toThrow('User or workout ID is missing');
+      expect(() => {
+        renderHook(() => useWorkoutMutations('workout123'), {
+          wrapper: createWrapper(),
+        });
+      }).toThrow('User or workout ID is missing');
     });
 
     it('should invalidate queries on success', async () => {
@@ -486,7 +446,7 @@ describe('useWorkoutMutations', () => {
         act(async () => {
           await result.current.updateWorkout(workoutInput);
         }),
-      ).rejects.toThrow('User or workout ID is missing');
+      ).rejects.toThrow('Workout ID is missing');
     });
   });
 

@@ -10,17 +10,15 @@ import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import { useQuery } from '@tanstack/react-query';
-import { getCurrentLanguage } from '@/locale/i18n';
 import { EXERCISE_CATEGORIES, BODY_PARTS } from '@/services';
-
-const language = getCurrentLanguage();
 
 export default function EditExerciseScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { user } = useAuthenticatedUser();
   const { services } = useDependencies();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
@@ -37,7 +35,7 @@ export default function EditExerciseScreen() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['exercise', user.uid, id],
+    queryKey: ['exercise', user.uid, id, language],
     queryFn: async () => {
       if (!id) {
         return null;

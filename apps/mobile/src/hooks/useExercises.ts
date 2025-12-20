@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
-import { getCurrentLanguage } from '@/locale/i18n';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
-
-const language = getCurrentLanguage();
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function useExercises() {
   const { services } = useDependencies();
   const { user } = useAuthenticatedUser();
+  const { i18n } = useTranslation();
+  const language = i18n.language;
 
   const {
     data,
@@ -18,7 +18,7 @@ export function useExercises() {
     error,
     refetch: reactQueryRefetch,
   } = useQuery({
-    queryKey: ['exercisesWithLibrary', user.uid],
+    queryKey: ['exercisesWithLibrary', user.uid, language],
     queryFn: async () => {
       return services.firestore.getUserExercises(user.uid, language);
     },

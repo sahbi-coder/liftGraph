@@ -14,14 +14,14 @@ import {
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
-import { getCurrentLanguage } from '@/locale/i18n';
 import { EXERCISE_CATEGORIES, BODY_PARTS } from '@/services';
 
 export default function CreateExerciseScreen() {
   const router = useRouter();
   const { user } = useAuthenticatedUser();
   const { services } = useDependencies();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
@@ -48,7 +48,7 @@ export default function CreateExerciseScreen() {
 
     try {
       setIsCreating(true);
-      const exerciseId = await services.firestore.createExercise(user.uid, getCurrentLanguage(), {
+      const exerciseId = await services.firestore.createExercise(user.uid, language, {
         name: name.trim(),
         category: category.trim(),
         bodyPart: bodyPart.trim(),

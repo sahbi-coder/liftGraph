@@ -1,6 +1,5 @@
 import { Firestore } from 'firebase/firestore';
 import type { UserProfile, WorkoutInput, ProgramInput } from '@/domain';
-import { SupportedLanguage } from '@/locale/i18n';
 // Service classes
 import { UserProfileService } from './user-profile';
 import { ExercisesService } from './exercises';
@@ -34,13 +33,13 @@ export class FirestoreService {
   }
 
   // Exercise methods (delegated)
-  async getUserExercises(userId: string, language: SupportedLanguage) {
+  async getUserExercises(userId: string, language: string) {
     return this.exercises.getUserExercises(userId, language);
   }
 
   async createExercise(
     userId: string,
-    language: SupportedLanguage,
+    language: string,
     exercise: {
       name: string;
       category: string;
@@ -54,7 +53,7 @@ export class FirestoreService {
   async updateExercise(
     userId: string,
     exerciseId: string,
-    language: SupportedLanguage,
+    language: string,
     exercise: {
       name: string;
       category: string;
@@ -65,7 +64,7 @@ export class FirestoreService {
     return this.exercises.updateExercise(userId, language, exerciseId, exercise);
   }
 
-  async getExercise(userId: string, exerciseId: string, language: SupportedLanguage) {
+  async getExercise(userId: string, exerciseId: string, language: string) {
     return this.exercises.getExercise(userId, exerciseId, language);
   }
 
