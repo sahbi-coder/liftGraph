@@ -1,955 +1,102 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ScrollView } from 'react-native';
-import { useRouter } from 'expo-router';
 import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-import { useDependencies } from '@/dependencies/provider';
-import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
-import { getServiceErrorMessage } from '@/utils/serviceErrors';
-import type { ProgramSet, AlternatingWeeks } from '@/services';
 import { colors } from '@/theme/colors';
-import { ExerciseSelection, ExerciseSelectionContext } from '@/types/workout';
-import {
-  setExercisePickerCallback,
-  clearExercisePickerCallback,
-} from '@/contexts/exercisePickerContext';
 import { DaySelector } from '@/components/DaySelector';
 import { ProgramDayLabel } from '@/services';
-
-type ProgramType = 'simple' | 'alternating' | 'advanced';
-
-type ProgramSetForm = {
-  id: string;
-  reps: string;
-  rir: string;
-};
-
-type ProgramExerciseForm = {
-  id: string;
-  exerciseId: string;
-  name: string;
-  sets: ProgramSetForm[];
-};
-
-type ProgramDayForm = {
-  exercises: ProgramExerciseForm[];
-};
-
-type ProgramWeekForm = {
-  id: string;
-  name: string;
-  days: ('rest' | ProgramDayForm)[];
-  selectedDays: ProgramDayLabel[];
-};
-
-type ProgramPhaseForm = {
-  id: string;
-  name: string;
-  description: string;
-  weeks: ProgramWeekForm[];
-};
-
-const createSetForm = (set?: ProgramSet): ProgramSetForm => ({
-  id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-  reps: set ? String(set.reps) : '0',
-  rir: set ? String(set.rir) : '0',
-});
-
-const createExerciseForm = (exercise: ExerciseSelection): ProgramExerciseForm => ({
-  id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-  exerciseId: exercise.id,
-  name: exercise.name,
-
-  sets: [createSetForm()],
-});
-
-const createWeekForm = (name: string = ''): ProgramWeekForm => ({
-  id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-  name,
-  days: ['rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest'],
-  selectedDays: [],
-});
-
-const createPhaseForm = (name: string = '', description: string = ''): ProgramPhaseForm => ({
-  id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-  name,
-  description,
-  weeks: [],
-});
+import { useProgramForm } from '@/hooks/useProgramForm';
+import { useProgramStructure } from '@/hooks/useProgramStructure';
+import { useProgramDaySelection } from '@/hooks/useProgramDaySelection';
+import { useProgramExercises } from '@/hooks/useProgramExercises';
+import { useProgramSets } from '@/hooks/useProgramSets';
+import { useProgramValidation } from '@/hooks/useProgramValidation';
+import { useProgramSave } from '@/hooks/useProgramSave';
+import type { ProgramWeekForm, ProgramExerciseForm } from '@/hooks/useProgramForm/types';
 
 export default function CreateProgramScreen() {
-  const router = useRouter();
-  const { services } = useDependencies();
-  const { user } = useAuthenticatedUser();
   const { t } = useTranslation();
-
-  const [programType, setProgramType] = useState<ProgramType>('simple');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [isSaving, setIsSaving] = useState(false);
-  const { showSuccess, showError, showWarning, AlertModalComponent } = useAlertModal();
-
-  // Simple program state - initialize with one week
-  const [weeks, setWeeks] = useState<ProgramWeekForm[]>(() => [createWeekForm()]);
-
-  // Alternating program state - initialize with two weeks
-  const [alternatingWeeks, setAlternatingWeeks] = useState<ProgramWeekForm[]>(() => [
-    createWeekForm(),
-    createWeekForm(),
-  ]);
-
-  // Advanced program state
-  const [phases, setPhases] = useState<ProgramPhaseForm[]>([]);
-
-  const handleDaySelectionChange = useCallback(
-    (weekId: string, selectedDays: ProgramDayLabel[], phaseId?: string) => {
-      const dayMap: Record<ProgramDayLabel, number> = {
-        Day1: 0,
-        Day2: 1,
-        Day3: 2,
-        Day4: 3,
-        Day5: 4,
-        Day6: 5,
-        Day7: 6,
-      };
-
-      if (programType === 'simple') {
-        setWeeks((prev) =>
-          prev.map((week) => {
-            if (week.id !== weekId) return week;
-
-            const newDays: ('rest' | ProgramDayForm)[] = [...week.days];
-            const selectedIndices = new Set(selectedDays.map((day) => dayMap[day]));
-
-            // Update days array: selected days become ProgramDayForm, unselected become 'rest'
-            for (let i = 0; i < 7; i++) {
-              if (selectedIndices.has(i)) {
-                // If it was 'rest', create new day form, otherwise keep existing
-                if (newDays[i] === 'rest') {
-                  newDays[i] = { exercises: [] };
-                }
-              } else {
-                // If it was a day form, convert to 'rest'
-                newDays[i] = 'rest';
-              }
-            }
-
-            return { ...week, days: newDays, selectedDays };
-          }),
-        );
-      } else if (programType === 'alternating') {
-        setAlternatingWeeks((prev) =>
-          prev.map((week) => {
-            if (week.id !== weekId) return week;
-
-            const newDays: ('rest' | ProgramDayForm)[] = [...week.days];
-            const selectedIndices = new Set(selectedDays.map((day) => dayMap[day]));
-
-            for (let i = 0; i < 7; i++) {
-              if (selectedIndices.has(i)) {
-                if (newDays[i] === 'rest') {
-                  newDays[i] = { exercises: [] };
-                }
-              } else {
-                newDays[i] = 'rest';
-              }
-            }
-
-            return { ...week, days: newDays, selectedDays };
-          }),
-        );
-      } else if (phaseId) {
-        setPhases((prev) =>
-          prev.map((phase) => {
-            if (phase.id !== phaseId) return phase;
-
-            return {
-              ...phase,
-              weeks: phase.weeks.map((week) => {
-                if (week.id !== weekId) return week;
-
-                const newDays: ('rest' | ProgramDayForm)[] = [...week.days];
-                const selectedIndices = new Set(selectedDays.map((day) => dayMap[day]));
-
-                for (let i = 0; i < 7; i++) {
-                  if (selectedIndices.has(i)) {
-                    if (newDays[i] === 'rest') {
-                      newDays[i] = { exercises: [] };
-                    }
-                  } else {
-                    newDays[i] = 'rest';
-                  }
-                }
-
-                return { ...week, days: newDays, selectedDays };
-              }),
-            };
-          }),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const handleSelectExercise = useCallback(
-    (exercise: ExerciseSelection, context?: ExerciseSelectionContext) => {
-      if (!context?.weekId || !context?.dayId) {
-        return;
-      }
-
-      const newExercise = createExerciseForm(exercise);
-      const weekId = context.weekId;
-      const phaseId = context.phaseId;
-      const dayId = context.dayId as ProgramDayLabel;
-      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
-
-      if (dayIndex === undefined) {
-        console.error('Invalid dayId:', dayId);
-        return;
-      }
-
-      if (programType === 'simple') {
-        setWeeks((prev) => {
-          const week = prev.find((w) => w.id === weekId);
-          if (!week) {
-            console.error('Week not found! Cannot add exercise.');
-            return prev;
-          }
-
-          const newDays = [...week.days];
-          const day = newDays[dayIndex];
-
-          if (day === 'rest') {
-            console.error('Cannot add exercise to rest day');
-            return prev;
-          }
-
-          newDays[dayIndex] = {
-            ...day,
-            exercises: [...day.exercises, newExercise],
-          };
-
-          return prev.map((w) => (w.id === weekId ? { ...w, days: newDays } : w));
-        });
-      } else if (programType === 'alternating') {
-        setAlternatingWeeks((prev) => {
-          const week = prev.find((w) => w.id === weekId);
-          if (!week) {
-            console.error('Week not found! Cannot add exercise.');
-            return prev;
-          }
-
-          const newDays = [...week.days];
-          const day = newDays[dayIndex];
-
-          if (day === 'rest') {
-            console.error('Cannot add exercise to rest day');
-            return prev;
-          }
-
-          newDays[dayIndex] = {
-            ...day,
-            exercises: [...day.exercises, newExercise],
-          };
-
-          return prev.map((w) => (w.id === weekId ? { ...w, days: newDays } : w));
-        });
-      } else if (phaseId) {
-        setPhases((prev) => {
-          return prev.map((phase) => {
-            if (phase.id !== phaseId) return phase;
-
-            return {
-              ...phase,
-              weeks: phase.weeks.map((week) => {
-                if (week.id !== weekId) return week;
-
-                const newDays = [...week.days];
-                const day = newDays[dayIndex];
-
-                if (day === 'rest') {
-                  console.error('Cannot add exercise to rest day');
-                  return week;
-                }
-
-                newDays[dayIndex] = {
-                  ...day,
-                  exercises: [...day.exercises, newExercise],
-                };
-
-                return { ...week, days: newDays };
-              }),
-            };
-          });
-        });
-      }
-    },
-    [programType],
-  );
-
-  const handleOpenExercisePicker = useCallback(
-    (weekId: string, dayId: ProgramDayLabel, phaseId?: string) => {
-      const context: ExerciseSelectionContext = { weekId, phaseId, dayId };
-      setExercisePickerCallback(handleSelectExercise, context, '/(drawer)/(tabs)/program/create');
-      router.push('/(drawer)/(tabs)/program/exercises');
-    },
-    [handleSelectExercise, router],
-  );
-
-  // Clear the callback when component unmounts (e.g., when switching tabs)
-  // Don't clear on focus loss because that happens when navigating to exercise picker
-  React.useEffect(() => {
-    return () => {
-      // Only clear on unmount, not on focus loss
-      clearExercisePickerCallback();
-    };
-  }, []);
-
-  const handleUpdateWeekName = useCallback(
-    (weekId: string, name: string) => {
-      if (programType === 'simple') {
-        setWeeks((prev) => prev.map((week) => (week.id === weekId ? { ...week, name } : week)));
-      } else if (programType === 'alternating') {
-        setAlternatingWeeks((prev) =>
-          prev.map((week) => (week.id === weekId ? { ...week, name } : week)),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const handleRemoveWeek = useCallback(
-    (weekId: string) => {
-      if (programType === 'simple') {
-        setWeeks((prev) => prev.filter((week) => week.id !== weekId));
-      }
-      // Note: Alternating programs always need exactly 2 weeks, so we don't allow removal
-    },
-    [programType],
-  );
-
-  const handleAddPhase = useCallback(() => {
-    if (programType === 'advanced') {
-      setPhases((prev) => [...prev, createPhaseForm()]);
-    }
-  }, [programType]);
-
-  const handleUpdatePhaseName = useCallback(
-    (phaseId: string, name: string) => {
-      if (programType === 'advanced') {
-        setPhases((prev) =>
-          prev.map((phase) => (phase.id === phaseId ? { ...phase, name } : phase)),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const handleUpdatePhaseDescription = useCallback(
-    (phaseId: string, description: string) => {
-      if (programType === 'advanced') {
-        setPhases((prev) =>
-          prev.map((phase) => (phase.id === phaseId ? { ...phase, description } : phase)),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const handleRemovePhase = useCallback(
-    (phaseId: string) => {
-      if (programType === 'advanced') {
-        setPhases((prev) => prev.filter((phase) => phase.id !== phaseId));
-      }
-    },
-    [programType],
-  );
-
-  const handleAddWeekToPhase = useCallback(
-    (phaseId: string) => {
-      if (programType === 'advanced') {
-        setPhases((prev) =>
-          prev.map((phase) =>
-            phase.id === phaseId ? { ...phase, weeks: [...phase.weeks, createWeekForm()] } : phase,
-          ),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const handleUpdateWeekNameInPhase = useCallback(
-    (phaseId: string, weekId: string, name: string) => {
-      if (programType === 'advanced') {
-        setPhases((prev) =>
-          prev.map((phase) =>
-            phase.id === phaseId
-              ? {
-                  ...phase,
-                  weeks: phase.weeks.map((week) => (week.id === weekId ? { ...week, name } : week)),
-                }
-              : phase,
-          ),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const handleRemoveWeekFromPhase = useCallback(
-    (phaseId: string, weekId: string) => {
-      if (programType === 'advanced') {
-        setPhases((prev) =>
-          prev.map((phase) =>
-            phase.id === phaseId
-              ? { ...phase, weeks: phase.weeks.filter((week) => week.id !== weekId) }
-              : phase,
-          ),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const handleRemoveExercise = useCallback(
-    (weekId: string, dayId: ProgramDayLabel, exerciseId: string, phaseId?: string) => {
-      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
-      if (dayIndex === undefined) return;
-
-      if (programType === 'simple') {
-        setWeeks((prev) =>
-          prev.map((week) => {
-            if (week.id !== weekId) return week;
-            const newDays = [...week.days];
-            const day = newDays[dayIndex];
-            if (day === 'rest') return week;
-
-            newDays[dayIndex] = {
-              ...day,
-              exercises: day.exercises.filter((ex) => ex.id !== exerciseId),
-            };
-            return { ...week, days: newDays };
-          }),
-        );
-      } else if (programType === 'alternating') {
-        setAlternatingWeeks((prev) =>
-          prev.map((week) => {
-            if (week.id !== weekId) return week;
-            const newDays = [...week.days];
-            const day = newDays[dayIndex];
-            if (day === 'rest') return week;
-
-            newDays[dayIndex] = {
-              ...day,
-              exercises: day.exercises.filter((ex) => ex.id !== exerciseId),
-            };
-            return { ...week, days: newDays };
-          }),
-        );
-      } else if (phaseId) {
-        setPhases((prev) =>
-          prev.map((phase) => {
-            if (phase.id !== phaseId) return phase;
-            return {
-              ...phase,
-              weeks: phase.weeks.map((week) => {
-                if (week.id !== weekId) return week;
-                const newDays = [...week.days];
-                const day = newDays[dayIndex];
-                if (day === 'rest') return week;
-
-                newDays[dayIndex] = {
-                  ...day,
-                  exercises: day.exercises.filter((ex) => ex.id !== exerciseId),
-                };
-                return { ...week, days: newDays };
-              }),
-            };
-          }),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const handleAddSet = useCallback(
-    (weekId: string, dayId: ProgramDayLabel, exerciseId: string, phaseId?: string) => {
-      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
-      if (dayIndex === undefined) return;
-
-      if (programType === 'simple') {
-        setWeeks((prev) =>
-          prev.map((week) => {
-            if (week.id !== weekId) return week;
-            const newDays = [...week.days];
-            const day = newDays[dayIndex];
-            if (day === 'rest') return week;
-
-            newDays[dayIndex] = {
-              ...day,
-              exercises: day.exercises.map((ex) =>
-                ex.id === exerciseId ? { ...ex, sets: [...ex.sets, createSetForm()] } : ex,
-              ),
-            };
-            return { ...week, days: newDays };
-          }),
-        );
-      } else if (programType === 'alternating') {
-        setAlternatingWeeks((prev) =>
-          prev.map((week) => {
-            if (week.id !== weekId) return week;
-            const newDays = [...week.days];
-            const day = newDays[dayIndex];
-            if (day === 'rest') return week;
-
-            newDays[dayIndex] = {
-              ...day,
-              exercises: day.exercises.map((ex) =>
-                ex.id === exerciseId ? { ...ex, sets: [...ex.sets, createSetForm()] } : ex,
-              ),
-            };
-            return { ...week, days: newDays };
-          }),
-        );
-      } else if (phaseId) {
-        setPhases((prev) =>
-          prev.map((phase) => {
-            if (phase.id !== phaseId) return phase;
-            return {
-              ...phase,
-              weeks: phase.weeks.map((week) => {
-                if (week.id !== weekId) return week;
-                const newDays = [...week.days];
-                const day = newDays[dayIndex];
-                if (day === 'rest') return week;
-
-                newDays[dayIndex] = {
-                  ...day,
-                  exercises: day.exercises.map((ex) =>
-                    ex.id === exerciseId ? { ...ex, sets: [...ex.sets, createSetForm()] } : ex,
-                  ),
-                };
-                return { ...week, days: newDays };
-              }),
-            };
-          }),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const handleRemoveSet = useCallback(
-    (
-      weekId: string,
-      dayId: ProgramDayLabel,
-      exerciseId: string,
-      setId: string,
-      phaseId?: string,
-    ) => {
-      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
-      if (dayIndex === undefined) return;
-
-      if (programType === 'simple') {
-        setWeeks((prev) =>
-          prev.map((week) => {
-            if (week.id !== weekId) return week;
-            const newDays = [...week.days];
-            const day = newDays[dayIndex];
-            if (day === 'rest') return week;
-
-            newDays[dayIndex] = {
-              ...day,
-              exercises: day.exercises.map((ex) => {
-                if (ex.id !== exerciseId) return ex;
-                if (ex.sets.length === 1) {
-                  showWarning(t('workout.eachExerciseMustHaveSet'));
-                  return ex;
-                }
-                return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
-              }),
-            };
-            return { ...week, days: newDays };
-          }),
-        );
-      } else if (programType === 'alternating') {
-        setAlternatingWeeks((prev) =>
-          prev.map((week) => {
-            if (week.id !== weekId) return week;
-            const newDays = [...week.days];
-            const day = newDays[dayIndex];
-            if (day === 'rest') return week;
-
-            newDays[dayIndex] = {
-              ...day,
-              exercises: day.exercises.map((ex) => {
-                if (ex.id !== exerciseId) return ex;
-                if (ex.sets.length === 1) {
-                  showWarning(t('workout.eachExerciseMustHaveSet'));
-                  return ex;
-                }
-                return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
-              }),
-            };
-            return { ...week, days: newDays };
-          }),
-        );
-      } else if (phaseId) {
-        setPhases((prev) =>
-          prev.map((phase) => {
-            if (phase.id !== phaseId) return phase;
-            return {
-              ...phase,
-              weeks: phase.weeks.map((week) => {
-                if (week.id !== weekId) return week;
-                const newDays = [...week.days];
-                const day = newDays[dayIndex];
-                if (day === 'rest') return week;
-
-                newDays[dayIndex] = {
-                  ...day,
-                  exercises: day.exercises.map((ex) => {
-                    if (ex.id !== exerciseId) return ex;
-                    if (ex.sets.length === 1) {
-                      showWarning(t('workout.eachExerciseMustHaveSet'));
-                      return ex;
-                    }
-                    return { ...ex, sets: ex.sets.filter((set) => set.id !== setId) };
-                  }),
-                };
-                return { ...week, days: newDays };
-              }),
-            };
-          }),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const handleUpdateSetField = useCallback(
-    (
-      weekId: string,
-      dayId: ProgramDayLabel,
-      exerciseId: string,
-      setId: string,
-      field: 'reps' | 'rir',
-      value: string,
-      phaseId?: string,
-    ) => {
-      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
-      if (dayIndex === undefined) return;
-
-      if (programType === 'simple') {
-        setWeeks((prev) =>
-          prev.map((week) => {
-            if (week.id !== weekId) return week;
-            const newDays = [...week.days];
-            const day = newDays[dayIndex];
-            if (day === 'rest') return week;
-
-            newDays[dayIndex] = {
-              ...day,
-              exercises: day.exercises.map((ex) =>
-                ex.id === exerciseId
-                  ? {
-                      ...ex,
-                      sets: ex.sets.map((set) =>
-                        set.id === setId ? { ...set, [field]: value } : set,
-                      ),
-                    }
-                  : ex,
-              ),
-            };
-            return { ...week, days: newDays };
-          }),
-        );
-      } else if (programType === 'alternating') {
-        setAlternatingWeeks((prev) =>
-          prev.map((week) => {
-            if (week.id !== weekId) return week;
-            const newDays = [...week.days];
-            const day = newDays[dayIndex];
-            if (day === 'rest') return week;
-
-            newDays[dayIndex] = {
-              ...day,
-              exercises: day.exercises.map((ex) =>
-                ex.id === exerciseId
-                  ? {
-                      ...ex,
-                      sets: ex.sets.map((set) =>
-                        set.id === setId ? { ...set, [field]: value } : set,
-                      ),
-                    }
-                  : ex,
-              ),
-            };
-            return { ...week, days: newDays };
-          }),
-        );
-      } else if (phaseId) {
-        setPhases((prev) =>
-          prev.map((phase) => {
-            if (phase.id !== phaseId) return phase;
-            return {
-              ...phase,
-              weeks: phase.weeks.map((week) => {
-                if (week.id !== weekId) return week;
-                const newDays = [...week.days];
-                const day = newDays[dayIndex];
-                if (day === 'rest') return week;
-
-                newDays[dayIndex] = {
-                  ...day,
-                  exercises: day.exercises.map((ex) =>
-                    ex.id === exerciseId
-                      ? {
-                          ...ex,
-                          sets: ex.sets.map((set) =>
-                            set.id === setId ? { ...set, [field]: value } : set,
-                          ),
-                        }
-                      : ex,
-                  ),
-                };
-                return { ...week, days: newDays };
-              }),
-            };
-          }),
-        );
-      }
-    },
-    [programType],
-  );
-
-  const validateAndConvert = useCallback(() => {
-    if (!name.trim()) {
-      showError(t('program.programNameRequired'));
-      return null;
-    }
-
-    if (!description.trim()) {
-      showError(t('program.programDescriptionRequired'));
-      return null;
-    }
-
-    if (programType === 'simple') {
-      if (weeks.length === 0) {
-        showError(t('program.simpleProgramMustHaveWeek'));
-        return null;
-      }
-
-      // Simple programs use only the first week
-      const week = weeks[0];
-      const dayLabels: ProgramDayLabel[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
-      const convertedDays = week.days.map((day, dayIndex) => {
-        if (day === 'rest') {
-          return 'rest' as const;
-        }
-
-        const exercises = day.exercises.map((ex) => {
-          const sets = ex.sets
-            .filter((set) => set.reps.trim() && set.rir.trim())
-            .map((set) => ({
-              reps: Number(set.reps),
-              rir: Number(set.rir),
-            }));
-
-          if (sets.length === 0) {
-            throw new Error(t('program.exerciseMustHaveValidSet', { name: ex.name }));
-          }
-
-          return {
-            name: ex.name,
-            id: ex.exerciseId,
-
-            sets,
-          };
-        });
-
-        return {
-          name: dayLabels[dayIndex],
-          exercises,
-        };
-      });
-
-      const convertedWeek = {
-        days: convertedDays,
-      };
-
-      const simpleProgram = {
-        name: name.trim(),
-        description: description.trim(),
-        type: 'simple' as const,
-        week: convertedWeek,
-      };
-
-      return simpleProgram;
-    } else if (programType === 'alternating') {
-      if (alternatingWeeks.length !== 2) {
-        showError(t('program.alternatingProgramMustHaveWeeks'));
-        return null;
-      }
-
-      const dayLabels: ProgramDayLabel[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
-
-      const convertWeek = (week: ProgramWeekForm) => {
-        const convertedDays = week.days.map((day, dayIndex) => {
-          if (day === 'rest') {
-            return 'rest' as const;
-          }
-
-          const exercises = day.exercises.map((ex) => {
-            const sets = ex.sets
-              .filter((set) => set.reps.trim() && set.rir.trim())
-              .map((set) => ({
-                reps: Number(set.reps),
-                rir: Number(set.rir),
-              }));
-
-            if (sets.length === 0) {
-              throw new Error(t('program.exerciseMustHaveValidSet', { name: ex.name }));
-            }
-
-            return {
-              name: ex.name,
-              id: ex.exerciseId,
-
-              sets,
-            };
-          });
-
-          return {
-            name: dayLabels[dayIndex],
-            exercises,
-          };
-        });
-
-        return {
-          days: convertedDays,
-        };
-      };
-
-      const convertedWeeks: AlternatingWeeks = [
-        convertWeek(alternatingWeeks[0]),
-        convertWeek(alternatingWeeks[1]),
-      ];
-
-      const alternatingProgram = {
-        name: name.trim(),
-        description: description.trim(),
-        type: 'alternating' as const,
-        alternatingWeeks: convertedWeeks,
-      };
-
-      return alternatingProgram;
-    } else {
-      if (phases.length === 0) {
-        showError(t('program.advancedProgramMustHavePhase'));
-        return null;
-      }
-
-      const convertedPhases = phases.map((phase) => {
-        if (!phase.name.trim()) {
-          throw new Error(t('program.allPhasesMustHaveName'));
-        }
-
-        if (phase.weeks.length === 0) {
-          throw new Error(t('program.phaseMustHaveWeek', { name: phase.name }));
-        }
-
-        const dayLabels: ProgramDayLabel[] = [
-          'Day1',
-          'Day2',
-          'Day3',
-          'Day4',
-          'Day5',
-          'Day6',
-          'Day7',
-        ];
-        const convertedWeeks = phase.weeks.map((week) => {
-          const convertedDays = week.days.map((day, dayIndex) => {
-            if (day === 'rest') {
-              return 'rest' as const;
-            }
-
-            const exercises = day.exercises.map((ex) => {
-              const sets = ex.sets
-                .filter((set) => set.reps.trim() && set.rir.trim())
-                .map((set) => ({
-                  reps: Number(set.reps),
-                  rir: Number(set.rir),
-                }));
-
-              if (sets.length === 0) {
-                throw new Error(t('program.exerciseMustHaveValidSet', { name: ex.name }));
-              }
-
-              return {
-                name: ex.name,
-                id: ex.exerciseId,
-
-                sets,
-              };
-            });
-
-            return {
-              name: dayLabels[dayIndex],
-              exercises,
-            };
-          });
-
-          return {
-            days: convertedDays,
-          };
-        });
-
-        return {
-          name: phase.name.trim(),
-          description: phase.description.trim(),
-          weeks: convertedWeeks,
-        };
-      });
-
-      const advancedProgram = {
-        name: name.trim(),
-        description: description.trim(),
-        type: 'advanced' as const,
-        phases: convertedPhases,
-      };
-
-      return advancedProgram;
-    }
-  }, [name, description, programType, weeks, alternatingWeeks, phases, showError, t]);
-
-  const handleSave = useCallback(async () => {
-    try {
-      const programData = validateAndConvert();
-
-      if (!programData) {
-        return;
-      }
-
-      setIsSaving(true);
-      await services.firestore.createProgram(user.uid, programData);
-
-      showSuccess(t('program.programSavedSuccessfully'));
-      // Navigate back after showing success message
-      setTimeout(() => {
-        router.back();
-      }, 1500);
-    } catch (error) {
-      const message = getServiceErrorMessage(error, t);
-      showError(message);
-    } finally {
-      setIsSaving(false);
-    }
-  }, [user.uid, services.firestore, router, validateAndConvert, showError, showSuccess, t]);
+  const { showWarning, AlertModalComponent } = useAlertModal();
+
+  // Form state
+  const { programType, name, description, setProgramType, setName, setDescription } =
+    useProgramForm();
+
+  // Structure state
+  const {
+    weeks,
+    alternatingWeeks,
+    phases,
+    setWeeks,
+    setAlternatingWeeks,
+    setPhases,
+    resetStructure,
+    handleUpdateWeekName,
+    handleRemoveWeek,
+    handleAddPhase,
+    handleUpdatePhaseName,
+    handleUpdatePhaseDescription,
+    handleRemovePhase,
+    handleAddWeekToPhase,
+    handleUpdateWeekNameInPhase,
+    handleRemoveWeekFromPhase,
+  } = useProgramStructure(programType);
+
+  // Day selection
+  const { handleDaySelectionChange } = useProgramDaySelection({
+    programType,
+
+    setWeeks,
+    setAlternatingWeeks,
+    setPhases,
+  });
+
+  // Exercises
+  const { handleOpenExercisePicker, handleRemoveExercise } = useProgramExercises({
+    programType,
+    weeks,
+    alternatingWeeks,
+    phases,
+    setWeeks,
+    setAlternatingWeeks,
+    setPhases,
+  });
+
+  // Sets
+  const { handleAddSet, handleRemoveSet, handleUpdateSetField } = useProgramSets({
+    programType,
+
+    setWeeks,
+    setAlternatingWeeks,
+    setPhases,
+    showWarning,
+    t,
+  });
+
+  // Validation
+  const { showError } = useAlertModal();
+  const { validateAndConvert } = useProgramValidation({
+    name,
+    description,
+    programType,
+    weeks,
+    alternatingWeeks,
+    phases,
+    showError,
+    t,
+  });
+
+  // Save
+  const { handleSave, isSaving } = useProgramSave({ validateAndConvert });
+
+  // Reset structure when program type changes
+  useEffect(() => {
+    resetStructure(programType);
+  }, [programType, resetStructure]);
 
   const renderExerciseCard = useCallback(
     (
@@ -1160,9 +307,6 @@ export default function CreateProgramScreen() {
                 color={colors.white}
                 onPress={() => {
                   setProgramType('simple');
-                  setPhases([]);
-                  setAlternatingWeeks([createWeekForm(), createWeekForm()]);
-                  setWeeks([createWeekForm()]);
                 }}
               >
                 {t('program.simple')}
@@ -1173,9 +317,6 @@ export default function CreateProgramScreen() {
                 color={colors.white}
                 onPress={() => {
                   setProgramType('alternating');
-                  setPhases([]);
-                  setWeeks([]);
-                  setAlternatingWeeks([createWeekForm(), createWeekForm()]);
                 }}
               >
                 {t('program.alternating')}
@@ -1188,8 +329,6 @@ export default function CreateProgramScreen() {
                 color={colors.white}
                 onPress={() => {
                   setProgramType('advanced');
-                  setWeeks([]);
-                  setAlternatingWeeks([createWeekForm(), createWeekForm()]);
                 }}
               >
                 {t('program.advanced')}
