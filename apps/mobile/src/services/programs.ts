@@ -9,6 +9,7 @@ import {
   getDocs,
   orderBy,
   query,
+  updateDoc,
 } from 'firebase/firestore';
 import type { Program, ProgramInput, ProgramWeek, ProgramPhase } from '@/domain';
 import { ProgramSchema, ProgramInputSchema } from '@/domain';
@@ -172,6 +173,45 @@ export class ProgramsService {
     }
 
     return result.data;
+  }
+
+  async updateProgram(userId: string, programId: string, program: ProgramInput) {
+    // Validate input with schema
+    const inputResult = ProgramInputSchema.safeParse(program);
+    if (!inputResult.success) {
+      throw new ServiceError('program.invalidInput');
+    }
+
+    const programRef = doc(this.db, `users/${userId}/programs/${programId}`);
+    const existingProgram = await getDoc(programRef);
+
+    if (!existingProgram.exists()) {
+      throw new ServiceError('program.notFound');
+    }
+
+    const now = Timestamp.now();
+    const programData: Partial<ProgramFirestoreData> = {
+      name: inputResult.data.name,
+      description: inputResult.data.description,
+      type: inputResult.data.type,
+      updatedAt: now,
+    };
+
+    if (inputResult.data.type === 'simple') {
+      programData.week = inputResult.data.week;
+      programData.alternatingWeeks = undefined;
+      programData.phases = undefined;
+    } else if (inputResult.data.type === 'alternating') {
+      programData.alternatingWeeks = inputResult.data.alternatingWeeks;
+      programData.week = undefined;
+      programData.phases = undefined;
+    } else {
+      programData.phases = inputResult.data.phases;
+      programData.week = undefined;
+      programData.alternatingWeeks = undefined;
+    }
+
+    await updateDoc(programRef, programData);
   }
 
   async deleteProgram(userId: string, programId: string): Promise<void> {
