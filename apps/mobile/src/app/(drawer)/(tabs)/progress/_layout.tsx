@@ -5,7 +5,7 @@ import { BackButton } from '@/components/BackButton';
 
 import { colors } from '@/theme/colors';
 import { DrawerButton } from '@/components/DrawerButton';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function ProgressLayout() {
   const { t } = useTranslation();

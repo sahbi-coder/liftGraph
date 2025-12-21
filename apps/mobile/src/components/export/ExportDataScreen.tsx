@@ -17,7 +17,7 @@ import { colors } from '@/theme/colors';
 import { Calendar } from '@/components/Calendar';
 import type { Workout } from '@/services';
 import { exportWorkouts, type ExportFormat } from '@/utils/export';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 type DataType = 'workoutHistory' | 'personalRecords' | 'progressTracking' | 'trainingPrograms';
 type DateRangePreset = 'last30Days' | 'last6Months' | 'allTime' | 'custom';

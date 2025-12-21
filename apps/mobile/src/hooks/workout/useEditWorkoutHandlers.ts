@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useRouter } from 'expo-router';
 
-import { useWorkoutMutations } from '@/hooks/useWorkoutMutations';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useWorkoutMutations } from '@/hooks/workout/useWorkoutMutations';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import type { WorkoutInput } from '@/services';
 

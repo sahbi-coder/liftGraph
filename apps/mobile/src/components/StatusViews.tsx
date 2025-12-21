@@ -4,7 +4,7 @@ import { YStack, XStack, Text, Button } from 'tamagui';
 import { AlertTriangle } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export const LoadingView = () => {
   return (

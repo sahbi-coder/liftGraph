@@ -7,7 +7,7 @@ import { Target, Languages, Shield, Download, Star, Info } from '@tamagui/lucide
 
 import { colors } from '@/theme/colors';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function SettingsScreen() {
   const { user } = useAuthenticatedUser();

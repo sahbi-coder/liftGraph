@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Pressable } from 'react-native';
 import { XStack, Text } from 'tamagui';
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { ProgramDayLabel } from '@/services';
 
 export interface DaySelectorProps {

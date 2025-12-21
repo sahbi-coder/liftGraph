@@ -3,7 +3,7 @@ import { YStack, XStack, Text, Button, H1 } from 'tamagui';
 import { useRouter } from 'expo-router';
 import { Image, ScrollView } from 'react-native';
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 import { Download, Target, TrendingUp } from '@tamagui/lucide-icons';
 

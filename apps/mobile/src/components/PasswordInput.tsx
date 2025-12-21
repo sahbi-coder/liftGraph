@@ -1,7 +1,7 @@
 import React, { useState, forwardRef } from 'react';
 import { XStack, Input, Button } from 'tamagui';
 import { Eye, EyeOff } from '@tamagui/lucide-icons';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 interface PasswordInputProps {
   value: string;

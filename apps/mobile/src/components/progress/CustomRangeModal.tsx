@@ -4,8 +4,8 @@ import { YStack, XStack, Text, Button } from 'tamagui';
 import dayjs from 'dayjs';
 import { colors } from '@/theme/colors';
 import { Calendar } from '@/components/Calendar';
-import { useAlertModal } from '@/hooks/useAlertModal';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 interface CustomRangeModalProps {
   visible: boolean;

@@ -7,7 +7,7 @@ import Feather from '@expo/vector-icons/Feather';
 
 import { useAuth } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function TabsLayout() {
   const { user, loading } = useAuth();

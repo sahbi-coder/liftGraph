@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native';
 import { YStack, XStack, Text, Button } from 'tamagui';
 import { useRouter, usePathname } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 import { useDrawer } from '@/contexts/DrawerContext';
 import { colors } from '@/theme/colors';

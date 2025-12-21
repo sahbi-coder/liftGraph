@@ -5,7 +5,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 
 import { colors } from '@/theme/colors';
 import type { Program } from '@/services';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 type ProgramHomeScreenProps = {
   programs: Program[];

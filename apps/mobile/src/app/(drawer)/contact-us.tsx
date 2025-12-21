@@ -4,7 +4,7 @@ import { YStack, Text, Button, Input } from 'tamagui';
 import { Headphones } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function ContactUsScreen() {
   const [subject, setSubject] = useState('');

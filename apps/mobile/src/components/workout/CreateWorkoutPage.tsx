@@ -12,8 +12,8 @@ import {
   setWorkoutDraft,
   clearWorkoutDraft,
 } from '@/contexts/workoutDraftContext';
-import { useAlertModal } from '@/hooks/useAlertModal';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import { Button, Text, XStack, YStack } from 'tamagui';
 import { colors } from '@/theme/colors';

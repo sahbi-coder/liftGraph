@@ -9,14 +9,14 @@ import { colors } from '@/theme/colors';
 import { LoadingView, ErrorView } from '@/components/StatusViews';
 import { CustomRangeModal } from '@/components/progress/CustomRangeModal';
 import { DurationFilterButtons } from '@/components/progress/DurationFilterButtons';
-import { useValidatedWorkouts } from '@/hooks/useValidatedWorkouts';
-import { useDateRangeFilter } from '@/hooks/useDateRangeFilter';
-import { useExerciseSelection } from '@/hooks/useExerciseSelection';
+import { useValidatedWorkouts } from '@/hooks/workout/useValidatedWorkouts';
+import { useDateRangeFilter } from '@/hooks/common/useDateRangeFilter';
+import { useExerciseSelection } from '@/hooks/exercise/useExerciseSelection';
 import type { Workout } from '@/services';
 import { buildExerciseE1RMSeries } from '@/utils/strength';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { weightForDisplay } from '@/utils/units';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 const screenWidth = Dimensions.get('window').width;
 

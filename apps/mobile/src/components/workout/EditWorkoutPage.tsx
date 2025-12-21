@@ -5,14 +5,14 @@ import { ActivityIndicator } from 'react-native';
 
 import { colors } from '@/theme/colors';
 import { EditWorkoutScreen } from '@/components/workout/EditWorkoutScreen';
-import { useWorkout } from '@/hooks/useWorkout';
-import { useWorkoutMutations } from '@/hooks/useWorkoutMutations';
-import { useAlertModal } from '@/hooks/useAlertModal';
+import { useWorkout } from '@/hooks/workout/useWorkout';
+import { useWorkoutMutations } from '@/hooks/workout/useWorkoutMutations';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
-import { useTranslation } from '@/hooks/useTranslation';
-import { useWorkoutIdFromParams } from '@/hooks/useWorkoutIdFromParams';
-import { useEditWorkoutHandlers } from '@/hooks/useEditWorkoutHandlers';
-import { useWorkoutDeleteModal } from '@/hooks/useWorkoutDeleteModal';
+import { useTranslation } from '@/hooks/common/useTranslation';
+import { useWorkoutIdFromParams } from '@/hooks/workout/useWorkoutIdFromParams';
+import { useEditWorkoutHandlers } from '@/hooks/workout/useEditWorkoutHandlers';
+import { useWorkoutDeleteModal } from '@/hooks/workout/useWorkoutDeleteModal';
 
 interface EditWorkoutPageProps {
   exerciseNavigationPath: string;

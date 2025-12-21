@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { Modal } from 'react-native';
 import { YStack, XStack, Text, Button } from 'tamagui';
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 interface ConfirmationModalProps {
   visible: boolean;

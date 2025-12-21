@@ -7,9 +7,9 @@ import { colors } from '@/theme/colors';
 import Feather from '@expo/vector-icons/Feather';
 import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
-import { useAlertModal } from '@/hooks/useAlertModal';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
 
 type UnitOption = {
   value: 'kg' | 'lb' | 'cm' | 'ft' | 'celsius' | 'fahrenheit';

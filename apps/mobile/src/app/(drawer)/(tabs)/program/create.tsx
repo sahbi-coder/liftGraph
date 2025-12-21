@@ -4,19 +4,19 @@ import { Button, Input, Text, TextArea, XStack, YStack } from 'tamagui';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-import { useAlertModal } from '@/hooks/useAlertModal';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { colors } from '@/theme/colors';
 import { DaySelector } from '@/components/DaySelector';
 import { ProgramDayLabel } from '@/services';
-import { useProgramForm } from '@/hooks/useProgramForm';
-import { useProgramStructure } from '@/hooks/useProgramStructure';
-import { useProgramDaySelection } from '@/hooks/useProgramDaySelection';
-import { useProgramExercises } from '@/hooks/useProgramExercises';
-import { useProgramSets } from '@/hooks/useProgramSets';
-import { useProgramValidation } from '@/hooks/useProgramValidation';
-import { useProgramSave } from '@/hooks/useProgramSave';
-import type { ProgramWeekForm, ProgramExerciseForm } from '@/hooks/useProgramForm/types';
+import { useProgramForm } from '@/hooks/program/useProgramForm';
+import { useProgramStructure } from '@/hooks/program/useProgramStructure';
+import { useProgramDaySelection } from '@/hooks/program/useProgramDaySelection';
+import { useProgramExercises } from '@/hooks/program/useProgramExercises';
+import { useProgramSets } from '@/hooks/program/useProgramSets';
+import { useProgramValidation } from '@/hooks/program/useProgramValidation';
+import { useProgramSave } from '@/hooks/program/useProgramSave';
+import type { ProgramWeekForm, ProgramExerciseForm } from '@/hooks/program/useProgramForm/types';
 
 export default function CreateProgramScreen() {
   const { t } = useTranslation();

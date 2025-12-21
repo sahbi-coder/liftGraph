@@ -7,16 +7,16 @@ import type { WorkoutExercise, WorkoutInput } from '@/services';
 import { colors } from '@/theme/colors';
 import { Calendar } from '@/components/Calendar';
 import { Calendar as CalendarIcon } from '@tamagui/lucide-icons';
-import { useAlertModal } from '@/hooks/useAlertModal';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { ExerciseCard } from './ExerciseCard';
-import { useWorkoutFormState } from '@/hooks/useWorkoutFormState';
-import { useWorkoutExercises } from '@/hooks/useWorkoutExercises';
-import { useWorkoutValidation } from '@/hooks/useWorkoutValidation';
-import { useWorkoutDate } from '@/hooks/useWorkoutDate';
-import { useExercisePickerNavigation } from '@/hooks/useExercisePickerNavigation';
-import { useWorkoutSubmission } from '@/hooks/useWorkoutSubmission';
+import { useWorkoutFormState } from '@/hooks/workout/useWorkoutFormState';
+import { useWorkoutExercises } from '@/hooks/workout/useWorkoutExercises';
+import { useWorkoutValidation } from '@/hooks/workout/useWorkoutValidation';
+import { useWorkoutDate } from '@/hooks/workout/useWorkoutDate';
+import { useExercisePickerNavigation } from '@/hooks/exercise/useExercisePickerNavigation';
+import { useWorkoutSubmission } from '@/hooks/workout/useWorkoutSubmission';
 
 type WorkoutFormProps = {
   initialValues?: {

@@ -6,14 +6,14 @@ import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import { colors } from '@/theme/colors';
 import { PasswordInput } from '@/components/PasswordInput';
-import { useAlertModal } from '@/hooks/useAlertModal';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { getAuthErrorMessage } from '@/utils/authErrors';
-import { useValidateAuthScreen } from '@/hooks/useValidateAuthScreen';
+import { useValidateAuthScreen } from '@/hooks/common/useValidateAuthScreen';
 import { getEmailSchema, getPasswordSchema } from '@/utils/authSchemas';
 import { ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { useKeyboardAnimation } from '@/hooks/useKeyboardAnimation';
+import { useKeyboardAnimation } from '@/hooks/common/useKeyboardAnimation';
 
 const logoSource = require('../../../assets/exp-icon.png');
 

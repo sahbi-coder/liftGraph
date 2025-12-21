@@ -6,7 +6,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { colors } from '@/theme/colors';
 import type { Exercise } from '@/services';
 import type { ExerciseSelection } from '@/types/workout';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 type ExercisePickerScreenProps = {
   exercises: Exercise[];

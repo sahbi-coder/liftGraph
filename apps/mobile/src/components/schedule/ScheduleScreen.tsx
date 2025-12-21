@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { Calendar } from '@/components/Calendar';
 import { colors } from '@/theme/colors';
 import type { Workout } from '@/services';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 type ScheduleScreenProps = {
   workouts: Workout[];

@@ -4,10 +4,10 @@ import { YStack, Text, Button } from 'tamagui';
 
 import { colors } from '@/theme/colors';
 import { WorkoutHomeScreen } from '@/components/workout/WorkoutHomeScreen';
-import { useLatestValidatedWorkout } from '@/hooks/useLatestValidatedWorkout';
-import { useEarliestFutureWorkout } from '@/hooks/useEarliestFutureWorkout';
-import { useAlertModal } from '@/hooks/useAlertModal';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useLatestValidatedWorkout } from '@/hooks/workout/useLatestValidatedWorkout';
+import { useEarliestFutureWorkout } from '@/hooks/workout/useEarliestFutureWorkout';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function WorkoutHome() {
   const router = useRouter();

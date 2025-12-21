@@ -3,7 +3,7 @@ import { Stack } from 'expo-router';
 
 import { colors } from '@/theme/colors';
 import { DrawerButton } from '@/components/DrawerButton';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function WorkoutLayout() {
   const { t } = useTranslation();

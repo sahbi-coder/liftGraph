@@ -3,10 +3,10 @@ import { YStack, XStack, Text, Input, Button, H1, H3, Image } from 'tamagui';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
 import { PasswordInput } from '@/components/PasswordInput';
-import { useAlertModal } from '@/hooks/useAlertModal';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { getAuthErrorMessage } from '@/utils/authErrors';
-import { useValidateAuthScreen } from '@/hooks/useValidateAuthScreen';
+import { useValidateAuthScreen } from '@/hooks/common/useValidateAuthScreen';
 import {
   getNameSchema,
   getEmailSchema,
@@ -15,7 +15,7 @@ import {
 } from '@/utils/authSchemas';
 import { ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { useKeyboardAnimation } from '@/hooks/useKeyboardAnimation';
+import { useKeyboardAnimation } from '@/hooks/common/useKeyboardAnimation';
 
 export default function SignupScreen() {
   const [name, setName] = useState('');

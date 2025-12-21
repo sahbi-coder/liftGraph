@@ -4,13 +4,13 @@ import { YStack, Text, Button } from 'tamagui';
 
 import { colors } from '@/theme/colors';
 import { ExercisePickerScreen } from '@/components/exercises/ExercisePickerScreen';
-import { useExercises } from '@/hooks/useExercises';
+import { useExercises } from '@/hooks/exercise/useExercises';
 import type { ExerciseSelection } from '@/types/workout';
 import {
   getExercisePickerCallback,
   clearExercisePickerCallback,
 } from '@/contexts/exercisePickerContext';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function ProgressExercisePickerScreen() {
   const router = useRouter();

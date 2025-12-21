@@ -9,7 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { DrawerContent } from '@/components/DrawerContent';
 import { DrawerProvider, useDrawer } from '@/contexts/DrawerContext';
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 function DrawerContentWrapper() {
   const { closeDrawer } = useDrawer();

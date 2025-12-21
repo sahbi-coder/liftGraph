@@ -3,7 +3,7 @@ import { YStack, Text } from 'tamagui';
 import { DaySelector } from '@/components/DaySelector';
 import type { ProgramDayLabel } from '@/services';
 import { LoadingView, ErrorView } from '@/components/StatusViews';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function ComponentsTestScreen() {
   const handleSelectionChange = (selectedDays: ProgramDayLabel[]) => {

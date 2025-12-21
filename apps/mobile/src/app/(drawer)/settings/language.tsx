@@ -3,7 +3,7 @@ import { TouchableOpacity, ScrollView } from 'react-native';
 import { YStack, XStack, Text } from 'tamagui';
 import { Check } from '@tamagui/lucide-icons';
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { changeLanguage } from '@/locale/i18n';
 
 type LanguageOption = {

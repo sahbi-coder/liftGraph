@@ -1,7 +1,7 @@
 import React from 'react';
 import { XStack, Button } from 'tamagui';
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export type FilterType = 'week' | 'month' | '3months' | '6months' | 'year' | 'all' | 'custom';
 

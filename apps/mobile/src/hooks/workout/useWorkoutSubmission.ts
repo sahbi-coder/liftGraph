@@ -4,7 +4,7 @@ import type { WorkoutInput } from '@/services';
 import type { ExerciseForm } from '@/components/workout/ExerciseCard';
 import { useUserWorkouts } from './useUserWorkouts';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
-import { useTranslation } from './useTranslation';
+import { useTranslation } from '../common/useTranslation';
 
 type UseWorkoutSubmissionProps = {
   buildWorkoutPayload: () => WorkoutInput;

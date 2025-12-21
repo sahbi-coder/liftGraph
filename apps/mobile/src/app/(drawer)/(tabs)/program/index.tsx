@@ -4,8 +4,8 @@ import { YStack, Text, Button } from 'tamagui';
 
 import { colors } from '@/theme/colors';
 import { ProgramHomeScreen } from '@/components/program/ProgramHomeScreen';
-import { useUserPrograms } from '@/hooks/useUserPrograms';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useUserPrograms } from '@/hooks/program/useUserPrograms';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function ProgramHome() {
   const router = useRouter();

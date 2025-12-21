@@ -11,8 +11,8 @@ import {
   getExercisePickerCallback,
   clearExercisePickerCallback,
 } from '@/contexts/exercisePickerContext';
-import { useAlertModal } from '@/hooks/useAlertModal';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import { EXERCISE_CATEGORIES, BODY_PARTS } from '@/services';
 

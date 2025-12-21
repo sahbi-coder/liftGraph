@@ -9,7 +9,7 @@ import { Clock3, Dumbbell } from '@tamagui/lucide-icons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 dayjs.extend(relativeTime);
 

@@ -4,8 +4,8 @@ import { YStack, Text, Button } from 'tamagui';
 
 import { colors } from '@/theme/colors';
 import { ExercisePickerScreen } from '@/components/exercises/ExercisePickerScreen';
-import { useExercises } from '@/hooks/useExercises';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useExercises } from '@/hooks/exercise/useExercises';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import type { ExerciseSelection } from '@/types/workout';
 
 export default function ExercisesScreen() {

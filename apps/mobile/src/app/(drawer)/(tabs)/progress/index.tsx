@@ -5,7 +5,7 @@ import { YStack, XStack, Text } from 'tamagui';
 import { BarChart3, TrendingUp, Activity } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 type ProgressMetric = {
   id: string;

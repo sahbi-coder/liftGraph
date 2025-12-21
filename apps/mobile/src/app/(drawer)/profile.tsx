@@ -8,7 +8,7 @@ import 'dayjs/locale/fr';
 
 import { colors } from '@/theme/colors';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { getAuthErrorMessage } from '@/utils/authErrors';
 
 export default function ProfileScreen() {

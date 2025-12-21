@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
-import { useUserWorkouts } from '@/hooks/useUserWorkouts';
+import { useTranslation } from '@/hooks/common/useTranslation';
+import { useUserWorkouts } from '@/hooks/workout/useUserWorkouts';
 import type { Workout } from '@/services';
 
 type UseWorkoutDateProps = {

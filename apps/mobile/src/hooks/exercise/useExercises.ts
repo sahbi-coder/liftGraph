@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export function useExercises() {
   const { services } = useDependencies();

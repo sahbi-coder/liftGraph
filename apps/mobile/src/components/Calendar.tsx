@@ -10,7 +10,7 @@ import 'dayjs/locale/es';
 import 'dayjs/locale/fr';
 
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export type CalendarProps = RNCalendarProps;
 

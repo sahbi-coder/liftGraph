@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 
 type UseProgramSaveParams = {

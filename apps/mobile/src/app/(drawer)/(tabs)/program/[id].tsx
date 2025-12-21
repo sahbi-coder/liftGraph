@@ -9,9 +9,9 @@ import type { Program, ProgramExercise, WorkoutExercise, ProgramDayLabel } from 
 import { colors } from '@/theme/colors';
 import { DaySelector } from '@/components/DaySelector';
 import { setWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
-import { useAlertModal } from '@/hooks/useAlertModal';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 
 export default function ProgramDetailsScreen() {

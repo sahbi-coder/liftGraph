@@ -4,8 +4,8 @@ import { YStack, Text, Button } from 'tamagui';
 
 import { colors } from '@/theme/colors';
 import { ScheduleScreen } from '@/components/schedule/ScheduleScreen';
-import { useUserWorkouts } from '@/hooks/useUserWorkouts';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useUserWorkouts } from '@/hooks/workout/useUserWorkouts';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function Schedule() {
   const router = useRouter();

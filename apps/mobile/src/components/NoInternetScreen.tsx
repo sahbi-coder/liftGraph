@@ -4,7 +4,7 @@ import { YStack } from 'tamagui';
 import Feather from '@expo/vector-icons/Feather';
 
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export function NoInternetScreen() {
   const { t } = useTranslation();

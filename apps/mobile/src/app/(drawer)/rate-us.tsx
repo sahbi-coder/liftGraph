@@ -15,7 +15,7 @@ import {
 } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 type LikeFeature =
   | 'workoutPlans'

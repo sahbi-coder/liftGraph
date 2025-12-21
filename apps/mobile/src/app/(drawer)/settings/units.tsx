@@ -5,8 +5,8 @@ import { useRouter } from 'expo-router';
 import { colors } from '@/theme/colors';
 import { Scale, Ruler, Thermometer } from '@tamagui/lucide-icons';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
-import { useAlertModal } from '@/hooks/useAlertModal';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useAlertModal } from '@/hooks/common/useAlertModal';
+import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 
 type UnitOption = {

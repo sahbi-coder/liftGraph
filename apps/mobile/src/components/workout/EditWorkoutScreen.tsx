@@ -2,10 +2,10 @@ import React from 'react';
 
 import { WorkoutForm } from '@/components/workout/WorkoutForm';
 import type { Workout, WorkoutInput } from '@/services';
-import { useTranslation } from '@/hooks/useTranslation';
-import { useEditWorkoutFormState } from '@/hooks/useEditWorkoutFormState';
-import { useWorkoutFormChanges } from '@/hooks/useWorkoutFormChanges';
-import { useWorkoutFormInitialValues } from '@/hooks/useWorkoutFormInitialValues';
+import { useTranslation } from '@/hooks/common/useTranslation';
+import { useEditWorkoutFormState } from '@/hooks/workout/useEditWorkoutFormState';
+import { useWorkoutFormChanges } from '@/hooks/workout/useWorkoutFormChanges';
+import { useWorkoutFormInitialValues } from '@/hooks/workout/useWorkoutFormInitialValues';
 
 type EditWorkoutScreenProps = {
   workout: Workout;

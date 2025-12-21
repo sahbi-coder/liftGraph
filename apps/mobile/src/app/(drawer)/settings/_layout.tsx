@@ -3,7 +3,7 @@ import React from 'react';
 import { BackButton } from '@/components/BackButton';
 import { colors } from '@/theme/colors';
 import { Platform } from 'react-native';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function SettingsLayout() {
   const { t } = useTranslation();

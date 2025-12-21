@@ -5,7 +5,7 @@ import { YStack, Text, Button } from 'tamagui';
 import { colors } from '@/theme/colors';
 import { WorkoutSummaryCard } from '@/components/workout/WorkoutSummaryCard';
 import type { Workout } from '@/services';
-import { useTranslation } from '@/hooks/useTranslation';
+import { useTranslation } from '@/hooks/common/useTranslation';
 
 type WorkoutHomeScreenProps = {
   latestWorkout?: Workout | null;
