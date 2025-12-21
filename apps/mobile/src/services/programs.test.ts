@@ -124,7 +124,8 @@ describe('ProgramsService', () => {
     week: {
       days: [
         {
-          name: 'Day1',
+          label: 'Day1',
+          name: 'Push Day',
           exercises: [
             {
               id: 'ex1',
@@ -146,7 +147,8 @@ describe('ProgramsService', () => {
       {
         days: [
           {
-            name: 'Day1',
+            label: 'Day1',
+            name: 'Push Day',
             exercises: [
               {
                 id: 'ex1',
@@ -160,7 +162,8 @@ describe('ProgramsService', () => {
       {
         days: [
           {
-            name: 'Day1',
+            label: 'Day1',
+            name: 'Push Day',
             exercises: [
               {
                 id: 'ex2',
@@ -186,7 +189,8 @@ describe('ProgramsService', () => {
           {
             days: [
               {
-                name: 'Day1',
+                label: 'Day1',
+                name: 'Push Day',
                 exercises: [
                   {
                     id: 'ex1',
@@ -329,7 +333,8 @@ describe('ProgramsService', () => {
             week: {
               days: [
                 {
-                  name: 'Day1',
+                  label: 'Day1',
+                  name: 'Push Day',
                   exercises: [
                     {
                       id: 'ex1',
@@ -354,7 +359,8 @@ describe('ProgramsService', () => {
               {
                 days: [
                   {
-                    name: 'Day1',
+                    label: 'Day1',
+                    name: 'Push Day',
                     exercises: [
                       {
                         id: 'ex1',
@@ -368,7 +374,8 @@ describe('ProgramsService', () => {
               {
                 days: [
                   {
-                    name: 'Day1',
+                    label: 'Day1',
+                    name: 'Push Day',
                     exercises: [
                       {
                         id: 'ex2',
@@ -422,7 +429,8 @@ describe('ProgramsService', () => {
             week: {
               days: [
                 {
-                  name: 'Day1',
+                  label: 'Day1',
+                  name: 'Push Day',
                   exercises: [
                     {
                       id: 'ex1',
@@ -489,7 +497,8 @@ describe('ProgramsService', () => {
           week: {
             days: [
               {
-                name: 'Day1',
+                label: 'Day1',
+                name: 'Push Day',
                 exercises: [
                   {
                     id: 'ex1',
@@ -535,7 +544,8 @@ describe('ProgramsService', () => {
             {
               days: [
                 {
-                  name: 'Day1',
+                  label: 'Day1',
+                  name: 'Push Day',
                   exercises: [
                     {
                       id: 'ex1',
@@ -549,7 +559,8 @@ describe('ProgramsService', () => {
             {
               days: [
                 {
-                  name: 'Day1',
+                  label: 'Day1',
+                  name: 'Push Day',
                   exercises: [
                     {
                       id: 'ex2',
@@ -599,7 +610,8 @@ describe('ProgramsService', () => {
                 {
                   days: [
                     {
-                      name: 'Day1',
+                      label: 'Day1',
+                      name: 'Push Day',
                       exercises: [
                         {
                           id: 'ex1',

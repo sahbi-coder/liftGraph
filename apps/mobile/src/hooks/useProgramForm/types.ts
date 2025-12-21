@@ -17,6 +17,7 @@ export type ProgramExerciseForm = {
 };
 
 export type ProgramDayForm = {
+  name: string;
   exercises: ProgramExerciseForm[];
 };
 

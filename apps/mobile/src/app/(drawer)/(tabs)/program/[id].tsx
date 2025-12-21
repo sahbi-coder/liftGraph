@@ -106,17 +106,12 @@ export default function ProgramDetailsScreen() {
         .map((day, index) => (day !== 'rest' ? `Day${index + 1}` : null))
         .filter((day): day is ProgramDayLabel => day !== null);
     } else {
-      // For advanced programs, use the first week of the first phase
-      if (program.phases.length > 0 && program.phases[0].weeks.length > 0) {
-        return program.phases[0].weeks[0].days
-          .map((day, index) => (day !== 'rest' ? `Day${index + 1}` : null))
-          .filter((day): day is ProgramDayLabel => day !== null);
-      }
+      // For advanced programs, return empty array as we'll display all phases/weeks separately
       return [];
     }
   }, [program, selectedAlternatingWeek]);
 
-  // Get active day exercises for display
+  // Get active day exercises for display (only used for simple/alternating programs)
   const activeDayExercises = useMemo(() => {
     if (!program) return [];
     if (program.type === 'simple') {
@@ -125,6 +120,7 @@ export default function ProgramDetailsScreen() {
           if (day === 'rest') return null;
           return {
             dayNumber: index + 1,
+            dayLabel: day.label,
             dayName: day.name,
             exercises: day.exercises,
           };
@@ -137,25 +133,14 @@ export default function ProgramDetailsScreen() {
           if (day === 'rest') return null;
           return {
             dayNumber: index + 1,
+            dayLabel: day.label,
             dayName: day.name,
             exercises: day.exercises,
           };
         })
         .filter((item): item is NonNullable<typeof item> => item !== null);
     } else {
-      // For advanced programs, use the first week of the first phase
-      if (program.phases.length > 0 && program.phases[0].weeks.length > 0) {
-        return program.phases[0].weeks[0].days
-          .map((day, index) => {
-            if (day === 'rest') return null;
-            return {
-              dayNumber: index + 1,
-              dayName: day.name,
-              exercises: day.exercises,
-            };
-          })
-          .filter((item): item is NonNullable<typeof item> => item !== null);
-      }
+      // For advanced programs, return empty array as we'll display all phases/weeks separately
       return [];
     }
   }, [program, selectedAlternatingWeek]);
@@ -367,7 +352,7 @@ export default function ProgramDetailsScreen() {
                     >
                       <YStack space="$1" flex={1}>
                         <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                          {t('common.day')} {dayData.dayNumber}
+                          {dayData.dayLabel} {dayData.dayName ? `(${dayData.dayName})` : ''}
                         </Text>
                         <Text color="$textSecondary" fontSize="$4">
                           {dayData.exercises.length}{' '}
@@ -454,165 +439,171 @@ export default function ProgramDetailsScreen() {
             <Text color="$textPrimary" fontSize="$6" fontWeight="600">
               {t('program.programPhases')}
             </Text>
-            {program.phases.map((phase, phaseIndex) => {
-              // Use the first week of the phase for display
-              const firstWeek = phase.weeks.length > 0 ? phase.weeks[0] : null;
-              const phaseActiveDays = firstWeek
-                ? firstWeek.days
+            {program.phases.map((phase, phaseIndex) => (
+              <YStack
+                key={phaseIndex}
+                padding="$3"
+                backgroundColor={colors.midGray}
+                borderRadius="$4"
+                space="$3"
+                marginBottom="$4"
+              >
+                <YStack space="$1">
+                  <Text color="$textPrimary" fontSize="$5" fontWeight="600">
+                    {phase.name}
+                  </Text>
+                  {phase.description && (
+                    <Text color="$textSecondary" fontSize="$4">
+                      {phase.description}
+                    </Text>
+                  )}
+                </YStack>
+                {phase.weeks.map((week, weekIndex) => {
+                  const weekActiveDays = week.days
                     .map((day, index) => (day !== 'rest' ? `Day${index + 1}` : null))
-                    .filter((day): day is ProgramDayLabel => day !== null)
-                : [];
+                    .filter((day): day is ProgramDayLabel => day !== null);
 
-              const phaseActiveDayExercises = firstWeek
-                ? firstWeek.days
+                  const weekActiveDayExercises = week.days
                     .map((day, index) => {
                       if (day === 'rest') return null;
                       return {
                         dayNumber: index + 1,
+                        dayLabel: day.label,
                         dayName: day.name,
                         exercises: day.exercises,
                       };
                     })
-                    .filter((item): item is NonNullable<typeof item> => item !== null)
-                : [];
+                    .filter((item): item is NonNullable<typeof item> => item !== null);
 
-              return (
-                <YStack
-                  key={phaseIndex}
-                  padding="$3"
-                  backgroundColor={colors.midGray}
-                  borderRadius="$4"
-                  space="$3"
-                  marginBottom="$4"
-                >
-                  <YStack space="$1">
-                    <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                      {phase.name}
-                    </Text>
-                    {phase.description && (
-                      <Text color="$textSecondary" fontSize="$4">
-                        {phase.description}
-                      </Text>
-                    )}
-                  </YStack>
-                  {firstWeek && (
-                    <YStack
-                      padding="$3"
-                      backgroundColor={colors.darkGray}
-                      borderRadius="$3"
-                      borderWidth={1}
-                      borderColor={colors.niceOrange}
-                      space="$2"
-                    >
-                      <XStack alignItems="center" space="$2">
-                        <Text color={colors.niceOrange} fontSize="$6" fontWeight="700">
-                          {t('program.week1')}
-                        </Text>
-                        {phase.weeks.length > 1 && (
-                          <Text color="$textSecondary" fontSize="$3">
-                            ({t('common.of')} {phase.weeks.length} {t('common.weeks')})
+                  return (
+                    <YStack key={weekIndex} space="$3" marginBottom="$3">
+                      <YStack
+                        padding="$3"
+                        backgroundColor={colors.darkGray}
+                        borderRadius="$3"
+                        borderWidth={1}
+                        borderColor={colors.niceOrange}
+                        space="$2"
+                      >
+                        <XStack alignItems="center" space="$2">
+                          <Text color={colors.niceOrange} fontSize="$6" fontWeight="700">
+                            {t('common.week')} {weekIndex + 1}
                           </Text>
-                        )}
-                      </XStack>
-                      <DaySelector value={phaseActiveDays} disabled />
-                    </YStack>
-                  )}
-                  {phaseActiveDayExercises.length > 0 && (
-                    <YStack space="$3">
-                      {phaseActiveDayExercises.map((dayData, dayIndex) => (
-                        <YStack key={dayIndex} space="$2">
-                          <XStack
-                            alignItems="center"
-                            justifyContent="space-between"
-                            gap="$2"
-                            flexWrap="wrap"
-                          >
-                            <YStack space="$1" flex={1}>
-                              <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                                {t('common.day')} {dayData.dayNumber}
-                              </Text>
-                              <Text color="$textSecondary" fontSize="$4">
-                                {dayData.exercises.length}{' '}
-                                {dayData.exercises.length !== 1
-                                  ? t('common.exercises')
-                                  : t('common.exercise')}
-                              </Text>
-                            </YStack>
-                            <Button
-                              backgroundColor={colors.niceOrange}
-                              color={colors.white}
-                              fontSize="$3"
-                              borderRadius="$3"
-                              borderWidth={0}
-                              paddingHorizontal="$2.5"
-                              paddingVertical="$1.5"
-                              onPress={() => handleApplyDay(dayData.exercises)}
-                            >
-                              {t('program.applyDay')}
-                            </Button>
-                          </XStack>
-                          <YStack
-                            padding="$3"
-                            backgroundColor={colors.midGray}
-                            borderRadius="$4"
-                            space="$2"
-                          >
-                            {dayData.exercises.map((exercise, exerciseIndex) => (
+                          {phase.weeks.length > 1 && (
+                            <Text color="$textSecondary" fontSize="$3">
+                              ({t('common.of')} {phase.weeks.length} {t('common.weeks')})
+                            </Text>
+                          )}
+                        </XStack>
+                        <DaySelector value={weekActiveDays} disabled />
+                      </YStack>
+                      {weekActiveDayExercises.length > 0 && (
+                        <YStack space="$3">
+                          {weekActiveDayExercises.map((dayData, dayIndex) => (
+                            <YStack key={dayIndex} space="$2">
+                              <XStack
+                                alignItems="center"
+                                justifyContent="space-between"
+                                gap="$2"
+                                flexWrap="wrap"
+                              >
+                                <YStack space="$1" flex={1}>
+                                  <Text color="$textPrimary" fontSize="$5" fontWeight="600">
+                                    {dayData.dayLabel}{' '}
+                                    {dayData.dayName ? `(${dayData.dayName})` : ''}
+                                  </Text>
+                                  <Text color="$textSecondary" fontSize="$4">
+                                    {dayData.exercises.length}{' '}
+                                    {dayData.exercises.length !== 1
+                                      ? t('common.exercises')
+                                      : t('common.exercise')}
+                                  </Text>
+                                </YStack>
+                                <Button
+                                  backgroundColor={colors.niceOrange}
+                                  color={colors.white}
+                                  fontSize="$3"
+                                  borderRadius="$3"
+                                  borderWidth={0}
+                                  paddingHorizontal="$2.5"
+                                  paddingVertical="$1.5"
+                                  onPress={() => handleApplyDay(dayData.exercises)}
+                                >
+                                  {t('program.applyDay')}
+                                </Button>
+                              </XStack>
                               <YStack
-                                key={exerciseIndex}
                                 padding="$3"
-                                backgroundColor={colors.darkGray}
-                                borderRadius="$3"
+                                backgroundColor={colors.midGray}
+                                borderRadius="$4"
                                 space="$2"
                               >
-                                <Text color={colors.white} fontSize="$4" fontWeight="600">
-                                  {exercise.name}
-                                </Text>
-                                <XStack gap="$3" flexWrap="wrap">
-                                  <YStack space="$1">
-                                    <Text color="$textSecondary" fontSize="$2">
-                                      {t('common.sets')}
+                                {dayData.exercises.map((exercise, exerciseIndex) => (
+                                  <YStack
+                                    key={exerciseIndex}
+                                    padding="$3"
+                                    backgroundColor={colors.darkGray}
+                                    borderRadius="$3"
+                                    space="$2"
+                                  >
+                                    <Text color={colors.white} fontSize="$4" fontWeight="600">
+                                      {exercise.name}
                                     </Text>
-                                    <Text color={colors.white} fontSize="$3" fontWeight="500">
-                                      {exercise.sets.length}
-                                    </Text>
+                                    <XStack gap="$3" flexWrap="wrap">
+                                      <YStack space="$1">
+                                        <Text color="$textSecondary" fontSize="$2">
+                                          {t('common.sets')}
+                                        </Text>
+                                        <Text color={colors.white} fontSize="$3" fontWeight="500">
+                                          {exercise.sets.length}
+                                        </Text>
+                                      </YStack>
+                                      {exercise.sets.map((set, setIndex) => (
+                                        <YStack key={setIndex} space="$1">
+                                          <Text color="$textSecondary" fontSize="$2">
+                                            {t('common.set')} {setIndex + 1}
+                                          </Text>
+                                          <XStack gap="$3">
+                                            <YStack space="$0.5">
+                                              <Text color="$textSecondary" fontSize="$2">
+                                                {t('common.reps')}
+                                              </Text>
+                                              <Text
+                                                color={colors.white}
+                                                fontSize="$3"
+                                                fontWeight="500"
+                                              >
+                                                {set.reps}
+                                              </Text>
+                                            </YStack>
+                                            <YStack space="$0.5">
+                                              <Text color="$textSecondary" fontSize="$2">
+                                                {t('workout.rir')}
+                                              </Text>
+                                              <Text
+                                                color={colors.white}
+                                                fontSize="$3"
+                                                fontWeight="500"
+                                              >
+                                                {set.rir}
+                                              </Text>
+                                            </YStack>
+                                          </XStack>
+                                        </YStack>
+                                      ))}
+                                    </XStack>
                                   </YStack>
-                                  {exercise.sets.map((set, setIndex) => (
-                                    <YStack key={setIndex} space="$1">
-                                      <Text color="$textSecondary" fontSize="$2">
-                                        {t('common.set')} {setIndex + 1}
-                                      </Text>
-                                      <XStack gap="$3">
-                                        <YStack space="$0.5">
-                                          <Text color="$textSecondary" fontSize="$2">
-                                            {t('common.reps')}
-                                          </Text>
-                                          <Text color={colors.white} fontSize="$3" fontWeight="500">
-                                            {set.reps}
-                                          </Text>
-                                        </YStack>
-                                        <YStack space="$0.5">
-                                          <Text color="$textSecondary" fontSize="$2">
-                                            {t('workout.rir')}
-                                          </Text>
-                                          <Text color={colors.white} fontSize="$3" fontWeight="500">
-                                            {set.rir}
-                                          </Text>
-                                        </YStack>
-                                      </XStack>
-                                    </YStack>
-                                  ))}
-                                </XStack>
+                                ))}
                               </YStack>
-                            ))}
-                          </YStack>
+                            </YStack>
+                          ))}
                         </YStack>
-                      ))}
+                      )}
                     </YStack>
-                  )}
-                </YStack>
-              );
-            })}
+                  );
+                })}
+              </YStack>
+            ))}
           </YStack>
         )}
         <YStack

@@ -44,6 +44,7 @@ export default function CreateProgramScreen() {
     handleAddWeekToPhase,
     handleUpdateWeekNameInPhase,
     handleRemoveWeekFromPhase,
+    handleUpdateDayName,
   } = useProgramStructure(programType);
 
   // Day selection
@@ -198,6 +199,7 @@ export default function CreateProgramScreen() {
   const renderWeek = useCallback(
     (week: ProgramWeekForm, weekIndex: number, phaseId?: string) => {
       const dayLabels: ProgramDayLabel[] = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7'];
+      const showWeekName = programType === 'advanced';
 
       return (
         <YStack
@@ -208,31 +210,33 @@ export default function CreateProgramScreen() {
           space="$3"
           marginBottom="$3"
         >
-          <XStack space="$2" alignItems="center">
-            <Input
-              flex={1}
-              value={week.name}
-              onChangeText={(value) =>
-                phaseId
-                  ? handleUpdateWeekNameInPhase(phaseId, week.id, value)
-                  : handleUpdateWeekName(week.id, value)
-              }
-              placeholder={`${t('common.week')} ${weekIndex + 1}`}
-              borderColor="$inputFieldBorder"
-              backgroundColor="$background"
-              color="$textPrimary"
-            />
-            <Button
-              size="$2"
-              variant="outlined"
-              color={colors.white}
-              onPress={() =>
-                phaseId ? handleRemoveWeekFromPhase(phaseId, week.id) : handleRemoveWeek(week.id)
-              }
-            >
-              <Entypo name="circle-with-cross" size={24} color={colors.niceOrange} />
-            </Button>
-          </XStack>
+          {showWeekName && (
+            <XStack space="$2" alignItems="center">
+              <Input
+                flex={1}
+                value={week.name}
+                onChangeText={(value) =>
+                  phaseId
+                    ? handleUpdateWeekNameInPhase(phaseId, week.id, value)
+                    : handleUpdateWeekName(week.id, value)
+                }
+                placeholder={`${t('common.week')} ${weekIndex + 1}`}
+                borderColor="$inputFieldBorder"
+                backgroundColor="$background"
+                color="$textPrimary"
+              />
+              <Button
+                size="$2"
+                variant="outlined"
+                color={colors.white}
+                onPress={() =>
+                  phaseId ? handleRemoveWeekFromPhase(phaseId, week.id) : handleRemoveWeek(week.id)
+                }
+              >
+                <Entypo name="circle-with-cross" size={24} color={colors.niceOrange} />
+              </Button>
+            </XStack>
+          )}
 
           <YStack space="$2">
             <Text color="$textPrimary" fontSize="$4" fontWeight="600">
@@ -252,9 +256,19 @@ export default function CreateProgramScreen() {
             const dayId = dayLabels[dayIndex];
             return (
               <YStack key={dayIndex} space="$2" marginTop="$2">
-                <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                  {t('common.day')} {dayIndex + 1}
-                </Text>
+                <YStack space="$2">
+                  <Text color="$textPrimary" fontSize="$5" fontWeight="600">
+                    {t('common.day')} {dayIndex + 1}
+                  </Text>
+                  <Input
+                    value={day.name}
+                    onChangeText={(value) => handleUpdateDayName(week.id, dayId, value, phaseId)}
+                    placeholder={`${t('program.dayName')} *`}
+                    borderColor="$inputFieldBorder"
+                    backgroundColor="$background"
+                    color="$textPrimary"
+                  />
+                </YStack>
                 {day.exercises.map((exercise, exerciseIndex) =>
                   renderExerciseCard(exercise, week.id, dayId, exerciseIndex, phaseId),
                 )}
@@ -285,6 +299,7 @@ export default function CreateProgramScreen() {
       handleRemoveWeek,
       handleRemoveWeekFromPhase,
       handleDaySelectionChange,
+      programType,
       t,
     ],
   );

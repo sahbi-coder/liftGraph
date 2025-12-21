@@ -412,7 +412,8 @@ describe('FirestoreService', () => {
         week: {
           days: [
             {
-              name: 'Day1' as const,
+              label: 'Day1' as const,
+              name: 'Push Day',
               exercises: [
                 {
                   id: 'ex1',

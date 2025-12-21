@@ -30,7 +30,8 @@ export const ProgramExerciseSchema = z.object({
 
 export const ProgramDaySchema = z.union([
   z.object({
-    name: ProgramDayLabelSchema,
+    label: ProgramDayLabelSchema,
+    name: z.string().min(1, 'Day name is required'),
     exercises: z.array(ProgramExerciseSchema),
   }),
   z.literal('rest'),

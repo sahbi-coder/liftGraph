@@ -46,7 +46,7 @@ export function useProgramDaySelection({
               if (selectedIndices.has(i)) {
                 // If it was 'rest', create new day form, otherwise keep existing
                 if (newDays[i] === 'rest') {
-                  newDays[i] = { exercises: [] };
+                  newDays[i] = { name: '', exercises: [] };
                 }
               } else {
                 // If it was a day form, convert to 'rest'
@@ -68,7 +68,7 @@ export function useProgramDaySelection({
             for (let i = 0; i < 7; i++) {
               if (selectedIndices.has(i)) {
                 if (newDays[i] === 'rest') {
-                  newDays[i] = { exercises: [] };
+                  newDays[i] = { name: '', exercises: [] };
                 }
               } else {
                 newDays[i] = 'rest';
@@ -94,7 +94,7 @@ export function useProgramDaySelection({
                 for (let i = 0; i < 7; i++) {
                   if (selectedIndices.has(i)) {
                     if (newDays[i] === 'rest') {
-                      newDays[i] = { exercises: [] };
+                      newDays[i] = { name: '', exercises: [] };
                     }
                   } else {
                     newDays[i] = 'rest';

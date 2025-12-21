@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import type { ProgramType, ProgramWeekForm, ProgramPhaseForm } from './useProgramForm/types';
+import type { ProgramDayLabel } from '@/services';
 import { createWeekForm, createPhaseForm } from './useProgramForm/types';
 
 export function useProgramStructure(programType: ProgramType) {
@@ -137,6 +138,67 @@ export function useProgramStructure(programType: ProgramType) {
     [programType],
   );
 
+  const handleUpdateDayName = useCallback(
+    (weekId: string, dayId: ProgramDayLabel, name: string, phaseId?: string) => {
+      const dayIndex = { Day1: 0, Day2: 1, Day3: 2, Day4: 3, Day5: 4, Day6: 5, Day7: 6 }[dayId];
+      if (dayIndex === undefined) return;
+
+      if (programType === 'simple') {
+        setWeeks((prev) =>
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+            const newDays = [...week.days];
+            const day = newDays[dayIndex];
+            if (day === 'rest') return week;
+
+            newDays[dayIndex] = {
+              ...day,
+              name,
+            };
+            return { ...week, days: newDays };
+          }),
+        );
+      } else if (programType === 'alternating') {
+        setAlternatingWeeks((prev) =>
+          prev.map((week) => {
+            if (week.id !== weekId) return week;
+            const newDays = [...week.days];
+            const day = newDays[dayIndex];
+            if (day === 'rest') return week;
+
+            newDays[dayIndex] = {
+              ...day,
+              name,
+            };
+            return { ...week, days: newDays };
+          }),
+        );
+      } else if (phaseId) {
+        setPhases((prev) =>
+          prev.map((phase) => {
+            if (phase.id !== phaseId) return phase;
+            return {
+              ...phase,
+              weeks: phase.weeks.map((week) => {
+                if (week.id !== weekId) return week;
+                const newDays = [...week.days];
+                const day = newDays[dayIndex];
+                if (day === 'rest') return week;
+
+                newDays[dayIndex] = {
+                  ...day,
+                  name,
+                };
+                return { ...week, days: newDays };
+              }),
+            };
+          }),
+        );
+      }
+    },
+    [programType],
+  );
+
   return {
     weeks,
     alternatingWeeks,
@@ -154,5 +216,6 @@ export function useProgramStructure(programType: ProgramType) {
     handleAddWeekToPhase,
     handleUpdateWeekNameInPhase,
     handleRemoveWeekFromPhase,
+    handleUpdateDayName,
   };
 }

@@ -48,6 +48,10 @@ export function useProgramValidation({
           return 'rest' as const;
         }
 
+        if (!day.name.trim()) {
+          throw new Error(t('program.dayNameRequired', { label: dayLabels[dayIndex] }));
+        }
+
         const exercises = day.exercises.map((ex) => {
           const sets = ex.sets
             .filter((set) => set.reps.trim() && set.rir.trim())
@@ -68,7 +72,8 @@ export function useProgramValidation({
         });
 
         return {
-          name: dayLabels[dayIndex],
+          label: dayLabels[dayIndex],
+          name: day.name.trim(),
           exercises,
         };
       });
@@ -99,6 +104,10 @@ export function useProgramValidation({
             return 'rest' as const;
           }
 
+          if (!day.name.trim()) {
+            throw new Error(t('program.dayNameRequired', { label: dayLabels[dayIndex] }));
+          }
+
           const exercises = day.exercises.map((ex) => {
             const sets = ex.sets
               .filter((set) => set.reps.trim() && set.rir.trim())
@@ -119,7 +128,8 @@ export function useProgramValidation({
           });
 
           return {
-            name: dayLabels[dayIndex],
+            label: dayLabels[dayIndex],
+            name: day.name.trim(),
             exercises,
           };
         });
@@ -172,6 +182,10 @@ export function useProgramValidation({
               return 'rest' as const;
             }
 
+            if (!day.name.trim()) {
+              throw new Error(t('program.dayNameRequired', { label: dayLabels[dayIndex] }));
+            }
+
             const exercises = day.exercises.map((ex) => {
               const sets = ex.sets
                 .filter((set) => set.reps.trim() && set.rir.trim())
@@ -192,7 +206,8 @@ export function useProgramValidation({
             });
 
             return {
-              name: dayLabels[dayIndex],
+              label: dayLabels[dayIndex],
+              name: day.name.trim(),
               exercises,
             };
           });
