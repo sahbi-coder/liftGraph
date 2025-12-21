@@ -1,14 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { YStack, Text } from 'tamagui';
 
-import { useDependencies } from '@/dependencies/provider';
-import { useAuthenticatedUser } from '@/contexts/AuthContext';
-import type { Program } from '@/services';
 import { colors } from '@/theme/colors';
 import { useAlertModal } from '@/hooks/common/useAlertModal';
 import { useTranslation } from '@/hooks/common/useTranslation';
-import { getServiceErrorMessage } from '@/utils/serviceErrors';
+import { useProgram } from '@/hooks/program/useProgram';
 import { useProgramForm } from '@/hooks/program/useProgramForm';
 import { useProgramStructure } from '@/hooks/program/useProgramStructure';
 import { useProgramDaySelection } from '@/hooks/program/useProgramDaySelection';
@@ -29,13 +26,11 @@ export default function EditProgramScreen() {
     return programIdParam;
   }, [programIdParam]);
 
-  const { services } = useDependencies();
-  const { user } = useAuthenticatedUser();
   const { t } = useTranslation();
   const { showWarning, showError, showSuccess, AlertModalComponent } = useAlertModal();
 
-  const [program, setProgram] = useState<Program | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // Fetch program using hook
+  const { program, isLoading, isError } = useProgram(programId);
 
   // Form state - will be initialized from program
   const { programType, name, description, setProgramType, setName, setDescription } =
@@ -111,84 +106,43 @@ export default function EditProgramScreen() {
     programId,
   });
 
-  // Fetch program and initialize form
+  // Handle missing program ID
   useEffect(() => {
     if (!programId) {
       showError(t('program.programIdMissing'));
       setTimeout(() => {
         router.back();
       }, 2000);
-      return;
     }
+  }, [programId, showError, t, router]);
 
-    let isMounted = true;
+  // Handle error state
+  useEffect(() => {
+    if (isError) {
+      showError(t('program.programNotFound'));
+      setTimeout(() => {
+        router.back();
+      }, 2000);
+    }
+  }, [isError, showError, t, router]);
 
-    const fetchProgram = async () => {
-      try {
-        const fetchedProgram = await services.firestore.getProgram(user.uid, programId);
+  // Initialize form when program is loaded
+  useEffect(() => {
+    if (program) {
+      // Convert program to form data
+      const formData = convertProgramToForm(program);
 
-        if (!isMounted) {
-          return;
-        }
-
-        if (!fetchedProgram) {
-          showError(t('program.programNotFound'));
-          setTimeout(() => {
-            router.back();
-          }, 2000);
-          return;
-        }
-
-        setProgram(fetchedProgram);
-
-        // Convert program to form data
-        const formData = convertProgramToForm(fetchedProgram);
-
-        // Initialize form state
-        setProgramType(formData.programType);
-        setName(formData.name);
-        setDescription(formData.description);
-        setWeeks(formData.weeks);
-        if (formData.alternatingWeeks) {
-          setAlternatingWeeks(formData.alternatingWeeks);
-        }
-        setPhases(formData.phases);
-      } catch (error) {
-        if (!isMounted) {
-          return;
-        }
-
-        const message = getServiceErrorMessage(error, t);
-        showError(message);
-        setTimeout(() => {
-          router.back();
-        }, 2000);
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
+      // Initialize form state
+      setProgramType(formData.programType);
+      setName(formData.name);
+      setDescription(formData.description);
+      setWeeks(formData.weeks);
+      if (formData.alternatingWeeks) {
+        setAlternatingWeeks(formData.alternatingWeeks);
       }
-    };
-
-    fetchProgram();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [
-    programId,
-    user.uid,
-    services.firestore,
-    router,
-    showError,
-    t,
-    setProgramType,
-    setName,
-    setDescription,
-    setWeeks,
-    setAlternatingWeeks,
-    setPhases,
-  ]);
+      setPhases(formData.phases);
+    }
+  }, [program, setProgramType, setName, setDescription, setWeeks, setAlternatingWeeks, setPhases]);
 
   // Note: We don't reset structure when program type changes in edit mode
   // because the program type should remain the same as the loaded program

@@ -5,7 +5,7 @@ import { YStack, Text, XStack, Button } from 'tamagui';
 
 import { useDependencies } from '@/dependencies/provider';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
-import type { Program, ProgramExercise, WorkoutExercise, ProgramDayLabel } from '@/services';
+import type { ProgramExercise, WorkoutExercise, ProgramDayLabel } from '@/services';
 import { colors } from '@/theme/colors';
 import { DaySelector } from '@/components/DaySelector';
 import { setWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
@@ -13,6 +13,7 @@ import { useAlertModal } from '@/hooks/common/useAlertModal';
 import { ConfirmationModal } from '@/components/ConfirmationModal';
 import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
+import { useProgram } from '@/hooks/program/useProgram';
 
 export default function ProgramDetailsScreen() {
   const router = useRouter();
@@ -28,6 +29,9 @@ export default function ProgramDetailsScreen() {
   const { user } = useAuthenticatedUser();
   const { t } = useTranslation();
 
+  // Fetch program using hook
+  const { program, isLoading, isError } = useProgram(programId);
+
   // Helper function to translate day labels
   const getTranslatedDayLabel = useCallback(
     (dayLabel: ProgramDayLabel): string => {
@@ -37,8 +41,6 @@ export default function ProgramDetailsScreen() {
     [t],
   );
 
-  const [program, setProgram] = useState<Program | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedAlternatingWeek, setSelectedAlternatingWeek] = useState<0 | 1>(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const { showSuccess, showError, AlertModalComponent } = useAlertModal();
@@ -54,53 +56,13 @@ export default function ProgramDetailsScreen() {
   }, [router, programId, showError, t]);
 
   useEffect(() => {
-    if (!programId) {
-      setIsLoading(false);
-      return;
+    if (isError) {
+      showError(t('program.programNotFound'));
+      setTimeout(() => {
+        router.back();
+      }, 2000);
     }
-
-    let isMounted = true;
-
-    const fetchProgram = async () => {
-      try {
-        const fetchedProgram = await services.firestore.getProgram(user.uid, programId);
-
-        if (!isMounted) {
-          return;
-        }
-
-        if (!fetchedProgram) {
-          showError(t('program.programNotFound'));
-          setTimeout(() => {
-            router.back();
-          }, 2000);
-          return;
-        }
-
-        setProgram(fetchedProgram);
-      } catch (error) {
-        if (!isMounted) {
-          return;
-        }
-
-        const message = getServiceErrorMessage(error, t);
-        showError(message);
-        setTimeout(() => {
-          router.back();
-        }, 2000);
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchProgram();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [router, services.firestore, user.uid, programId, showError, t]);
+  }, [isError, showError, t, router]);
 
   // Determine active days for DaySelector
   const activeDays = useMemo<ProgramDayLabel[]>(() => {
