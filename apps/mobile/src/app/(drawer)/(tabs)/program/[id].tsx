@@ -28,6 +28,15 @@ export default function ProgramDetailsScreen() {
   const { user } = useAuthenticatedUser();
   const { t } = useTranslation();
 
+  // Helper function to translate day labels
+  const getTranslatedDayLabel = useCallback(
+    (dayLabel: ProgramDayLabel): string => {
+      const dayNumber = dayLabel.replace('Day', '');
+      return `${t('common.day')} ${dayNumber}`;
+    },
+    [t],
+  );
+
   const [program, setProgram] = useState<Program | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedAlternatingWeek, setSelectedAlternatingWeek] = useState<0 | 1>(0);
@@ -352,7 +361,8 @@ export default function ProgramDetailsScreen() {
                     >
                       <YStack space="$1" flex={1}>
                         <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                          {dayData.dayLabel} {dayData.dayName ? `(${dayData.dayName})` : ''}
+                          {getTranslatedDayLabel(dayData.dayLabel)}{' '}
+                          {dayData.dayName ? `(${dayData.dayName})` : ''}
                         </Text>
                         <Text color="$textSecondary" fontSize="$4">
                           {dayData.exercises.length}{' '}
@@ -514,7 +524,7 @@ export default function ProgramDetailsScreen() {
                               >
                                 <YStack space="$1" flex={1}>
                                   <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                                    {dayData.dayLabel}{' '}
+                                    {getTranslatedDayLabel(dayData.dayLabel)}{' '}
                                     {dayData.dayName ? `(${dayData.dayName})` : ''}
                                   </Text>
                                   <Text color="$textSecondary" fontSize="$4">
