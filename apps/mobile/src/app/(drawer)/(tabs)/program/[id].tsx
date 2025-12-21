@@ -260,7 +260,7 @@ export default function ProgramDetailsScreen() {
               borderWidth={0}
               paddingHorizontal="$3"
               paddingVertical="$2"
-              onPress={() => {}}
+              onPress={() => router.push(`/program/edit?id=${programId}`)}
             >
               {t('program.updateProgram')}
             </Button>

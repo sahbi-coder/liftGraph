@@ -122,6 +122,10 @@ export class FirestoreService {
     return this.programs.getProgram(userId, programId);
   }
 
+  async updateProgram(userId: string, programId: string, program: ProgramInput) {
+    return this.programs.updateProgram(userId, programId, program);
+  }
+
   async deleteProgram(userId: string, programId: string) {
     return this.programs.deleteProgram(userId, programId);
   }

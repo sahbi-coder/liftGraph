@@ -183,6 +183,8 @@
     "allPhasesMustHaveName": "All phases must have a name.",
     "pleaseSignInToCreate": "Please sign in to create programs.",
     "programSavedSuccessfully": "Your program has been saved successfully.",
+    "programUpdatedSuccessfully": "Your program has been updated successfully.",
+    "update": "Update",
     "somethingWentWrong": "Something went wrong.",
     "enterProgramName": "Enter program name",
     "enterProgramDescription": "Enter program description",

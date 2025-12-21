@@ -9,12 +9,14 @@ type UseProgramSaveParams = {
   validateAndConvert: () => any;
   showError: (message: string) => void;
   showSuccess: (message: string) => void;
+  programId?: string;
 };
 
 export function useProgramSave({
   validateAndConvert,
   showError,
   showSuccess,
+  programId,
 }: UseProgramSaveParams) {
   const router = useRouter();
   const { services } = useDependencies();
@@ -31,9 +33,17 @@ export function useProgramSave({
       }
 
       setIsSaving(true);
-      await services.firestore.createProgram(user.uid, programData);
 
-      showSuccess(t('program.programSavedSuccessfully'));
+      if (programId) {
+        // Update existing program
+        await services.firestore.updateProgram(user.uid, programId, programData);
+        showSuccess(t('program.programUpdatedSuccessfully'));
+      } else {
+        // Create new program
+        await services.firestore.createProgram(user.uid, programData);
+        showSuccess(t('program.programSavedSuccessfully'));
+      }
+
       // Navigate back after showing success message
       setTimeout(() => {
         router.back();
@@ -44,7 +54,16 @@ export function useProgramSave({
     } finally {
       setIsSaving(false);
     }
-  }, [user.uid, services.firestore, router, validateAndConvert, showError, showSuccess, t]);
+  }, [
+    user.uid,
+    services.firestore,
+    router,
+    validateAndConvert,
+    showError,
+    showSuccess,
+    t,
+    programId,
+  ]);
 
   return {
     handleSave,
