@@ -20,7 +20,7 @@ import type { ProgramWeekForm, ProgramExerciseForm } from '@/hooks/useProgramFor
 
 export default function CreateProgramScreen() {
   const { t } = useTranslation();
-  const { showWarning, AlertModalComponent } = useAlertModal();
+  const { showWarning, showError, showSuccess, AlertModalComponent } = useAlertModal();
 
   // Form state
   const { programType, name, description, setProgramType, setName, setDescription } =
@@ -79,7 +79,6 @@ export default function CreateProgramScreen() {
   });
 
   // Validation
-  const { showError } = useAlertModal();
   const { validateAndConvert } = useProgramValidation({
     name,
     description,
@@ -92,7 +91,7 @@ export default function CreateProgramScreen() {
   });
 
   // Save
-  const { handleSave, isSaving } = useProgramSave({ validateAndConvert });
+  const { handleSave, isSaving } = useProgramSave({ validateAndConvert, showError, showSuccess });
 
   // Reset structure when program type changes
   useEffect(() => {
@@ -222,6 +221,7 @@ export default function CreateProgramScreen() {
                 }
                 placeholder={`${t('common.week')} ${weekIndex + 1}`}
                 borderColor="$inputFieldBorder"
+                placeholderTextColor="$inputFieldPlaceholderText"
                 backgroundColor="$background"
                 color="$textPrimary"
               />
@@ -258,12 +258,14 @@ export default function CreateProgramScreen() {
               <YStack key={dayIndex} space="$2" marginTop="$2">
                 <YStack space="$2">
                   <Text color="$textPrimary" fontSize="$5" fontWeight="600">
-                    {t('common.day')} {dayIndex + 1}
+                    {t('common.day')} {dayIndex + 1} *
                   </Text>
+
                   <Input
                     value={day.name}
                     onChangeText={(value) => handleUpdateDayName(week.id, dayId, value, phaseId)}
-                    placeholder={`${t('program.dayName')} *`}
+                    placeholder={t('program.dayName')}
+                    placeholderTextColor="$inputFieldPlaceholderText"
                     borderColor="$inputFieldBorder"
                     backgroundColor="$background"
                     color="$textPrimary"
@@ -360,6 +362,7 @@ export default function CreateProgramScreen() {
             value={name}
             onChangeText={setName}
             placeholder={t('program.enterProgramName')}
+            placeholderTextColor="$inputFieldPlaceholderText"
             borderColor="$inputFieldBorder"
             backgroundColor="$inputFieldBackground"
             color="$textPrimary"
@@ -374,6 +377,7 @@ export default function CreateProgramScreen() {
             value={description}
             onChangeText={setDescription}
             placeholder={t('program.enterProgramDescription')}
+            placeholderTextColor="$inputFieldPlaceholderText"
             borderColor="$inputFieldBorder"
             backgroundColor="$inputFieldBackground"
             color="$textPrimary"

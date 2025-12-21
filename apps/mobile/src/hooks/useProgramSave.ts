@@ -2,21 +2,25 @@ import { useState, useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
-import { useAlertModal } from '@/hooks/useAlertModal';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 
 type UseProgramSaveParams = {
   validateAndConvert: () => any;
+  showError: (message: string) => void;
+  showSuccess: (message: string) => void;
 };
 
-export function useProgramSave({ validateAndConvert }: UseProgramSaveParams) {
+export function useProgramSave({
+  validateAndConvert,
+  showError,
+  showSuccess,
+}: UseProgramSaveParams) {
   const router = useRouter();
   const { services } = useDependencies();
   const { user } = useAuthenticatedUser();
   const { t } = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
-  const { showSuccess, showError } = useAlertModal();
 
   const handleSave = useCallback(async () => {
     try {
