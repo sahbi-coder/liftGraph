@@ -494,6 +494,11 @@ export default function ProgramDetailsScreen() {
                               ({t('common.of')} {phase.weeks.length} {t('common.weeks')})
                             </Text>
                           )}
+                          {week.name && (
+                            <Text color="$textSecondary" fontSize="$3">
+                              ({week.name})
+                            </Text>
+                          )}
                         </XStack>
                         <DaySelector value={weekActiveDays} disabled />
                       </YStack>

@@ -213,6 +213,7 @@ export function useProgramValidation({
           });
 
           return {
+            name: week.name?.trim(),
             days: convertedDays,
           };
         });

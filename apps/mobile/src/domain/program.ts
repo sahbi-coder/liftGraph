@@ -38,6 +38,7 @@ export const ProgramDaySchema = z.union([
 ]);
 
 export const ProgramWeekSchema = z.object({
+  name: z.string().optional(),
   days: z.array(ProgramDaySchema),
 });
 
