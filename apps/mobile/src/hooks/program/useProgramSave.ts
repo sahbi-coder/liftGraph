@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useRouter } from 'expo-router';
+import { useQueryClient } from '@tanstack/react-query';
 import { useDependencies } from '@/dependencies/provider';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import { useTranslation } from '@/hooks/common/useTranslation';
@@ -22,6 +23,7 @@ export function useProgramSave({
   const { services } = useDependencies();
   const { user } = useAuthenticatedUser();
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = useCallback(async () => {
@@ -37,10 +39,19 @@ export function useProgramSave({
       if (programId) {
         // Update existing program
         await services.firestore.updateProgram(user.uid, programId, programData);
+
+        // Invalidate program queries to refetch updated data
+        queryClient.invalidateQueries({ queryKey: ['program', user.uid, programId] });
+        queryClient.invalidateQueries({ queryKey: ['programs', user.uid] });
+
         showSuccess(t('program.programUpdatedSuccessfully'));
       } else {
         // Create new program
         await services.firestore.createProgram(user.uid, programData);
+
+        // Invalidate programs list to show the new program
+        queryClient.invalidateQueries({ queryKey: ['programs', user.uid] });
+
         showSuccess(t('program.programSavedSuccessfully'));
       }
 
@@ -63,6 +74,7 @@ export function useProgramSave({
     showSuccess,
     t,
     programId,
+    queryClient,
   ]);
 
   return {
