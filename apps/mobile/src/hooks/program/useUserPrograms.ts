@@ -3,12 +3,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
-import type { Program } from '@/services';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 
 export function useUserPrograms() {
   const { services } = useDependencies();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
 
   const {
     data,
@@ -17,12 +16,9 @@ export function useUserPrograms() {
     error,
     refetch: reactQueryRefetch,
   } = useQuery({
-    queryKey: ['programs', user?.uid],
-    enabled: !!user?.uid,
+    queryKey: ['programs', user.uid],
+
     queryFn: async () => {
-      if (!user?.uid) {
-        return [] as Program[];
-      }
       return services.firestore.getPrograms(user.uid);
     },
   });

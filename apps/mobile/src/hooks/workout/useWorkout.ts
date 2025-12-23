@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { useDependencies } from '@/dependencies/provider';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
 
 export function useWorkout(workoutId: string | undefined) {
   const { services } = useDependencies();
-  const { user } = useAuth();
+  const { user } = useAuthenticatedUser();
 
   const {
     data,
@@ -14,10 +14,10 @@ export function useWorkout(workoutId: string | undefined) {
     error,
     refetch: reactQueryRefetch,
   } = useQuery({
-    queryKey: ['workout', user?.uid, workoutId],
-    enabled: !!user?.uid && !!workoutId,
+    queryKey: ['workout', user.uid, workoutId],
+    enabled: !!workoutId,
     queryFn: async () => {
-      if (!user?.uid || !workoutId) {
+      if (!workoutId) {
         return null;
       }
       return services.firestore.getWorkout(user.uid, workoutId);
