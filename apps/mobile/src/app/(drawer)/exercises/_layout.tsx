@@ -2,8 +2,8 @@ import { Stack } from 'expo-router';
 import React from 'react';
 import { BackButton } from '@/components/BackButton';
 import { colors } from '@/theme/colors';
-import { Platform } from 'react-native';
 import { useTranslation } from '@/hooks/common/useTranslation';
+import { Platform } from 'react-native';
 
 export default function ExercisesLayout() {
   const { t } = useTranslation();
@@ -15,7 +15,7 @@ export default function ExercisesLayout() {
         headerTitleStyle: { fontSize: 28, color: colors.white },
         headerStyle: { backgroundColor: colors.darkerGray },
         headerTintColor: colors.white,
-        headerBackVisible: true,
+        headerBackVisible: Platform.OS === 'android',
       }}
     >
       <Stack.Screen
@@ -29,12 +29,14 @@ export default function ExercisesLayout() {
         name="exercise-create"
         options={{
           headerTitle: t('exercise.create'),
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
         name="[id]"
         options={{
           headerTitle: t('exercise.edit'),
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
     </Stack>

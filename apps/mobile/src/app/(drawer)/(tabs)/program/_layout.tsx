@@ -5,6 +5,7 @@ import { colors } from '@/theme/colors';
 import { DrawerButton } from '@/components/DrawerButton';
 import { useTranslation } from '@/hooks/common/useTranslation';
 import { BackButton } from '@/components/BackButton';
+import { Platform } from 'react-native';
 
 export default function ProgramLayout() {
   const { t } = useTranslation();
@@ -31,7 +32,7 @@ export default function ProgramLayout() {
         options={{
           title: t('program.create'),
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
@@ -39,7 +40,7 @@ export default function ProgramLayout() {
         options={{
           title: t('program.edit'),
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
@@ -47,7 +48,15 @@ export default function ProgramLayout() {
         options={{
           title: t('program.exercises'),
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
+        }}
+      />
+      <Stack.Screen
+        name="exercise-create"
+        options={{
+          title: t('exercise.create'),
+          headerTitleStyle: { fontSize: 22 },
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
@@ -55,7 +64,7 @@ export default function ProgramLayout() {
         options={{
           title: t('program.detailsScreenTitle'),
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
@@ -63,7 +72,7 @@ export default function ProgramLayout() {
         options={{
           title: t('program.applyWorkout'),
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
     </Stack>

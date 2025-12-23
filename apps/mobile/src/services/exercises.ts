@@ -110,7 +110,7 @@ export class ExercisesService {
       bodyPart: string;
       description?: string;
     },
-  ): Promise<string> {
+  ) {
     // Generate ID from name: lowercase with spaces replaced by hyphens
     const exerciseId = exercise.name.trim().toLowerCase().replace(/\s+/g, '-');
 
@@ -155,7 +155,7 @@ export class ExercisesService {
       bodyPart: string;
       description?: string;
     },
-  ): Promise<void> {
+  ) {
     const userExerciseRef = doc(
       this.db,
       this.getUserExerciseCollectionName(userId, language),

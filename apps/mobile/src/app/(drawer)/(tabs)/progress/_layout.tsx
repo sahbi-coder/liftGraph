@@ -6,6 +6,7 @@ import { BackButton } from '@/components/BackButton';
 import { colors } from '@/theme/colors';
 import { DrawerButton } from '@/components/DrawerButton';
 import { useTranslation } from '@/hooks/common/useTranslation';
+import { Platform } from 'react-native';
 
 export default function ProgressLayout() {
   const { t } = useTranslation();
@@ -16,7 +17,6 @@ export default function ProgressLayout() {
         headerTintColor: colors.white,
         headerTitleStyle: { color: colors.white },
         contentStyle: { backgroundColor: colors.darkerGray },
-        headerBackVisible: false,
       }}
     >
       <Stack.Screen
@@ -35,7 +35,7 @@ export default function ProgressLayout() {
           headerTitle: t('progress.estimated1RMTrend'),
           headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
@@ -44,7 +44,7 @@ export default function ProgressLayout() {
           headerTitle: t('progress.topSetProgressionChart'),
           headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
@@ -53,7 +53,7 @@ export default function ProgressLayout() {
           headerTitle: t('progress.weeklyVolumeLoad'),
           headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
@@ -62,7 +62,7 @@ export default function ProgressLayout() {
           headerTitle: t('progress.workoutFrequency'),
           headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
     </Stack>

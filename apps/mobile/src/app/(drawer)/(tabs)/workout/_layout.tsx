@@ -5,6 +5,7 @@ import { colors } from '@/theme/colors';
 import { DrawerButton } from '@/components/DrawerButton';
 import { useTranslation } from '@/hooks/common/useTranslation';
 import { BackButton } from '@/components/BackButton';
+import { Platform } from 'react-native';
 
 export default function WorkoutLayout() {
   const { t } = useTranslation();
@@ -31,7 +32,7 @@ export default function WorkoutLayout() {
         options={{
           title: t('workout.create'),
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
@@ -39,7 +40,15 @@ export default function WorkoutLayout() {
         options={{
           title: t('workout.exercises'),
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
+        }}
+      />
+      <Stack.Screen
+        name="exercise-create"
+        options={{
+          title: t('exercise.create'),
+          headerTitleStyle: { fontSize: 22 },
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
       <Stack.Screen
@@ -47,7 +56,7 @@ export default function WorkoutLayout() {
         options={{
           title: t('workout.edit'),
           headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => <BackButton />,
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
     </Stack>

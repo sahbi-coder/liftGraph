@@ -56,7 +56,7 @@ export default function ExercisesScreen() {
       onCreateExercise={handleCreateExercise}
       showCreateButton
       showCancelButton={false}
-      title={t('exercise.manageExercises') || 'Manage Exercises'}
+      title={t('exercise.manageExercises')}
     />
   );
 }
