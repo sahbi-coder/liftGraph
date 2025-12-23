@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import { colors } from '@/theme/colors';
 import { DrawerButton } from '@/components/DrawerButton';
 import { useTranslation } from '@/hooks/common/useTranslation';
+import { BackButton } from '@/components/BackButton';
 
 export default function WorkoutLayout() {
   const { t } = useTranslation();
@@ -25,9 +26,18 @@ export default function WorkoutLayout() {
           headerLeft: () => <DrawerButton />,
         }}
       />
-      <Stack.Screen name="create" options={{ title: t('workout.create') }} />
-      <Stack.Screen name="exercises" options={{ title: t('workout.exercises') }} />
-      <Stack.Screen name="edit" options={{ title: t('workout.edit') }} />
+      <Stack.Screen
+        name="create"
+        options={{ title: t('workout.create'), headerLeft: () => <BackButton /> }}
+      />
+      <Stack.Screen
+        name="exercises"
+        options={{ title: t('workout.exercises'), headerLeft: () => <BackButton /> }}
+      />
+      <Stack.Screen
+        name="edit"
+        options={{ title: t('workout.edit'), headerLeft: () => <BackButton /> }}
+      />
     </Stack>
   );
 }

@@ -172,6 +172,8 @@
   "program": {
     "title": "Programa",
     "create": "Crear Programa",
+    "edit": "Editar Programa",
+    "detailsScreenTitle": "Detalles del Programa",
     "applyWorkout": "Aplicar Entrenamiento",
     "exercises": "Ejercicios",
     "addExercise": "Agregar Ejercicio",
