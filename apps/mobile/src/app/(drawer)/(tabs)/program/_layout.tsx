@@ -30,7 +30,7 @@ export default function ProgramLayout() {
         name="create"
         options={{
           title: t('program.create'),
-
+          headerTitleStyle: { fontSize: 22 },
           headerLeft: () => <BackButton />,
         }}
       />
@@ -38,7 +38,7 @@ export default function ProgramLayout() {
         name="edit"
         options={{
           title: t('program.edit'),
-
+          headerTitleStyle: { fontSize: 22 },
           headerLeft: () => <BackButton />,
         }}
       />
@@ -46,7 +46,7 @@ export default function ProgramLayout() {
         name="exercises"
         options={{
           title: t('program.exercises'),
-
+          headerTitleStyle: { fontSize: 22 },
           headerLeft: () => <BackButton />,
         }}
       />
@@ -54,7 +54,7 @@ export default function ProgramLayout() {
         name="[id]"
         options={{
           title: t('program.detailsScreenTitle'),
-
+          headerTitleStyle: { fontSize: 22 },
           headerLeft: () => <BackButton />,
         }}
       />
@@ -62,7 +62,7 @@ export default function ProgramLayout() {
         name="apply-workout"
         options={{
           title: t('program.applyWorkout'),
-
+          headerTitleStyle: { fontSize: 22 },
           headerLeft: () => <BackButton />,
         }}
       />

@@ -34,6 +34,7 @@ export default function ProgressLayout() {
         options={{
           headerTitle: t('progress.estimated1RMTrend'),
           headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 22 },
           headerLeft: () => <BackButton />,
         }}
       />
@@ -42,6 +43,7 @@ export default function ProgressLayout() {
         options={{
           headerTitle: t('progress.topSetProgressionChart'),
           headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 22 },
           headerLeft: () => <BackButton />,
         }}
       />
@@ -50,6 +52,7 @@ export default function ProgressLayout() {
         options={{
           headerTitle: t('progress.weeklyVolumeLoad'),
           headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 22 },
           headerLeft: () => <BackButton />,
         }}
       />
@@ -58,6 +61,7 @@ export default function ProgressLayout() {
         options={{
           headerTitle: t('progress.workoutFrequency'),
           headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 22 },
           headerLeft: () => <BackButton />,
         }}
       />

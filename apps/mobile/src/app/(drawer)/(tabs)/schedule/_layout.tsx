@@ -28,15 +28,27 @@ export default function ScheduleLayout() {
       />
       <Stack.Screen
         name="edit"
-        options={{ title: t('workout.edit'), headerLeft: () => <BackButton /> }}
+        options={{
+          title: t('workout.edit'),
+          headerTitleStyle: { fontSize: 22 },
+          headerLeft: () => <BackButton />,
+        }}
       />
       <Stack.Screen
         name="exercises"
-        options={{ title: t('schedule.exercises'), headerLeft: () => <BackButton /> }}
+        options={{
+          title: t('schedule.exercises'),
+          headerTitleStyle: { fontSize: 22 },
+          headerLeft: () => <BackButton />,
+        }}
       />
       <Stack.Screen
         name="exercise-create"
-        options={{ title: t('exercise.create'), headerLeft: () => <BackButton /> }}
+        options={{
+          title: t('exercise.create'),
+          headerTitleStyle: { fontSize: 22 },
+          headerLeft: () => <BackButton />,
+        }}
       />
     </Stack>
   );
