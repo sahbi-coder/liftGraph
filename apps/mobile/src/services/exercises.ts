@@ -207,4 +207,49 @@ export class ExercisesService {
 
     return result.data;
   }
+
+  async syncExercisesFromLanguage(
+    userId: string,
+    oldLanguage: string,
+    newLanguage: string,
+  ): Promise<void> {
+    // Fetch exercises from old language
+    const oldExercisesRef = collection(
+      this.db,
+      this.getUserExerciseCollectionName(userId, oldLanguage),
+    );
+    const oldExercisesSnapshot = await getDocs(oldExercisesRef);
+
+    // Fetch exercises from new language
+    const newExercisesRef = collection(
+      this.db,
+      this.getUserExerciseCollectionName(userId, newLanguage),
+    );
+    const newExercisesSnapshot = await getDocs(newExercisesRef);
+
+    // Create a set of exercise IDs that exist in new language
+    const newExerciseIds = new Set(newExercisesSnapshot.docs.map((doc) => doc.id));
+
+    // Find exercises in old language that are missing in new language
+    const exercisesToCopy = oldExercisesSnapshot.docs.filter((doc) => !newExerciseIds.has(doc.id));
+
+    // Copy missing exercises to new language collection
+    if (exercisesToCopy.length > 0) {
+      const batch = writeBatch(this.db);
+      const newCollectionName = this.getUserExerciseCollectionName(userId, newLanguage);
+
+      for (const docSnap of exercisesToCopy) {
+        const data = docSnap.data();
+        batch.set(doc(this.db, newCollectionName, docSnap.id), {
+          name: data.name,
+          category: data.category,
+          bodyPart: data.bodyPart,
+          description: data.description,
+          isCustom: data.isCustom ?? false,
+        });
+      }
+
+      await batch.commit();
+    }
+  }
 }

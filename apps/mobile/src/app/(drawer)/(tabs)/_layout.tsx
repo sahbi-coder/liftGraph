@@ -1,29 +1,14 @@
 import React from 'react';
-import { Tabs, Redirect } from 'expo-router';
-import { YStack, Text } from 'tamagui';
+import { Tabs } from 'expo-router';
 import Entypo from '@expo/vector-icons/Entypo';
 import Foundation from '@expo/vector-icons/Foundation';
 import Feather from '@expo/vector-icons/Feather';
 
-import { useAuth } from '@/contexts/AuthContext';
 import { colors } from '@/theme/colors';
 import { useTranslation } from '@/hooks/common/useTranslation';
 
 export default function TabsLayout() {
-  const { user, loading } = useAuth();
   const { t } = useTranslation();
-
-  if (loading) {
-    return (
-      <YStack flex={1} justifyContent="center" alignItems="center" backgroundColor="$background">
-        <Text color="$textPrimary">{t('common.loading')}</Text>
-      </YStack>
-    );
-  }
-
-  if (!user) {
-    return <Redirect href="/auth/login" />;
-  }
 
   return (
     <Tabs

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Drawer } from 'react-native-drawer-layout';
-import { Stack, Redirect, Slot, usePathname } from 'expo-router';
+import { Stack, Redirect } from 'expo-router';
 import { YStack, Text } from 'tamagui';
 import { Platform } from 'react-native';
 import { BackButton } from '@/components/BackButton';
@@ -19,23 +19,17 @@ function DrawerContentWrapper() {
 function DrawerInner() {
   const { user, loading } = useAuth();
   const { open, setOpen } = useDrawer();
-  const pathname = usePathname();
   const { t } = useTranslation();
   if (loading) {
     return (
       <YStack flex={1} justifyContent="center" alignItems="center" backgroundColor="$background">
-        <Text color="$textPrimary">Loading...</Text>
+        <Text color="$textPrimary">{t('common.loading')}</Text>
       </YStack>
     );
   }
 
   if (!user) {
     return <Redirect href="/auth/login" />;
-  }
-
-  // Don't show drawer on auth screens
-  if (pathname?.startsWith('/auth')) {
-    return <Slot />;
   }
 
   return (

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity, ScrollView } from 'react-native';
 import { YStack, XStack, Text } from 'tamagui';
 import { Check } from '@tamagui/lucide-icons';
 import { colors } from '@/theme/colors';
 import { useTranslation } from '@/hooks/common/useTranslation';
-import { changeLanguage } from '@/locale/i18n';
+import i18n, { changeLanguage } from '@/locale/i18n';
+import { useAuth } from '@/contexts/AuthContext';
+import { useDependencies } from '@/dependencies/provider';
 
 type LanguageOption = {
   code: 'en' | 'es' | 'fr';
@@ -31,25 +33,93 @@ const getLanguageOptions = (t: any): LanguageOption[] => [
 ];
 
 export default function LanguageSettingsScreen() {
-  const { t, i18n } = useTranslation();
+  const { t, i18n: i18nInstance } = useTranslation();
+  const { user } = useAuth();
+  const { services } = useDependencies();
   const [loading, setLoading] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState<string>(i18n.language);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState<string>(i18nInstance.language);
+  const previousLanguageRef = useRef<string | null>(null);
+  const userRef = useRef(user);
+  const servicesRef = useRef(services);
+  const isMountedRef = useRef(true);
 
   const languages = getLanguageOptions(t);
+
+  // Track mounted state
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  // Keep refs up to date
+  useEffect(() => {
+    userRef.current = user;
+    servicesRef.current = services;
+  }, [user, services]);
+
+  // Initialize previous language on mount
+  useEffect(() => {
+    if (previousLanguageRef.current === null) {
+      previousLanguageRef.current = i18nInstance.language;
+    }
+  }, [i18nInstance]);
+
+  // Handle exercise syncing on language change
+  useEffect(() => {
+    const handleExerciseSync = async (newLanguage: string) => {
+      const oldLanguage = previousLanguageRef.current;
+      const currentUser = userRef.current;
+      const currentServices = servicesRef.current;
+
+      // Skip if no user or if old language is same as new
+      if (!currentUser || !oldLanguage || oldLanguage === newLanguage) {
+        previousLanguageRef.current = newLanguage;
+        return;
+      }
+
+      try {
+        if (isMountedRef.current) {
+          setIsSyncing(true);
+        }
+        await currentServices.firestore.syncExercisesFromLanguage(
+          currentUser.uid,
+          oldLanguage,
+          newLanguage,
+        );
+      } catch (error) {
+        console.error('Failed to sync exercises on language change:', error);
+      } finally {
+        if (isMountedRef.current) {
+          setIsSyncing(false);
+        }
+        previousLanguageRef.current = newLanguage;
+      }
+    };
+
+    // Listen to language changes for exercise sync
+    i18n.on('languageChanged', handleExerciseSync);
+
+    return () => {
+      i18n.off('languageChanged', handleExerciseSync);
+    };
+  }, []); // Empty deps - setup listener once, use refs for latest values
 
   // Update current language when i18n language changes
   useEffect(() => {
     const updateLanguage = () => {
-      setCurrentLanguage(i18n.language);
+      setCurrentLanguage(i18nInstance.language);
     };
 
     updateLanguage();
-    i18n.on('languageChanged', updateLanguage);
+    i18nInstance.on('languageChanged', updateLanguage);
 
     return () => {
-      i18n.off('languageChanged', updateLanguage);
+      i18nInstance.off('languageChanged', updateLanguage);
     };
-  }, [i18n]);
+  }, [i18nInstance]);
 
   const handleLanguageSelect = async (languageCode: string) => {
     if (languageCode === currentLanguage || loading) {
@@ -95,6 +165,19 @@ export default function LanguageSettingsScreen() {
       </TouchableOpacity>
     );
   };
+
+  if (isSyncing) {
+    return (
+      <YStack
+        flex={1}
+        justifyContent="center"
+        alignItems="center"
+        backgroundColor={colors.darkerGray}
+      >
+        <Text color={colors.white}>{t('common.loading')}</Text>
+      </YStack>
+    );
+  }
 
   return (
     <YStack flex={1} backgroundColor={colors.darkerGray}>

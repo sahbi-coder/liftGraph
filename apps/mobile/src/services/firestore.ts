@@ -68,6 +68,10 @@ export class FirestoreService {
     return this.exercises.getExercise(userId, exerciseId, language);
   }
 
+  async syncExercisesFromLanguage(userId: string, oldLanguage: string, newLanguage: string) {
+    return this.exercises.syncExercisesFromLanguage(userId, oldLanguage, newLanguage);
+  }
+
   // Workout methods (delegated)
   async createWorkout(userId: string, workout: WorkoutInput) {
     return this.workouts.createWorkout(userId, workout);
