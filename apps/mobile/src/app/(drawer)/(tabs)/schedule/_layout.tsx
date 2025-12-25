@@ -44,14 +44,6 @@ export default function ScheduleLayout() {
         }}
       />
       <Stack.Screen
-        name="exercise-edit"
-        options={{
-          title: t('exercise.edit'),
-          headerTitleStyle: { fontSize: 22 },
-          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
-        }}
-      />
-      <Stack.Screen
         name="exercise-create"
         options={{
           title: t('exercise.create'),
