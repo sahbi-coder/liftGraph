@@ -35,35 +35,22 @@ export class ExercisesService {
     }
   }
 
-  async getUserExercises(userId: string, language: string) {
+  /**
+   * Populates user's exercise collection from the library if it's empty
+   */
+  private async populateFromLibrary(userId: string, language: string): Promise<void> {
     const userExercisesRef = collection(
       this.db,
       this.getUserExerciseCollectionName(userId, language),
     );
-
     const userSnapshot = await getDocs(userExercisesRef);
 
-    // If user exercises exist, return them
+    // If collection already has exercises, no need to populate
     if (!userSnapshot.empty) {
-      return userSnapshot.docs.map((docSnap) => {
-        const data = docSnap.data();
-        const result = ExerciseSchema.safeParse({
-          id: docSnap.id,
-          name: data.name,
-          category: data.category,
-          bodyPart: data.bodyPart,
-          description: data.description,
-          allowedUnits: data.allowedUnits,
-        });
-
-        if (!result.success) {
-          throw new ServiceError('exercise.invalidData');
-        }
-        return result.data;
-      });
+      return;
     }
 
-    // If user exercises don't exist, fetch from library and copy to user's collection
+    // Fetch from library and copy to user's collection
     const librarySnapshot = await getDocs(
       collection(this.db, this.getExerciseLibraryName(language)),
     );
@@ -100,8 +87,35 @@ export class ExercisesService {
       }
       await batch.commit();
     }
+  }
 
-    return libraryExercises;
+  async getUserExercises(userId: string, language: string) {
+    // Ensure the user's exercise collection is populated from library if empty
+    await this.populateFromLibrary(userId, language);
+
+    // Fetch and return user exercises
+    const userExercisesRef = collection(
+      this.db,
+      this.getUserExerciseCollectionName(userId, language),
+    );
+    const userSnapshot = await getDocs(userExercisesRef);
+
+    return userSnapshot.docs.map((docSnap) => {
+      const data = docSnap.data();
+      const result = ExerciseSchema.safeParse({
+        id: docSnap.id,
+        name: data.name,
+        category: data.category,
+        bodyPart: data.bodyPart,
+        description: data.description,
+        allowedUnits: data.allowedUnits,
+      });
+
+      if (!result.success) {
+        throw new ServiceError('exercise.invalidData');
+      }
+      return result.data;
+    });
   }
 
   async createExercise(
@@ -111,8 +125,8 @@ export class ExercisesService {
       name: string;
       category: string;
       bodyPart: string;
-      description?: string;
       allowedUnits: string[];
+      description?: string;
     },
   ) {
     // Generate ID from name: lowercase with spaces replaced by hyphens
@@ -135,9 +149,9 @@ export class ExercisesService {
       name: exercise.name.trim(),
       category: exercise.category.trim(),
       bodyPart: exercise.bodyPart.trim(),
-      description: exercise.description?.trim(),
       allowedUnits: exercise.allowedUnits,
       isCustom: true,
+      description: exercise.description?.trim(),
     };
 
     const exerciseRef = doc(
@@ -158,8 +172,8 @@ export class ExercisesService {
       name: string;
       category: string;
       bodyPart: string;
+      allowedUnits: string[];
       description?: string;
-      allowedUnits?: string[];
     },
   ) {
     const userExerciseRef = doc(
@@ -221,6 +235,18 @@ export class ExercisesService {
     oldLanguage: string,
     newLanguage: string,
   ): Promise<void> {
+    // Check if new language collection is empty, if so populate from library first
+    const newExercisesRef = collection(
+      this.db,
+      this.getUserExerciseCollectionName(userId, newLanguage),
+    );
+    const initialNewExercisesSnapshot = await getDocs(newExercisesRef);
+
+    const wasEmpty = initialNewExercisesSnapshot.empty;
+    if (wasEmpty) {
+      await this.populateFromLibrary(userId, newLanguage);
+    }
+
     // Fetch exercises from old language
     const oldExercisesRef = collection(
       this.db,
@@ -228,12 +254,10 @@ export class ExercisesService {
     );
     const oldExercisesSnapshot = await getDocs(oldExercisesRef);
 
-    // Fetch exercises from new language
-    const newExercisesRef = collection(
-      this.db,
-      this.getUserExerciseCollectionName(userId, newLanguage),
-    );
-    const newExercisesSnapshot = await getDocs(newExercisesRef);
+    // Get new language exercises (re-fetch only if we just populated)
+    const newExercisesSnapshot = wasEmpty
+      ? await getDocs(newExercisesRef)
+      : initialNewExercisesSnapshot;
 
     // Create a set of exercise IDs that exist in new language
     const newExerciseIds = new Set(newExercisesSnapshot.docs.map((doc) => doc.id));
