@@ -472,7 +472,9 @@
     "exerciseUpdatedSuccessfully": "Exercise updated successfully!",
     "failedToLoadExercise": "Failed to load exercise",
     "manageExercises": "Manage Exercises",
-    "notFound": "Exercise not found"
+    "notFound": "Exercise not found",
+    "bodyweightTag": "Bodyweight",
+    "equipped": "Equipped"
   },
   "customRange": {
     "endDateAfterStart": "End date must be after the start date. Please select a later date.",

@@ -472,7 +472,9 @@
     "exerciseUpdatedSuccessfully": "Exercice mis à jour avec succès!",
     "failedToLoadExercise": "Échec du chargement de l'exercice",
     "manageExercises": "Gérer les Exercices",
-    "notFound": "Exercice introuvable"
+    "notFound": "Exercice introuvable",
+    "bodyweightTag": "Poids du Corps",
+    "equipped": "Équipé"
   },
   "customRange": {
     "endDateAfterStart": "La date de fin doit être postérieure à la date de début. Veuillez sélectionner une date ultérieure.",

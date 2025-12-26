@@ -8,7 +8,7 @@ import {
   writeBatch,
 } from 'firebase/firestore';
 
-import { ExerciseSchema } from '@/domain';
+import { ExerciseSchema, type Exercise } from '@/domain';
 import { ServiceError } from '@/utils/serviceErrors';
 
 export class ExercisesService {
@@ -37,8 +37,12 @@ export class ExercisesService {
 
   /**
    * Populates user's exercise collection from the library if it's empty
+   * @returns Library exercises if collection was populated, undefined if collection already existed
    */
-  private async populateFromLibrary(userId: string, language: string): Promise<void> {
+  private async populateFromLibrary(
+    userId: string,
+    language: string,
+  ): Promise<Exercise[] | undefined> {
     const userExercisesRef = collection(
       this.db,
       this.getUserExerciseCollectionName(userId, language),
@@ -47,7 +51,7 @@ export class ExercisesService {
 
     // If collection already has exercises, no need to populate
     if (!userSnapshot.empty) {
-      return;
+      return undefined;
     }
 
     // Fetch from library and copy to user's collection
@@ -87,6 +91,8 @@ export class ExercisesService {
       }
       await batch.commit();
     }
+
+    return libraryExercises;
   }
 
   async getUserExercises(userId: string, language: string) {
@@ -235,16 +241,22 @@ export class ExercisesService {
     oldLanguage: string,
     newLanguage: string,
   ): Promise<void> {
-    // Check if new language collection is empty, if so populate from library first
-    const newExercisesRef = collection(
-      this.db,
-      this.getUserExerciseCollectionName(userId, newLanguage),
-    );
-    const initialNewExercisesSnapshot = await getDocs(newExercisesRef);
+    // Try to populate from library, returns library exercises if collection was empty, undefined if it already existed
+    const libraryExercises = await this.populateFromLibrary(userId, newLanguage);
 
-    const wasEmpty = initialNewExercisesSnapshot.empty;
-    if (wasEmpty) {
-      await this.populateFromLibrary(userId, newLanguage);
+    let newExerciseIds: Set<string>;
+
+    if (libraryExercises) {
+      // Collection was empty and was just populated, use library exercise IDs directly
+      newExerciseIds = new Set(libraryExercises.map((ex) => ex.id));
+    } else {
+      // Collection already exists, fetch to get existing IDs
+      const newExercisesRef = collection(
+        this.db,
+        this.getUserExerciseCollectionName(userId, newLanguage),
+      );
+      const newExercisesSnapshot = await getDocs(newExercisesRef);
+      newExerciseIds = new Set(newExercisesSnapshot.docs.map((doc) => doc.id));
     }
 
     // Fetch exercises from old language
@@ -253,14 +265,6 @@ export class ExercisesService {
       this.getUserExerciseCollectionName(userId, oldLanguage),
     );
     const oldExercisesSnapshot = await getDocs(oldExercisesRef);
-
-    // Get new language exercises (re-fetch only if we just populated)
-    const newExercisesSnapshot = wasEmpty
-      ? await getDocs(newExercisesRef)
-      : initialNewExercisesSnapshot;
-
-    // Create a set of exercise IDs that exist in new language
-    const newExerciseIds = new Set(newExercisesSnapshot.docs.map((doc) => doc.id));
 
     // Find exercises in old language that are missing in new language
     const exercisesToCopy = oldExercisesSnapshot.docs.filter((doc) => !newExerciseIds.has(doc.id));

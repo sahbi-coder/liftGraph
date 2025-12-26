@@ -79,7 +79,7 @@ export function ExercisePickerScreen({
                 marginLeft="$2"
               >
                 <Text color="#22c55e" fontSize="$3" fontWeight="600">
-                  Bodyweight
+                  {t('exercise.bodyweightTag')}
                 </Text>
               </YStack>
             )}
@@ -92,7 +92,7 @@ export function ExercisePickerScreen({
                 marginLeft="$2"
               >
                 <Text color={colors.niceOrange} fontSize="$3" fontWeight="600">
-                  Equipped
+                  {t('exercise.equipped')}
                 </Text>
               </YStack>
             )}
@@ -154,21 +154,6 @@ export function ExercisePickerScreen({
               ? t('exercise.tryAdjustingSearch')
               : t('exercise.createFirstCustomExercise')}
           </Text>
-          {showCreateButton && onCreateExercise && (
-            <Button
-              backgroundColor="$primaryButton"
-              color={colors.white}
-              onPress={onCreateExercise}
-              borderRadius="$4"
-              paddingHorizontal="$4"
-              paddingVertical="$3"
-            >
-              <Entypo name="circle-with-plus" size={20} color={colors.white} />
-              <Text color={colors.white} marginLeft="$2">
-                {t('exercise.create')}
-              </Text>
-            </Button>
-          )}
         </YStack>
       ) : (
         <FlatList
