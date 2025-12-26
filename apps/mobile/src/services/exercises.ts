@@ -53,6 +53,7 @@ export class ExercisesService {
           category: data.category,
           bodyPart: data.bodyPart,
           description: data.description,
+          allowedUnits: data.allowedUnits,
         });
 
         if (!result.success) {
@@ -74,6 +75,7 @@ export class ExercisesService {
         category: data.category,
         bodyPart: data.bodyPart,
         description: data.description,
+        allowedUnits: data.allowedUnits,
         isCustom: false,
       });
 
@@ -92,6 +94,7 @@ export class ExercisesService {
           category: exercise.category,
           bodyPart: exercise.bodyPart,
           description: exercise.description,
+          allowedUnits: exercise.allowedUnits,
           isCustom: false,
         });
       }
@@ -109,6 +112,7 @@ export class ExercisesService {
       category: string;
       bodyPart: string;
       description?: string;
+      allowedUnits: string[];
     },
   ) {
     // Generate ID from name: lowercase with spaces replaced by hyphens
@@ -132,6 +136,7 @@ export class ExercisesService {
       category: exercise.category.trim(),
       bodyPart: exercise.bodyPart.trim(),
       description: exercise.description?.trim(),
+      allowedUnits: exercise.allowedUnits,
       isCustom: true,
     };
 
@@ -154,6 +159,7 @@ export class ExercisesService {
       category: string;
       bodyPart: string;
       description?: string;
+      allowedUnits?: string[];
     },
   ) {
     const userExerciseRef = doc(
@@ -174,6 +180,7 @@ export class ExercisesService {
         category: exercise.category.trim(),
         bodyPart: exercise.bodyPart.trim(),
         description: exercise.description?.trim(),
+        allowedUnits: exercise.allowedUnits,
         isCustom: userExerciseDoc.data().isCustom,
       },
       { merge: false },
@@ -199,6 +206,7 @@ export class ExercisesService {
       category: data.category,
       bodyPart: data.bodyPart,
       description: data.description,
+      allowedUnits: data.allowedUnits,
     });
 
     if (!result.success) {
@@ -245,6 +253,7 @@ export class ExercisesService {
           category: data.category,
           bodyPart: data.bodyPart,
           description: data.description,
+          allowedUnits: data.allowedUnits,
           isCustom: data.isCustom ?? false,
         });
       }

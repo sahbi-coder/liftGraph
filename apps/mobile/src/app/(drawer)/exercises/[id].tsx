@@ -105,6 +105,7 @@ export default function EditExerciseScreen() {
         category: finalCategory,
         bodyPart: finalBodyPart,
         description: description.trim(),
+        allowedUnits: finalCategory === 'Bodyweight' ? ['reps'] : ['load', 'reps'],
       });
 
       showSuccess(t('exercise.exerciseUpdatedSuccessfully'));

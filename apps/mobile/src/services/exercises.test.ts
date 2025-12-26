@@ -251,6 +251,7 @@ describe('ExercisesService', () => {
         category: 'Dumbbell',
         bodyPart: 'Shoulders',
         description: 'A new exercise',
+        allowedUnits: ['load', 'reps'],
       };
 
       const mockDocRef = { id: 'new-exercise' };
@@ -283,6 +284,7 @@ describe('ExercisesService', () => {
         name: 'My Custom Exercise',
         category: 'Barbell',
         bodyPart: 'Back',
+        allowedUnits: ['load', 'reps'],
       };
 
       const mockDocRef = { id: 'my-custom-exercise' };
@@ -308,6 +310,7 @@ describe('ExercisesService', () => {
         name: 'Existing Exercise',
         category: 'Barbell',
         bodyPart: 'Chest',
+        allowedUnits: ['load', 'reps'],
       };
 
       const mockDocRef = { id: 'existing-exercise' };
@@ -334,6 +337,7 @@ describe('ExercisesService', () => {
         category: '  Barbell  ',
         bodyPart: '  Chest  ',
         description: '  Description  ',
+        allowedUnits: ['load', 'reps'],
       };
 
       const mockDocRef = { id: 'trimmed-exercise' };
@@ -371,6 +375,7 @@ describe('ExercisesService', () => {
         category: 'Dumbbell',
         bodyPart: 'Shoulders',
         description: 'Updated description',
+        allowedUnits: ['load', 'reps'],
       };
 
       const mockDocRef = { id: exerciseId };
@@ -410,6 +415,7 @@ describe('ExercisesService', () => {
         name: 'Updated Exercise',
         category: 'Barbell',
         bodyPart: 'Chest',
+        allowedUnits: ['load', 'reps'],
       };
 
       const mockDocRef = { id: exerciseId };
@@ -445,6 +451,7 @@ describe('ExercisesService', () => {
         name: 'Updated Exercise',
         category: 'Barbell',
         bodyPart: 'Chest',
+        allowedUnits: ['load', 'reps'],
       };
 
       const mockDocRef = { id: exerciseId };

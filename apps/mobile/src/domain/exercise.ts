@@ -10,6 +10,7 @@ export const ExerciseSchema = z.object({
   category: z.string().min(1, 'Category is required'),
   bodyPart: z.string().min(1, 'Body part is required'),
   description: z.string().optional(),
+  allowedUnits: z.array(z.enum(['load', 'time', 'reps', 'distance'])),
   isCustom: z.boolean().default(false),
 });
 

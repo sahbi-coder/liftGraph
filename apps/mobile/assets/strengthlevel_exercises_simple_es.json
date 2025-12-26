@@ -4,2008 +4,2295 @@
     "name": "Press de banca",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco y presiona la barra hacia arriba desde el nivel del pecho hasta que los brazos estén completamente extendidos."
+    "description": "Acuéstate en un banco y presiona la barra hacia arriba desde el nivel del pecho hasta que los brazos estén completamente extendidos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "squat",
     "name": "Sentadilla",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Párate con los pies a la altura de los hombros, baja tus caderas hacia atrás y hacia abajo, luego regresa a la posición de pie."
+    "description": "Párate con los pies a la altura de los hombros, baja tus caderas hacia atrás y hacia abajo, luego regresa a la posición de pie.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "deadlift",
     "name": "Peso muerto",
     "category": "Barbell",
     "body_part": "Back",
-    "description": "Levanta la barra del suelo hasta la altura de las caderas manteniendo la espalda recta."
+    "description": "Levanta la barra del suelo hasta la altura de las caderas manteniendo la espalda recta.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "shoulder-press",
     "name": "Press de hombros",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Presiona la barra por encima de la cabeza desde la altura de los hombros hasta que los brazos estén completamente extendidos."
+    "description": "Presiona la barra por encima de la cabeza desde la altura de los hombros hasta que los brazos estén completamente extendidos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "pull-ups",
     "name": "Dominadas",
     "category": "Bodyweight",
     "body_part": "Back",
-    "description": "Cuelga de una barra y tira de tu cuerpo hacia arriba hasta que tu barbilla esté por encima de la barra."
+    "description": "Cuelga de una barra y tira de tu cuerpo hacia arriba hasta que tu barbilla esté por encima de la barra.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "dumbbell-bench-press",
     "name": "Press de banca con mancuernas",
     "category": "Dumbbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco y presiona las mancuernas hacia arriba desde el nivel del pecho hasta que los brazos estén completamente extendidos."
+    "description": "Acuéstate en un banco y presiona las mancuernas hacia arriba desde el nivel del pecho hasta que los brazos estén completamente extendidos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-curl",
     "name": "Curl con mancuernas",
     "category": "Dumbbell",
     "body_part": "Biceps",
-    "description": "Sostén las mancuernas a los lados y rízalas hacia tus hombros."
+    "description": "Sostén las mancuernas a los lados y rízalas hacia tus hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "push-ups",
     "name": "Flexiones",
     "category": "Bodyweight",
     "body_part": "Chest",
-    "description": "Baja y eleva tu cuerpo usando tus brazos mientras mantienes tu cuerpo recto."
+    "description": "Baja y eleva tu cuerpo usando tus brazos mientras mantienes tu cuerpo recto.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "sled-leg-press",
     "name": "Press de piernas en máquina de trineo",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Empuja el trineo con tus pies mientras estás sentado, extendiendo completamente tus piernas."
+    "description": "Empuja el trineo con tus pies mientras estás sentado, extendiendo completamente tus piernas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "barbell-curl",
     "name": "Curl con barra",
     "category": "Barbell",
     "body_part": "Biceps",
-    "description": "Párate con los pies a la altura de los hombros y riza la barra hacia tus hombros."
+    "description": "Párate con los pies a la altura de los hombros y riza la barra hacia tus hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "incline-dumbbell-bench-press",
     "name": "Press de banca inclinado con mancuernas",
     "category": "Dumbbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco inclinado y presiona las mancuernas hacia arriba desde el nivel del pecho."
+    "description": "Acuéstate en un banco inclinado y presiona las mancuernas hacia arriba desde el nivel del pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "bent-over-row",
     "name": "Remo inclinado",
     "category": "Barbell",
     "body_part": "Back",
-    "description": "Inclínate en la cintura y tira de la barra hacia tu parte inferior del pecho."
+    "description": "Inclínate en la cintura y tira de la barra hacia tu parte inferior del pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dips",
     "name": "Fondos",
     "category": "Bodyweight",
     "body_part": "Triceps",
-    "description": "Baja y eleva tu cuerpo usando tus brazos en barras paralelas."
+    "description": "Baja y eleva tu cuerpo usando tus brazos en barras paralelas.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "incline-bench-press",
     "name": "Press de banca inclinado",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco inclinado y presiona la barra hacia arriba desde el nivel del pecho."
+    "description": "Acuéstate en un banco inclinado y presiona la barra hacia arriba desde el nivel del pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-shoulder-press",
     "name": "Press de hombros con mancuernas",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Presiona las mancuernas por encima de la cabeza desde la altura de los hombros hasta que los brazos estén completamente extendidos."
+    "description": "Presiona las mancuernas por encima de la cabeza desde la altura de los hombros hasta que los brazos estén completamente extendidos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "lat-pulldown",
     "name": "Jalón de espalda",
     "category": "Cable",
     "body_part": "Back",
-    "description": "Tira de la barra hacia tu pecho mientras estás sentado, manteniendo la espalda recta."
+    "description": "Tira de la barra hacia tu pecho mientras estás sentado, manteniendo la espalda recta.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "front-squat",
     "name": "Sentadilla frontal",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Sostén la barra a la altura de los hombros y haz una sentadilla, manteniendo el pecho hacia arriba."
+    "description": "Sostén la barra a la altura de los hombros y haz una sentadilla, manteniendo el pecho hacia arriba.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "hex-bar-deadlift",
     "name": "Peso muerto con barra hexagonal",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Párate dentro de una barra hexagonal y levántala extendiendo tus caderas y rodillas."
+    "description": "Párate dentro de una barra hexagonal y levántala extendiendo tus caderas y rodillas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "chin-ups",
     "name": "Chin-ups",
     "category": "Bodyweight",
     "body_part": "Back",
-    "description": "Cuelga de una barra con las palmas hacia ti y tira de tu cuerpo hacia arriba hasta que tu barbilla esté por encima de la barra."
+    "description": "Cuelga de una barra con las palmas hacia ti y tira de tu cuerpo hacia arriba hasta que tu barbilla esté por encima de la barra.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "hip-thrust",
     "name": "Elevación de caderas",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Apoya la parte superior de tu espalda en un banco y eleva tus caderas hacia arriba con una barra sobre tus caderas."
+    "description": "Apoya la parte superior de tu espalda en un banco y eleva tus caderas hacia arriba con una barra sobre tus caderas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-lateral-raise",
     "name": "Elevación Lateral con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Levanta las mancuernas hacia los lados hasta que los brazos estén paralelos al suelo."
+    "description": "Levanta las mancuernas hacia los lados hasta que los brazos estén paralelos al suelo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "leg-extension",
     "name": "Extensión de Piernas",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Extiende tus piernas empujando contra una barra acolchada mientras estás sentado."
+    "description": "Extiende tus piernas empujando contra una barra acolchada mientras estás sentado.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "romanian-deadlift",
     "name": "Peso Muerto Rumano",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Baja la barra doblando las caderas mientras mantienes la espalda recta."
+    "description": "Baja la barra doblando las caderas mientras mantienes la espalda recta.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "power-clean",
     "name": "Clean de Potencia",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta la barra del suelo a la altura de los hombros en un movimiento explosivo."
+    "description": "Levanta la barra del suelo a la altura de los hombros en un movimiento explosivo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "horizontal-leg-press",
     "name": "Prensa de Piernas Horizontal",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Empuja una plataforma con peso con tus pies mientras estás sentado."
+    "description": "Empuja una plataforma con peso con tus pies mientras estás sentado.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-row",
     "name": "Remo con Mancuerna",
     "category": "Dumbbell",
     "body_part": "Back",
-    "description": "Inclínate hacia adelante y tira de una mancuerna hacia tu pecho inferior."
+    "description": "Inclínate hacia adelante y tira de una mancuerna hacia tu pecho inferior.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "military-press",
     "name": "Press Militar",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Presiona la barra por encima de la cabeza desde la altura de los hombros mientras estás de pie."
+    "description": "Presiona la barra por encima de la cabeza desde la altura de los hombros mientras estás de pie.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "sumo-deadlift",
     "name": "Peso Muerto Sumo",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Párate con una postura amplia y levanta la barra del suelo a la altura de las caderas."
+    "description": "Párate con una postura amplia y levanta la barra del suelo a la altura de las caderas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "chest-press",
     "name": "Press de Pecho",
     "category": "Machine",
     "body_part": "Chest",
-    "description": "Presiona las manijas hacia adelante desde la altura del pecho mientras estás sentado."
+    "description": "Presiona las manijas hacia adelante desde la altura del pecho mientras estás sentado.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "tricep-pushdown",
     "name": "Extensión de Tríceps",
     "category": "Cable",
     "body_part": "Triceps",
-    "description": "Empuja la manija del cable hacia abajo hasta que tus brazos estén completamente extendidos."
+    "description": "Empuja la manija del cable hacia abajo hasta que tus brazos estén completamente extendidos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "hammer-curl",
     "name": "Curl Martillo",
     "category": "Dumbbell",
     "body_part": "Biceps",
-    "description": "Curl de mancuernas hacia tus hombros con las palmas enfrentándose entre sí."
+    "description": "Curl de mancuernas hacia tus hombros con las palmas enfrentándose entre sí.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "seated-cable-row",
     "name": "Remo en Cable Sentado",
     "category": "Cable",
     "body_part": "Back",
-    "description": "Tira de la manija del cable hacia tu torso mientras estás sentado, manteniendo la espalda recta."
+    "description": "Tira de la manija del cable hacia tu torso mientras estás sentado, manteniendo la espalda recta.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "crunches",
     "name": "Abdominales",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Acuéstate de espaldas y levanta tus hombros del suelo contrayendo tus abdominales."
+    "description": "Acuéstate de espaldas y levanta tus hombros del suelo contrayendo tus abdominales.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "sit-ups",
     "name": "Elevaciones de Torso",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Acuéstate de espaldas y levanta tu torso hacia tus rodillas."
+    "description": "Acuéstate de espaldas y levanta tu torso hacia tus rodillas.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "muscle-ups",
     "name": "Muscle Ups",
     "category": "Bodyweight",
     "body_part": "Whole Body",
-    "description": "Realiza una dominada seguida de un dip para pasar por encima de la barra."
+    "description": "Realiza una dominada seguida de un dip para pasar por encima de la barra.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "seated-dumbbell-shoulder-press",
     "name": "Press de Hombros con Mancuernas Sentado",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Presiona las mancuernas por encima de la cabeza desde la altura de los hombros mientras estás sentado."
+    "description": "Presiona las mancuernas por encima de la cabeza desde la altura de los hombros mientras estás sentado.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "bodyweight-squat",
     "name": "Sentadilla con Peso Corporal",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Baja tus caderas hacia atrás y hacia abajo, luego regresa a la posición de pie sin pesas."
+    "description": "Baja tus caderas hacia atrás y hacia abajo, luego regresa a la posición de pie sin pesas.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "hack-squat",
     "name": "Sentadilla Hack",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Empuja la plataforma con tus pies mientras estás acostado en una máquina con soporte para la espalda."
+    "description": "Empuja la plataforma con tus pies mientras estás acostado en una máquina con soporte para la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "machine-shoulder-press",
     "name": "Press de Hombros en Máquina",
     "category": "Machine",
     "body_part": "Shoulders",
-    "description": "Presiona las manijas por encima de la cabeza desde la altura de los hombros mientras estás sentado."
+    "description": "Presiona las manijas por encima de la cabeza desde la altura de los hombros mientras estás sentado.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "clean-and-jerk",
     "name": "Clean y Jerk",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta la barra del suelo a la altura de los hombros, luego presiona por encima de la cabeza."
+    "description": "Levanta la barra del suelo a la altura de los hombros, luego presiona por encima de la cabeza.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "machine-chest-fly",
     "name": "Apertura de Pecho en Máquina",
     "category": "Machine",
     "body_part": "Chest",
-    "description": "Siéntate en la máquina con los brazos extendidos y junta las manijas frente a tu pecho."
+    "description": "Siéntate en la máquina con los brazos extendidos y junta las manijas frente a tu pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-bulgarian-split-squat",
     "name": "Sentadilla Búlgara con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Coloca un pie detrás de ti en un banco y baja en sentadilla con mancuernas en cada mano."
+    "description": "Coloca un pie detrás de ti en un banco y baja en sentadilla con mancuernas en cada mano.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "one-arm-push-ups",
     "name": "Flexiones con un Brazo",
     "category": "Bodyweight",
     "body_part": "Whole Body",
-    "description": "Realiza una flexión usando solo un brazo, manteniendo tu cuerpo recto y el core comprometido."
+    "description": "Realiza una flexión usando solo un brazo, manteniendo tu cuerpo recto y el core comprometido.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "lying-tricep-extension",
     "name": "Extensión de Tríceps Acostado",
     "category": "Barbell",
     "body_part": "Triceps",
-    "description": "Acuéstate en un banco y extiende una barra desde detrás de tu cabeza hasta sobre tu pecho."
+    "description": "Acuéstate en un banco y extiende una barra desde detrás de tu cabeza hasta sobre tu pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "seated-leg-curl",
     "name": "Curl de Piernas Sentado",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Siéntate en la máquina y lleva tus piernas hacia atrás hacia tus muslos."
+    "description": "Siéntate en la máquina y lleva tus piernas hacia atrás hacia tus muslos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "ez-bar-curl",
     "name": "Curl con Barra EZ",
     "category": "Barbell",
     "body_part": "Biceps",
-    "description": "Párate y realiza un curl con la barra EZ hacia tus hombros, manteniendo los codos cerca de tu cuerpo."
+    "description": "Párate y realiza un curl con la barra EZ hacia tus hombros, manteniendo los codos cerca de tu cuerpo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "snatch",
     "name": "Arrancada",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta la barra del suelo por encima de la cabeza en un solo movimiento continuo."
+    "description": "Levanta la barra del suelo por encima de la cabeza en un solo movimiento continuo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "close-grip-bench-press",
     "name": "Press de Banca con Agarre Cerrado",
     "category": "Barbell",
     "body_part": "Triceps",
-    "description": "Acuéstate en un banco y presiona la barra con un agarre cerrado para trabajar los tríceps."
+    "description": "Acuéstate en un banco y presiona la barra con un agarre cerrado para trabajar los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "preacher-curl",
     "name": "Curl en Predicador",
     "category": "Barbell",
     "body_part": "Biceps",
-    "description": "Realiza curls con los brazos apoyados en un banco de predicador para aislar los bíceps."
+    "description": "Realiza curls con los brazos apoyados en un banco de predicador para aislar los bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "seated-shoulder-press",
     "name": "Press de Hombros Sentado",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Siéntate y presiona las mancuernas por encima de la cabeza, manteniendo la espalda recta y el core comprometido."
+    "description": "Siéntate y presiona las mancuernas por encima de la cabeza, manteniendo la espalda recta y el core comprometido.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "goblet-squat",
     "name": "Sentadilla con Mancuerna",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Sostén una mancuerna cerca de tu pecho y baja en sentadilla, manteniendo la espalda recta."
+    "description": "Sostén una mancuerna cerca de tu pecho y baja en sentadilla, manteniendo la espalda recta.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "barbell-shrug",
     "name": "Encogimiento con Barra",
     "category": "Barbell",
     "body_part": "Traps",
-    "description": "Párate y levanta tus hombros hacia tus orejas mientras sostienes una barra."
+    "description": "Párate y levanta tus hombros hacia tus orejas mientras sostienes una barra.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "clean",
     "name": "Clean",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta la barra del suelo hasta tus hombros en un movimiento rápido."
+    "description": "Levanta la barra del suelo hasta tus hombros en un movimiento rápido.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "t-bar-row",
     "name": "Remo con Barra T",
     "category": "Barbell",
     "body_part": "Back",
-    "description": "Inclínate hacia adelante y tira de la barra T hacia tu pecho para trabajar los músculos de la espalda."
+    "description": "Inclínate hacia adelante y tira de la barra T hacia tu pecho para trabajar los músculos de la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "lying-leg-curl",
     "name": "Curl de Piernas Acostado",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Acuéstate boca abajo en la máquina y lleva tus piernas hacia tus glúteos."
+    "description": "Acuéstate boca abajo en la máquina y lleva tus piernas hacia tus glúteos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "neutral-grip-pull-ups",
     "name": "Dominadas con Agarre Neutral",
     "category": "Bodyweight",
     "body_part": "Back",
-    "description": "Levanta tu cuerpo usando un agarre neutral, enfocándote en activar los músculos de la espalda."
+    "description": "Levanta tu cuerpo usando un agarre neutral, enfocándote en activar los músculos de la espalda.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "diamond-push-ups",
     "name": "Flexiones en Diamante",
     "category": "Bodyweight",
     "body_part": "Triceps",
-    "description": "Realiza flexiones con las manos juntas en forma de diamante para trabajar los tríceps."
+    "description": "Realiza flexiones con las manos juntas en forma de diamante para trabajar los tríceps.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "machine-calf-raise",
     "name": "Elevación de Pantorrillas en Máquina",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Usa la máquina para elevar tus talones, enfocándote en contraer los músculos de las pantorrillas."
+    "description": "Usa la máquina para elevar tus talones, enfocándote en contraer los músculos de las pantorrillas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "push-press",
     "name": "Press de Empuje",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Usa tus piernas para ayudar a presionar la barra por encima de la cabeza, activando tus hombros."
+    "description": "Usa tus piernas para ayudar a presionar la barra por encima de la cabeza, activando tus hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-fly",
     "name": "Apertura con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco y abre los brazos ampliamente con mancuernas, luego júntalos sobre tu pecho."
+    "description": "Acuéstate en un banco y abre los brazos ampliamente con mancuernas, luego júntalos sobre tu pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "hip-adduction",
     "name": "Aducción de Cadera",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Usa la máquina para juntar tus piernas, enfocándote en los músculos del muslo interno."
+    "description": "Usa la máquina para juntar tus piernas, enfocándote en los músculos del muslo interno.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-shrug",
     "name": "Encogimiento con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Traps",
-    "description": "Sostén las mancuernas y levanta tus hombros hacia tus oídos, enfocándote en los trapecios."
+    "description": "Sostén las mancuernas y levanta tus hombros hacia tus oídos, enfocándote en los trapecios.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "decline-bench-press",
     "name": "Press de Banca Declinado",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco declinado y presiona la barra hacia arriba para trabajar el pecho inferior."
+    "description": "Acuéstate en un banco declinado y presiona la barra hacia arriba para trabajar el pecho inferior.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "smith-machine-bench-press",
     "name": "Press de Banca con Máquina Smith",
     "category": "Machine",
     "body_part": "Chest",
-    "description": "Usa la máquina Smith para presionar la barra hacia arriba, enfocándote en los músculos del pecho."
+    "description": "Usa la máquina Smith para presionar la barra hacia arriba, enfocándote en los músculos del pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-lunge",
     "name": "Zancada con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Da un paso hacia adelante con una pierna y baja tus caderas mientras sostienes mancuernas en cada mano."
+    "description": "Da un paso hacia adelante con una pierna y baja tus caderas mientras sostienes mancuernas en cada mano.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "pistol-squat",
     "name": "Sentadilla Pistol",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Realiza una sentadilla en una pierna, manteniendo la otra pierna extendida hacia adelante."
+    "description": "Realiza una sentadilla en una pierna, manteniendo la otra pierna extendida hacia adelante.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "hanging-leg-raise",
     "name": "Elevación de Piernas Colgando",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Cuelga de una barra y levanta tus piernas hacia tu pecho, activando tu core."
+    "description": "Cuelga de una barra y levanta tus piernas hacia tu pecho, activando tu core.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "machine-row",
     "name": "Remo en Máquina",
     "category": "Machine",
     "body_part": "Back",
-    "description": "Siéntate en la máquina y tira de las manijas hacia tu pecho para trabajar los músculos de la espalda."
+    "description": "Siéntate en la máquina y tira de las manijas hacia tu pecho para trabajar los músculos de la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "tricep-rope-pushdown",
     "name": "Extensión de Tríceps con Cuerda",
     "category": "Cable",
     "body_part": "Triceps",
-    "description": "Usa una máquina de cable con un accesorio de cuerda para empujar hacia abajo, enfocándote en los tríceps."
+    "description": "Usa una máquina de cable con un accesorio de cuerda para empujar hacia abajo, enfocándote en los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "chest-supported-dumbbell-row",
     "name": "Remo con Mancuernas Soportado por el Pecho",
     "category": "Dumbbell",
     "body_part": "Back",
-    "description": "Acuéstate boca abajo en un banco inclinado y rema las mancuernas hacia tu pecho."
+    "description": "Acuéstate boca abajo en un banco inclinado y rema las mancuernas hacia tu pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "clean-and-press",
     "name": "Clean y Press",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta la barra del suelo a tus hombros, luego presiona hacia arriba."
+    "description": "Levanta la barra del suelo a tus hombros, luego presiona hacia arriba.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-romanian-deadlift",
     "name": "Peso Muerto Rumano con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Sostén las mancuernas y bájalas hacia tus pies, manteniendo la espalda recta."
+    "description": "Sostén las mancuernas y bájalas hacia tus pies, manteniendo la espalda recta.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "rack-pull",
     "name": "Remo desde el Rack",
     "category": "Barbell",
     "body_part": "Back",
-    "description": "Levanta la barra desde un rack, enfocándote en activar los músculos de la espalda."
+    "description": "Levanta la barra desde un rack, enfocándote en activar los músculos de la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "bulgarian-split-squat",
     "name": "Sentadilla Búlgara",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Coloca un pie detrás de ti en un banco y baja en una sentadilla, enfocándote en la pierna delantera."
+    "description": "Coloca un pie detrás de ti en un banco y baja en una sentadilla, enfocándote en la pierna delantera.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "smith-machine-squat",
     "name": "Sentadilla con Máquina Smith",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Usa la máquina Smith para realizar sentadillas, enfocándote en la forma y la profundidad adecuadas."
+    "description": "Usa la máquina Smith para realizar sentadillas, enfocándote en la forma y la profundidad adecuadas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-tricep-extension",
     "name": "Extensión de Tríceps con Mancuerna",
     "category": "Dumbbell",
     "body_part": "Triceps",
-    "description": "Sostén una mancuerna sobre tu cabeza y bájala detrás de tu cabeza, extendiendo tus brazos."
+    "description": "Sostén una mancuerna sobre tu cabeza y bájala detrás de tu cabeza, extendiendo tus brazos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "pendlay-row",
     "name": "Remo Pendlay",
     "category": "Barbell",
     "body_part": "Back",
-    "description": "Inclínate hacia adelante y tira de la barra del suelo hacia tu pecho, enfocándote en la espalda."
+    "description": "Inclínate hacia adelante y tira de la barra del suelo hacia tu pecho, enfocándote en la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "box-squat",
     "name": "Sentadilla en Caja",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Realiza una sentadilla hacia una caja, enfocándote en un descenso y ascenso controlados."
+    "description": "Realiza una sentadilla hacia una caja, enfocándote en un descenso y ascenso controlados.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "cable-bicep-curl",
     "name": "Curl de Bíceps con Cable",
     "category": "Cable",
     "body_part": "Biceps",
-    "description": "Usa una máquina de cable para rizar la manija hacia tus hombros, enfocándote en los bíceps."
+    "description": "Usa una máquina de cable para rizar la manija hacia tus hombros, enfocándote en los bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "incline-dumbbell-curl",
     "name": "Curl de Mancuernas en Inclinado",
     "category": "Dumbbell",
     "body_part": "Biceps",
-    "description": "Siéntate en un banco inclinado y riza las mancuernas hacia tus hombros, aislando los bíceps."
+    "description": "Siéntate en un banco inclinado y riza las mancuernas hacia tus hombros, aislando los bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "seated-calf-raise",
     "name": "Elevación de pantorrillas sentado",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Siéntate en la máquina con los pies en la plataforma y empuja con las puntas de los pies para levantar los talones."
+    "description": "Siéntate en la máquina con los pies en la plataforma y empuja con las puntas de los pies para levantar los talones.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "close-grip-lat-pulldown",
     "name": "Jalón de espalda con agarre cerrado",
     "category": "Cable",
     "body_part": "Back",
-    "description": "Siéntate en una máquina de cable y tira de la barra hacia tu pecho con un agarre cerrado para trabajar los dorsales."
+    "description": "Siéntate en una máquina de cable y tira de la barra hacia tu pecho con un agarre cerrado para trabajar los dorsales.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "upright-row",
     "name": "Remo vertical",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Párate sosteniendo una barra y levántala verticalmente hacia tu pecho, manteniendo los codos más altos que las muñecas."
+    "description": "Párate sosteniendo una barra y levántala verticalmente hacia tu pecho, manteniendo los codos más altos que las muñecas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "vertical-leg-press",
     "name": "Prensa de piernas vertical",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Acuéstate de espaldas y presiona la plataforma hacia arriba con los pies para trabajar los músculos de las piernas."
+    "description": "Acuéstate de espaldas y presiona la plataforma hacia arriba con los pies para trabajar los músculos de las piernas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "machine-bicep-curl",
     "name": "Curl de bíceps en máquina",
     "category": "Machine",
     "body_part": "Biceps",
-    "description": "Siéntate en la máquina y riza las manijas hacia ti para aislar los bíceps."
+    "description": "Siéntate en la máquina y riza las manijas hacia ti para aislar los bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "machine-seated-crunch",
     "name": "Crunch sentado en máquina",
     "category": "Machine",
     "body_part": "Core",
-    "description": "Siéntate en la máquina y contrae tus abdominales para llevar tu pecho hacia tus rodillas."
+    "description": "Siéntate en la máquina y contrae tus abdominales para llevar tu pecho hacia tus rodillas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "jumping-jack",
     "name": "Jumping Jack",
     "category": "Bodyweight",
     "body_part": "Whole Body",
-    "description": "Salta a una posición con las piernas separadas y las manos tocando por encima de la cabeza, luego regresa al inicio."
+    "description": "Salta a una posición con las piernas separadas y las manos tocando por encima de la cabeza, luego regresa al inicio.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "cable-lateral-raise",
     "name": "Elevación lateral con cable",
     "category": "Cable",
     "body_part": "Shoulders",
-    "description": "Párate al lado de una máquina de cable y levanta la manija hacia el lado hasta la altura del hombro."
+    "description": "Párate al lado de una máquina de cable y levanta la manija hacia el lado hasta la altura del hombro.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "zercher-squat",
     "name": "Sentadilla Zercher",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Sostén la barra en el pliegue de tus codos y baja en sentadilla, manteniendo la espalda recta."
+    "description": "Sostén la barra en el pliegue de tus codos y baja en sentadilla, manteniendo la espalda recta.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "arnold-press",
     "name": "Press Arnold",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Siéntate o párate con mancuernas, rota las palmas mientras presionas por encima de la cabeza, luego baja de nuevo."
+    "description": "Siéntate o párate con mancuernas, rota las palmas mientras presionas por encima de la cabeza, luego baja de nuevo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "stiff-leg-deadlift",
     "name": "Peso muerto con piernas rígidas",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Con una ligera flexión en las rodillas, inclínate en las caderas para bajar la barra, luego regresa."
+    "description": "Con una ligera flexión en las rodillas, inclínate en las caderas para bajar la barra, luego regresa.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "incline-dumbbell-fly",
     "name": "Apertura con mancuernas en banco inclinado",
     "category": "Dumbbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco inclinado y abre los brazos con mancuernas, luego júntalos."
+    "description": "Acuéstate en un banco inclinado y abre los brazos con mancuernas, luego júntalos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-reverse-fly",
     "name": "Apertura inversa con mancuernas",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Inclínate ligeramente y levanta las mancuernas hacia los lados para trabajar los deltoides posteriores."
+    "description": "Inclínate ligeramente y levanta las mancuernas hacia los lados para trabajar los deltoides posteriores.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "hang-clean",
     "name": "Hang Clean",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta la barra desde una posición colgante hasta tus hombros en un movimiento explosivo."
+    "description": "Levanta la barra desde una posición colgante hasta tus hombros en un movimiento explosivo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-concentration-curl",
     "name": "Curl de concentración con mancuerna",
     "category": "Dumbbell",
     "body_part": "Biceps",
-    "description": "Siéntate y riza una mancuerna con un brazo, enfocándote en apretar el bíceps en la parte superior."
+    "description": "Siéntate y riza una mancuerna con un brazo, enfocándote en apretar el bíceps en la parte superior.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "decline-push-up",
     "name": "Flexión declinada",
     "category": "Bodyweight",
     "body_part": "Chest",
-    "description": "Coloca los pies en una superficie elevada y realiza una flexión para trabajar la parte superior del pecho."
+    "description": "Coloca los pies en una superficie elevada y realiza una flexión para trabajar la parte superior del pecho.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "cable-crunch",
     "name": "Crunch con cable",
     "category": "Cable",
     "body_part": "Core",
-    "description": "Ponte de rodillas frente a la máquina de cable y tira de la cuerda hacia abajo mientras contraes tus abdominales."
+    "description": "Ponte de rodillas frente a la máquina de cable y tira de la cuerda hacia abajo mientras contraes tus abdominales.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-front-raise",
     "name": "Elevación frontal con mancuernas",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Levanta las mancuernas frente a ti hasta la altura del hombro, manteniendo los brazos rectos."
+    "description": "Levanta las mancuernas frente a ti hasta la altura del hombro, manteniendo los brazos rectos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "back-extension",
     "name": "Extensión de espalda",
     "category": "Bodyweight",
     "body_part": "Back",
-    "description": "Acuéstate boca abajo en un banco de hiperextensión y levanta la parte superior de tu cuerpo usando la parte baja de la espalda."
+    "description": "Acuéstate boca abajo en un banco de hiperextensión y levanta la parte superior de tu cuerpo usando la parte baja de la espalda.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "one-arm-pull-ups",
     "name": "Dominadas con un brazo",
     "category": "Bodyweight",
     "body_part": "Back",
-    "description": "Realiza una dominada usando solo un brazo para levantar tu cuerpo."
+    "description": "Realiza una dominada usando solo un brazo para levantar tu cuerpo.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "tricep-extension",
     "name": "Extensión de Tríceps",
     "category": "Cable",
     "body_part": "Triceps",
-    "description": "Usa una máquina de cable para extender tus brazos hacia abajo, aislando los tríceps."
+    "description": "Usa una máquina de cable para extender tus brazos hacia abajo, aislando los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "seated-dip-machine",
     "name": "Máquina de Fondos Sentado",
     "category": "Machine",
     "body_part": "Triceps",
-    "description": "Siéntate en la máquina y presiona hacia abajo con tus brazos para trabajar los tríceps."
+    "description": "Siéntate en la máquina y presiona hacia abajo con tus brazos para trabajar los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "good-morning",
     "name": "Buenos Días",
     "category": "Barbell",
     "body_part": "Back",
-    "description": "Con una barra en tu espalda, inclínate en las caderas para bajar tu torso, luego regresa."
+    "description": "Con una barra en tu espalda, inclínate en las caderas para bajar tu torso, luego regresa.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "floor-press",
     "name": "Press en el Suelo",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Acuéstate en el suelo y presiona la barra desde tu pecho hacia arriba."
+    "description": "Acuéstate en el suelo y presiona la barra desde tu pecho hacia arriba.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-pullover",
     "name": "Pullover con Mancuerna",
     "category": "Dumbbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco y mueve una mancuerna desde arriba de tu pecho hacia detrás de tu cabeza."
+    "description": "Acuéstate en un banco y mueve una mancuerna desde arriba de tu pecho hacia detrás de tu cabeza.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "hip-abduction",
     "name": "Abducción de Cadera",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Siéntate en la máquina y empuja tus piernas hacia afuera para trabajar los muslos externos."
+    "description": "Siéntate en la máquina y empuja tus piernas hacia afuera para trabajar los muslos externos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "cable-fly",
     "name": "Apertura en Cable",
     "category": "Cable",
     "body_part": "Chest",
-    "description": "Párate entre las máquinas de cable y junta las manijas frente a ti."
+    "description": "Párate entre las máquinas de cable y junta las manijas frente a ti.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "lunge",
     "name": "Zancada",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Da un paso hacia adelante con una pierna y baja tus caderas hasta que ambas rodillas estén dobladas a 90 grados."
+    "description": "Da un paso hacia adelante con una pierna y baja tus caderas hasta que ambas rodillas estén dobladas a 90 grados.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "single-leg-squat",
     "name": "Sentadilla a Una Pierna",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Equilibra sobre una pierna y baja tu cuerpo a una posición de sentadilla, luego regresa."
+    "description": "Equilibra sobre una pierna y baja tu cuerpo a una posición de sentadilla, luego regresa.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "dumbbell-floor-press",
     "name": "Press en el Suelo con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Chest",
-    "description": "Acuéstate en el suelo y presiona las mancuernas desde tu pecho hacia arriba."
+    "description": "Acuéstate en el suelo y presiona las mancuernas desde tu pecho hacia arriba.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "barbell-lunge",
     "name": "Zancada con Barra",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Sostén una barra en tu espalda y da un paso hacia adelante en una posición de zancada."
+    "description": "Sostén una barra en tu espalda y da un paso hacia adelante en una posición de zancada.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "handstand-push-ups",
     "name": "Flexiones en Parada de Manos",
     "category": "Bodyweight",
     "body_part": "Shoulders",
-    "description": "Realiza una flexión mientras estás en posición de parada de manos contra una pared."
+    "description": "Realiza una flexión mientras estás en posición de parada de manos contra una pared.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "thruster",
     "name": "Impulsor",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Realiza una sentadilla con una barra y luego presiona hacia arriba en un solo movimiento."
+    "description": "Realiza una sentadilla con una barra y luego presiona hacia arriba en un solo movimiento.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-squat",
     "name": "Sentadilla con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Sostén mancuernas a los lados y realiza una sentadilla, manteniendo la espalda recta."
+    "description": "Sostén mancuernas a los lados y realiza una sentadilla, manteniendo la espalda recta.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "burpees",
     "name": "Burpees",
     "category": "Bodyweight",
     "body_part": "Whole Body",
-    "description": "Baja a una sentadilla, patea los pies hacia atrás en una plancha, regresa a la sentadilla y salta."
+    "description": "Baja a una sentadilla, patea los pies hacia atrás en una plancha, regresa a la sentadilla y salta.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "barbell-calf-raise",
     "name": "Elevación de Pantorrillas con Barra",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Párate con una barra en tu espalda y eleva tus talones para trabajar las pantorrillas."
+    "description": "Párate con una barra en tu espalda y eleva tus talones para trabajar las pantorrillas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "face-pull",
     "name": "Jalón de Cara",
     "category": "Cable",
     "body_part": "Shoulders",
-    "description": "Tira del cable hacia tu cara, manteniendo los codos altos para trabajar los deltoides traseros."
+    "description": "Tira del cable hacia tu cara, manteniendo los codos altos para trabajar los deltoides traseros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "close-grip-push-up",
     "name": "Flexión con Agarre Cerrado",
     "category": "Bodyweight",
     "body_part": "Triceps",
-    "description": "Realiza una flexión con las manos juntas para enfatizar los tríceps."
+    "description": "Realiza una flexión con las manos juntas para enfatizar los tríceps.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "bodyweight-calf-raise",
     "name": "Elevación de Pantorrillas con Peso Corporal",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Párate sobre las puntas de tus pies y eleva tus talones para trabajar las pantorrillas."
+    "description": "Párate sobre las puntas de tus pies y eleva tus talones para trabajar las pantorrillas.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "wrist-curl",
     "name": "Curl de Muñeca",
     "category": "Dumbbell",
     "body_part": "Forearms",
-    "description": "Siéntate y realiza un curl con una mancuerna usando solo tu muñeca para fortalecer los antebrazos."
+    "description": "Siéntate y realiza un curl con una mancuerna usando solo tu muñeca para fortalecer los antebrazos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "overhead-squat",
     "name": "Sentadilla Sobre La Cabeza",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Realiza una sentadilla mientras sostienes una barra sobre la cabeza, activando el core y manteniendo el equilibrio."
+    "description": "Realiza una sentadilla mientras sostienes una barra sobre la cabeza, activando el core y manteniendo el equilibrio.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "russian-twist",
     "name": "Giro Ruso",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Siéntate con las rodillas dobladas, inclínate hacia atrás ligeramente y gira el torso de lado a lado."
+    "description": "Siéntate con las rodillas dobladas, inclínate hacia atrás ligeramente y gira el torso de lado a lado.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "decline-sit-up",
     "name": "Abdominal Declinado",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Realiza un abdominal en un banco declinado para trabajar los músculos abdominales de manera más intensa."
+    "description": "Realiza un abdominal en un banco declinado para trabajar los músculos abdominales de manera más intensa.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "lying-leg-raise",
     "name": "Elevación de Piernas Acostado",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Acuéstate plano y levanta las piernas hacia el techo, manteniéndolas rectas para activar los abdominales inferiores."
+    "description": "Acuéstate plano y levanta las piernas hacia el techo, manteniéndolas rectas para activar los abdominales inferiores.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "lying-dumbbell-tricep-extension",
     "name": "Extensión de Tríceps con Mancuernas Acostado",
     "category": "Dumbbell",
     "body_part": "Triceps",
-    "description": "Acuéstate en un banco y extiende las mancuernas desde detrás de la cabeza hacia arriba del pecho."
+    "description": "Acuéstate en un banco y extiende las mancuernas desde detrás de la cabeza hacia arriba del pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "glute-bridge",
     "name": "Puente de Glúteos",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Acuéstate de espaldas y levanta las caderas apretando los glúteos, manteniendo los pies planos."
+    "description": "Acuéstate de espaldas y levanta las caderas apretando los glúteos, manteniendo los pies planos.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "paused-bench-press",
     "name": "Press de Banca en Pausa",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Realiza un press de banca con una pausa en la parte inferior para aumentar la fuerza y el control."
+    "description": "Realiza un press de banca con una pausa en la parte inferior para aumentar la fuerza y el control.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "power-snatch",
     "name": "Arrancada Potente",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta una barra del suelo a sobre la cabeza en un solo movimiento explosivo."
+    "description": "Levanta una barra del suelo a sobre la cabeza en un solo movimiento explosivo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "bench-dips",
     "name": "Fondos en Banco",
     "category": "Bodyweight",
     "body_part": "Triceps",
-    "description": "Usa un banco para bajar y levantar tu cuerpo, enfocándote en los tríceps."
+    "description": "Usa un banco para bajar y levantar tu cuerpo, enfocándote en los tríceps.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "behind-the-neck-press",
     "name": "Press Detrás del Cuello",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Presiona una barra sobre la cabeza desde detrás del cuello, activando los músculos del hombro."
+    "description": "Presiona una barra sobre la cabeza desde detrás del cuello, activando los músculos del hombro.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "split-squat",
     "name": "Sentadilla Dividida",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Realiza una sentadilla con una pierna hacia adelante y la otra hacia atrás, enfocándote en el equilibrio y la fuerza."
+    "description": "Realiza una sentadilla con una pierna hacia adelante y la otra hacia atrás, enfocándote en el equilibrio y la fuerza.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "cable-reverse-fly",
     "name": "Apertura Inversa en Cable",
     "category": "Cable",
     "body_part": "Shoulders",
-    "description": "Usa una máquina de cable para separar las manijas, enfocándote en los deltoides posteriores."
+    "description": "Usa una máquina de cable para separar las manijas, enfocándote en los deltoides posteriores.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "machine-reverse-fly",
     "name": "Apertura Inversa en Máquina",
     "category": "Machine",
     "body_part": "Shoulders",
-    "description": "Siéntate en una máquina y tira de las manijas hacia atrás para trabajar los músculos posteriores del hombro."
+    "description": "Siéntate en una máquina y tira de las manijas hacia atrás para trabajar los músculos posteriores del hombro.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "cable-overhead-tricep-extension",
     "name": "Extensión de Tríceps Sobre La Cabeza en Cable",
     "category": "Cable",
     "body_part": "Triceps",
-    "description": "Extiende tus brazos sobre la cabeza usando una máquina de cable para trabajar los tríceps."
+    "description": "Extiende tus brazos sobre la cabeza usando una máquina de cable para trabajar los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-deadlift",
     "name": "Peso Muerto con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Levanta mancuernas del suelo a una posición de pie, activando las piernas y la espalda."
+    "description": "Levanta mancuernas del suelo a una posición de pie, activando las piernas y la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "push-jerk",
     "name": "Empuje Jerk",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Realiza una rápida flexión y empuje para levantar una barra sobre la cabeza, usando la potencia de las piernas."
+    "description": "Realiza una rápida flexión y empuje para levantar una barra sobre la cabeza, usando la potencia de las piernas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-calf-raise",
     "name": "Elevación de Pantorrillas con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Sostén mancuernas y eleva los talones del suelo para trabajar los músculos de las pantorrillas."
+    "description": "Sostén mancuernas y eleva los talones del suelo para trabajar los músculos de las pantorrillas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "squat-jump",
     "name": "Salto de Sentadilla",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Realiza una sentadilla y luego salta explosivamente, aterrizando suavemente y repitiendo."
+    "description": "Realiza una sentadilla y luego salta explosivamente, aterrizando suavemente y repitiendo.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "sissy-squat",
     "name": "Sentadilla Sissy",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Inclínate hacia atrás mientras te agachas para trabajar intensamente los cuádriceps."
+    "description": "Inclínate hacia atrás mientras te agachas para trabajar intensamente los cuádriceps.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "reverse-barbell-curl",
     "name": "Curl Inverso con Barra",
     "category": "Barbell",
     "body_part": "Forearms",
-    "description": "Realiza un curl con una barra con un agarre de pronación para trabajar los antebrazos y bíceps."
+    "description": "Realiza un curl con una barra con un agarre de pronación para trabajar los antebrazos y bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-tricep-kickback",
     "name": "Patada de tríceps con mancuerna",
     "category": "Dumbbell",
     "body_part": "Triceps",
-    "description": "Inclínate hacia adelante y extiende las mancuernas detrás de ti, enfocándote en los tríceps."
+    "description": "Inclínate hacia adelante y extiende las mancuernas detrás de ti, enfocándote en los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "decline-dumbbell-bench-press",
     "name": "Press de banca con mancuerna en declive",
     "category": "Dumbbell",
     "body_part": "Chest",
-    "description": "Presiona las mancuernas mientras estás acostado en un banco en declive para enfocar el pecho inferior."
+    "description": "Presiona las mancuernas mientras estás acostado en un banco en declive para enfocar el pecho inferior.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "close-grip-dumbbell-bench-press",
     "name": "Press de banca con mancuerna agarre cerrado",
     "category": "Dumbbell",
     "body_part": "Triceps",
-    "description": "Presiona las mancuernas con un agarre cerrado para enfatizar los tríceps."
+    "description": "Presiona las mancuernas con un agarre cerrado para enfatizar los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "reverse-grip-lat-pulldown",
     "name": "Jalón de espalda con agarre inverso",
     "category": "Cable",
     "body_part": "Back",
-    "description": "Baja la barra con un agarre inverso para trabajar la parte superior de la espalda y los bíceps."
+    "description": "Baja la barra con un agarre inverso para trabajar la parte superior de la espalda y los bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "sled-press-calf-raise",
     "name": "Elevación de pantorrillas con prensa de trineo",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Usa una máquina de trineo para presionar con los pies, enfocándote en las pantorrillas."
+    "description": "Usa una máquina de trineo para presionar con los pies, enfocándote en las pantorrillas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "single-leg-press",
     "name": "Prensa de pierna unilateral",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Realiza una prensa de pierna con una pierna a la vez para aislar cada pierna."
+    "description": "Realiza una prensa de pierna con una pierna a la vez para aislar cada pierna.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "incline-push-up",
     "name": "Flexión en inclinación",
     "category": "Bodyweight",
     "body_part": "Chest",
-    "description": "Realiza una flexión con las manos elevadas para trabajar la parte superior del pecho."
+    "description": "Realiza una flexión con las manos elevadas para trabajar la parte superior del pecho.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "barbell-reverse-lunge",
     "name": "Zancada inversa con barra",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Da un paso atrás en una zancada mientras sostienes una barra para trabajar las piernas y los glúteos."
+    "description": "Da un paso atrás en una zancada mientras sostienes una barra para trabajar las piernas y los glúteos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "belt-squat",
     "name": "Sentadilla con cinturón",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Usa una máquina de sentadillas con cinturón para realizar sentadillas sin cargar la columna."
+    "description": "Usa una máquina de sentadillas con cinturón para realizar sentadillas sin cargar la columna.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "reverse-grip-bench-press",
     "name": "Press de banca con agarre inverso",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Presiona una barra con un agarre inverso para trabajar la parte superior del pecho y los tríceps."
+    "description": "Presiona una barra con un agarre inverso para trabajar la parte superior del pecho y los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "barbell-glute-bridge",
     "name": "Puente de glúteos con barra",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Realiza un puente de glúteos con una barra sobre tus caderas para trabajar los glúteos."
+    "description": "Realiza un puente de glúteos con una barra sobre tus caderas para trabajar los glúteos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "reverse-lunge",
     "name": "Zancada inversa",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Da un paso atrás en una posición de zancada, enfocándote en el equilibrio y la fuerza de las piernas."
+    "description": "Da un paso atrás en una posición de zancada, enfocándote en el equilibrio y la fuerza de las piernas.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "standing-leg-curl",
     "name": "Curl de pierna de pie",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Usa una máquina para rizar una pierna a la vez, enfocándote en los isquiotibiales."
+    "description": "Usa una máquina para rizar una pierna a la vez, enfocándote en los isquiotibiales.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "cable-pull-through",
     "name": "Jalón de cable entre las piernas",
     "category": "Cable",
     "body_part": "Legs",
-    "description": "Tira de un cable entre tus piernas mientras te inclinas hacia adelante para trabajar los glúteos y los isquiotibiales."
+    "description": "Tira de un cable entre tus piernas mientras te inclinas hacia adelante para trabajar los glúteos y los isquiotibiales.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "landmine-squat",
     "name": "Sentadilla con landmine",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Realiza una sentadilla usando un accesorio de landmine para mayor estabilidad y compromiso del core."
+    "description": "Realiza una sentadilla usando un accesorio de landmine para mayor estabilidad y compromiso del core.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "one-arm-dumbbell-preacher-curl",
     "name": "Curl de predicador con mancuerna a un brazo",
     "category": "Dumbbell",
     "body_part": "Biceps",
-    "description": "Riza una mancuerna con un brazo en un banco de predicador para aislar los bíceps."
+    "description": "Riza una mancuerna con un brazo en un banco de predicador para aislar los bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "straight-arm-pulldown",
     "name": "Jalón de brazos rectos",
     "category": "Cable",
     "body_part": "Back",
-    "description": "Tira de un cable hacia abajo con los brazos rectos para trabajar los dorsales y la parte superior de la espalda."
+    "description": "Tira de un cable hacia abajo con los brazos rectos para trabajar los dorsales y la parte superior de la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "safety-bar-squat",
     "name": "Sentadilla con barra de seguridad",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Realiza una sentadilla usando una barra de seguridad para mayor comodidad y estabilidad en los hombros."
+    "description": "Realiza una sentadilla usando una barra de seguridad para mayor comodidad y estabilidad en los hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "deficit-deadlift",
     "name": "Peso muerto en déficit",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Párate en una plataforma y realiza un peso muerto para aumentar el rango de movimiento y la dificultad."
+    "description": "Párate en una plataforma y realiza un peso muerto para aumentar el rango de movimiento y la dificultad.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-upright-row",
     "name": "Remo vertical con mancuerna",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Levanta las mancuernas verticalmente hasta la altura de los hombros para trabajar los hombros y los trapecios."
+    "description": "Levanta las mancuernas verticalmente hasta la altura de los hombros para trabajar los hombros y los trapecios.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-wrist-curl",
     "name": "Curl de muñeca con mancuerna",
     "category": "Dumbbell",
     "body_part": "Forearms",
-    "description": "Siéntate en un banco y apoya tus antebrazos en tus muslos, sosteniendo una mancuerna en cada mano. Eleva tus muñecas hacia arriba y luego baja de nuevo."
+    "description": "Siéntate en un banco y apoya tus antebrazos en tus muslos, sosteniendo una mancuerna en cada mano. Eleva tus muñecas hacia arriba y luego baja de nuevo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "snatch-deadlift",
     "name": "Peso muerto snatch",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Con un agarre amplio, levanta la barra del suelo a una posición de pie, enfocándote en activar tus piernas y espalda."
+    "description": "Con un agarre amplio, levanta la barra del suelo a una posición de pie, enfocándote en activar tus piernas y espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "strict-curl",
     "name": "Curl estricto",
     "category": "Barbell",
     "body_part": "Biceps",
-    "description": "Párate con la espalda contra una pared, sosteniendo una barra. Eleva la barra sin mover tus brazos superiores."
+    "description": "Párate con la espalda contra una pared, sosteniendo una barra. Eleva la barra sin mover tus brazos superiores.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "machine-back-extension",
     "name": "Extensión de espalda en máquina",
     "category": "Machine",
     "body_part": "Back",
-    "description": "Siéntate en la máquina con la espalda contra el cojín. Extiende tu espalda empujando contra el cojín, luego regresa a la posición inicial."
+    "description": "Siéntate en la máquina con la espalda contra el cojín. Extiende tu espalda empujando contra el cojín, luego regresa a la posición inicial.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "decline-crunch",
     "name": "Crunch declinado",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Acuéstate en un banco declinado con los pies asegurados. Eleva tu torso hacia arriba, activando tus abdominales, luego baja de nuevo."
+    "description": "Acuéstate en un banco declinado con los pies asegurados. Eleva tu torso hacia arriba, activando tus abdominales, luego baja de nuevo.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "sumo-squat",
     "name": "Sentadilla sumo",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Párate con los pies separados y los dedos de los pies apuntando hacia afuera. Baja en una sentadilla, manteniendo la espalda recta, luego regresa a la posición de pie."
+    "description": "Párate con los pies separados y los dedos de los pies apuntando hacia afuera. Baja en una sentadilla, manteniendo la espalda recta, luego regresa a la posición de pie.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "hang-power-clean",
     "name": "Hang power clean",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Comienza con la barra a la altura del muslo. Levántala explosivamente hacia tus hombros, usando tus caderas y piernas para impulso."
+    "description": "Comienza con la barra a la altura del muslo. Levántala explosivamente hacia tus hombros, usando tus caderas y piernas para impulso.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "pause-deadlift",
     "name": "Peso muerto en pausa",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta la barra del suelo, haz una pausa a la altura de las rodillas, luego completa la elevación hasta una posición de pie."
+    "description": "Levanta la barra del suelo, haz una pausa a la altura de las rodillas, luego completa la elevación hasta una posición de pie.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "one-arm-cable-bicep-curl",
     "name": "Curl de bíceps con cable a un brazo",
     "category": "Cable",
     "body_part": "Biceps",
-    "description": "Párate frente a una máquina de cable, sosteniendo el mango con una mano. Eleva el mango hacia tu hombro, luego bájalo de nuevo."
+    "description": "Párate frente a una máquina de cable, sosteniendo el mango con una mano. Eleva el mango hacia tu hombro, luego bájalo de nuevo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "single-leg-romanian-deadlift",
     "name": "Peso muerto rumano a una pierna",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Párate sobre una pierna, inclina las caderas para bajar tu torso, luego regresa a la posición de pie, manteniendo la espalda recta."
+    "description": "Párate sobre una pierna, inclina las caderas para bajar tu torso, luego regresa a la posición de pie, manteniendo la espalda recta.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "barbell-hack-squat",
     "name": "Sentadilla hack con barra",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Sostén una barra detrás de tus piernas y baja en una sentadilla, manteniendo la espalda recta, luego regresa a la posición de pie."
+    "description": "Sostén una barra detrás de tus piernas y baja en una sentadilla, manteniendo la espalda recta, luego regresa a la posición de pie.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "bench-pull",
     "name": "Remo en banco",
     "category": "Barbell",
     "body_part": "Back",
-    "description": "Acuéstate boca abajo en un banco y tira de una barra del suelo hacia tu pecho, activando tus músculos de la espalda."
+    "description": "Acuéstate boca abajo en un banco y tira de una barra del suelo hacia tu pecho, activando tus músculos de la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "machine-tricep-extension",
     "name": "Extensión de tríceps en máquina",
     "category": "Machine",
     "body_part": "Triceps",
-    "description": "Siéntate en la máquina y empuja las manijas hacia abajo, extendiendo tus brazos completamente, luego regresa a la posición inicial."
+    "description": "Siéntate en la máquina y empuja las manijas hacia abajo, extendiendo tus brazos completamente, luego regresa a la posición inicial.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "side-lunge",
     "name": "Zancada lateral",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Da un paso hacia un lado y baja tu cuerpo en una zancada, manteniendo la otra pierna recta, luego regresa a la posición de pie."
+    "description": "Da un paso hacia un lado y baja tu cuerpo en una zancada, manteniendo la otra pierna recta, luego regresa a la posición de pie.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "jefferson-deadlift",
     "name": "Peso muerto Jefferson",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Párate sobre la barra con un pie delante y otro detrás. Levanta la barra extendiendo tus piernas y espalda."
+    "description": "Párate sobre la barra con un pie delante y otro detrás. Levanta la barra extendiendo tus piernas y espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "bicycle-crunch",
     "name": "Crunch de bicicleta",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Acuéstate de espaldas, levanta tus piernas y alterna llevando tus codos a las rodillas opuestas en un movimiento de pedaleo."
+    "description": "Acuéstate de espaldas, levanta tus piernas y alterna llevando tus codos a las rodillas opuestas en un movimiento de pedaleo.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "reverse-wrist-curl",
     "name": "Curl de muñeca inverso",
     "category": "Dumbbell",
     "body_part": "Forearms",
-    "description": "Siéntate en un banco con tus antebrazos en tus muslos, sosteniendo mancuernas. Eleva tus muñecas hacia arriba y luego baja de nuevo."
+    "description": "Siéntate en un banco con tus antebrazos en tus muslos, sosteniendo mancuernas. Eleva tus muñecas hacia arriba y luego baja de nuevo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "pin-squat",
     "name": "Sentadilla con pin",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Realiza una sentadilla con la barra descansando sobre pines de seguridad en la posición más baja, luego levántate."
+    "description": "Realiza una sentadilla con la barra descansando sobre pines de seguridad en la posición más baja, luego levántate.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "side-crunch",
     "name": "Crunch lateral",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Acuéstate de lado y eleva tu torso hacia tus caderas, activando tus músculos oblicuos, luego baja de nuevo."
+    "description": "Acuéstate de lado y eleva tu torso hacia tus caderas, activando tus músculos oblicuos, luego baja de nuevo.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "seated-dumbbell-tricep-extension",
     "name": "Extensión de tríceps con mancuerna sentado",
     "category": "Dumbbell",
     "body_part": "Triceps",
-    "description": "Siéntate en un banco y sostén una mancuerna por encima de tu cabeza con ambas manos. Bájala detrás de tu cabeza, luego extiende tus brazos."
+    "description": "Siéntate en un banco y sostén una mancuerna por encima de tu cabeza con ambas manos. Bájala detrás de tu cabeza, luego extiende tus brazos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "yates-row",
     "name": "Remo Yates",
     "category": "Barbell",
     "body_part": "Back",
-    "description": "Con una barra, inclínate ligeramente hacia adelante y tira de la barra hacia tu abdomen inferior, manteniendo los codos cerca de tu cuerpo."
+    "description": "Con una barra, inclínate ligeramente hacia adelante y tira de la barra hacia tu abdomen inferior, manteniendo los codos cerca de tu cuerpo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "pause-squat",
     "name": "Sentadilla en Pausa",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Realiza una sentadilla, pausando en la posición más baja durante unos segundos antes de volver a estar de pie."
+    "description": "Realiza una sentadilla, pausando en la posición más baja durante unos segundos antes de volver a estar de pie.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "inverted-row",
     "name": "Remo Invertido",
     "category": "Bodyweight",
     "body_part": "Back",
-    "description": "Cuelga de una barra con el cuerpo recto y tira de tu pecho hacia la barra, luego baja de nuevo."
+    "description": "Cuelga de una barra con el cuerpo recto y tira de tu pecho hacia la barra, luego baja de nuevo.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "hex-bar-shrug",
     "name": "Encogimiento con Barra Hexagonal",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Párate dentro de una barra hexagonal y levanta los hombros hacia tus orejas, luego bájalos de nuevo."
+    "description": "Párate dentro de una barra hexagonal y levanta los hombros hacia tus orejas, luego bájalos de nuevo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "single-leg-dumbbell-deadlift",
     "name": "Peso Muerto con Mancuerna a Una Pierna",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Sostén una mancuerna en una mano, párate en una pierna y flexiona las caderas para bajar el peso, luego vuelve a estar de pie."
+    "description": "Sostén una mancuerna en una mano, párate en una pierna y flexiona las caderas para bajar el peso, luego vuelve a estar de pie.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "smith-machine-shrug",
     "name": "Encogimiento en Máquina Smith",
     "category": "Machine",
     "body_part": "Shoulders",
-    "description": "Párate en una máquina Smith y levanta los hombros hacia tus orejas, luego bájalos de nuevo."
+    "description": "Párate en una máquina Smith y levanta los hombros hacia tus orejas, luego bájalos de nuevo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "barbell-front-raise",
     "name": "Elevación Frontal con Barra",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Párate sosteniendo una barra frente a tus muslos. Levántala a la altura de los hombros, luego bájala de nuevo."
+    "description": "Párate sosteniendo una barra frente a tus muslos. Levántala a la altura de los hombros, luego bájala de nuevo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "machine-lateral-raise",
     "name": "Elevación Lateral en Máquina",
     "category": "Machine",
     "body_part": "Shoulders",
-    "description": "Siéntate en la máquina y levanta las manijas hacia los lados, manteniendo los brazos rectos, luego bájalas de nuevo."
+    "description": "Siéntate en la máquina y levanta las manijas hacia los lados, manteniendo los brazos rectos, luego bájalas de nuevo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "half-squat",
     "name": "Media Sentadilla",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Baja tu cuerpo a una posición de sentadilla a mitad de camino, luego vuelve a estar de pie, manteniendo la espalda recta."
+    "description": "Baja tu cuerpo a una posición de sentadilla a mitad de camino, luego vuelve a estar de pie, manteniendo la espalda recta.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "dumbbell-side-bend",
     "name": "Flexión Lateral con Mancuerna",
     "category": "Dumbbell",
     "body_part": "Core",
-    "description": "Párate sosteniendo una mancuerna en una mano. Dóblate hacia un lado en la cintura, luego vuelve a la posición erguida."
+    "description": "Párate sosteniendo una mancuerna en una mano. Dóblate hacia un lado en la cintura, luego vuelve a la posición erguida.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "split-jerk",
     "name": "Jerk en Split",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta la barra a la altura de los hombros, luego empújala explosivamente por encima de la cabeza mientras divides tus piernas."
+    "description": "Levanta la barra a la altura de los hombros, luego empújala explosivamente por encima de la cabeza mientras divides tus piernas.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "log-press",
     "name": "Press de Tronco",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Levanta una barra en forma de tronco hacia tu pecho, luego presiónala por encima de la cabeza, activando tus hombros y brazos."
+    "description": "Levanta una barra en forma de tronco hacia tu pecho, luego presiónala por encima de la cabeza, activando tus hombros y brazos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "bench-pin-press",
     "name": "Press de Banco con Pasadores",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Realiza un press de banco con la barra descansando sobre pasadores de seguridad a la altura del pecho, luego presiónala hacia arriba."
+    "description": "Realiza un press de banco con la barra descansando sobre pasadores de seguridad a la altura del pecho, luego presiónala hacia arriba.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "barbell-power-shrug",
     "name": "Encogimiento Potente con Barra",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Sostén una barra y encoge explosivamente los hombros mientras extiendes los tobillos, luego baja de nuevo."
+    "description": "Sostén una barra y encoge explosivamente los hombros mientras extiendes los tobillos, luego baja de nuevo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "jm-press",
     "name": "Press JM",
     "category": "Barbell",
     "body_part": "Triceps",
-    "description": "Acuéstate en un banco y baja la barra hacia tu nariz, luego extiende los brazos para presionarla hacia arriba."
+    "description": "Acuéstate en un banco y baja la barra hacia tu nariz, luego extiende los brazos para presionarla hacia arriba.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "behind-the-back-barbell-shrug",
     "name": "Encogimiento con Barra Detrás de la Espalda",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Sostén una barra detrás de tu espalda y levanta los hombros hacia tus orejas, luego bájalos de nuevo."
+    "description": "Sostén una barra detrás de tu espalda y levanta los hombros hacia tus orejas, luego bájalos de nuevo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "ab-wheel-rollout",
     "name": "Desplazamiento con Rueda Abdominal",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Arrodíllate en el suelo y rueda la rueda abdominal hacia adelante, extendiendo tu cuerpo, luego rueda de regreso al inicio."
+    "description": "Arrodíllate en el suelo y rueda la rueda abdominal hacia adelante, extendiendo tu cuerpo, luego rueda de regreso al inicio.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "neck-curl",
     "name": "Curl de Cuello",
     "category": "Bodyweight",
     "body_part": "Neck",
-    "description": "Acuéstate en un banco con la cabeza colgando del borde. Riza tu cuello hacia adelante, luego vuelve a la posición inicial."
+    "description": "Acuéstate en un banco con la cabeza colgando del borde. Riza tu cuello hacia adelante, luego vuelve a la posición inicial.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "clean-high-pull",
     "name": "Elevación Alta de Clean",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta la barra del suelo a tu pecho con un tirón explosivo, usando tus piernas y espalda para obtener potencia."
+    "description": "Levanta la barra del suelo a tu pecho con un tirón explosivo, usando tus piernas y espalda para obtener potencia.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "hanging-knee-raise",
     "name": "Elevación de Rodillas Colgando",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Cuelga de una barra y levanta tus rodillas hacia tu pecho, activando tus abdominales, luego bájalas de nuevo."
+    "description": "Cuelga de una barra y levanta tus rodillas hacia tu pecho, activando tus abdominales, luego bájalas de nuevo.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "glute-kickback",
     "name": "Patada de glúteo",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Realizado a cuatro patas, extiende una pierna hacia atrás y hacia arriba para activar los glúteos."
+    "description": "Realizado a cuatro patas, extiende una pierna hacia atrás y hacia arriba para activar los glúteos.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "behind-the-back-deadlift",
     "name": "Peso muerto detrás de la espalda",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Levanta una barra del suelo con ella posicionada detrás de tus piernas, enfocándote en la cadena posterior."
+    "description": "Levanta una barra del suelo con ella posicionada detrás de tus piernas, enfocándote en la cadena posterior.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "clean-pull",
     "name": "Tirada limpia",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Tira de una barra del suelo al pecho en un movimiento poderoso, activando múltiples grupos musculares."
+    "description": "Tira de una barra del suelo al pecho en un movimiento poderoso, activando múltiples grupos musculares.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "ring-dips",
     "name": "Fondos en anillas",
     "category": "Bodyweight",
     "body_part": "Triceps",
-    "description": "Realiza fondos usando anillas de gimnasia para trabajar los tríceps y el pecho."
+    "description": "Realiza fondos usando anillas de gimnasia para trabajar los tríceps y el pecho.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "jefferson-squat",
     "name": "Sentadilla Jefferson",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Colócate a horcajadas sobre una barra y baja en sentadilla, manteniendo el torso erguido para activar las piernas y el core."
+    "description": "Colócate a horcajadas sobre una barra y baja en sentadilla, manteniendo el torso erguido para activar las piernas y el core.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "hip-extension",
     "name": "Extensión de cadera",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Acuéstate boca abajo y levanta las piernas hacia arriba para activar los glúteos y la parte baja de la espalda."
+    "description": "Acuéstate boca abajo y levanta las piernas hacia arriba para activar los glúteos y la parte baja de la espalda.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "wide-grip-bench-press",
     "name": "Press de banca con agarre ancho",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Presiona una barra desde el pecho con un agarre ancho para trabajar los músculos del pecho."
+    "description": "Presiona una barra desde el pecho con un agarre ancho para trabajar los músculos del pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "squat-thrust",
     "name": "Impulso de sentadilla",
     "category": "Bodyweight",
     "body_part": "Whole Body",
-    "description": "Desde una posición de pie, baja en sentadilla, patea los pies hacia atrás en una plancha, luego regresa a la posición de pie."
+    "description": "Desde una posición de pie, baja en sentadilla, patea los pies hacia atrás en una plancha, luego regresa a la posición de pie.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "single-leg-deadlift",
     "name": "Peso muerto a una pierna",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Equilibra sobre una pierna e inclina las caderas para bajar el torso, activando los isquiotibiales y glúteos."
+    "description": "Equilibra sobre una pierna e inclina las caderas para bajar el torso, activando los isquiotibiales y glúteos.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "bent-over-dumbbell-row",
     "name": "Remo con mancuerna inclinado",
     "category": "Dumbbell",
     "body_part": "Back",
-    "description": "Inclínate en la cintura y tira de las mancuernas hacia el torso para activar los músculos de la espalda."
+    "description": "Inclínate en la cintura y tira de las mancuernas hacia el torso para activar los músculos de la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "pike-push-up",
     "name": "Flexión en pica",
     "category": "Bodyweight",
     "body_part": "Shoulders",
-    "description": "Realiza una flexión con las caderas elevadas, enfocándote en los hombros."
+    "description": "Realiza una flexión con las caderas elevadas, enfocándote en los hombros.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "viking-press",
     "name": "Press vikingo",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Presiona una barra por encima de la cabeza usando un accesorio de landmine para trabajar los hombros."
+    "description": "Presiona una barra por encima de la cabeza usando un accesorio de landmine para trabajar los hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "walking-lunge",
     "name": "Zancada caminando",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Da un paso hacia adelante en una zancada, alternando piernas, para activar los cuádriceps y glúteos."
+    "description": "Da un paso hacia adelante en una zancada, alternando piernas, para activar los cuádriceps y glúteos.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "archer-push-ups",
     "name": "Flexiones de arquero",
     "category": "Bodyweight",
     "body_part": "Chest",
-    "description": "Realiza una flexión con un brazo extendido hacia un lado, enfocándote en un lado del pecho."
+    "description": "Realiza una flexión con un brazo extendido hacia un lado, enfocándote en un lado del pecho.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "reverse-grip-tricep-pushdown",
     "name": "Extensión de tríceps con agarre inverso",
     "category": "Cable",
     "body_part": "Triceps",
-    "description": "Usa una máquina de cable con un agarre inverso para empujar hacia abajo y activar los tríceps."
+    "description": "Usa una máquina de cable con un agarre inverso para empujar hacia abajo y activar los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "muscle-snatch",
     "name": "Muscle snatch",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta una barra del suelo a por encima de la cabeza en un solo movimiento, activando todo el cuerpo."
+    "description": "Levanta una barra del suelo a por encima de la cabeza en un solo movimiento, activando todo el cuerpo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "glute-ham-raise",
     "name": "Elevación de glúteos y isquiotibiales",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Ancla los pies y baja el torso hacia adelante, luego levántate para activar los isquiotibiales y glúteos."
+    "description": "Ancla los pies y baja el torso hacia adelante, luego levántate para activar los isquiotibiales y glúteos.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "z-press",
     "name": "Press Z",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Siéntate en el suelo y presiona una barra por encima de la cabeza para trabajar los hombros y el core."
+    "description": "Siéntate en el suelo y presiona una barra por encima de la cabeza para trabajar los hombros y el core.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "reverse-crunches",
     "name": "Crunches inversos",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Acuéstate sobre tu espalda y levanta las caderas del suelo para activar los abdominales inferiores."
+    "description": "Acuéstate sobre tu espalda y levanta las caderas del suelo para activar los abdominales inferiores.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "cheat-curl",
     "name": "Curl tramposo",
     "category": "Barbell",
     "body_part": "Biceps",
-    "description": "Usa el impulso para levantar una barra, enfocándote en los bíceps durante el curl."
+    "description": "Usa el impulso para levantar una barra, enfocándote en los bíceps durante el curl.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "close-grip-incline-bench-press",
     "name": "Press de banca inclinado con agarre cerrado",
     "category": "Barbell",
     "body_part": "Triceps",
-    "description": "Presiona una barra desde un banco inclinado con un agarre cerrado para trabajar los tríceps."
+    "description": "Presiona una barra desde un banco inclinado con un agarre cerrado para trabajar los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "reverse-hyperextension",
     "name": "Hiperextensión inversa",
     "category": "Machine",
     "body_part": "Back",
-    "description": "Usa una máquina para levantar las piernas detrás del cuerpo, activando la parte baja de la espalda y los glúteos."
+    "description": "Usa una máquina para levantar las piernas detrás del cuerpo, activando la parte baja de la espalda y los glúteos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "side-leg-raise",
     "name": "Elevación lateral de pierna",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Acuéstate de lado y levanta la pierna superior para activar los muslos externos y las caderas."
+    "description": "Acuéstate de lado y levanta la pierna superior para activar los muslos externos y las caderas.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "shoulder-pin-press",
     "name": "Press de hombros con pin",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Presiona una barra desde una posición de pin para trabajar los hombros con un rango de movimiento limitado."
+    "description": "Presiona una barra desde una posición de pin para trabajar los hombros con un rango de movimiento limitado.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "zercher-deadlift",
     "name": "Peso muerto Zercher",
     "category": "Barbell",
     "body_part": "Legs",
-    "description": "Levanta una barra del suelo sosteniéndola en el pliegue de los codos, activando las piernas y el core."
+    "description": "Levanta una barra del suelo sosteniéndola en el pliegue de los codos, activando las piernas y el core.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "snatch-pull",
     "name": "Tirón de arranque",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Tira de una barra del suelo al pecho, enfocándote en la potencia explosiva y la activación de todo el cuerpo."
+    "description": "Tira de una barra del suelo al pecho, enfocándote en la potencia explosiva y la activación de todo el cuerpo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "nordic-hamstring-curl",
     "name": "Curl nórdico de isquiotibiales",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Ancla los pies y baja el torso hacia adelante, luego regresa a la posición inicial para activar los isquiotibiales."
+    "description": "Ancla los pies y baja el torso hacia adelante, luego regresa a la posición inicial para activar los isquiotibiales.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "cable-upright-row",
     "name": "Remo vertical con cable",
     "category": "Cable",
     "body_part": "Shoulders",
-    "description": "Usa una máquina de cable para tirar del mango hacia arriba, activando los hombros y los trapecios."
+    "description": "Usa una máquina de cable para tirar del mango hacia arriba, activando los hombros y los trapecios.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "barbell-pullover",
     "name": "Pullover con barra",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco y mueve una barra desde detrás de la cabeza hacia arriba del pecho, activando el pecho y los dorsales."
+    "description": "Acuéstate en un banco y mueve una barra desde detrás de la cabeza hacia arriba del pecho, activando el pecho y los dorsales.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "machine-shrug",
     "name": "Encogimiento en máquina",
     "category": "Machine",
     "body_part": "Shoulders",
-    "description": "Usa una máquina para levantar los hombros hacia las orejas, trabajando los trapecios."
+    "description": "Usa una máquina para levantar los hombros hacia las orejas, trabajando los trapecios.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "toes-to-bar",
     "name": "Dedos a la barra",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Cuelga de una barra y levanta los dedos para tocar la barra, activando los músculos del core."
+    "description": "Cuelga de una barra y levanta los dedos para tocar la barra, activando los músculos del core.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "dumbbell-snatch",
     "name": "Arranque con mancuerna",
     "category": "Dumbbell",
     "body_part": "Whole Body",
-    "description": "Levanta una mancuerna del suelo a sobre la cabeza en un solo movimiento, activando todo el cuerpo."
+    "description": "Levanta una mancuerna del suelo a sobre la cabeza en un solo movimiento, activando todo el cuerpo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "landmine-press",
     "name": "Press con landmine",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Presiona una barra conectada a un accesorio de landmine por encima de la cabeza, trabajando los hombros."
+    "description": "Presiona una barra conectada a un accesorio de landmine por encima de la cabeza, trabajando los hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "incline-hammer-curl",
     "name": "Curl martillo inclinado",
     "category": "Dumbbell",
     "body_part": "Biceps",
-    "description": "Realiza un curl con mancuernas en un banco inclinado, enfocándote en los bíceps."
+    "description": "Realiza un curl con mancuernas en un banco inclinado, enfocándote en los bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "cable-kickback",
     "name": "Extensión de tríceps con cable",
     "category": "Cable",
     "body_part": "Triceps",
-    "description": "Usa una máquina de cable para extender el brazo detrás del cuerpo, activando los tríceps."
+    "description": "Usa una máquina de cable para extender el brazo detrás del cuerpo, activando los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "neck-extension",
     "name": "Extensión de cuello",
     "category": "Bodyweight",
     "body_part": "Forearms",
-    "description": "Usa el peso corporal o resistencia para extender el cuello hacia atrás, trabajando los músculos del cuello."
+    "description": "Usa el peso corporal o resistencia para extender el cuello hacia atrás, trabajando los músculos del cuello.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "seated-dumbbell-curl",
     "name": "Curl de mancuerna sentado",
     "category": "Dumbbell",
     "body_part": "Biceps",
-    "description": "Siéntate y realiza curls con mancuernas hacia los hombros, enfocándote en los bíceps."
+    "description": "Siéntate y realiza curls con mancuernas hacia los hombros, enfocándote en los bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "cable-leg-extension",
     "name": "Extensión de pierna con cable",
     "category": "Cable",
     "body_part": "Legs",
-    "description": "Usa una máquina de cable para extender la pierna, trabajando los cuádriceps."
+    "description": "Usa una máquina de cable para extender la pierna, trabajando los cuádriceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "meadows-row",
     "name": "Remo Meadows",
     "category": "Barbell",
     "body_part": "Back",
-    "description": "Realiza un remo con una barra anclada en un accesorio de landmine, enfocándote en la espalda."
+    "description": "Realiza un remo con una barra anclada en un accesorio de landmine, enfocándote en la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "cable-shrug",
     "name": "Encogimiento con cable",
     "category": "Cable",
     "body_part": "Shoulders",
-    "description": "Usa una máquina de cable para levantar los hombros hacia las orejas, trabajando los trapecios."
+    "description": "Usa una máquina de cable para levantar los hombros hacia las orejas, trabajando los trapecios.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "single-leg-seated-calf-raise",
     "name": "Elevación de pantorrilla sentado a una pierna",
     "category": "Machine",
     "body_part": "Legs",
-    "description": "Siéntate en una máquina de elevación de pantorrillas y realiza una elevación de pantorrilla usando una pierna a la vez."
+    "description": "Siéntate en una máquina de elevación de pantorrillas y realiza una elevación de pantorrilla usando una pierna a la vez.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "cable-woodchopper",
     "name": "Cortador de madera con cable",
     "category": "Cable",
     "body_part": "Core",
-    "description": "Párate con los pies a la altura de los hombros y tira de un cable de alto a bajo a través de tu cuerpo en un movimiento de corte."
+    "description": "Párate con los pies a la altura de los hombros y tira de un cable de alto a bajo a través de tu cuerpo en un movimiento de corte.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "one-arm-pulldown",
     "name": "Jalón con un brazo",
     "category": "Cable",
     "body_part": "Back",
-    "description": "Usa una máquina de cable para tirar del mango hacia abajo con un brazo, enfocándote en activar los músculos de la espalda."
+    "description": "Usa una máquina de cable para tirar del mango hacia abajo con un brazo, enfocándote en activar los músculos de la espalda.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "hang-snatch",
     "name": "Snatch colgado",
     "category": "Barbell",
     "body_part": "Whole Body",
-    "description": "Levanta una barra desde una posición colgada hasta arriba en un movimiento explosivo."
+    "description": "Levanta una barra desde una posición colgada hasta arriba en un movimiento explosivo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "spoto-press",
     "name": "Press Spoto",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Realiza un press de banca pero pausa la barra justo encima del pecho antes de presionar hacia arriba."
+    "description": "Realiza un press de banca pero pausa la barra justo encima del pecho antes de presionar hacia arriba.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "one-arm-lat-pulldown",
     "name": "Jalón lateral con un brazo",
     "category": "Cable",
     "body_part": "Back",
-    "description": "Siéntate en una máquina de jalón lateral y tira del mango hacia abajo con un brazo, enfocándote en los músculos dorsales."
+    "description": "Siéntate en una máquina de jalón lateral y tira del mango hacia abajo con un brazo, enfocándote en los músculos dorsales.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "spider-curl",
     "name": "Curl araña",
     "category": "Dumbbell",
     "body_part": "Biceps",
-    "description": "Acuéstate boca abajo en un banco inclinado y levanta las mancuernas hacia tus hombros."
+    "description": "Acuéstate boca abajo en un banco inclinado y levanta las mancuernas hacia tus hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "standing-cable-crunch",
     "name": "Crunch de cable de pie",
     "category": "Cable",
     "body_part": "Core",
-    "description": "Párate frente a una máquina de cable y haz un crunch hacia adelante, tirando del cable hacia abajo con tu core."
+    "description": "Párate frente a una máquina de cable y haz un crunch hacia adelante, tirando del cable hacia abajo con tu core.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "high-pulley-crunch",
     "name": "Crunch de polea alta",
     "category": "Cable",
     "body_part": "Core",
-    "description": "Póntelo de rodillas frente a una polea alta y haz un crunch hacia abajo, activando los músculos abdominales."
+    "description": "Póntelo de rodillas frente a una polea alta y haz un crunch hacia abajo, activando los músculos abdominales.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "overhead-cable-curl",
     "name": "Curl de cable por encima de la cabeza",
     "category": "Cable",
     "body_part": "Biceps",
-    "description": "Párate de espaldas a una máquina de cable y levanta el mango por encima de la cabeza para trabajar los bíceps."
+    "description": "Párate de espaldas a una máquina de cable y levanta el mango por encima de la cabeza para trabajar los bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "roman-chair-side-bend",
     "name": "Flexión lateral en silla romana",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Colócate en una silla romana y flexiona hacia un lado para trabajar los músculos oblicuos."
+    "description": "Colócate en una silla romana y flexiona hacia un lado para trabajar los músculos oblicuos.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "dumbbell-reverse-wrist-curl",
     "name": "Curl de muñeca inverso con mancuerna",
     "category": "Dumbbell",
     "body_part": "Forearms",
-    "description": "Sostén una mancuerna con un agarre por encima y levanta tu muñeca hacia arriba para trabajar los antebrazos."
+    "description": "Sostén una mancuerna con un agarre por encima y levanta tu muñeca hacia arriba para trabajar los antebrazos.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "zottman-curl",
     "name": "Curl Zottman",
     "category": "Dumbbell",
     "body_part": "Biceps",
-    "description": "Realiza un curl de bíceps con un giro en la parte superior, luego baja con un agarre inverso."
+    "description": "Realiza un curl de bíceps con un giro en la parte superior, luego baja con un agarre inverso.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "incline-cable-curl",
     "name": "Curl de cable inclinado",
     "category": "Cable",
     "body_part": "Biceps",
-    "description": "Siéntate en un banco inclinado y levanta el mango del cable hacia tus hombros."
+    "description": "Siéntate en un banco inclinado y levanta el mango del cable hacia tus hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "renegade-row",
     "name": "Remo renegado",
     "category": "Dumbbell",
     "body_part": "Back",
-    "description": "En una posición de plancha, rema una mancuerna hacia tu lado mientras mantienes la estabilidad del core."
+    "description": "En una posición de plancha, rema una mancuerna hacia tu lado mientras mantienes la estabilidad del core.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "lying-cable-curl",
     "name": "Curl de cable acostado",
     "category": "Cable",
     "body_part": "Biceps",
-    "description": "Acuéstate en un banco y levanta el mango del cable hacia tus hombros."
+    "description": "Acuéstate en un banco y levanta el mango del cable hacia tus hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-bench-pull",
     "name": "Remo en banco con mancuerna",
     "category": "Dumbbell",
     "body_part": "Back",
-    "description": "Acuéstate boca abajo en un banco y tira de las mancuernas hacia tu pecho."
+    "description": "Acuéstate boca abajo en un banco y tira de las mancuernas hacia tu pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "one-arm-landmine-press",
     "name": "Press con un brazo en landmine",
     "category": "Barbell",
     "body_part": "Shoulders",
-    "description": "Presiona una barra anclada en un accesorio de landmine por encima de la cabeza con un brazo."
+    "description": "Presiona una barra anclada en un accesorio de landmine por encima de la cabeza con un brazo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-front-squat",
     "name": "Sentadilla frontal con mancuerna",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Sostén mancuernas a la altura de los hombros y realiza una sentadilla."
+    "description": "Sostén mancuernas a la altura de los hombros y realiza una sentadilla.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "one-arm-seated-cable-row",
     "name": "Remo con un brazo sentado en cable",
     "category": "Cable",
     "body_part": "Back",
-    "description": "Siéntate en una máquina de remo en cable y tira del mango hacia ti con un brazo."
+    "description": "Siéntate en una máquina de remo en cable y tira del mango hacia ti con un brazo.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "tate-press",
     "name": "Prensa Tate",
     "category": "Dumbbell",
     "body_part": "Triceps",
-    "description": "Acuéstate en un banco y presiona las mancuernas hacia arriba con los codos hacia afuera para trabajar los tríceps."
+    "description": "Acuéstate en un banco y presiona las mancuernas hacia arriba con los codos hacia afuera para trabajar los tríceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "cable-hammer-curl",
     "name": "Curl Martillo con Cable",
     "category": "Cable",
     "body_part": "Biceps",
-    "description": "Usa una máquina de cable para realizar un curl con un agarre neutral, enfocándote en los bíceps."
+    "description": "Usa una máquina de cable para realizar un curl con un agarre neutral, enfocándote en los bíceps.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "floor-hip-extension",
     "name": "Extensión de Cadera en el Suelo",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Acuéstate de espaldas y levanta tus caderas hacia el techo, activando los glúteos."
+    "description": "Acuéstate de espaldas y levanta tus caderas hacia el techo, activando los glúteos.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "dumbbell-z-press",
     "name": "Prensa Z con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Siéntate en el suelo con las piernas extendidas y presiona las mancuernas por encima de la cabeza."
+    "description": "Siéntate en el suelo con las piernas extendidas y presiona las mancuernas por encima de la cabeza.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-split-squat",
     "name": "Sentadilla Dividida con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Sostén las mancuernas a los lados y realiza una sentadilla dividida, enfocándote en una pierna a la vez."
+    "description": "Sostén las mancuernas a los lados y realiza una sentadilla dividida, enfocándote en una pierna a la vez.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "wall-ball",
     "name": "Pelota contra la Pared",
     "category": "Bodyweight",
     "body_part": "Whole Body",
-    "description": "Haz una sentadilla y lanza una pelota medicinal contra una pared, atrapándola al levantarte."
+    "description": "Haz una sentadilla y lanza una pelota medicinal contra una pared, atrapándola al levantarte.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "floor-hip-abduction",
     "name": "Abducción de Cadera en el Suelo",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Acuéstate de lado y levanta la pierna superior hacia arriba para trabajar los abductores de la cadera."
+    "description": "Acuéstate de lado y levanta la pierna superior hacia arriba para trabajar los abductores de la cadera.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "dumbbell-reverse-curl",
     "name": "Curl Inverso con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Biceps",
-    "description": "Sostén las mancuernas con un agarre por encima y curl hacia tus hombros."
+    "description": "Sostén las mancuernas con un agarre por encima y curl hacia tus hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "clap-pull-up",
     "name": "Dominada con Aplauso",
     "category": "Bodyweight",
     "body_part": "Back",
-    "description": "Realiza una dominada y aplaude tus manos en la parte superior antes de regresar al inicio."
+    "description": "Realiza una dominada y aplaude tus manos en la parte superior antes de regresar al inicio.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "bent-arm-barbell-pullover",
     "name": "Pullover con Barra y Brazos Doblados",
     "category": "Barbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco y tira de una barra sobre tu cabeza hacia tu pecho con los brazos doblados."
+    "description": "Acuéstate en un banco y tira de una barra sobre tu cabeza hacia tu pecho con los brazos doblados.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "ring-muscle-ups",
     "name": "Muscle Ups en Anillas",
     "category": "Bodyweight",
     "body_part": "Whole Body",
-    "description": "Realiza una dominada en anillas seguida de un dip para transicionar por encima de las anillas."
+    "description": "Realiza una dominada en anillas seguida de un dip para transicionar por encima de las anillas.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "dumbbell-thruster",
     "name": "Thruster con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Whole Body",
-    "description": "Realiza una sentadilla con mancuernas y presiona hacia arriba al levantarte."
+    "description": "Realiza una sentadilla con mancuernas y presiona hacia arriba al levantarte.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "decline-dumbbell-fly",
     "name": "Apertura Declive con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Chest",
-    "description": "Acuéstate en un banco declinado y realiza un movimiento de apertura con mancuernas para trabajar el pecho."
+    "description": "Acuéstate en un banco declinado y realiza un movimiento de apertura con mancuernas para trabajar el pecho.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-high-pull",
     "name": "Elevación Alta con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Tira de las mancuernas desde la cintura hasta la altura del pecho con los codos liderando el movimiento."
+    "description": "Tira de las mancuernas desde la cintura hasta la altura del pecho con los codos liderando el movimiento.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-face-pull",
     "name": "Tirón hacia la Cara con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Tira de las mancuernas hacia tu cara, manteniendo los codos altos para trabajar los deltoides posteriores."
+    "description": "Tira de las mancuernas hacia tu cara, manteniendo los codos altos para trabajar los deltoides posteriores.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-external-rotation",
     "name": "Rotación Externa con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Sostén una mancuerna y rota tu brazo hacia afuera para fortalecer el manguito rotador."
+    "description": "Sostén una mancuerna y rota tu brazo hacia afuera para fortalecer el manguito rotador.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-hang-clean",
     "name": "Clean Colgado con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Whole Body",
-    "description": "Levanta las mancuernas desde una posición colgada hasta la altura de los hombros en un solo movimiento fluido."
+    "description": "Levanta las mancuernas desde una posición colgada hasta la altura de los hombros en un solo movimiento fluido.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-walking-calf-raise",
     "name": "Elevación de Pantorrillas Caminando con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Legs",
-    "description": "Sostén mancuernas y realiza elevaciones de pantorrillas mientras caminas hacia adelante."
+    "description": "Sostén mancuernas y realiza elevaciones de pantorrillas mientras caminas hacia adelante.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-push-press",
     "name": "Press de Empuje con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Inclínate ligeramente y usa tus piernas para ayudar a presionar las mancuernas por encima de la cabeza."
+    "description": "Inclínate ligeramente y usa tus piernas para ayudar a presionar las mancuernas por encima de la cabeza.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-incline-y-raise",
     "name": "Elevación en Y con Mancuernas en Banco Inclinado",
     "category": "Dumbbell",
     "body_part": "Shoulders",
-    "description": "Acuéstate en un banco inclinado y levanta las mancuernas en forma de Y para trabajar los hombros."
+    "description": "Acuéstate en un banco inclinado y levanta las mancuernas en forma de Y para trabajar los hombros.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "dumbbell-clean-and-press",
     "name": "Press y Limpieza con Mancuernas",
     "category": "Dumbbell",
     "body_part": "Whole Body",
-    "description": "Levanta las mancuernas del suelo a tus hombros, luego presiona hacia arriba en un movimiento fluido."
+    "description": "Levanta las mancuernas del suelo a tus hombros, luego presiona hacia arriba en un movimiento fluido.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "cable-external-rotation",
     "name": "Rotación Externa con Cable",
     "category": "Cable",
     "body_part": "Shoulders",
-    "description": "Conecta un cable a una polea baja, sostiene el mango con el codo doblado y rota tu brazo hacia afuera."
+    "description": "Conecta un cable a una polea baja, sostiene el mango con el codo doblado y rota tu brazo hacia afuera.",
+    "allowedUnits": ["load", "reps"]
   },
   {
     "id": "flutter-kicks",
     "name": "Patadas de Mariposa",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Acuéstate de espaldas y alterna pateando tus piernas hacia arriba y hacia abajo en un movimiento de aleteo."
+    "description": "Acuéstate de espaldas y alterna pateando tus piernas hacia arriba y hacia abajo en un movimiento de aleteo.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "mountain-climbers",
     "name": "Escaladores",
     "category": "Bodyweight",
     "body_part": "Whole Body",
-    "description": "Comienza en posición de plancha y alterna rápidamente llevando tus rodillas hacia tu pecho."
+    "description": "Comienza en posición de plancha y alterna rápidamente llevando tus rodillas hacia tu pecho.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "donkey-calf-raise",
     "name": "Elevación de Pantorrillas de Burro",
     "category": "Bodyweight",
     "body_part": "Legs",
-    "description": "Inclínate hacia adelante con las manos en un soporte y eleva tus talones para trabajar tus pantorrillas."
+    "description": "Inclínate hacia adelante con las manos en un soporte y eleva tus talones para trabajar tus pantorrillas.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "superman",
     "name": "Superman",
     "category": "Bodyweight",
     "body_part": "Back",
-    "description": "Acuéstate boca abajo y levanta simultáneamente tus brazos y piernas del suelo, manteniendo brevemente."
+    "description": "Acuéstate boca abajo y levanta simultáneamente tus brazos y piernas del suelo, manteniendo brevemente.",
+    "allowedUnits": ["reps"]
   },
   {
     "id": "scissor-kicks",
     "name": "Patadas de Tijera",
     "category": "Bodyweight",
     "body_part": "Core",
-    "description": "Acuéstate de espaldas y cruza tus piernas entre sí en un movimiento similar a tijeras."
+    "description": "Acuéstate de espaldas y cruza tus piernas entre sí en un movimiento similar a tijeras.",
+    "allowedUnits": ["reps"]
   }
 ]

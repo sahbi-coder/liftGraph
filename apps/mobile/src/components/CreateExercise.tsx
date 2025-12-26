@@ -52,7 +52,8 @@ export default function CreateExerciseScreen() {
         name: name.trim(),
         category: category.trim(),
         bodyPart: bodyPart.trim(),
-        description: description.trim() ?? '',
+        description: description.trim(),
+        allowedUnits: category.trim() === 'Bodyweight' ? ['reps'] : ['load', 'reps'],
       });
 
       // Get the callback and auto-select the newly created exercise

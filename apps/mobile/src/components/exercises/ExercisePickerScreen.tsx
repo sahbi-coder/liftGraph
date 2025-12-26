@@ -51,22 +51,55 @@ export function ExercisePickerScreen({
   );
 
   const renderItem: ListRenderItem<Exercise> = useCallback(
-    ({ item }) => (
-      <Button
-        key={item.id}
-        justifyContent="flex-start"
-        backgroundColor={colors.midGray}
-        color={colors.white}
-        marginBottom="$2"
-        onPress={() => handleSelect(item)}
-      >
-        <YStack>
-          <Text color={colors.white} fontWeight="600">
-            {item.name}
-          </Text>
-        </YStack>
-      </Button>
-    ),
+    ({ item }) => {
+      // Determine tag based on allowedUnits
+      const hasOnlyReps = item.allowedUnits.length === 1 && item.allowedUnits[0] === 'reps';
+      const hasLoadAndReps =
+        item.allowedUnits.includes('load') && item.allowedUnits.includes('reps');
+
+      return (
+        <Button
+          key={item.id}
+          justifyContent="space-between"
+          backgroundColor={colors.midGray}
+          color={colors.white}
+          marginBottom="$2"
+          onPress={() => handleSelect(item)}
+        >
+          <XStack flex={1} justifyContent="space-between" alignItems="center" width="100%">
+            <Text color={colors.white} fontWeight="600" flex={1}>
+              {item.name}
+            </Text>
+            {hasOnlyReps && (
+              <YStack
+                backgroundColor="rgba(34, 197, 94, 0.2)"
+                paddingHorizontal="$2"
+                paddingVertical="$1"
+                borderRadius="$2"
+                marginLeft="$2"
+              >
+                <Text color="#22c55e" fontSize="$3" fontWeight="600">
+                  Bodyweight
+                </Text>
+              </YStack>
+            )}
+            {hasLoadAndReps && (
+              <YStack
+                backgroundColor="rgba(249, 115, 22, 0.2)"
+                paddingHorizontal="$2"
+                paddingVertical="$1"
+                borderRadius="$2"
+                marginLeft="$2"
+              >
+                <Text color={colors.niceOrange} fontSize="$3" fontWeight="600">
+                  Equipped
+                </Text>
+              </YStack>
+            )}
+          </XStack>
+        </Button>
+      );
+    },
     [handleSelect],
   );
 

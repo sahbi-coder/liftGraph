@@ -44,6 +44,7 @@ export class FirestoreService {
       name: string;
       category: string;
       bodyPart: string;
+      allowedUnits: string[];
       description?: string;
     },
   ): Promise<string> {
@@ -58,6 +59,7 @@ export class FirestoreService {
       name: string;
       category: string;
       bodyPart: string;
+      allowedUnits: string[];
       description?: string;
     },
   ) {
