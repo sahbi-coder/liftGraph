@@ -17,6 +17,7 @@ export type ExerciseForm = {
   id: string;
   exerciseId: string;
   name: string;
+  allowedUnits: string[];
   sets: SetForm[];
 };
 
@@ -81,76 +82,84 @@ export const ExerciseCard = ({
         </Button>
       </XStack>
 
-      {exercise.sets.map((set) => (
-        <YStack
-          key={set.id}
-          space="$2"
-          backgroundColor={colors.lightGray}
-          padding="$2"
-          borderRadius="$3"
-          marginBottom="$2"
-        >
-          <XStack space="$2" alignItems="center" position="relative">
-            <Input
-              height={40}
-              flex={2}
-              value={set.weight}
-              onChangeText={(value) => onUpdateSetField(exercise.id, set.id, 'weight', value)}
-              placeholder={t('common.weight')}
-              keyboardType="numeric"
-              borderColor="$inputFieldBorder"
-              backgroundColor="$background"
-              color="$textPrimary"
-              editable={!disabled}
-              opacity={disabled ? 0.6 : 1}
-            />
-            <Text color={colors.white}>{weightUnit === 'lb' ? 'lbs' : 'kg'}</Text>
+      {exercise.sets.map((set) => {
+        const hasLoad = exercise.allowedUnits?.includes('load') ?? true; // Default to true for backwards compatibility
 
-            <Input
-              flex={1}
-              height={40}
-              value={set.reps}
-              onChangeText={(value) => onUpdateSetField(exercise.id, set.id, 'reps', value)}
-              placeholder={t('common.reps')}
-              keyboardType="numeric"
-              borderColor="$inputFieldBorder"
-              backgroundColor="$background"
-              color="$textPrimary"
-              editable={!disabled}
-              opacity={disabled ? 0.6 : 1}
-            />
-            <Text color={colors.white}>R</Text>
+        return (
+          <YStack
+            key={set.id}
+            space="$2"
+            backgroundColor={colors.lightGray}
+            padding="$2"
+            borderRadius="$3"
+            marginBottom="$2"
+          >
+            <XStack space="$2" alignItems="center" position="relative">
+              {hasLoad && (
+                <>
+                  <Input
+                    height={40}
+                    flex={2}
+                    value={set.weight}
+                    onChangeText={(value) => onUpdateSetField(exercise.id, set.id, 'weight', value)}
+                    placeholder={t('common.weight')}
+                    keyboardType="numeric"
+                    borderColor="$inputFieldBorder"
+                    backgroundColor="$background"
+                    color="$textPrimary"
+                    editable={!disabled}
+                    opacity={disabled ? 0.6 : 1}
+                  />
+                  <Text color={colors.white}>{weightUnit === 'lb' ? 'lbs' : 'kg'}</Text>
+                </>
+              )}
 
-            <Input
-              flex={1}
-              height={40}
-              value={set.rir}
-              onChangeText={(value) => onUpdateSetField(exercise.id, set.id, 'rir', value)}
-              placeholder={t('workout.rir')}
-              keyboardType="numeric"
-              borderColor="$inputFieldBorder"
-              backgroundColor="$background"
-              color="$textPrimary"
-              editable={!disabled}
-              opacity={disabled ? 0.6 : 1}
-            />
-            <Text color={colors.white}>{t('workout.rir')}</Text>
-            <Button
-              position="absolute"
-              right={-18}
-              top={-18}
-              size="$2"
-              variant="outlined"
-              color={colors.white}
-              onPress={() => onRemoveSet(exercise.id, set.id)}
-              disabled={disabled}
-              opacity={disabled ? 0.5 : 1}
-            >
-              <Entypo name="circle-with-cross" size={24} color={colors.white} />
-            </Button>
-          </XStack>
-        </YStack>
-      ))}
+              <Input
+                flex={1}
+                height={40}
+                value={set.reps}
+                onChangeText={(value) => onUpdateSetField(exercise.id, set.id, 'reps', value)}
+                placeholder={t('common.reps')}
+                keyboardType="numeric"
+                borderColor="$inputFieldBorder"
+                backgroundColor="$background"
+                color="$textPrimary"
+                editable={!disabled}
+                opacity={disabled ? 0.6 : 1}
+              />
+              <Text color={colors.white}>R</Text>
+
+              <Input
+                flex={1}
+                height={40}
+                value={set.rir}
+                onChangeText={(value) => onUpdateSetField(exercise.id, set.id, 'rir', value)}
+                placeholder={t('workout.rir')}
+                keyboardType="numeric"
+                borderColor="$inputFieldBorder"
+                backgroundColor="$background"
+                color="$textPrimary"
+                editable={!disabled}
+                opacity={disabled ? 0.6 : 1}
+              />
+              <Text color={colors.white}>{t('workout.rir')}</Text>
+              <Button
+                position="absolute"
+                right={-18}
+                top={-18}
+                size="$2"
+                variant="outlined"
+                color={colors.white}
+                onPress={() => onRemoveSet(exercise.id, set.id)}
+                disabled={disabled}
+                opacity={disabled ? 0.5 : 1}
+              >
+                <Entypo name="circle-with-cross" size={24} color={colors.white} />
+              </Button>
+            </XStack>
+          </YStack>
+        );
+      })}
 
       <XStack space="$2">
         <Button

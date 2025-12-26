@@ -49,6 +49,7 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
   const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
     defaultExercise: { id: 'squat', name: 'Squat' },
     exercisePickerPath: '/(tabs)/progress/exercises',
+    filterByLoad: true, // Only show weighted exercises for volume chart
   });
 
   // Build weekly volume data for the selected exercise

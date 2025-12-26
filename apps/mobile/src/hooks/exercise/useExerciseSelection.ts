@@ -6,6 +6,7 @@ import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
 export interface UseExerciseSelectionOptions {
   defaultExercise?: { id: string; name: string };
   exercisePickerPath?: string;
+  filterByLoad?: boolean; // If true, only show exercises with 'load' in allowedUnits
 }
 
 export interface UseExerciseSelectionResult {
@@ -22,6 +23,7 @@ export interface UseExerciseSelectionResult {
 export function useExerciseSelection({
   defaultExercise = { id: 'squat', name: 'Squat' },
   exercisePickerPath = '/(tabs)/progress/exercises',
+  filterByLoad = false,
 }: UseExerciseSelectionOptions = {}): UseExerciseSelectionResult {
   const router = useRouter();
   const [selectedExercise, setSelectedExercise] = useState<{ id: string; name: string }>(
@@ -34,8 +36,12 @@ export function useExerciseSelection({
 
   const handleOpenExercisePicker = useCallback(() => {
     setExercisePickerCallback(handleExerciseSelect);
-    router.push(exercisePickerPath as any);
-  }, [handleExerciseSelect, router, exercisePickerPath]);
+    // Pass filterByLoad as route param
+    const pathWithParams = filterByLoad
+      ? `${exercisePickerPath}?filterByLoad=true`
+      : exercisePickerPath;
+    router.push(pathWithParams);
+  }, [handleExerciseSelect, router, exercisePickerPath, filterByLoad]);
 
   return {
     selectedExercise,

@@ -5,7 +5,7 @@ import { z } from 'zod';
 // ============================================
 
 export const WorkoutSetSchema = z.object({
-  weight: z.number().positive('Weight must be positive'),
+  weight: z.number().nonnegative('Weight must be non-negative'), // Allow 0 for bodyweight exercises
   reps: z.number().positive('Reps must be a positive integer'),
   rir: z.number().min(0),
 });

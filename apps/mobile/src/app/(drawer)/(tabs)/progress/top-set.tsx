@@ -41,6 +41,7 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
   const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
     defaultExercise: { id: 'squat', name: 'Squat' },
     exercisePickerPath: '/(tabs)/progress/exercises',
+    filterByLoad: true, // Only show weighted exercises for top set chart
   });
 
   // Build top-set series for the selected exercise from workout data

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { YStack, Text, Button } from 'tamagui';
 
 import { colors } from '@/theme/colors';
@@ -15,6 +15,8 @@ import { useTranslation } from '@/hooks/common/useTranslation';
 export default function ProgressExercisePickerScreen() {
   const router = useRouter();
   const { t } = useTranslation();
+  const params = useLocalSearchParams<{ filterByLoad?: string }>();
+  const filterByLoad = params.filterByLoad === 'true';
   const { exercises, isLoading, isError, refetch } = useExercises();
 
   const handleSelect = useCallback(
@@ -71,6 +73,7 @@ export default function ProgressExercisePickerScreen() {
       onCancel={handleCancel}
       showCreateButton={false}
       title={t('progress.chooseExerciseForProgress')}
+      filterByLoad={filterByLoad}
     />
   );
 }

@@ -17,6 +17,7 @@ type ExercisePickerScreenProps = {
   showCreateButton?: boolean;
   showCancelButton?: boolean;
   title?: string;
+  filterByLoad?: boolean; // If true, only show exercises with 'load' in allowedUnits
 };
 
 export function ExercisePickerScreen({
@@ -28,6 +29,7 @@ export function ExercisePickerScreen({
   showCreateButton = true,
   showCancelButton = true,
   title,
+  filterByLoad = false,
 }: ExercisePickerScreenProps) {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
@@ -35,16 +37,21 @@ export function ExercisePickerScreen({
   const filteredExercises = useMemo(() => {
     const query = search.trim().toLowerCase();
     return exercises.filter((exercise) => {
+      // Filter by load requirement if specified
+      if (filterByLoad && !exercise.allowedUnits.includes('load')) {
+        return false;
+      }
       const matchesSearch = !query || exercise.name.toLowerCase().includes(query);
       return matchesSearch;
     });
-  }, [exercises, search]);
+  }, [exercises, search, filterByLoad]);
 
   const handleSelect = useCallback(
     (exercise: Exercise) => {
       onSelect({
         id: exercise.id,
         name: exercise.name,
+        allowedUnits: exercise.allowedUnits,
       });
     },
     [onSelect],

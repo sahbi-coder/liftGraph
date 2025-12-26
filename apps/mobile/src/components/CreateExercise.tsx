@@ -62,9 +62,11 @@ export default function CreateExerciseScreen() {
       const effectiveContext = contextCallback.context;
 
       if (effectiveOnSelect) {
+        const allowedUnits = category.trim() === 'Bodyweight' ? ['reps'] : ['load', 'reps'];
         const newExercise: ExerciseSelection = {
           id: exerciseId,
           name: name.trim(),
+          allowedUnits,
         };
 
         try {

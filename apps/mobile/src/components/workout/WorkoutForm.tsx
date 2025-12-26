@@ -17,6 +17,7 @@ import { useWorkoutValidation } from '@/hooks/workout/useWorkoutValidation';
 import { useWorkoutDate } from '@/hooks/workout/useWorkoutDate';
 import { useExercisePickerNavigation } from '@/hooks/exercise/useExercisePickerNavigation';
 import { useWorkoutSubmission } from '@/hooks/workout/useWorkoutSubmission';
+import { useExercises } from '@/hooks/exercise/useExercises';
 
 type WorkoutFormProps = {
   initialValues?: {
@@ -59,6 +60,9 @@ export function WorkoutForm({
   const { t } = useTranslation();
   const { showWarning, showError, AlertModalComponent } = useAlertModal();
 
+  // Fetch exercises to get allowedUnits for proper form mapping
+  const { exercises: exerciseData } = useExercises();
+
   const validated = initialValues?.validated ?? false;
   const [isUnvalidateModalVisible, setIsUnvalidateModalVisible] = useState(false);
 
@@ -67,6 +71,7 @@ export function WorkoutForm({
     initialValues,
     workoutKey,
     weightUnit,
+    exercises: exerciseData,
   });
 
   // Exercise operations

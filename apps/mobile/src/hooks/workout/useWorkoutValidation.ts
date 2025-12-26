@@ -37,6 +37,8 @@ export const useWorkoutValidation = ({
         throw new Error(t('workout.exerciseMustHaveSet', { name: exercise.name }));
       }
 
+      const hasLoad = exercise.allowedUnits?.includes('load') ?? true; // Default to true for backwards compatibility
+
       return {
         exerciseId: exercise.exerciseId,
         name: exercise.name,
@@ -47,13 +49,26 @@ export const useWorkoutValidation = ({
           const reps = Number(set.reps);
           const rir = Number(set.rir);
 
-          if (Number.isNaN(weight) || Number.isNaN(reps) || Number.isNaN(rir)) {
-            throw new Error(
-              t('workout.setRequiresNumericValues', {
-                setIndex: setIndex + 1,
-                exerciseName: exercise.name,
-              }),
-            );
+          // For bodyweight exercises, weight validation is skipped
+          if (hasLoad) {
+            if (Number.isNaN(weight) || Number.isNaN(reps) || Number.isNaN(rir)) {
+              throw new Error(
+                t('workout.setRequiresNumericValues', {
+                  setIndex: setIndex + 1,
+                  exerciseName: exercise.name,
+                }),
+              );
+            }
+          } else {
+            // For bodyweight exercises, only validate reps and rir
+            if (Number.isNaN(reps) || Number.isNaN(rir)) {
+              throw new Error(
+                t('workout.setRequiresNumericValues', {
+                  setIndex: setIndex + 1,
+                  exerciseName: exercise.name,
+                }),
+              );
+            }
           }
 
           // Validate reps is positive
@@ -76,8 +91,8 @@ export const useWorkoutValidation = ({
             );
           }
 
-          // Validate weight is positive
-          if (weight <= 0) {
+          // Validate weight is positive (only for exercises that use weight)
+          if (hasLoad && weight <= 0) {
             throw new Error(
               t('workout.weightMustBePositive', {
                 setIndex: setIndex + 1,
@@ -120,6 +135,8 @@ export const useWorkoutValidation = ({
       if (exercises.length === 0) return false;
       for (const exercise of exercises) {
         if (exercise.sets.length === 0) return false;
+        const hasLoad = exercise.allowedUnits.includes('load');
+
         for (const set of exercise.sets) {
           // Parse weight considering weight unit
           const weight = parseWeightInput(set.weight, weightUnit);
@@ -127,8 +144,16 @@ export const useWorkoutValidation = ({
           const rir = Number(set.rir);
 
           // Check if values are valid numbers
-          if (Number.isNaN(weight) || Number.isNaN(reps) || Number.isNaN(rir)) {
-            return false;
+          // For bodyweight exercises, weight validation is skipped
+          if (hasLoad) {
+            if (Number.isNaN(weight) || Number.isNaN(reps) || Number.isNaN(rir)) {
+              return false;
+            }
+          } else {
+            // For bodyweight exercises, only validate reps and rir
+            if (Number.isNaN(reps) || Number.isNaN(rir)) {
+              return false;
+            }
           }
 
           // Validate reps is positive
@@ -141,8 +166,8 @@ export const useWorkoutValidation = ({
             return false;
           }
 
-          // Validate weight is positive
-          if (weight <= 0) {
+          // Validate weight is positive (only for exercises that use weight)
+          if (hasLoad && weight <= 0) {
             return false;
           }
 

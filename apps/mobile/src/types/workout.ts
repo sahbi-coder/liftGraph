@@ -1,6 +1,7 @@
 export type ExerciseSelection = {
   id: string;
   name: string;
+  allowedUnits: string[];
 };
 
 export type ExerciseSelectionContext = {
