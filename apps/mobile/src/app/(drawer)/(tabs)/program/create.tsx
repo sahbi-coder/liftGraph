@@ -61,15 +61,16 @@ export default function CreateProgramScreen() {
   });
 
   // Sets
-  const { handleAddSet, handleRemoveSet, handleUpdateSetField } = useProgramSets({
-    programType,
+  const { handleAddSet, handleRemoveSet, handleUpdateSetField, handleDuplicateLastSet } =
+    useProgramSets({
+      programType,
 
-    setWeeks,
-    setAlternatingWeeks,
-    setPhases,
-    showWarning,
-    t,
-  });
+      setWeeks,
+      setAlternatingWeeks,
+      setPhases,
+      showWarning,
+      t,
+    });
 
   // Validation
   const { validateAndConvert } = useProgramValidation({
@@ -119,6 +120,7 @@ export default function CreateProgramScreen() {
         handleAddSet={handleAddSet}
         handleRemoveSet={handleRemoveSet}
         handleUpdateSetField={handleUpdateSetField}
+        handleDuplicateLastSet={handleDuplicateLastSet}
         handleSave={handleSave}
         isSaving={isSaving}
       />

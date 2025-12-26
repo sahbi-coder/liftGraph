@@ -64,6 +64,12 @@ type ProgramFormProps = {
     setId: string,
     phaseId?: string,
   ) => void;
+  handleDuplicateLastSet: (
+    weekId: string,
+    dayId: ProgramDayLabel,
+    exerciseId: string,
+    phaseId?: string,
+  ) => void;
   handleUpdateSetField: (
     weekId: string,
     dayId: ProgramDayLabel,
@@ -104,6 +110,7 @@ export function ProgramForm({
   handleAddSet,
   handleRemoveSet,
   handleUpdateSetField,
+  handleDuplicateLastSet,
   handleSave,
   isSaving,
   saveButtonText,
@@ -191,20 +198,44 @@ export function ProgramForm({
           </YStack>
         ))}
 
-        <Button
-          size="$3"
-          backgroundColor={colors.niceOrange}
-          color={colors.white}
-          fontWeight="600"
-          borderRadius="$4"
-          onPress={() => handleAddSet(weekId, dayId, exercise.id, phaseId)}
-        >
-          <Entypo name="circle-with-plus" size={22} color={colors.white} />
-          <Text color={colors.white}>{t('common.set')}</Text>
-        </Button>
+        <XStack space="$2">
+          <Button
+            size="$3"
+            flex={1}
+            backgroundColor={colors.niceOrange}
+            color={colors.white}
+            fontWeight="600"
+            borderRadius="$4"
+            onPress={() => handleAddSet(weekId, dayId, exercise.id, phaseId)}
+          >
+            <Entypo name="circle-with-plus" size={22} color={colors.white} />
+            <Text color={colors.white}>{t('common.set')}</Text>
+          </Button>
+          <Button
+            size="$3"
+            flex={1}
+            backgroundColor={colors.niceOrange}
+            color={colors.white}
+            fontWeight="600"
+            borderRadius="$4"
+            onPress={() => handleDuplicateLastSet(weekId, dayId, exercise.id, phaseId)}
+            disabled={exercise.sets.length === 0}
+            opacity={exercise.sets.length === 0 ? 0.6 : 1}
+          >
+            <AntDesign name="copy1" size={22} color={colors.white} />
+            <Text color={colors.white}>{t('workout.duplicate')}</Text>
+          </Button>
+        </XStack>
       </YStack>
     ),
-    [handleRemoveExercise, handleAddSet, handleRemoveSet, handleUpdateSetField, t],
+    [
+      handleRemoveExercise,
+      handleAddSet,
+      handleRemoveSet,
+      handleUpdateSetField,
+      handleDuplicateLastSet,
+      t,
+    ],
   );
 
   const renderWeek = useCallback(
