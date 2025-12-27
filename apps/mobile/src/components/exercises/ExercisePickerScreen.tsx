@@ -8,10 +8,9 @@ import type { Exercise } from '@/services';
 import type { ExerciseSelection } from '@/types/workout';
 import { useTranslation } from '@/hooks/common/useTranslation';
 import { hasLoadUnit } from '@/utils/exerciseHelpers';
+import { useExercises } from '@/hooks/exercise/useExercises';
 
 type ExercisePickerScreenProps = {
-  exercises: Exercise[];
-  isLoading: boolean;
   onSelect: (exercise: ExerciseSelection) => void;
   onCancel: () => void;
   onCreateExercise?: () => void;
@@ -22,8 +21,6 @@ type ExercisePickerScreenProps = {
 };
 
 export function ExercisePickerScreen({
-  exercises,
-  isLoading,
   onSelect,
   onCancel,
   onCreateExercise,
@@ -34,8 +31,10 @@ export function ExercisePickerScreen({
 }: ExercisePickerScreenProps) {
   const { t } = useTranslation();
   const [search, setSearch] = useState('');
+  const { exercises, isLoading, isError, refetch } = useExercises();
 
   const filteredExercises = useMemo(() => {
+    if (!exercises) return [];
     const query = search.trim().toLowerCase();
     return exercises.filter((exercise) => {
       // Filter by load requirement if specified
@@ -111,6 +110,27 @@ export function ExercisePickerScreen({
   );
 
   const keyExtractor = useCallback((item: Exercise) => item.id, []);
+
+  // Show error state
+  if (isError) {
+    return (
+      <YStack
+        flex={1}
+        backgroundColor={colors.darkerGray}
+        justifyContent="center"
+        alignItems="center"
+        padding="$4"
+        space="$4"
+      >
+        <Text color="$textPrimary" fontSize="$5" textAlign="center">
+          {t('exercise.failedToLoadExercises')}
+        </Text>
+        <Button backgroundColor="$primaryButton" color={colors.white} onPress={() => refetch()}>
+          {t('common.retry')}
+        </Button>
+      </YStack>
+    );
+  }
 
   return (
     <YStack flex={1} backgroundColor={colors.darkerGray} padding="$4" space="$4">
