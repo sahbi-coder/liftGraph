@@ -3,6 +3,7 @@ import { ExerciseSelection } from '@/types/workout';
 import { weightForDisplay } from './units';
 import type { ExerciseForm, SetForm } from '@/components/workout/ExerciseCard';
 import { hasLoadUnit } from './exerciseHelpers';
+import { getAllowedUnitsForExercise } from './exerciseMapping';
 
 /**
  * Creates a set form with optional initial values
@@ -39,8 +40,7 @@ export const createExerciseForm = (
 
 /**
  * Maps workout exercises to form format
- * Note: allowedUnits defaults to ['load', 'reps'] for backwards compatibility
- * In the future, this could accept an exercise map to get actual allowedUnits
+ * Uses exercise map to get allowedUnits, defaults to ['load', 'reps'] for backwards compatibility
  */
 export const mapExercisesToForm = (
   exercises: WorkoutExercise[],
@@ -48,9 +48,8 @@ export const mapExercisesToForm = (
   exerciseMap?: Map<string, { allowedUnits: string[] }>,
 ): ExerciseForm[] =>
   exercises.map((exercise) => {
-    // Try to get allowedUnits from exercise map, otherwise default to ['load', 'reps']
-    const exerciseData = exerciseMap?.get(exercise.exerciseId);
-    const allowedUnits = exerciseData?.allowedUnits ?? ['load', 'reps'];
+    // Get allowedUnits from exercise map, with fallback to default
+    const allowedUnits = getAllowedUnitsForExercise(exercise.exerciseId, exerciseMap);
 
     return {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,

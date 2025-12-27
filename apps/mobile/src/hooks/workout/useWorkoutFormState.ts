@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import type { WorkoutExercise, Exercise } from '@/services';
 import { mapExercisesToForm } from '@/utils/workoutForm';
 import type { ExerciseForm } from '@/components/workout/ExerciseCard';
+import { createExerciseMap } from '@/utils/exerciseMapping';
 
 type UseWorkoutFormStateProps = {
   initialValues?: {
@@ -35,9 +36,7 @@ export const useWorkoutFormState = ({
   const [notes, setNotes] = useState(initialValues?.notes ?? '');
 
   // Create exercise map for allowedUnits lookup
-  const exerciseMap = exerciseData
-    ? new Map(exerciseData.map((ex) => [ex.id, { allowedUnits: ex.allowedUnits }]))
-    : undefined;
+  const exerciseMap = createExerciseMap(exerciseData);
 
   const [exercises, setExercises] = useState<ExerciseForm[]>(() =>
     initialValues?.exercises
@@ -51,9 +50,7 @@ export const useWorkoutFormState = ({
   // Only initialize/reset when loading a different workout (different workoutKey)
   useEffect(() => {
     // Recreate exercise map when exerciseData changes
-    const currentExerciseMap = exerciseData
-      ? new Map(exerciseData.map((ex) => [ex.id, { allowedUnits: ex.allowedUnits }]))
-      : undefined;
+    const currentExerciseMap = createExerciseMap(exerciseData);
 
     // If this is a new workout (different key), reset the form
     if (workoutKey !== undefined && workoutKey !== initializedWorkoutKeyRef.current) {
