@@ -18,7 +18,7 @@ import { convertProgramToForm } from '@/hooks/program/useProgramForm/convertProg
 
 export default function EditProgramScreen() {
   const router = useRouter();
-  const { id: programIdParam } = useLocalSearchParams<{ id?: string | string[] }>();
+  const { id: programIdParam } = useLocalSearchParams<{ id: string | string[] }>();
   const programId = useMemo(() => {
     if (Array.isArray(programIdParam)) {
       return programIdParam[0];
