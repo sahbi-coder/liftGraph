@@ -2,6 +2,7 @@ import { useMemo, useCallback } from 'react';
 import type { WorkoutInput } from '@/services';
 import { parseWeightInput } from '@/utils/units';
 import type { ExerciseForm } from '@/components/workout/ExerciseCard';
+import { hasLoadUnit } from '@/utils/exerciseHelpers';
 
 type UseWorkoutValidationProps = {
   date: string;
@@ -37,7 +38,7 @@ export const useWorkoutValidation = ({
         throw new Error(t('workout.exerciseMustHaveSet', { name: exercise.name }));
       }
 
-      const hasLoad = exercise.allowedUnits?.includes('load') ?? true; // Default to true for backwards compatibility
+      const hasLoad = hasLoadUnit(exercise.allowedUnits, true); // Default to true for backwards compatibility
 
       return {
         exerciseId: exercise.exerciseId,
@@ -135,7 +136,7 @@ export const useWorkoutValidation = ({
       if (exercises.length === 0) return false;
       for (const exercise of exercises) {
         if (exercise.sets.length === 0) return false;
-        const hasLoad = exercise.allowedUnits.includes('load');
+        const hasLoad = hasLoadUnit(exercise.allowedUnits);
 
         for (const set of exercise.sets) {
           // Parse weight considering weight unit

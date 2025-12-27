@@ -15,6 +15,7 @@ import { useAlertModal } from '@/hooks/common/useAlertModal';
 import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import { EXERCISE_CATEGORIES, BODY_PARTS } from '@/services';
+import { getAllowedUnitsForCategory } from '@/utils/exerciseHelpers';
 
 export default function CreateExerciseScreen() {
   const router = useRouter();
@@ -48,12 +49,13 @@ export default function CreateExerciseScreen() {
 
     try {
       setIsCreating(true);
+      const allowedUnits = getAllowedUnitsForCategory(category);
       const exerciseId = await services.firestore.createExercise(user.uid, language, {
         name: name.trim(),
         category: category.trim(),
         bodyPart: bodyPart.trim(),
         description: description.trim(),
-        allowedUnits: category.trim() === 'Bodyweight' ? ['reps'] : ['load', 'reps'],
+        allowedUnits,
       });
 
       // Get the callback and auto-select the newly created exercise
@@ -62,7 +64,6 @@ export default function CreateExerciseScreen() {
       const effectiveContext = contextCallback.context;
 
       if (effectiveOnSelect) {
-        const allowedUnits = category.trim() === 'Bodyweight' ? ['reps'] : ['load', 'reps'];
         const newExercise: ExerciseSelection = {
           id: exerciseId,
           name: name.trim(),

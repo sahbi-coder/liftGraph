@@ -11,6 +11,7 @@ import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import { useQuery } from '@tanstack/react-query';
 import { EXERCISE_CATEGORIES, BODY_PARTS } from '@/services';
+import { getAllowedUnitsForCategory } from '@/utils/exerciseHelpers';
 
 export default function EditExerciseScreen() {
   const router = useRouter();
@@ -100,12 +101,13 @@ export default function EditExerciseScreen() {
     try {
       setIsUpdating(true);
 
+      const allowedUnits = getAllowedUnitsForCategory(finalCategory);
       await services.firestore.updateExercise(user.uid, id, language, {
         name: name.trim(),
         category: finalCategory,
         bodyPart: finalBodyPart,
         description: description.trim(),
-        allowedUnits: finalCategory === 'Bodyweight' ? ['reps'] : ['load', 'reps'],
+        allowedUnits,
       });
 
       showSuccess(t('exercise.exerciseUpdatedSuccessfully'));

@@ -2,6 +2,7 @@ import type { WorkoutExercise } from '@/services';
 import { ExerciseSelection } from '@/types/workout';
 import { weightForDisplay } from './units';
 import type { ExerciseForm, SetForm } from '@/components/workout/ExerciseCard';
+import { hasLoadUnit } from './exerciseHelpers';
 
 /**
  * Creates a set form with optional initial values
@@ -24,7 +25,7 @@ export const createExerciseForm = (
   exercise: ExerciseSelection,
   weightUnit: 'kg' | 'lb' = 'kg',
 ): ExerciseForm => {
-  const hasLoad = exercise.allowedUnits.includes('load');
+  const hasLoad = hasLoadUnit(exercise.allowedUnits);
   const initialWeight = hasLoad ? undefined : { weight: 0, reps: 0, rir: 0 };
 
   return {

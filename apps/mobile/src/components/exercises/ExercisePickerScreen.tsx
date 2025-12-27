@@ -7,6 +7,7 @@ import { colors } from '@/theme/colors';
 import type { Exercise } from '@/services';
 import type { ExerciseSelection } from '@/types/workout';
 import { useTranslation } from '@/hooks/common/useTranslation';
+import { hasLoadUnit } from '@/utils/exerciseHelpers';
 
 type ExercisePickerScreenProps = {
   exercises: Exercise[];
@@ -38,7 +39,7 @@ export function ExercisePickerScreen({
     const query = search.trim().toLowerCase();
     return exercises.filter((exercise) => {
       // Filter by load requirement if specified
-      if (filterByLoad && !exercise.allowedUnits.includes('load')) {
+      if (filterByLoad && !hasLoadUnit(exercise.allowedUnits)) {
         return false;
       }
       const matchesSearch = !query || exercise.name.toLowerCase().includes(query);
@@ -61,8 +62,7 @@ export function ExercisePickerScreen({
     ({ item }) => {
       // Determine tag based on allowedUnits
       const hasOnlyReps = item.allowedUnits.length === 1 && item.allowedUnits[0] === 'reps';
-      const hasLoadAndReps =
-        item.allowedUnits.includes('load') && item.allowedUnits.includes('reps');
+      const hasLoadAndReps = hasLoadUnit(item.allowedUnits) && item.allowedUnits.includes('reps');
 
       return (
         <Button

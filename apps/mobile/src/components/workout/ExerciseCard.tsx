@@ -5,6 +5,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 
 import { colors } from '@/theme/colors';
 import { useTranslation } from '@/hooks/common/useTranslation';
+import { hasLoadUnit } from '@/utils/exerciseHelpers';
 
 export type SetForm = {
   id: string;
@@ -83,7 +84,7 @@ export const ExerciseCard = ({
       </XStack>
 
       {exercise.sets.map((set) => {
-        const hasLoad = exercise.allowedUnits?.includes('load') ?? true; // Default to true for backwards compatibility
+        const hasLoad = hasLoadUnit(exercise.allowedUnits, true); // Default to true for backwards compatibility
 
         return (
           <YStack
