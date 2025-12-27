@@ -52,9 +52,7 @@ export default function CreateProgramScreen() {
   // Exercises
   const { handleOpenExercisePicker, handleRemoveExercise } = useProgramExercises({
     programType,
-    weeks,
-    alternatingWeeks,
-    phases,
+
     setWeeks,
     setAlternatingWeeks,
     setPhases,

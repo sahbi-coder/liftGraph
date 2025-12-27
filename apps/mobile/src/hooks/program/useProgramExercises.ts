@@ -11,9 +11,7 @@ import {
 
 type UseProgramExercisesParams = {
   programType: ProgramType;
-  weeks: ProgramWeekForm[];
-  alternatingWeeks: ProgramWeekForm[];
-  phases: ProgramPhaseForm[];
+
   setWeeks: React.Dispatch<React.SetStateAction<ProgramWeekForm[]>>;
   setAlternatingWeeks: React.Dispatch<React.SetStateAction<ProgramWeekForm[]>>;
   setPhases: React.Dispatch<React.SetStateAction<ProgramPhaseForm[]>>;
@@ -21,9 +19,7 @@ type UseProgramExercisesParams = {
 
 export function useProgramExercises({
   programType,
-  weeks,
-  alternatingWeeks,
-  phases,
+
   setWeeks,
   setAlternatingWeeks,
   setPhases,

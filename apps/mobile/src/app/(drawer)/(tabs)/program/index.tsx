@@ -64,10 +64,25 @@ export default function ProgramHome() {
       </YStack>
     );
   }
+  if (!programs || programs.length === 0) {
+    return (
+      <YStack
+        flex={1}
+        backgroundColor={colors.darkerGray}
+        justifyContent="center"
+        alignItems="center"
+        padding="$4"
+      >
+        <Text color="$textPrimary" fontSize="$5" textAlign="center">
+          {t('program.noPrograms')}
+        </Text>
+      </YStack>
+    );
+  }
 
   return (
     <ProgramHomeScreen
-      programs={programs ?? []}
+      programs={programs}
       onCreateProgram={handleCreateProgram}
       onProgramPress={handleProgramPress}
     />

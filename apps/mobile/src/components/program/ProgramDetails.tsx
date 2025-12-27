@@ -150,7 +150,8 @@ export function ProgramDetails({
         <Button
           backgroundColor={colors.niceOrange}
           color={colors.white}
-          fontSize="$3"
+          fontSize="$4"
+          fontWeight="600"
           borderRadius="$3"
           borderWidth={0}
           paddingHorizontal="$2.5"
@@ -181,6 +182,7 @@ export function ProgramDetails({
             color={colors.white}
             fontSize="$4"
             borderRadius="$4"
+            fontWeight="600"
             borderWidth={0}
             paddingHorizontal="$3"
             paddingVertical="$2"
@@ -193,6 +195,7 @@ export function ProgramDetails({
             color={colors.white}
             fontSize="$4"
             borderRadius="$4"
+            fontWeight="600"
             borderWidth={0}
             paddingHorizontal="$3"
             paddingVertical="$2"
@@ -343,7 +346,9 @@ export function ProgramDetails({
               borderWidth={0}
               cursor="default"
               height="auto"
-              paddingHorizontal="$1.5"
+              paddingHorizontal="$2"
+              fontWeight="600"
+              paddingVertical="$1"
             >
               {getProgramTypeLabel()}
             </Button>
@@ -353,7 +358,9 @@ export function ProgramDetails({
                 backgroundColor={colors.midGray}
                 color="$textPrimary"
                 fontSize="$4"
-                paddingHorizontal="$1.5"
+                fontWeight="600"
+                paddingVertical="$1"
+                paddingHorizontal="$2"
                 borderWidth={0}
                 cursor="default"
                 height="auto"
