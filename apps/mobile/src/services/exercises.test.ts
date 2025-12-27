@@ -84,6 +84,7 @@ describe('ExercisesService', () => {
             category: 'Barbell',
             bodyPart: 'Chest',
             description: 'Chest exercise',
+            allowedUnits: ['load', 'reps'],
           }),
         },
         {
@@ -92,6 +93,7 @@ describe('ExercisesService', () => {
             name: 'Squat',
             category: 'Barbell',
             bodyPart: 'Legs',
+            allowedUnits: ['load', 'reps'],
           }),
         },
       ];
@@ -109,7 +111,10 @@ describe('ExercisesService', () => {
 
       const result = await exercisesService.getUserExercises(userId, language);
 
+      // populateFromLibrary and getUserExercises both call collection for user exercises
       expect(collection).toHaveBeenCalledWith(mockDb, `users/${userId}/exercises`);
+      // getDocs is called twice: once in populateFromLibrary, once in getUserExercises
+      expect(getDocs).toHaveBeenCalledTimes(2);
       expect(result).toHaveLength(2);
       expect(result[0]).toEqual({
         id: 'exercise1',
@@ -117,6 +122,7 @@ describe('ExercisesService', () => {
         category: 'Barbell',
         bodyPart: 'Chest',
         description: 'Chest exercise',
+        allowedUnits: ['load', 'reps'],
         isCustom: false,
       });
     });
@@ -133,6 +139,7 @@ describe('ExercisesService', () => {
             category: 'Barbell',
             bodyPart: 'Chest',
             description: 'Library exercise',
+            allowedUnits: ['load', 'reps'],
           }),
         },
       ];
@@ -150,15 +157,23 @@ describe('ExercisesService', () => {
         commit: jest.fn().mockResolvedValue(undefined),
       };
 
+      // After populateFromLibrary, getUserExercises calls collection again for user exercises
+      const mockFinalSnapshot = {
+        empty: false,
+        docs: mockLibraryExercises,
+      };
+
       setupMocks({
         collection: jest
           .fn()
-          .mockReturnValueOnce(mockUserCollectionRef)
-          .mockReturnValueOnce(mockLibraryCollectionRef),
+          .mockReturnValueOnce(mockUserCollectionRef) // populateFromLibrary: user collection
+          .mockReturnValueOnce(mockLibraryCollectionRef) // populateFromLibrary: library collection
+          .mockReturnValueOnce(mockUserCollectionRef), // getUserExercises: user collection again
         getDocs: jest
           .fn()
-          .mockResolvedValueOnce(mockUserSnapshot)
-          .mockResolvedValueOnce(mockLibrarySnapshot),
+          .mockResolvedValueOnce(mockUserSnapshot) // populateFromLibrary: check user collection
+          .mockResolvedValueOnce(mockLibrarySnapshot) // populateFromLibrary: get library exercises
+          .mockResolvedValueOnce(mockFinalSnapshot), // getUserExercises: get user exercises
         doc: jest.fn().mockReturnValue({}),
         writeBatch: jest.fn().mockReturnValue(mockBatch),
       });
@@ -178,19 +193,26 @@ describe('ExercisesService', () => {
       const userId = 'user123';
 
       const mockUserCollectionRef = {};
+      const mockLibraryCollectionRef = {};
       const mockUserSnapshot = { empty: true, docs: [] };
       const mockLibrarySnapshot = { empty: true, docs: [] };
+      const mockFinalSnapshot = { empty: true, docs: [] };
       const mockBatch = {
         set: jest.fn(),
         commit: jest.fn().mockResolvedValue(undefined),
       };
 
       setupMocks({
-        collection: jest.fn().mockReturnValue(mockUserCollectionRef),
+        collection: jest
+          .fn()
+          .mockReturnValueOnce(mockUserCollectionRef)
+          .mockReturnValueOnce(mockLibraryCollectionRef)
+          .mockReturnValueOnce(mockUserCollectionRef),
         getDocs: jest
           .fn()
           .mockResolvedValueOnce(mockUserSnapshot)
-          .mockResolvedValueOnce(mockLibrarySnapshot),
+          .mockResolvedValueOnce(mockLibrarySnapshot)
+          .mockResolvedValueOnce(mockFinalSnapshot),
         writeBatch: jest.fn().mockReturnValue(mockBatch),
       });
 
@@ -198,11 +220,16 @@ describe('ExercisesService', () => {
       expect(collection).toHaveBeenCalledWith(mockDb, `users/${userId}/exercisesEs`);
 
       setupMocks({
-        collection: jest.fn().mockReturnValue(mockUserCollectionRef),
+        collection: jest
+          .fn()
+          .mockReturnValueOnce(mockUserCollectionRef)
+          .mockReturnValueOnce(mockLibraryCollectionRef)
+          .mockReturnValueOnce(mockUserCollectionRef),
         getDocs: jest
           .fn()
           .mockResolvedValueOnce(mockUserSnapshot)
-          .mockResolvedValueOnce(mockLibrarySnapshot),
+          .mockResolvedValueOnce(mockLibrarySnapshot)
+          .mockResolvedValueOnce(mockFinalSnapshot),
         writeBatch: jest.fn().mockReturnValue(mockBatch),
       });
 
@@ -221,6 +248,7 @@ describe('ExercisesService', () => {
             name: '', // Invalid: empty name
             category: 'Barbell',
             bodyPart: 'Chest',
+            allowedUnits: ['load', 'reps'],
           }),
         },
       ];
@@ -273,6 +301,7 @@ describe('ExercisesService', () => {
         category: 'Dumbbell',
         bodyPart: 'Shoulders',
         description: 'A new exercise',
+        allowedUnits: ['load', 'reps'],
         isCustom: true,
       });
     });
@@ -360,6 +389,7 @@ describe('ExercisesService', () => {
           category: 'Barbell',
           bodyPart: 'Chest',
           description: 'Description',
+          allowedUnits: ['load', 'reps'],
         }),
       );
     });
@@ -401,6 +431,7 @@ describe('ExercisesService', () => {
           category: 'Dumbbell',
           bodyPart: 'Shoulders',
           description: 'Updated description',
+          allowedUnits: ['load', 'reps'],
           isCustom: true,
         },
         { merge: false },
@@ -437,6 +468,10 @@ describe('ExercisesService', () => {
       expect(setDoc).toHaveBeenCalledWith(
         mockDocRef,
         expect.objectContaining({
+          name: 'Updated Exercise',
+          category: 'Barbell',
+          bodyPart: 'Chest',
+          allowedUnits: ['load', 'reps'],
           isCustom: false,
         }),
         { merge: false },
@@ -486,6 +521,7 @@ describe('ExercisesService', () => {
           category: 'Barbell',
           bodyPart: 'Chest',
           description: 'Chest exercise',
+          allowedUnits: ['load', 'reps'],
         }),
       };
 
@@ -502,6 +538,7 @@ describe('ExercisesService', () => {
         category: 'Barbell',
         bodyPart: 'Chest',
         description: 'Chest exercise',
+        allowedUnits: ['load', 'reps'],
         isCustom: false,
       });
     });
@@ -539,6 +576,7 @@ describe('ExercisesService', () => {
           name: '', // Invalid: empty name
           category: 'Barbell',
           bodyPart: 'Chest',
+          allowedUnits: ['load', 'reps'],
         }),
       };
 
