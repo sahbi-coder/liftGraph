@@ -165,7 +165,7 @@
     "markWorkoutAsIncomplete": "¿Marcar Entrenamiento como Incompleto?",
     "markWorkoutAsIncompleteMessage": "Esto te permitirá editar el entrenamiento nuevamente. ¿Estás seguro de que quieres marcar este entrenamiento como incompleto?",
     "unsavedChanges": "Cambios Sin Guardar",
-    "unsavedChangesMessage": "Tienes cambios sin guardar. ¿Quieres conservar tu borrador?",
+    "unsavedChangesMessage": "Tienes cambios sin guardar. ¿Quieres descartarlos?",
     "discard": "Descartar",
     "keepDraft": "Conservar"
   },

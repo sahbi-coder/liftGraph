@@ -69,6 +69,7 @@ export const ExerciseCard = ({
           {index + 1}. {exercise.name}
         </Text>
         <Button
+          testID={`remove-exercise-button-${index}`}
           position="absolute"
           right={-12}
           top={-8}
@@ -83,7 +84,7 @@ export const ExerciseCard = ({
         </Button>
       </XStack>
 
-      {exercise.sets.map((set) => {
+      {exercise.sets.map((set, setIndex) => {
         const hasLoad = hasLoadUnit(exercise.allowedUnits, true); // Default to true for backwards compatibility
 
         return (
@@ -145,6 +146,7 @@ export const ExerciseCard = ({
               />
               <Text color={colors.white}>{t('workout.rir')}</Text>
               <Button
+                testID={`remove-set-button-${index}-${setIndex}`}
                 position="absolute"
                 right={-18}
                 top={-18}

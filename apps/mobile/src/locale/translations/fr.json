@@ -165,7 +165,7 @@
     "markWorkoutAsIncomplete": "Marquer l'Entraînement comme Incomplet?",
     "markWorkoutAsIncompleteMessage": "Cela vous permettra de modifier l'entraînement à nouveau. Êtes-vous sûr de vouloir marquer cet entraînement comme incomplet?",
     "unsavedChanges": "Modifications Non Enregistrées",
-    "unsavedChangesMessage": "Vous avez des modifications non enregistrées. Voulez-vous conserver votre brouillon?",
+    "unsavedChangesMessage": "Vous avez des modifications non enregistrées. Voulez-vous les abandonner?",
     "discard": "Abandonner",
     "keepDraft": "Conserver"
   },

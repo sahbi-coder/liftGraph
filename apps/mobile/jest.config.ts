@@ -15,6 +15,7 @@ const config: Config = {
   ],
   moduleNameMapper: {
     '^@/(.*)$': path.join(__dirname, 'src', '$1'),
+    '^tamagui\\.config$': path.join(__dirname, 'tamagui.config'),
   },
 };
 

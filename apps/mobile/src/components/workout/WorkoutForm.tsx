@@ -134,6 +134,9 @@ export function WorkoutForm({
     onShowError: showError,
   });
 
+  const isCreateWorkoutButtonDisabled =
+    isSubmitting || validated || disableSubmitButton || !isFormValid;
+
   return (
     <>
       <ScrollView
@@ -144,8 +147,9 @@ export function WorkoutForm({
           paddingBottom: 64,
         }}
       >
-        <YStack space="$4">
+        <YStack space="$4" testID="workout-form">
           <Button
+            testID="add-exercise-button"
             backgroundColor={colors.niceOrange}
             color={colors.white}
             fontWeight="600"
@@ -230,13 +234,14 @@ export function WorkoutForm({
             />
           </YStack>
           <Button
+            testID="create-workout-button"
             backgroundColor={colors.niceOrange}
             color={colors.white}
             fontWeight="600"
             borderRadius="$4"
             onPress={handleSubmit}
-            disabled={isSubmitting || validated || disableSubmitButton || !isFormValid}
-            opacity={isSubmitting || validated || disableSubmitButton || !isFormValid ? 0.6 : 1}
+            disabled={isCreateWorkoutButtonDisabled}
+            opacity={isCreateWorkoutButtonDisabled ? 0.6 : 1}
           >
             {isSubmitting ? t('common.saving') : submitLabel}
           </Button>

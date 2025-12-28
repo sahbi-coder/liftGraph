@@ -7,11 +7,6 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import type { WorkoutInput } from '@/services';
 import { getWorkoutPrefillData, clearWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
-import {
-  getWorkoutDraft,
-  setWorkoutDraft,
-  clearWorkoutDraft,
-} from '@/contexts/workoutDraftContext';
 import { useAlertModal } from '@/hooks/common/useAlertModal';
 import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
@@ -37,19 +32,11 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
 
   // Check for prefill data synchronously before first render
   const prefillData = getWorkoutPrefillData();
-  const draftData = getWorkoutDraft();
 
-  // Determine initial values: prefill takes priority, then draft, then nothing
+  // Determine initial values from prefill data
   const [initialValues] = useState(() => {
     if (prefillData) {
       return { exercises: prefillData.exercises };
-    }
-    if (draftData) {
-      return {
-        date: draftData.date,
-        notes: draftData.notes,
-        exercises: draftData.exercises,
-      };
     }
     return undefined;
   });
@@ -85,16 +72,10 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
 
   const handleFormChange = useCallback((payload: WorkoutInput | null) => {
     if (payload) {
-      // Save draft when form has valid data
+      // Track that there are unsaved changes
       hasUnsavedChangesRef.current = true;
-      setWorkoutDraft({
-        date: payload.date instanceof Date ? payload.date.toUTCString() : payload.date,
-        notes: payload.notes,
-        exercises: payload.exercises,
-      });
     } else {
-      // Form is invalid, but we might still want to save partial data
-      // For now, we'll only save when form is valid
+      // Form is invalid
       hasUnsavedChangesRef.current = false;
     }
   }, []);
@@ -104,8 +85,6 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
       setIsSaving(true);
       try {
         await services.firestore.createWorkout(user.uid, workoutPayload);
-        // Clear draft on successful creation
-        clearWorkoutDraft();
         hasUnsavedChangesRef.current = false;
         showSuccess(t('workout.workoutSavedSuccessfully'));
         // Navigate back after showing success message
@@ -122,27 +101,19 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
     [router, services.firestore, user.uid, showSuccess, showError, t],
   );
 
-  const handleDiscardDraft = useCallback(() => {
+  const handleDiscard = useCallback(() => {
     setShowDiscardModal(false);
     if (pendingNavigationRef.current) {
-      // Clear draft and navigate away
-      clearWorkoutDraft();
       hasUnsavedChangesRef.current = false;
       pendingNavigationRef.current();
       pendingNavigationRef.current = null;
     }
   }, []);
 
-  const handleKeepDraft = useCallback(() => {
-    // Navigate away but keep the draft (draft is already saved)
+  const handleCancel = useCallback(() => {
+    // User decided to stay, so clear the pending navigation
     setShowDiscardModal(false);
-    if (pendingNavigationRef.current) {
-      // Don't clear draft, just navigate away
-      // Reset the flag so we don't show the modal again if they come back immediately
-      hasUnsavedChangesRef.current = false;
-      pendingNavigationRef.current();
-      pendingNavigationRef.current = null;
-    }
+    pendingNavigationRef.current = null;
   }, []);
 
   return (
@@ -190,16 +161,16 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
                 color={colors.white}
                 borderWidth={1}
                 borderColor={colors.white}
-                onPress={handleDiscardDraft}
+                onPress={handleDiscard}
               >
                 {t('workout.discard')}
               </Button>
               <Button
                 backgroundColor={colors.niceOrange}
                 color={colors.white}
-                onPress={handleKeepDraft}
+                onPress={handleCancel}
               >
-                {t('workout.keepDraft')}
+                {t('common.cancel')}
               </Button>
             </XStack>
           </YStack>
