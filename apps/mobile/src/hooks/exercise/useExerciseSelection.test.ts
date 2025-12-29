@@ -93,7 +93,11 @@ describe('useExerciseSelection', () => {
     it('should update selected exercise when called', () => {
       const { result } = renderHook(() => useExerciseSelection());
 
-      const exerciseSelection = { id: 'deadlift', name: 'Deadlift' };
+      const exerciseSelection = {
+        id: 'deadlift',
+        name: 'Deadlift',
+        allowedUnits: ['load', 'reps'],
+      };
 
       act(() => {
         result.current.handleExerciseSelect(exerciseSelection);
@@ -109,7 +113,11 @@ describe('useExerciseSelection', () => {
       const { result } = renderHook(() => useExerciseSelection());
 
       act(() => {
-        result.current.handleExerciseSelect({ id: 'ohp', name: 'Overhead Press' });
+        result.current.handleExerciseSelect({
+          id: 'ohp',
+          name: 'Overhead Press',
+          allowedUnits: [],
+        });
       });
 
       expect(result.current.selectedExercise).toEqual({
@@ -154,7 +162,7 @@ describe('useExerciseSelection', () => {
 
       // Call the callback with an exercise selection
       act(() => {
-        callback({ id: 'bench', name: 'Bench Press' });
+        callback({ id: 'bench', name: 'Bench Press', allowedUnits: ['load', 'reps'] });
       });
 
       expect(result.current.selectedExercise).toEqual({
@@ -183,13 +191,13 @@ describe('useExerciseSelection', () => {
 
       // Both callbacks should work
       act(() => {
-        firstCallback({ id: 'squat', name: 'Squat' });
+        firstCallback({ id: 'squat', name: 'Squat', allowedUnits: ['load', 'reps'] });
       });
 
       expect(result.current.selectedExercise.id).toBe('squat');
 
       act(() => {
-        secondCallback({ id: 'deadlift', name: 'Deadlift' });
+        secondCallback({ id: 'deadlift', name: 'Deadlift', allowedUnits: ['load', 'reps'] });
       });
 
       expect(result.current.selectedExercise.id).toBe('deadlift');
@@ -214,7 +222,7 @@ describe('useExerciseSelection', () => {
       // Simulate exercise selection from picker
       const callback = mockSetExercisePickerCallback.mock.calls[0][0];
       act(() => {
-        callback({ id: 'bench', name: 'Bench Press' });
+        callback({ id: 'bench', name: 'Bench Press', allowedUnits: ['load', 'reps'] });
       });
 
       expect(result.current.selectedExercise).toEqual({
