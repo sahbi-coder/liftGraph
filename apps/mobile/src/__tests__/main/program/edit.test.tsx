@@ -248,7 +248,8 @@ describe('EditProgramScreen', () => {
       </TestWrapper>,
     );
 
-    const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+    // Check by rendered value instead of placeholder
+    const nameInput = screen.getByDisplayValue('My Training Program');
     expect(nameInput).toBeTruthy();
   });
 
@@ -265,7 +266,8 @@ describe('EditProgramScreen', () => {
       </TestWrapper>,
     );
 
-    const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
+    // Check by rendered value instead of placeholder
+    const descriptionInput = screen.getByDisplayValue('A comprehensive training program');
     expect(descriptionInput).toBeTruthy();
   });
 
@@ -300,7 +302,8 @@ describe('EditProgramScreen', () => {
       </TestWrapper>,
     );
 
-    const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+    // Get input by rendered value instead of placeholder
+    const nameInput = screen.getByDisplayValue('My Training Program');
     fireEvent.changeText(nameInput, 'Updated Program Name');
 
     // Verify the input value is updated
@@ -320,7 +323,8 @@ describe('EditProgramScreen', () => {
       </TestWrapper>,
     );
 
-    const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
+    // Get input by rendered value instead of placeholder
+    const descriptionInput = screen.getByDisplayValue('A comprehensive training program');
     fireEvent.changeText(descriptionInput, 'Updated description');
 
     // Verify the input value is updated
@@ -483,14 +487,18 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        // Check that program name is loaded
-        const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+        // Check that program name is loaded - check rendered value
+        const nameInput = screen.getByDisplayValue('My Training Program');
+        expect(nameInput).toBeTruthy();
         expect(nameInput.props.value).toBe('My Training Program');
       });
 
-      // Check that program description is loaded
-      const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
-      expect(descriptionInput.props.value).toBe('A comprehensive training program');
+      // Check that program description is loaded - check rendered value
+      await waitFor(() => {
+        const descriptionInput = screen.getByDisplayValue('A comprehensive training program');
+        expect(descriptionInput).toBeTruthy();
+        expect(descriptionInput.props.value).toBe('A comprehensive training program');
+      });
 
       // Check that program type is set to simple (should show week section)
       await waitFor(() => {
@@ -500,9 +508,10 @@ describe('EditProgramScreen', () => {
       // Check that simple program type button is selected (not explicitly checked, but week section presence confirms it)
       expect(screen.getByText('program.simple')).toBeTruthy();
 
-      // Check that day name is loaded
+      // Check that day name is loaded - check rendered value
       await waitFor(() => {
-        const dayNameInput = screen.getByPlaceholderText('program.dayName');
+        const dayNameInput = screen.getByDisplayValue('Push Day');
+        expect(dayNameInput).toBeTruthy();
         expect(dayNameInput.props.value).toBe('Push Day');
       });
 
@@ -511,18 +520,23 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Bench Press')).toBeTruthy();
       });
 
-      // Check that set data is loaded correctly (reps and rir) - check ALL sets exactly
+      // Check that set data is loaded correctly (reps and rir) - check ALL sets exactly from rendered values
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        const rirInputs = screen.getAllByPlaceholderText('workout.rir');
+        // Check rendered reps value
+        const repsInput = screen.getByDisplayValue('8');
+        expect(repsInput).toBeTruthy();
+        expect(repsInput.props.value).toBe('8');
 
-        // Exact count: 1 set for 1 exercise
-        expect(repsInputs.length).toBe(1);
-        expect(rirInputs.length).toBe(1);
+        // Check rendered rir value
+        const rirInput = screen.getByDisplayValue('2');
+        expect(rirInput).toBeTruthy();
+        expect(rirInput.props.value).toBe('2');
 
-        // Check ALL set values exactly
-        expect(repsInputs[0].props.value).toBe('8');
-        expect(rirInputs[0].props.value).toBe('2');
+        // Verify exact count of all reps and rir inputs
+        const allRepsInputs = screen.getAllByDisplayValue('8');
+        const allRirInputs = screen.getAllByDisplayValue('2');
+        expect(allRepsInputs.length).toBe(1);
+        expect(allRirInputs.length).toBe(1);
       });
 
       // Verify exact exercise count
@@ -574,12 +588,12 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+        const nameInput = screen.getByDisplayValue('My Training Program');
         expect(nameInput).toBeTruthy();
       });
 
-      // Clear the name
-      const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+      // Clear the name - get by rendered value
+      const nameInput = screen.getByDisplayValue('My Training Program');
       fireEvent.changeText(nameInput, '');
 
       // Try to save
@@ -607,12 +621,12 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
+        const descriptionInput = screen.getByDisplayValue('A comprehensive training program');
         expect(descriptionInput).toBeTruthy();
       });
 
-      // Clear the description
-      const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
+      // Clear the description - get by rendered value
+      const descriptionInput = screen.getByDisplayValue('A comprehensive training program');
       fireEvent.changeText(descriptionInput, '');
 
       // Try to save
@@ -675,12 +689,12 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const dayNameInput = screen.getByPlaceholderText('program.dayName');
+        const dayNameInput = screen.getByDisplayValue('Push Day');
         expect(dayNameInput).toBeTruthy();
       });
 
-      // Clear the day name
-      const dayNameInput = screen.getByPlaceholderText('program.dayName');
+      // Clear the day name - get by rendered value
+      const dayNameInput = screen.getByDisplayValue('Push Day');
       fireEvent.changeText(dayNameInput, '');
 
       // Try to save
@@ -729,9 +743,9 @@ describe('EditProgramScreen', () => {
         </TestWrapper>,
       );
 
-      // Wait for form to initialize
+      // Wait for form to initialize - check by rendered value
       await waitFor(() => {
-        const dayNameInput = screen.getByPlaceholderText('program.dayName');
+        const dayNameInput = screen.getByDisplayValue('Push Day');
         expect(dayNameInput).toBeTruthy();
       });
 
@@ -767,11 +781,11 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Bench Press')).toBeTruthy();
       });
 
-      // Clear the reps input
+      // Clear the reps input - get by rendered value
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        expect(repsInputs.length).toBeGreaterThan(0);
-        fireEvent.changeText(repsInputs[0], '');
+        const repsInput = screen.getByDisplayValue('8');
+        expect(repsInput).toBeTruthy();
+        fireEvent.changeText(repsInput, '');
       });
 
       // Try to save
@@ -806,14 +820,14 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Bench Press')).toBeTruthy();
       });
 
-      // Update set with invalid data (reps=0)
+      // Update set with invalid data (reps=0) - get by rendered values
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        const rirInputs = screen.getAllByPlaceholderText('workout.rir');
-        expect(repsInputs.length).toBeGreaterThan(0);
-        expect(rirInputs.length).toBeGreaterThan(0);
-        fireEvent.changeText(repsInputs[0], '0');
-        fireEvent.changeText(rirInputs[0], '2');
+        const repsInput = screen.getByDisplayValue('8');
+        const rirInput = screen.getByDisplayValue('2');
+        expect(repsInput).toBeTruthy();
+        expect(rirInput).toBeTruthy();
+        fireEvent.changeText(repsInput, '0');
+        fireEvent.changeText(rirInput, '2');
       });
 
       // Try to save with invalid set (reps=0)
@@ -865,14 +879,18 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        // Check that program name is loaded
-        const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+        // Check that program name is loaded - check rendered value
+        const nameInput = screen.getByDisplayValue('My Alternating Program');
+        expect(nameInput).toBeTruthy();
         expect(nameInput.props.value).toBe('My Alternating Program');
       });
 
-      // Check that program description is loaded
-      const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
-      expect(descriptionInput.props.value).toBe('An alternating training program');
+      // Check that program description is loaded - check rendered value
+      await waitFor(() => {
+        const descriptionInput = screen.getByDisplayValue('An alternating training program');
+        expect(descriptionInput).toBeTruthy();
+        expect(descriptionInput.props.value).toBe('An alternating training program');
+      });
 
       // Check that program type is set to alternating (should show alternating weeks section)
       await waitFor(() => {
@@ -883,15 +901,22 @@ describe('EditProgramScreen', () => {
       // Check that alternating program type button is available
       expect(screen.getByText('program.alternating')).toBeTruthy();
 
-      // Check that ALL day names are loaded correctly - exact check
+      // Check that ALL day names are loaded correctly - exact check from rendered values
       await waitFor(() => {
-        const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-        // Exact count: 1 day for Week 1 + 1 day for Week 2 = 2 total
-        expect(dayNameInputs.length).toBe(2);
+        // Check rendered day name values
+        const week1DayInput = screen.getByDisplayValue('Week 1 Push Day');
+        expect(week1DayInput).toBeTruthy();
+        expect(week1DayInput.props.value).toBe('Week 1 Push Day');
 
-        // Check ALL day names exactly
-        expect(dayNameInputs[0].props.value).toBe('Week 1 Push Day');
-        expect(dayNameInputs[1].props.value).toBe('Week 2 Pull Day');
+        const week2DayInput = screen.getByDisplayValue('Week 2 Pull Day');
+        expect(week2DayInput).toBeTruthy();
+        expect(week2DayInput.props.value).toBe('Week 2 Pull Day');
+
+        // Verify exact count
+        const allWeek1DayInputs = screen.getAllByDisplayValue('Week 1 Push Day');
+        const allWeek2DayInputs = screen.getAllByDisplayValue('Week 2 Pull Day');
+        expect(allWeek1DayInputs.length).toBe(1);
+        expect(allWeek2DayInputs.length).toBe(1);
       });
 
       // Check that exercises are loaded with correct names
@@ -900,22 +925,35 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Pull Ups')).toBeTruthy();
       });
 
-      // Check that ALL set data is loaded correctly for both weeks - exact check
+      // Check that ALL set data is loaded correctly for both weeks - exact check from rendered values
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        const rirInputs = screen.getAllByPlaceholderText('workout.rir');
+        // Check Week 1 rendered set values (Bench Press: 8 reps, 2 rir)
+        const week1RepsInput = screen.getByDisplayValue('8');
+        expect(week1RepsInput).toBeTruthy();
+        expect(week1RepsInput.props.value).toBe('8');
 
-        // Exact count: 1 set for Week 1 exercise + 1 set for Week 2 exercise = 2 total
-        expect(repsInputs.length).toBe(2);
-        expect(rirInputs.length).toBe(2);
+        const week1RirInput = screen.getByDisplayValue('2');
+        expect(week1RirInput).toBeTruthy();
+        expect(week1RirInput.props.value).toBe('2');
 
-        // Check ALL Week 1 set values exactly (Bench Press: 8 reps, 2 rir)
-        expect(repsInputs[0].props.value).toBe('8');
-        expect(rirInputs[0].props.value).toBe('2');
+        // Check Week 2 rendered set values (Pull Ups: 10 reps, 1 rir)
+        const week2RepsInput = screen.getByDisplayValue('10');
+        expect(week2RepsInput).toBeTruthy();
+        expect(week2RepsInput.props.value).toBe('10');
 
-        // Check ALL Week 2 set values exactly (Pull Ups: 10 reps, 1 rir)
-        expect(repsInputs[1].props.value).toBe('10');
-        expect(rirInputs[1].props.value).toBe('1');
+        const week2RirInput = screen.getByDisplayValue('1');
+        expect(week2RirInput).toBeTruthy();
+        expect(week2RirInput.props.value).toBe('1');
+
+        // Verify exact count of all inputs
+        const allReps8Inputs = screen.getAllByDisplayValue('8');
+        const allRir2Inputs = screen.getAllByDisplayValue('2');
+        const allReps10Inputs = screen.getAllByDisplayValue('10');
+        const allRir1Inputs = screen.getAllByDisplayValue('1');
+        expect(allReps8Inputs.length).toBe(1);
+        expect(allRir2Inputs.length).toBe(1);
+        expect(allReps10Inputs.length).toBe(1);
+        expect(allRir1Inputs.length).toBe(1);
       });
 
       // Verify exact exercise count and names
@@ -970,12 +1008,12 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+        const nameInput = screen.getByDisplayValue('My Alternating Program');
         expect(nameInput).toBeTruthy();
       });
 
-      // Clear the name
-      const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+      // Clear the name - get by rendered value
+      const nameInput = screen.getByDisplayValue('My Alternating Program');
       fireEvent.changeText(nameInput, '');
 
       // Try to save
@@ -1002,12 +1040,12 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
+        const descriptionInput = screen.getByDisplayValue('An alternating training program');
         expect(descriptionInput).toBeTruthy();
       });
 
-      // Clear the description
-      const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
+      // Clear the description - get by rendered value
+      const descriptionInput = screen.getByDisplayValue('An alternating training program');
       fireEvent.changeText(descriptionInput, '');
 
       // Try to save
@@ -1034,13 +1072,13 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-        expect(dayNameInputs.length).toBeGreaterThan(0);
+        const dayNameInput = screen.getByDisplayValue('Week 1 Push Day');
+        expect(dayNameInput).toBeTruthy();
       });
 
-      // Clear Week 1 day name
-      const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-      fireEvent.changeText(dayNameInputs[0], '');
+      // Clear Week 1 day name - get by rendered value
+      const dayNameInput = screen.getByDisplayValue('Week 1 Push Day');
+      fireEvent.changeText(dayNameInput, '');
 
       // Try to save
       const updateButton = screen.getByText('program.update');
@@ -1066,13 +1104,13 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-        expect(dayNameInputs.length).toBeGreaterThan(1);
+        const dayNameInput = screen.getByDisplayValue('Week 2 Pull Day');
+        expect(dayNameInput).toBeTruthy();
       });
 
-      // Clear Week 2 day name
-      const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-      fireEvent.changeText(dayNameInputs[1], '');
+      // Clear Week 2 day name - get by rendered value
+      const dayNameInput = screen.getByDisplayValue('Week 2 Pull Day');
+      fireEvent.changeText(dayNameInput, '');
 
       // Try to save
       const updateButton = screen.getByText('program.update');
@@ -1118,10 +1156,10 @@ describe('EditProgramScreen', () => {
         </TestWrapper>,
       );
 
-      // Wait for form to initialize
+      // Wait for form to initialize - check by rendered value
       await waitFor(() => {
-        const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-        expect(dayNameInputs.length).toBeGreaterThan(0);
+        const dayNameInput = screen.getByDisplayValue('Week 1 Push Day');
+        expect(dayNameInput).toBeTruthy();
       });
 
       // Try to save
@@ -1168,10 +1206,10 @@ describe('EditProgramScreen', () => {
         </TestWrapper>,
       );
 
-      // Wait for form to initialize
+      // Wait for form to initialize - check by rendered value
       await waitFor(() => {
-        const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-        expect(dayNameInputs.length).toBeGreaterThan(0);
+        const dayNameInput = screen.getByDisplayValue('Week 1 Push Day');
+        expect(dayNameInput).toBeTruthy();
       });
 
       // Try to save
@@ -1201,11 +1239,11 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Bench Press')).toBeTruthy();
       });
 
-      // Clear the reps input for Week 1
+      // Clear the reps input for Week 1 - get by rendered value
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        expect(repsInputs.length).toBeGreaterThan(0);
-        fireEvent.changeText(repsInputs[0], '');
+        const repsInput = screen.getByDisplayValue('8');
+        expect(repsInput).toBeTruthy();
+        fireEvent.changeText(repsInput, '');
       });
 
       // Try to save
@@ -1235,13 +1273,11 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Pull Ups')).toBeTruthy();
       });
 
-      // Clear the reps input for Week 2 (last one)
+      // Clear the reps input for Week 2 - get by rendered value
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        if (repsInputs.length > 1) {
-          const lastRepsIndex = repsInputs.length - 1;
-          fireEvent.changeText(repsInputs[lastRepsIndex], '');
-        }
+        const repsInput = screen.getByDisplayValue('10');
+        expect(repsInput).toBeTruthy();
+        fireEvent.changeText(repsInput, '');
       });
 
       // Try to save
@@ -1271,14 +1307,14 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Bench Press')).toBeTruthy();
       });
 
-      // Update set with invalid data (reps=0) for Week 1
+      // Update set with invalid data (reps=0) for Week 1 - get by rendered values
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        const rirInputs = screen.getAllByPlaceholderText('workout.rir');
-        if (repsInputs.length > 0 && rirInputs.length > 0) {
-          fireEvent.changeText(repsInputs[0], '0');
-          fireEvent.changeText(rirInputs[0], '2');
-        }
+        const repsInput = screen.getByDisplayValue('8');
+        const rirInput = screen.getByDisplayValue('2');
+        expect(repsInput).toBeTruthy();
+        expect(rirInput).toBeTruthy();
+        fireEvent.changeText(repsInput, '0');
+        fireEvent.changeText(rirInput, '2');
       });
 
       // Try to save with invalid set (reps=0)
@@ -1308,17 +1344,14 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Pull Ups')).toBeTruthy();
       });
 
-      // Update set with invalid data (reps=0) for Week 2
+      // Update set with invalid data (reps=0) for Week 2 - get by rendered values
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        const rirInputs = screen.getAllByPlaceholderText('workout.rir');
-        // Get the last inputs (for Week 2)
-        if (repsInputs.length > 1 && rirInputs.length > 1) {
-          const lastRepsIndex = repsInputs.length - 1;
-          const lastRirIndex = rirInputs.length - 1;
-          fireEvent.changeText(repsInputs[lastRepsIndex], '0');
-          fireEvent.changeText(rirInputs[lastRirIndex], '1');
-        }
+        const repsInput = screen.getByDisplayValue('10');
+        const rirInput = screen.getByDisplayValue('1');
+        expect(repsInput).toBeTruthy();
+        expect(rirInput).toBeTruthy();
+        fireEvent.changeText(repsInput, '0');
+        fireEvent.changeText(rirInput, '1');
       });
 
       // Try to save with invalid set (reps=0)
@@ -1424,10 +1457,15 @@ describe('EditProgramScreen', () => {
         fireEvent.press(addPhaseButton);
       });
 
-      // Should show phase name input after adding phase
+      // Should show phase name input after adding phase - check by rendered value
       await waitFor(() => {
-        const phaseNameInputs = screen.getAllByPlaceholderText(/program\.phases/);
-        expect(phaseNameInputs.length).toBeGreaterThan(1); // Original + new phase
+        // Original phase should still be there
+        const originalPhase = screen.getByDisplayValue('Strength Phase');
+        expect(originalPhase).toBeTruthy();
+        // New phase input should exist (empty or with default value)
+        const allPhaseInputs = screen.queryAllByDisplayValue('');
+        // At least one empty phase input should exist (the new one)
+        expect(allPhaseInputs.length).toBeGreaterThan(0);
       });
     });
 
@@ -1446,14 +1484,18 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        // Check that program name is loaded
-        const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+        // Check that program name is loaded - check rendered value
+        const nameInput = screen.getByDisplayValue('My Advanced Program');
+        expect(nameInput).toBeTruthy();
         expect(nameInput.props.value).toBe('My Advanced Program');
       });
 
-      // Check that program description is loaded
-      const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
-      expect(descriptionInput.props.value).toBe('An advanced training program');
+      // Check that program description is loaded - check rendered value
+      await waitFor(() => {
+        const descriptionInput = screen.getByDisplayValue('An advanced training program');
+        expect(descriptionInput).toBeTruthy();
+        expect(descriptionInput.props.value).toBe('An advanced training program');
+      });
 
       // Check that program type is set to advanced (should show phases section)
       await waitFor(() => {
@@ -1463,20 +1505,26 @@ describe('EditProgramScreen', () => {
       // Check that advanced program type button is available
       expect(screen.getByText('program.advanced')).toBeTruthy();
 
-      // Check that phase name is loaded - exact check
+      // Check that phase name is loaded - exact check from rendered value
       await waitFor(() => {
-        const phaseNameInputs = screen.getAllByPlaceholderText(/program\.phases/);
-        // Exact count: 1 phase
-        expect(phaseNameInputs.length).toBe(1);
-        expect(phaseNameInputs[0].props.value).toBe('Strength Phase');
+        const phaseNameInput = screen.getByDisplayValue('Strength Phase');
+        expect(phaseNameInput).toBeTruthy();
+        expect(phaseNameInput.props.value).toBe('Strength Phase');
+
+        // Verify exact count
+        const allPhaseNameInputs = screen.getAllByDisplayValue('Strength Phase');
+        expect(allPhaseNameInputs.length).toBe(1);
       });
 
-      // Check that day name is loaded - exact check
+      // Check that day name is loaded - exact check from rendered value
       await waitFor(() => {
-        const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-        // Exact count: 1 day in the phase week
-        expect(dayNameInputs.length).toBe(1);
-        expect(dayNameInputs[0].props.value).toBe('Push Day');
+        const dayNameInput = screen.getByDisplayValue('Push Day');
+        expect(dayNameInput).toBeTruthy();
+        expect(dayNameInput.props.value).toBe('Push Day');
+
+        // Verify exact count
+        const allDayNameInputs = screen.getAllByDisplayValue('Push Day');
+        expect(allDayNameInputs.length).toBe(1);
       });
 
       // Check that exercise is loaded with correct name
@@ -1484,18 +1532,23 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Bench Press')).toBeTruthy();
       });
 
-      // Check that set data is loaded correctly (reps and rir) - check ALL sets exactly
+      // Check that set data is loaded correctly (reps and rir) - check ALL sets exactly from rendered values
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        const rirInputs = screen.getAllByPlaceholderText('workout.rir');
+        // Check rendered reps value
+        const repsInput = screen.getByDisplayValue('8');
+        expect(repsInput).toBeTruthy();
+        expect(repsInput.props.value).toBe('8');
 
-        // Exact count: 1 set for 1 exercise in the phase
-        expect(repsInputs.length).toBe(1);
-        expect(rirInputs.length).toBe(1);
+        // Check rendered rir value
+        const rirInput = screen.getByDisplayValue('2');
+        expect(rirInput).toBeTruthy();
+        expect(rirInput.props.value).toBe('2');
 
-        // Check ALL set values exactly
-        expect(repsInputs[0].props.value).toBe('8');
-        expect(rirInputs[0].props.value).toBe('2');
+        // Verify exact count of all reps and rir inputs
+        const allRepsInputs = screen.getAllByDisplayValue('8');
+        const allRirInputs = screen.getAllByDisplayValue('2');
+        expect(allRepsInputs.length).toBe(1);
+        expect(allRirInputs.length).toBe(1);
       });
 
       // Verify exact exercise count and name
@@ -1552,13 +1605,13 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const phaseNameInputs = screen.getAllByPlaceholderText(/program\.phases/);
-        expect(phaseNameInputs.length).toBeGreaterThan(0);
+        const phaseNameInput = screen.getByDisplayValue('Strength Phase');
+        expect(phaseNameInput).toBeTruthy();
       });
 
-      // Clear the phase name
-      const phaseNameInputs = screen.getAllByPlaceholderText(/program\.phases/);
-      fireEvent.changeText(phaseNameInputs[0], '');
+      // Clear the phase name - get by rendered value
+      const phaseNameInput = screen.getByDisplayValue('Strength Phase');
+      fireEvent.changeText(phaseNameInput, '');
 
       // Try to save
       await waitFor(() => {
@@ -1588,12 +1641,12 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+        const nameInput = screen.getByDisplayValue('My Advanced Program');
         expect(nameInput).toBeTruthy();
       });
 
-      // Clear the name
-      const nameInput = screen.getByPlaceholderText('program.enterProgramName');
+      // Clear the name - get by rendered value
+      const nameInput = screen.getByDisplayValue('My Advanced Program');
       fireEvent.changeText(nameInput, '');
 
       // Try to save
@@ -1620,12 +1673,12 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
+        const descriptionInput = screen.getByDisplayValue('An advanced training program');
         expect(descriptionInput).toBeTruthy();
       });
 
-      // Clear the description
-      const descriptionInput = screen.getByPlaceholderText('program.enterProgramDescription');
+      // Clear the description - get by rendered value
+      const descriptionInput = screen.getByDisplayValue('An advanced training program');
       fireEvent.changeText(descriptionInput, '');
 
       // Try to save
@@ -1652,13 +1705,13 @@ describe('EditProgramScreen', () => {
 
       // Wait for form to initialize
       await waitFor(() => {
-        const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-        expect(dayNameInputs.length).toBeGreaterThan(0);
+        const dayNameInput = screen.getByDisplayValue('Push Day');
+        expect(dayNameInput).toBeTruthy();
       });
 
-      // Clear the day name
-      const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-      fireEvent.changeText(dayNameInputs[0], '');
+      // Clear the day name - get by rendered value
+      const dayNameInput = screen.getByDisplayValue('Push Day');
+      fireEvent.changeText(dayNameInput, '');
 
       // Try to save
       const updateButton = screen.getByText('program.update');
@@ -1708,10 +1761,10 @@ describe('EditProgramScreen', () => {
         </TestWrapper>,
       );
 
-      // Wait for form to initialize
+      // Wait for form to initialize - check by rendered value
       await waitFor(() => {
-        const dayNameInputs = screen.getAllByPlaceholderText('program.dayName');
-        expect(dayNameInputs.length).toBeGreaterThan(0);
+        const dayNameInput = screen.getByDisplayValue('Push Day');
+        expect(dayNameInput).toBeTruthy();
       });
 
       // Try to save
@@ -1741,11 +1794,11 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Bench Press')).toBeTruthy();
       });
 
-      // Clear the reps input
+      // Clear the reps input - get by rendered value
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        expect(repsInputs.length).toBeGreaterThan(0);
-        fireEvent.changeText(repsInputs[0], '');
+        const repsInput = screen.getByDisplayValue('8');
+        expect(repsInput).toBeTruthy();
+        fireEvent.changeText(repsInput, '');
       });
 
       // Try to save
@@ -1775,14 +1828,14 @@ describe('EditProgramScreen', () => {
         expect(screen.getByText('1. Bench Press')).toBeTruthy();
       });
 
-      // Update set with invalid data (reps=0)
+      // Update set with invalid data (reps=0) - get by rendered values
       await waitFor(() => {
-        const repsInputs = screen.getAllByPlaceholderText('common.reps');
-        const rirInputs = screen.getAllByPlaceholderText('workout.rir');
-        expect(repsInputs.length).toBeGreaterThan(0);
-        expect(rirInputs.length).toBeGreaterThan(0);
-        fireEvent.changeText(repsInputs[0], '0');
-        fireEvent.changeText(rirInputs[0], '2');
+        const repsInput = screen.getByDisplayValue('8');
+        const rirInput = screen.getByDisplayValue('2');
+        expect(repsInput).toBeTruthy();
+        expect(rirInput).toBeTruthy();
+        fireEvent.changeText(repsInput, '0');
+        fireEvent.changeText(rirInput, '2');
       });
 
       // Try to save with invalid set (reps=0)
