@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import type { ProgramType, ProgramWeekForm, ProgramPhaseForm } from './useProgramForm/types';
 import type { AlternatingWeeks, ProgramDayLabel } from '@/services';
+import { ProgramInput } from '@/services';
 
 type UseProgramValidationParams = {
   name: string;
@@ -23,7 +24,7 @@ export function useProgramValidation({
   showError,
   t,
 }: UseProgramValidationParams) {
-  const validateAndConvert = useCallback(() => {
+  const validateAndConvert = useCallback((): null | ProgramInput => {
     if (!name.trim()) {
       showError(t('program.programNameRequired'));
       return null;
@@ -72,17 +73,24 @@ export function useProgramValidation({
         }
 
         const exercises = day.exercises.map((ex) => {
-          const sets = ex.sets
-            .filter((set) => set.reps.trim() && set.rir.trim())
-            .map((set) => ({
-              reps: Number(set.reps),
-              rir: Number(set.rir),
-            }));
+          // Check that ALL sets are valid (reps > 0)
+          const allSetsValid = ex.sets.every((set) => {
+            const reps = set.reps.trim();
+            const rir = set.rir.trim();
+            // Both reps and rir must be non-empty and reps must be > 0
+            return reps && rir && Number(reps) > 0;
+          });
 
-          if (sets.length === 0) {
+          if (!allSetsValid || ex.sets.length === 0) {
             showError(t('program.exerciseMustHaveValidSet', { name: ex.name }));
             return null;
           }
+
+          // All sets are valid, so map them
+          const sets = ex.sets.map((set) => ({
+            reps: Number(set.reps),
+            rir: Number(set.rir),
+          }));
 
           return {
             name: ex.name,
@@ -157,17 +165,24 @@ export function useProgramValidation({
           }
 
           const exercises = day.exercises.map((ex) => {
-            const sets = ex.sets
-              .filter((set) => set.reps.trim() && set.rir.trim())
-              .map((set) => ({
-                reps: Number(set.reps),
-                rir: Number(set.rir),
-              }));
+            // Check that ALL sets are valid (reps > 0)
+            const allSetsValid = ex.sets.every((set) => {
+              const reps = set.reps.trim();
+              const rir = set.rir.trim();
+              // Both reps and rir must be non-empty and reps must be > 0
+              return reps && rir && Number(reps) > 0;
+            });
 
-            if (sets.length === 0) {
+            if (!allSetsValid || ex.sets.length === 0) {
               showError(t('program.exerciseMustHaveValidSet', { name: ex.name }));
               return null;
             }
+
+            // All sets are valid, so map them
+            const sets = ex.sets.map((set) => ({
+              reps: Number(set.reps),
+              rir: Number(set.rir),
+            }));
 
             return {
               name: ex.name,
@@ -274,17 +289,24 @@ export function useProgramValidation({
             }
 
             const exercises = day.exercises.map((ex) => {
-              const sets = ex.sets
-                .filter((set) => set.reps.trim() && set.rir.trim())
-                .map((set) => ({
-                  reps: Number(set.reps),
-                  rir: Number(set.rir),
-                }));
+              // Check that ALL sets are valid (reps > 0)
+              const allSetsValid = ex.sets.every((set) => {
+                const reps = set.reps.trim();
+                const rir = set.rir.trim();
+                // Both reps and rir must be non-empty and reps must be > 0
+                return reps && rir && Number(reps) > 0;
+              });
 
-              if (sets.length === 0) {
+              if (!allSetsValid || ex.sets.length === 0) {
                 showError(t('program.exerciseMustHaveValidSet', { name: ex.name }));
                 return null;
               }
+
+              // All sets are valid, so map them
+              const sets = ex.sets.map((set) => ({
+                reps: Number(set.reps),
+                rir: Number(set.rir),
+              }));
 
               return {
                 name: ex.name,

@@ -5,20 +5,15 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
+import { ProgramInput } from '@/services';
 
 type UseProgramSaveParams = {
-  validateAndConvert: () => any;
   showError: (message: string) => void;
   showSuccess: (message: string) => void;
   programId?: string;
 };
 
-export function useProgramSave({
-  validateAndConvert,
-  showError,
-  showSuccess,
-  programId,
-}: UseProgramSaveParams) {
+export function useProgramSave({ showError, showSuccess, programId }: UseProgramSaveParams) {
   const router = useRouter();
   const { services } = useDependencies();
   const { user } = useAuthenticatedUser();
@@ -26,56 +21,43 @@ export function useProgramSave({
   const queryClient = useQueryClient();
   const [isSaving, setIsSaving] = useState(false);
 
-  const handleSave = useCallback(async () => {
-    try {
-      const programData = validateAndConvert();
+  const handleSave = useCallback(
+    async (programData: ProgramInput) => {
+      try {
+        setIsSaving(true);
 
-      if (!programData) {
-        return;
+        if (programId) {
+          // Update existing program
+          await services.firestore.updateProgram(user.uid, programId, programData);
+
+          // Invalidate program queries to refetch updated data
+          queryClient.invalidateQueries({ queryKey: ['program', user.uid, programId] });
+          queryClient.invalidateQueries({ queryKey: ['programs', user.uid] });
+
+          showSuccess(t('program.programUpdatedSuccessfully'));
+        } else {
+          // Create new program
+          await services.firestore.createProgram(user.uid, programData);
+
+          // Invalidate programs list to show the new program
+          queryClient.invalidateQueries({ queryKey: ['programs', user.uid] });
+
+          showSuccess(t('program.programSavedSuccessfully'));
+        }
+
+        // Navigate back after showing success message
+        setTimeout(() => {
+          router.back();
+        }, 1500);
+      } catch (error) {
+        const message = getServiceErrorMessage(error, t);
+        showError(message);
+      } finally {
+        setIsSaving(false);
       }
-
-      setIsSaving(true);
-
-      if (programId) {
-        // Update existing program
-        await services.firestore.updateProgram(user.uid, programId, programData);
-
-        // Invalidate program queries to refetch updated data
-        queryClient.invalidateQueries({ queryKey: ['program', user.uid, programId] });
-        queryClient.invalidateQueries({ queryKey: ['programs', user.uid] });
-
-        showSuccess(t('program.programUpdatedSuccessfully'));
-      } else {
-        // Create new program
-        await services.firestore.createProgram(user.uid, programData);
-
-        // Invalidate programs list to show the new program
-        queryClient.invalidateQueries({ queryKey: ['programs', user.uid] });
-
-        showSuccess(t('program.programSavedSuccessfully'));
-      }
-
-      // Navigate back after showing success message
-      setTimeout(() => {
-        router.back();
-      }, 1500);
-    } catch (error) {
-      const message = getServiceErrorMessage(error, t);
-      showError(message);
-    } finally {
-      setIsSaving(false);
-    }
-  }, [
-    user.uid,
-    services.firestore,
-    router,
-    validateAndConvert,
-    showError,
-    showSuccess,
-    t,
-    programId,
-    queryClient,
-  ]);
+    },
+    [user.uid, services.firestore, router, showError, showSuccess, t, programId, queryClient],
+  );
 
   return {
     handleSave,

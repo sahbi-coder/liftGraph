@@ -99,7 +99,6 @@ export default function EditProgramScreen() {
 
   // Save
   const { handleSave, isSaving } = useProgramSave({
-    validateAndConvert,
     showError,
     showSuccess,
     programId,
@@ -204,7 +203,12 @@ export default function EditProgramScreen() {
         handleRemoveSet={handleRemoveSet}
         handleUpdateSetField={handleUpdateSetField}
         handleDuplicateLastSet={handleDuplicateLastSet}
-        handleSave={handleSave}
+        handleSave={() => {
+          const programData = validateAndConvert();
+          if (programData) {
+            handleSave(programData);
+          }
+        }}
         isSaving={isSaving}
         saveButtonText={t('program.update')}
       />

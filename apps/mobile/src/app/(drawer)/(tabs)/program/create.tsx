@@ -83,7 +83,7 @@ export default function CreateProgramScreen() {
   });
 
   // Save
-  const { handleSave, isSaving } = useProgramSave({ validateAndConvert, showError, showSuccess });
+  const { handleSave, isSaving } = useProgramSave({ showError, showSuccess });
 
   // Reset structure when program type changes
   useEffect(() => {
@@ -119,7 +119,13 @@ export default function CreateProgramScreen() {
         handleRemoveSet={handleRemoveSet}
         handleUpdateSetField={handleUpdateSetField}
         handleDuplicateLastSet={handleDuplicateLastSet}
-        handleSave={handleSave}
+        handleSave={() => {
+          const programData = validateAndConvert();
+          if (programData) {
+            console.log('hey bitch i was rendered');
+            handleSave(programData);
+          }
+        }}
         isSaving={isSaving}
       />
       <AlertModalComponent />
