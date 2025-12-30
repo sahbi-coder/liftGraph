@@ -112,7 +112,8 @@ export default function EditProgramScreen() {
         router.back();
       }, 2000);
     }
-  }, [programId, showError, t, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [programId]); // Only depend on programId to prevent infinite loops
 
   // Handle error state
   useEffect(() => {
@@ -122,7 +123,8 @@ export default function EditProgramScreen() {
         router.back();
       }, 2000);
     }
-  }, [isError, showError, t, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]); // Only depend on isError to prevent infinite loops
 
   // Initialize form when program is loaded
   useEffect(() => {
