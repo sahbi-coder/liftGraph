@@ -167,6 +167,7 @@
     "unsavedChanges": "Modifications Non Enregistrées",
     "unsavedChangesMessage": "Vous avez des modifications non enregistrées. Voulez-vous les abandonner?",
     "discard": "Abandonner",
+    "keep": "Conserver",
     "keepDraft": "Conserver"
   },
   "program": {

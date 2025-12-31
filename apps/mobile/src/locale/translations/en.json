@@ -167,6 +167,7 @@
     "unsavedChanges": "Unsaved Changes",
     "unsavedChangesMessage": "You have unsaved changes. Do you want to discard them?",
     "discard": "Discard",
+    "keep": "Keep",
     "keepDraft": "Keep Draft"
   },
   "program": {

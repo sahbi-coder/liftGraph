@@ -167,6 +167,7 @@
     "unsavedChanges": "Cambios Sin Guardar",
     "unsavedChangesMessage": "Tienes cambios sin guardar. ¿Quieres descartarlos?",
     "discard": "Descartar",
+    "keep": "Conservar",
     "keepDraft": "Conservar"
   },
   "program": {

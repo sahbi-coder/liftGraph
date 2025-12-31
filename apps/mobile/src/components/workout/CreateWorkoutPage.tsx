@@ -7,6 +7,7 @@ import { useDependencies } from '@/dependencies/provider';
 import { useAuthenticatedUser } from '@/contexts/AuthContext';
 import type { WorkoutInput } from '@/services';
 import { getWorkoutPrefillData, clearWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
+import { saveWorkoutDraft, loadWorkoutDraft, clearWorkoutDraft } from '@/utils/workoutDraftStorage';
 import { useAlertModal } from '@/hooks/common/useAlertModal';
 import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
@@ -15,9 +16,10 @@ import { colors } from '@/theme/colors';
 
 type CreateWorkoutPageProps = {
   exerciseNavigationPath: string;
+  context: 'create' | 'apply';
 };
 
-export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageProps) {
+export function CreateWorkoutPage({ exerciseNavigationPath, context }: CreateWorkoutPageProps) {
   const router = useRouter();
   const navigation = useNavigation();
   const { services } = useDependencies();
@@ -27,56 +29,97 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
 
   const [isSaving, setIsSaving] = useState(false);
   const [showDiscardModal, setShowDiscardModal] = useState(false);
-  const pendingNavigationRef = useRef<(() => void) | null>(null);
-  const hasUnsavedChangesRef = useRef(false);
+  const [initialValues, setInitialValues] = useState<
+    { date?: Date | string; notes?: string; exercises?: any[] } | undefined
+  >(undefined);
+  const [isLoadingDraft, setIsLoadingDraft] = useState(context === 'create');
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const currentWorkoutPayloadRef = useRef<WorkoutInput | null>(null);
 
-  // Check for prefill data synchronously before first render
-  const prefillData = getWorkoutPrefillData();
+  const isCreateContext = context === 'create';
 
-  // Determine initial values from prefill data
-  const [initialValues] = useState(() => {
-    if (prefillData) {
-      return { exercises: prefillData.exercises };
+  // Check for prefill data synchronously (for apply context only)
+  const prefillData = !isCreateContext ? getWorkoutPrefillData() : null;
+
+  const saveDraft = async () => {
+    // User decided to stay, save draft (create context only)
+
+    if (currentWorkoutPayloadRef.current) {
+      await saveWorkoutDraft(currentWorkoutPayloadRef.current);
     }
-    return undefined;
-  });
 
-  // Clear prefill data after reading it
+    currentWorkoutPayloadRef.current = null;
+  };
+
+  const clearDraft = useCallback(async () => {
+    await clearWorkoutDraft();
+    currentWorkoutPayloadRef.current = null;
+  }, []);
+
+  // Load initial values based on context
   useEffect(() => {
-    if (prefillData) {
-      clearWorkoutPrefillData();
-    }
-  }, [prefillData]);
+    const loadInitialValues = async () => {
+      if (isCreateContext) {
+        // For create: priority is draft > empty
+        const draft = await loadWorkoutDraft();
+        if (draft) {
+          setInitialValues({
+            date: draft.date,
+            notes: draft.notes,
+            exercises: draft.exercises,
+          });
+        }
+        setIsLoadingDraft(false);
+      } else {
+        // For apply: only use prefill (checked synchronously above)
+        if (prefillData) {
+          setInitialValues({ exercises: prefillData.exercises });
+          clearWorkoutPrefillData();
+        }
+        setIsLoadingDraft(false);
+      }
+    };
+
+    loadInitialValues();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCreateContext]);
 
   // Intercept navigation to show discard confirmation
   useEffect(() => {
+    if (!isCreateContext || !hasUnsavedChanges) {
+      return;
+    }
+
     const unsubscribe = navigation.addListener('beforeRemove', (e) => {
-      // Don't intercept if we're saving or if there are no unsaved changes
-      if (isSaving || !hasUnsavedChangesRef.current) {
+      // Don't intercept if we're saving
+      if (isSaving) {
         return;
       }
 
       // Prevent default behavior of leaving the screen
       e.preventDefault();
-
-      // Show confirmation modal
-      setShowDiscardModal(true);
-      // Store the navigation action so we can dispatch it later
-      pendingNavigationRef.current = () => {
-        navigation.dispatch(e.data.action);
-      };
+      unsubscribe();
+      if (currentWorkoutPayloadRef.current) {
+        setShowDiscardModal(true);
+      } else {
+        clearDraft();
+        router.back();
+      }
     });
 
     return unsubscribe;
-  }, [navigation, isSaving]);
+  }, [navigation, isSaving, isCreateContext, hasUnsavedChanges]);
 
   const handleFormChange = useCallback((payload: WorkoutInput | null) => {
     if (payload) {
       // Track that there are unsaved changes
-      hasUnsavedChangesRef.current = true;
+      setHasUnsavedChanges(true);
+      // Store current payload for saving draft when modal appears
+      currentWorkoutPayloadRef.current = payload;
     } else {
       // Form is invalid
-      hasUnsavedChangesRef.current = false;
+      setHasUnsavedChanges(true);
+      currentWorkoutPayloadRef.current = null;
     }
   }, []);
 
@@ -85,7 +128,13 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
       setIsSaving(true);
       try {
         await services.firestore.createWorkout(user.uid, workoutPayload);
-        hasUnsavedChangesRef.current = false;
+        setHasUnsavedChanges(false);
+
+        // Clear draft on successful save (create context only)
+        if (isCreateContext) {
+          await clearWorkoutDraft();
+        }
+
         showSuccess(t('workout.workoutSavedSuccessfully'));
         // Navigate back after showing success message
         setTimeout(() => {
@@ -98,23 +147,32 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
         setIsSaving(false);
       }
     },
-    [router, services.firestore, user.uid, showSuccess, showError, t],
+    [router, services.firestore, user.uid, showSuccess, showError, t, isCreateContext],
   );
 
-  const handleDiscard = useCallback(() => {
+  const handleDiscard = useCallback(async () => {
     setShowDiscardModal(false);
-    if (pendingNavigationRef.current) {
-      hasUnsavedChangesRef.current = false;
-      pendingNavigationRef.current();
-      pendingNavigationRef.current = null;
-    }
-  }, []);
+    setHasUnsavedChanges(false);
 
-  const handleCancel = useCallback(() => {
-    // User decided to stay, so clear the pending navigation
+    await clearWorkoutDraft();
+
+    router.back();
+  }, [router]);
+
+  const handleKeep = useCallback(async () => {
     setShowDiscardModal(false);
-    pendingNavigationRef.current = null;
-  }, []);
+    setHasUnsavedChanges(false);
+
+    // Save draft on keep (create context only)
+    await saveDraft();
+
+    router.back();
+  }, [saveDraft, router]);
+
+  // Don't render form until draft is loaded (for create context)
+  if (isLoadingDraft) {
+    return null; // Or a loading spinner if preferred
+  }
 
   return (
     <>
@@ -165,12 +223,8 @@ export function CreateWorkoutPage({ exerciseNavigationPath }: CreateWorkoutPageP
               >
                 {t('workout.discard')}
               </Button>
-              <Button
-                backgroundColor={colors.niceOrange}
-                color={colors.white}
-                onPress={handleCancel}
-              >
-                {t('common.cancel')}
+              <Button backgroundColor={colors.niceOrange} color={colors.white} onPress={handleKeep}>
+                {t('workout.keep')}
               </Button>
             </XStack>
           </YStack>
