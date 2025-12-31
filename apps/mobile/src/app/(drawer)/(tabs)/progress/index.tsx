@@ -51,6 +51,13 @@ const getProgressMetrics = (t: any): ProgressMetric[] => [
     icon: PieChart,
     color: colors.niceOrange,
   },
+  {
+    id: 'muscle-group-volume',
+    title: t('progress.muscleGroupVolumeBalance'),
+    description: t('progress.muscleGroupVolumeBalanceDescription'),
+    icon: PieChart,
+    color: '#ec4899',
+  },
 ];
 
 export default function ProgressScreen() {

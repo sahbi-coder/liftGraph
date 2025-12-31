@@ -74,6 +74,15 @@ export default function ProgressLayout() {
           headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
+      <Stack.Screen
+        name="muscle-group-volume"
+        options={{
+          headerTitle: t('progress.muscleGroupVolumeBalance'),
+          headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 22 },
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
+        }}
+      />
     </Stack>
   );
 }

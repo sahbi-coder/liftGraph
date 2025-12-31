@@ -1,4 +1,5 @@
 import type { Workout, WorkoutExercise, WorkoutSet } from '@/services';
+import { BODY_PARTS } from '@/services';
 
 // Common Epley formula: 1RM = weight * (1 + reps / 30)
 export function calculateEstimated1RM(weight: number, reps: number, rir: number): number {
@@ -377,4 +378,65 @@ export function calculateIntensityDistribution(
   });
 
   return distribution;
+}
+
+export type MuscleGroupVolume = {
+  [bodyPart: string]: number;
+};
+
+/**
+ * Calculate muscle group volume distribution for a given period.
+ * For each workout in the period, iterate through all exercises.
+ * For each exercise, calculate volume (weight × reps × sets) and get the exercise's bodyPart.
+ * Accumulate volume by bodyPart.
+ */
+export function calculateMuscleGroupVolume(
+  workouts: Workout[],
+  exercises: Map<string, { bodyPart: string }>,
+  startDate: Date,
+  endDate: Date,
+): MuscleGroupVolume {
+  // Initialize all predefined body parts with 0 volume
+  const volumeByBodyPart: MuscleGroupVolume = {};
+  BODY_PARTS.forEach((bodyPart) => {
+    volumeByBodyPart[bodyPart] = 0;
+  });
+
+  const start = startOfDay(startDate);
+  const end = startOfDay(endDate);
+
+  workouts.forEach((workout) => {
+    const workoutDate = startOfDay(
+      typeof workout.date === 'string' ? new Date(workout.date) : workout.date,
+    );
+
+    if (workoutDate < start || workoutDate > end) {
+      return;
+    }
+
+    workout.exercises.forEach((exercise) => {
+      // Get bodyPart from exercises map
+      const exerciseData = exercises.get(exercise.exerciseId);
+      if (!exerciseData) {
+        return; // Skip if exercise not found
+      }
+
+      const bodyPart = exerciseData.bodyPart;
+
+      // Only process if bodyPart is in the predefined list
+      if (!BODY_PARTS.includes(bodyPart)) {
+        return;
+      }
+
+      // Calculate volume for this exercise (weight × reps for each set)
+      const exerciseVolume = exercise.sets.reduce((sum, set) => sum + set.weight * set.reps, 0);
+
+      if (exerciseVolume > 0) {
+        // Accumulate volume by bodyPart
+        volumeByBodyPart[bodyPart] = (volumeByBodyPart[bodyPart] || 0) + exerciseVolume;
+      }
+    });
+  });
+
+  return volumeByBodyPart;
 }
