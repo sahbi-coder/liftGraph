@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { YStack, XStack, Text } from 'tamagui';
-import { BarChart3, TrendingUp, Activity } from '@tamagui/lucide-icons';
+import { BarChart3, TrendingUp, Activity, PieChart } from '@tamagui/lucide-icons';
 
 import { colors } from '@/theme/colors';
 import { useTranslation } from '@/hooks/common/useTranslation';
@@ -43,6 +43,13 @@ const getProgressMetrics = (t: any): ProgressMetric[] => [
     description: t('progress.frequencyChartDescription'),
     icon: BarChart3,
     color: '#8b5cf6',
+  },
+  {
+    id: 'intensity-distribution',
+    title: t('progress.intensityDistribution'),
+    description: t('progress.intensityDistributionDescription'),
+    icon: PieChart,
+    color: colors.niceOrange,
   },
 ];
 

@@ -41,7 +41,7 @@ function WeeklyFrequencyChart({ workouts: _workouts }: WeeklyFrequencyChartProps
   });
 
   const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
-    defaultExercise: { id: 'squat', name: 'Squat' },
+    defaultExercise: { id: 'squat', name: t('exercise.squat') },
     exercisePickerPath: '/(tabs)/progress/exercises',
   });
 

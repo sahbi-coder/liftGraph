@@ -65,6 +65,15 @@ export default function ProgressLayout() {
           headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
+      <Stack.Screen
+        name="intensity-distribution"
+        options={{
+          headerTitle: t('progress.intensityDistribution'),
+          headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 22 },
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
+        }}
+      />
     </Stack>
   );
 }

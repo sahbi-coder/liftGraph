@@ -295,3 +295,86 @@ export function buildWeeklyExerciseFrequencyByWeek(
 
   return points.sort((a, b) => a.weekIndex - b.weekIndex);
 }
+
+/**
+ * Calculate intensity distribution for a given exercise over a period.
+ * Reuses buildExerciseE1RMSeries to get the best e1RM per day.
+ * For each set, calculate intensity = (weight / estimated1RM) * 100.
+ * Group all intensities into buckets: <60%, 60-70%, 70-80%, 80-90%, >90%.
+ */
+export function calculateIntensityDistribution(
+  workouts: Workout[],
+  exerciseId: string,
+  startDate: Date,
+  endDate: Date,
+) {
+  const distribution = {
+    below60: 0,
+    between60and70: 0,
+    between70and80: 0,
+    between80and90: 0,
+    above90: 0,
+  };
+
+  const start = startOfDay(startDate);
+  const end = startOfDay(endDate);
+
+  // Reuse existing utility to get best e1RM per day
+  const e1RMSeries = buildExerciseE1RMSeries(workouts, exerciseId);
+
+  // Create a map of date -> best e1RM for that day
+  const e1RMByDate = new Map<string, number>();
+  e1RMSeries.forEach((point) => {
+    const pointDate = startOfDay(point.date);
+    if (pointDate < start || pointDate > end) {
+      return;
+    }
+    const dateKey = pointDate.toISOString().split('T')[0];
+    const existing = e1RMByDate.get(dateKey);
+    if (!existing || point.estimated1RM > existing) {
+      e1RMByDate.set(dateKey, point.estimated1RM);
+    }
+  });
+
+  // Calculate intensity for each set using the day's best e1RM
+  workouts.forEach((workout) => {
+    const workoutDate = startOfDay(
+      typeof workout.date === 'string' ? new Date(workout.date) : workout.date,
+    );
+
+    if (workoutDate < start || workoutDate > end) {
+      return;
+    }
+
+    const dateKey = workoutDate.toISOString().split('T')[0];
+    const bestE1RM = e1RMByDate.get(dateKey);
+
+    if (!bestE1RM || bestE1RM <= 0) {
+      return;
+    }
+
+    workout.exercises.forEach((exercise) => {
+      if (exercise.exerciseId !== exerciseId) return;
+
+      getExerciseSets(exercise).forEach((set) => {
+        if (set.weight <= 0) return;
+
+        const intensity = (set.weight / bestE1RM) * 100;
+
+        if (intensity < 60) {
+          distribution.below60 += 1;
+        } else if (intensity >= 60 && intensity < 70) {
+          distribution.between60and70 += 1;
+        } else if (intensity >= 70 && intensity < 80) {
+          distribution.between70and80 += 1;
+        } else if (intensity >= 80 && intensity < 90) {
+          distribution.between80and90 += 1;
+        } else {
+          distribution.above90 += 1;
+        }
+      });
+    });
+  });
+
+  return distribution;
+}

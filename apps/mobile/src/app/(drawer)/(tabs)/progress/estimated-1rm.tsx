@@ -38,7 +38,7 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
   const { t } = useTranslation();
 
   const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
-    defaultExercise: { id: 'squat', name: 'Squat' },
+    defaultExercise: { id: 'squat', name: t('exercise.squat') },
     exercisePickerPath: '/(tabs)/progress/exercises',
     filterByLoad: true, // Only show weighted exercises for estimated 1RM chart
   });

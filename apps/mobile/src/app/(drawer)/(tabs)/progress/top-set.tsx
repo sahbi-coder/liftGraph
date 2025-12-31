@@ -39,7 +39,7 @@ function TopSetProgressionChart({ workouts: _workouts }: TopSetProgressionChartP
   const { t } = useTranslation();
 
   const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
-    defaultExercise: { id: 'squat', name: 'Squat' },
+    defaultExercise: { id: 'squat', name: t('exercise.squat') },
     exercisePickerPath: '/(tabs)/progress/exercises',
     filterByLoad: true, // Only show weighted exercises for top set chart
   });
