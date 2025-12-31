@@ -173,6 +173,7 @@ describe('FirestoreService', () => {
         name: 'New Exercise',
         category: 'Barbell',
         bodyPart: 'Chest',
+        allowedUnits: ['reps', 'weight'],
       };
 
       mockExercisesService.createExercise.mockResolvedValue('exercise-id');
@@ -191,6 +192,7 @@ describe('FirestoreService', () => {
         name: 'Updated Exercise',
         category: 'Barbell',
         bodyPart: 'Chest',
+        allowedUnits: ['reps', 'weight'],
       };
 
       mockExercisesService.updateExercise.mockResolvedValue(undefined);

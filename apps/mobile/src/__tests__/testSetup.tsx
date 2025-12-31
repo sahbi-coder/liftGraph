@@ -175,6 +175,7 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 jest.mock('@/contexts/workoutPrefillContext', () => ({
   getWorkoutPrefillData: jest.fn(() => null),
   clearWorkoutPrefillData: jest.fn(),
+  setWorkoutPrefillData: jest.fn(),
 }));
 
 // Mock exercise picker context to capture callbacks

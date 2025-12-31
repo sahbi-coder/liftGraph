@@ -1,3 +1,31 @@
+/* eslint-disable import/first */
+// Mock firebase/firestore first to prevent ESM parsing issues
+jest.mock('firebase/firestore', () => ({
+  Firestore: jest.fn(),
+  Timestamp: jest.fn(),
+  doc: jest.fn(),
+  getDoc: jest.fn(),
+  setDoc: jest.fn(),
+  updateDoc: jest.fn(),
+}));
+
+// Mock the services that use Firebase to prevent ESM parsing issues
+jest.mock('@/services/user-profile', () => ({
+  UserProfileService: jest.fn(),
+}));
+jest.mock('@/services/firestore', () => ({
+  FirestoreService: jest.fn(),
+}));
+jest.mock('@/services/exercises', () => ({
+  ExercisesService: jest.fn(),
+}));
+jest.mock('@/services/workouts', () => ({
+  WorkoutsService: jest.fn(),
+}));
+jest.mock('@/services/programs', () => ({
+  ProgramsService: jest.fn(),
+}));
+
 import type { Workout, WorkoutExercise, WorkoutSet } from '@/services';
 import {
   calculateEstimated1RM,
@@ -6,6 +34,7 @@ import {
   buildWeeklyExerciseVolumeByWeek,
   buildWeeklyExerciseFrequencyByWeek,
 } from './strength';
+/* eslint-enable import/first */
 
 describe('calculateEstimated1RM', () => {
   it('should calculate estimated 1RM using Epley formula', () => {

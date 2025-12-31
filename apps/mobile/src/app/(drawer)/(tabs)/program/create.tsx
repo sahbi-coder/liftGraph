@@ -122,7 +122,6 @@ export default function CreateProgramScreen() {
         handleSave={() => {
           const programData = validateAndConvert();
           if (programData) {
-            console.log('hey bitch i was rendered');
             handleSave(programData);
           }
         }}
