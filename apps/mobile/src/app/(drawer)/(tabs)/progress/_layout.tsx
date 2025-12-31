@@ -83,6 +83,15 @@ export default function ProgressLayout() {
           headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
         }}
       />
+      <Stack.Screen
+        name="lift-volume-comparison"
+        options={{
+          headerTitle: t('progress.liftVolumeComparison'),
+          headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 22 },
+          headerLeft: () => (Platform.OS === 'ios' ? <BackButton /> : null),
+        }}
+      />
     </Stack>
   );
 }

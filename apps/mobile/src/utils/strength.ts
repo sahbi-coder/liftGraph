@@ -440,3 +440,58 @@ export function calculateMuscleGroupVolume(
 
   return volumeByBodyPart;
 }
+
+export type ExerciseVolume = {
+  [exerciseId: string]: number;
+};
+
+/**
+ * Calculate total volume per exercise for a given period.
+ * For each workout in the period, iterate through exercises.
+ * For each exercise, calculate volume (weight × reps) for all sets.
+ * Accumulate volume by exerciseId.
+ */
+export function calculateExerciseVolume(
+  workouts: Workout[],
+  exerciseIds: string[],
+  startDate: Date,
+  endDate: Date,
+): ExerciseVolume {
+  const volumeByExercise: ExerciseVolume = {};
+
+  // Initialize all selected exercises with 0 volume
+  exerciseIds.forEach((exerciseId) => {
+    volumeByExercise[exerciseId] = 0;
+  });
+
+  const start = startOfDay(startDate);
+  const end = startOfDay(endDate);
+
+  workouts.forEach((workout) => {
+    const workoutDate = startOfDay(
+      typeof workout.date === 'string' ? new Date(workout.date) : workout.date,
+    );
+
+    if (workoutDate < start || workoutDate > end) {
+      return;
+    }
+
+    workout.exercises.forEach((exercise) => {
+      // Only process if exercise is in the selected list
+      if (!exerciseIds.includes(exercise.exerciseId)) {
+        return;
+      }
+
+      // Calculate volume for this exercise (weight × reps for each set)
+      const exerciseVolume = exercise.sets.reduce((sum, set) => sum + set.weight * set.reps, 0);
+
+      if (exerciseVolume > 0) {
+        // Accumulate volume by exerciseId
+        volumeByExercise[exercise.exerciseId] =
+          (volumeByExercise[exercise.exerciseId] || 0) + exerciseVolume;
+      }
+    });
+  });
+
+  return volumeByExercise;
+}

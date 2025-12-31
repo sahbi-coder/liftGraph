@@ -58,6 +58,13 @@ const getProgressMetrics = (t: any): ProgressMetric[] => [
     icon: PieChart,
     color: '#ec4899',
   },
+  {
+    id: 'lift-volume-comparison',
+    title: t('progress.liftVolumeComparison'),
+    description: t('progress.liftVolumeComparisonDescription'),
+    icon: PieChart,
+    color: '#00bcd4',
+  },
 ];
 
 export default function ProgressScreen() {
