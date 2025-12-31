@@ -495,3 +495,111 @@ export function calculateExerciseVolume(
 
   return volumeByExercise;
 }
+
+export type WeeklyExerciseRPEPoint = {
+  weekIndex: number;
+  exerciseId: string;
+  exerciseName: string;
+  averageRPE: number;
+};
+
+/**
+ * For a given date range, compute weekly average RPE per exercise.
+ * RPE is calculated from RIR: RPE ≈ 10 - RIR (with RIR 0 = RPE 10, RIR 1 = RPE 9, etc.)
+ * Weeks are contiguous 7-day buckets starting from the provided startDate.
+ * Returns average RPE per week for each exercise.
+ */
+export function buildWeeklyExerciseRPEByWeek(
+  workouts: Workout[],
+  startDate: Date,
+  endDate: Date,
+): WeeklyExerciseRPEPoint[] {
+  if (!workouts.length) return [];
+
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const start = startOfDay(startDate);
+  const end = startOfDay(endDate);
+
+  if (end < start) {
+    return [];
+  }
+
+  const totalDays = Math.floor((end.getTime() - start.getTime()) / msPerDay);
+  const numberOfWeeks = Math.floor(totalDays / 7) + 1;
+
+  // Prepare buckets: weekIndex -> exerciseId -> { totalRPE, setCount }
+  const weekBuckets: Map<
+    string,
+    { exerciseId: string; exerciseName: string; totalRPE: number; setCount: number }
+  >[] = [];
+
+  for (let i = 0; i < numberOfWeeks; i += 1) {
+    weekBuckets.push(new Map());
+  }
+
+  // Fill buckets with RPE data
+  workouts.forEach((workout) => {
+    const workoutDate = startOfDay(
+      typeof workout.date === 'string' ? new Date(workout.date) : workout.date,
+    );
+
+    if (workoutDate < start || workoutDate > end) {
+      return;
+    }
+
+    const daysFromStart = Math.floor((workoutDate.getTime() - start.getTime()) / msPerDay);
+    const weekIndex = Math.floor(daysFromStart / 7);
+
+    const bucket = weekBuckets[weekIndex];
+    if (!bucket) return;
+
+    workout.exercises.forEach((exercise) => {
+      const key = exercise.exerciseId;
+      let totalRPE = 0;
+      let setCount = 0;
+
+      exercise.sets.forEach((set) => {
+        // Calculate RPE from RIR: RPE = 10 - RIR (clamped to 1-10)
+        const rpe = Math.max(1, Math.min(10, 10 - set.rir));
+        totalRPE += rpe;
+        setCount += 1;
+      });
+
+      if (setCount > 0) {
+        const existing = bucket.get(key);
+
+        if (existing) {
+          existing.totalRPE += totalRPE;
+          existing.setCount += setCount;
+        } else {
+          bucket.set(key, {
+            exerciseId: exercise.exerciseId,
+            exerciseName: exercise.name,
+            totalRPE,
+            setCount,
+          });
+        }
+      }
+    });
+  });
+
+  // Flatten into points: one entry per (week, exercise) with average RPE
+  const points: WeeklyExerciseRPEPoint[] = [];
+
+  weekBuckets.forEach((bucket, index) => {
+    bucket.forEach((value) => {
+      const averageRPE = value.setCount > 0 ? value.totalRPE / value.setCount : 0;
+      if (averageRPE > 0) {
+        points.push({
+          weekIndex: index,
+          exerciseId: value.exerciseId,
+          exerciseName: value.exerciseName,
+          averageRPE,
+        });
+      }
+    });
+  });
+
+  // Sort by weekIndex ascending so callers can easily group/plot
+  return points.sort((a, b) => a.weekIndex - b.weekIndex);
+}

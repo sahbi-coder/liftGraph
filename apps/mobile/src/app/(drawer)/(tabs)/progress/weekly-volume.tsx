@@ -13,7 +13,7 @@ import { useValidatedWorkouts } from '@/hooks/workout/useValidatedWorkouts';
 import { useDateRangeFilter } from '@/hooks/common/useDateRangeFilter';
 import { useExerciseSelection } from '@/hooks/exercise/useExerciseSelection';
 import type { Workout } from '@/services';
-import { buildWeeklyExerciseVolumeByWeek } from '@/utils/strength';
+import { buildWeeklyExerciseVolumeByWeek, buildWeeklyExerciseRPEByWeek } from '@/utils/strength';
 import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { weightForDisplay } from '@/utils/units';
 import { useTranslation } from '@/hooks/common/useTranslation';
@@ -28,6 +28,7 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
   const { preferences } = useUserPreferences();
   const weightUnit = preferences?.weightUnit ?? 'kg';
   const [selectedWeekIndex, setSelectedWeekIndex] = useState<number | null>(null);
+  const [selectedRPEWeekIndex, setSelectedRPEWeekIndex] = useState<number | null>(null);
   const { t } = useTranslation();
 
   const {
@@ -87,6 +88,55 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
     return data;
   }, [_workouts, dateRange, selectedExercise.id, weightUnit]);
 
+  // Build weekly RPE data for the selected exercise
+  const weeklyRPEData = useMemo(() => {
+    const start = dateRange.startDate.toDate();
+    const end = dateRange.endDate.toDate();
+    const points = buildWeeklyExerciseRPEByWeek(_workouts, start, end);
+
+    // Aggregate RPE by week index for the selected exercise
+    const rpeByWeek = new Map<number, { totalRPE: number; count: number }>();
+    points.forEach((p) => {
+      if (p.exerciseId !== selectedExercise.id) return;
+      const existing = rpeByWeek.get(p.weekIndex);
+      if (existing) {
+        existing.totalRPE += p.averageRPE;
+        existing.count += 1;
+      } else {
+        rpeByWeek.set(p.weekIndex, { totalRPE: p.averageRPE, count: 1 });
+      }
+    });
+
+    // Calculate max week index from volume data to keep charts aligned
+    const volumePoints = buildWeeklyExerciseVolumeByWeek(_workouts, start, end);
+    const volumeByWeek = new Map<number, number>();
+    volumePoints.forEach((p) => {
+      if (p.exerciseId !== selectedExercise.id) return;
+      const prev = volumeByWeek.get(p.weekIndex) ?? 0;
+      volumeByWeek.set(p.weekIndex, prev + p.totalVolume);
+    });
+
+    const maxWeekIndex =
+      volumeByWeek.size > 0
+        ? Math.max(...Array.from(volumeByWeek.keys()))
+        : rpeByWeek.size > 0
+          ? Math.max(...Array.from(rpeByWeek.keys()))
+          : 0;
+
+    const data = [];
+    for (let i = 0; i <= maxWeekIndex; i += 1) {
+      const weekStart = dayjs(start).add(i * 7, 'day');
+      const weekData = rpeByWeek.get(i);
+      const averageRPE = weekData ? weekData.totalRPE / weekData.count : 0;
+      data.push({
+        value: averageRPE,
+        label: weekStart.format('MMM D'),
+      });
+    }
+
+    return data;
+  }, [_workouts, dateRange, selectedExercise.id]);
+
   // Determine a reasonable max value for the y-axis (volume)
   const maxYValue = useMemo(() => {
     if (!weeklyVolumeData.length) return 1000;
@@ -95,6 +145,9 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
     // Round up to nearest 100 for a cleaner axis
     return Math.ceil(maxVal / 100) * 100;
   }, [weeklyVolumeData]);
+
+  // Determine max value for RPE chart (always 10)
+  const maxRPEValue = 10;
 
   return (
     <ScrollView
@@ -203,6 +256,72 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
                 </Text>
               </YStack>
             )}
+          </View>
+        </YStack>
+
+        {/* Average Weekly RPE Chart */}
+        <YStack padding="$4" backgroundColor={colors.midGray} borderRadius="$4" space="$3">
+          <YStack marginBottom="$2">
+            <Text color="$textPrimary" fontSize="$5" fontWeight="600">
+              {selectedExercise.name} - {t('progress.averageWeeklyRPE')}
+            </Text>
+            <Text color="$textSecondary" fontSize="$3">
+              {dateRangeDisplay}
+            </Text>
+            <Text color="$textSecondary" fontSize="$3" marginTop="$2">
+              {t('progress.averageWeeklyRPEDescription')}
+            </Text>
+          </YStack>
+
+          <View
+            style={{
+              alignItems: 'center',
+              marginVertical: 16,
+            }}
+          >
+            <BarChart
+              data={weeklyRPEData}
+              width={0.75 * screenWidth}
+              height={220}
+              barWidth={22}
+              frontColor="#3b82f6"
+              spacing={10}
+              hideRules={false}
+              rulesColor={colors.darkGray}
+              yAxisColor={colors.darkGray}
+              xAxisColor={colors.darkGray}
+              yAxisTextStyle={{ color: colors.white, paddingRight: 8 }}
+              xAxisLabelTextStyle={{ color: colors.white, fontSize: 10 }}
+              noOfSections={5}
+              maxValue={maxRPEValue}
+              yAxisLabelWidth={50}
+              yAxisLabelSuffix=" RPE"
+              showGradient
+              gradientColor="#3b82f655"
+              onPress={(_item: unknown, index: number) => setSelectedRPEWeekIndex(index)}
+            />
+            {selectedRPEWeekIndex != null &&
+              weeklyRPEData[selectedRPEWeekIndex] &&
+              weeklyRPEData[selectedRPEWeekIndex].value > 0 && (
+                <YStack
+                  marginTop="$3"
+                  padding="$3"
+                  backgroundColor={colors.darkGray}
+                  borderRadius="$3"
+                  alignItems="center"
+                  gap="$1"
+                  minWidth={140}
+                >
+                  <Text color={colors.white} fontSize="$3">
+                    {t('progress.weekStarting', {
+                      date: weeklyRPEData[selectedRPEWeekIndex].label,
+                    })}
+                  </Text>
+                  <Text color="#3b82f6" fontSize="$4" fontWeight="600">
+                    {weeklyRPEData[selectedRPEWeekIndex].value.toFixed(1)} RPE
+                  </Text>
+                </YStack>
+              )}
           </View>
         </YStack>
 
