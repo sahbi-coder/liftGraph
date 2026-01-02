@@ -135,4 +135,8 @@ export class FirestoreService {
   async deleteProgram(userId: string, programId: string) {
     return this.programs.deleteProgram(userId, programId);
   }
+
+  async populateProgramsFromLibrary(userId: string, language: string) {
+    return this.programs.populateProgramsFromLibrary(userId, language);
+  }
 }

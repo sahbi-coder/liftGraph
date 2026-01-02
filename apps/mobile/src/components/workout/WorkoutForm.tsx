@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Modal, ScrollView } from 'react-native';
 import { Button, Text, TextArea, XStack, YStack } from 'tamagui';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -62,6 +62,16 @@ export function WorkoutForm({
 
   // Fetch exercises to get allowedUnits for proper form mapping
   const { exercises: exerciseData } = useExercises();
+
+  // Create a map of exercise ID to exercise name from the library
+  const exerciseNameMap = useMemo(() => {
+    if (!exerciseData) return new Map<string, string>();
+    const map = new Map<string, string>();
+    exerciseData.forEach((exercise) => {
+      map.set(exercise.id, exercise.name);
+    });
+    return map;
+  }, [exerciseData]);
 
   const validated = initialValues?.validated ?? false;
   const [isUnvalidateModalVisible, setIsUnvalidateModalVisible] = useState(false);
@@ -212,6 +222,7 @@ export function WorkoutForm({
                 onUpdateSetField={handleUpdateSetField}
                 disabled={validated}
                 weightUnit={weightUnit}
+                exerciseNameMap={exerciseNameMap}
               />
             ))
           )}

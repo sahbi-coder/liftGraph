@@ -27,6 +27,7 @@ type ProgramDetailsProps = {
   isDeleteModalVisible: boolean;
   onCloseDeleteModal: () => void;
   onConfirmDelete: () => void;
+  exerciseNameMap: Map<string, string>;
 };
 
 export function ProgramDetails({
@@ -42,9 +43,15 @@ export function ProgramDetails({
   isDeleteModalVisible,
   onCloseDeleteModal,
   onConfirmDelete,
+  exerciseNameMap,
 }: ProgramDetailsProps) {
   const router = useRouter();
   const { t } = useTranslation();
+
+  // Helper function to get exercise name from library with fallback
+  const getExerciseName = (exercise: ProgramExercise): string => {
+    return exerciseNameMap.get(exercise.id) || exercise.name;
+  };
 
   // Helper function to translate day labels
   const getTranslatedDayLabel = (dayLabel: ProgramDayLabel): string => {
@@ -109,7 +116,7 @@ export function ProgramDetails({
       space="$2"
     >
       <Text color={colors.white} fontSize="$4" fontWeight="600">
-        {exercise.name}
+        {getExerciseName(exercise)}
       </Text>
       <XStack gap="$3" flexWrap="wrap">
         <YStack space="$1">

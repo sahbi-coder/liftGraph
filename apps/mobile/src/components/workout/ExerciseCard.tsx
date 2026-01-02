@@ -37,6 +37,7 @@ type ExerciseCardProps = {
   ) => void;
   disabled?: boolean;
   weightUnit: 'kg' | 'lb';
+  exerciseNameMap: Map<string, string>;
 };
 
 export const ExerciseCard = ({
@@ -49,8 +50,18 @@ export const ExerciseCard = ({
   onUpdateSetField,
   disabled = false,
   weightUnit,
+  exerciseNameMap,
 }: ExerciseCardProps) => {
   const { t } = useTranslation();
+
+  // Helper function to get exercise name from library with fallback
+  const getExerciseName = (): string => {
+    if (exerciseNameMap && exercise.exerciseId) {
+      return exerciseNameMap.get(exercise.exerciseId) || exercise.name;
+    }
+    return exercise.name;
+  };
+
   return (
     <YStack
       padding="$2"
@@ -66,7 +77,7 @@ export const ExerciseCard = ({
         position="relative"
       >
         <Text color={colors.white} fontSize="$5" fontWeight="600">
-          {index + 1}. {exercise.name}
+          {index + 1}. {getExerciseName()}
         </Text>
         <Button
           testID={`remove-exercise-button-${index}`}

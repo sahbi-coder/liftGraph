@@ -6,6 +6,7 @@ import { colors } from '@/theme/colors';
 import { useAlertModal } from '@/hooks/common/useAlertModal';
 import { useTranslation } from '@/hooks/common/useTranslation';
 import { useProgram } from '@/hooks/program/useProgram';
+import { useExercises } from '@/hooks/exercise/useExercises';
 import type { Program, ProgramDayLabel, ProgramExercise, WorkoutExercise } from '@/services';
 import { setWorkoutPrefillData } from '@/contexts/workoutPrefillContext';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
@@ -19,10 +20,21 @@ function ProgramDetailsContainer({ program, programId }: { program: Program; pro
   const { user } = useAuthenticatedUser();
   const { t } = useTranslation();
   const { showSuccess, showError, AlertModalComponent } = useAlertModal();
+  const { exercises: exerciseLibrary } = useExercises();
 
   const [selectedAlternatingWeek, setSelectedAlternatingWeek] = useState<0 | 1>(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
+  // Create a map of exercise ID to exercise name from the library
+  const exerciseNameMap = useMemo(() => {
+    if (!exerciseLibrary) return new Map<string, string>();
+    const map = new Map<string, string>();
+    exerciseLibrary.forEach((exercise) => {
+      map.set(exercise.id, exercise.name);
+    });
+    return map;
+  }, [exerciseLibrary]);
 
   // Determine active days for DaySelector
   const activeDays = useMemo<ProgramDayLabel[]>(() => {
@@ -140,6 +152,7 @@ function ProgramDetailsContainer({ program, programId }: { program: Program; pro
         isDeleteModalVisible={isDeleteModalVisible}
         onCloseDeleteModal={() => setIsDeleteModalVisible(false)}
         onConfirmDelete={handleConfirmDelete}
+        exerciseNameMap={exerciseNameMap}
       />
       <AlertModalComponent />
     </>

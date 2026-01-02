@@ -10,6 +10,9 @@ import { useUserPreferences } from '@/contexts/UserPreferencesContext';
 import { useTranslation } from '@/hooks/common/useTranslation';
 import { getServiceErrorMessage } from '@/utils/serviceErrors';
 import { useAlertModal } from '@/hooks/common/useAlertModal';
+import { useDependencies } from '@/dependencies/provider';
+import { useAuthenticatedUser } from '@/contexts/AuthContext';
+import { LoadingView } from '@/components/StatusViews';
 
 type UnitOption = {
   value: 'kg' | 'lb' | 'cm' | 'ft' | 'celsius' | 'fahrenheit';
@@ -20,9 +23,12 @@ type UnitOption = {
 
 export default function UnitsOnboardingScreen() {
   const router = useRouter();
-  const { t } = useTranslation();
-  const { preferences, updatePreferences, loading } = useUserPreferences();
+  const { t, i18n } = useTranslation();
+  const { preferences, updatePreferences, loading: loadingPreferences } = useUserPreferences();
   const { showError, AlertModalComponent } = useAlertModal();
+  const { services } = useDependencies();
+  const { user } = useAuthenticatedUser();
+  const [loading, setLoading] = useState(false);
 
   const weightOptions: UnitOption[] = [
     {
@@ -89,14 +95,26 @@ export default function UnitsOnboardingScreen() {
 
   const handleContinue = async () => {
     try {
+      setLoading(true);
       await updatePreferences({
         ...selectedUnits,
         onboardingCompleted: true,
       });
+
+      const language = i18n.language;
+      try {
+        await services.firestore.populateProgramsFromLibrary(user.uid, language);
+      } catch (error) {
+        // Log error but don't block onboarding completion
+        console.error('Error populating programs from library:', error);
+      }
+
       router.replace('/');
     } catch (error) {
       const errorMessage = getServiceErrorMessage(error, t);
       showError(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -159,6 +177,9 @@ export default function UnitsOnboardingScreen() {
       </TouchableOpacity>
     );
   };
+  if (loadingPreferences) {
+    return <LoadingView />;
+  }
 
   return (
     <YStack flex={1} backgroundColor={colors.darkerGray}>

@@ -10,6 +10,7 @@ import {
   orderBy,
   query,
   updateDoc,
+  writeBatch,
 } from 'firebase/firestore';
 import type { Program, ProgramInput, ProgramWeek, ProgramPhase } from '@/domain';
 import { ProgramSchema, ProgramInputSchema } from '@/domain';
@@ -29,6 +30,17 @@ type ProgramFirestoreData = {
 
 export class ProgramsService {
   constructor(private readonly db: Firestore) {}
+
+  private getProgramLibraryName(language: string) {
+    switch (language) {
+      case 'es':
+        return 'workoutLibraryEs';
+      case 'fr':
+        return 'workoutLibraryFr';
+      default:
+        return 'workoutLibrary';
+    }
+  }
 
   async createProgram(userId: string, program: ProgramInput) {
     // Validate input with schema
@@ -223,5 +235,71 @@ export class ProgramsService {
     }
 
     await deleteDoc(programRef);
+  }
+
+  /**
+   * Populates user's programs collection from the library
+   * @returns Number of programs copied from library
+   */
+  async populateProgramsFromLibrary(userId: string, language: string): Promise<number> {
+    const libraryCollectionName = this.getProgramLibraryName(language);
+    const libraryCollection = collection(this.db, libraryCollectionName);
+    const librarySnapshot = await getDocs(libraryCollection);
+
+    if (librarySnapshot.empty) {
+      return 0;
+    }
+
+    const userProgramsCollection = collection(this.db, `users/${userId}/programs`);
+    const userProgramsSnapshot = await getDocs(userProgramsCollection);
+    const existingProgramIds = new Set(userProgramsSnapshot.docs.map((doc) => doc.id));
+
+    const programsToCopy = librarySnapshot.docs.filter(
+      (docSnap) => !existingProgramIds.has(docSnap.id),
+    );
+
+    if (programsToCopy.length === 0) {
+      return 0;
+    }
+
+    // Use batch write to copy programs
+    const batch = writeBatch(this.db);
+
+    for (const docSnap of programsToCopy) {
+      const data = docSnap.data();
+      const inputResult = ProgramInputSchema.safeParse(data);
+
+      const userProgramRef = doc(userProgramsCollection, docSnap.id);
+      if (!inputResult.success) {
+        continue;
+      }
+
+      const now = Timestamp.now();
+      const programData: ProgramFirestoreData = {
+        name: inputResult.data.name,
+        description: inputResult.data.description,
+        type: inputResult.data.type,
+        updatedAt: now,
+        createdAt: now,
+      };
+
+      if (inputResult.data.type === 'simple') {
+        programData.week = inputResult.data.week;
+        programData.alternatingWeeks = undefined;
+        programData.phases = undefined;
+      } else if (inputResult.data.type === 'alternating') {
+        programData.alternatingWeeks = inputResult.data.alternatingWeeks;
+        programData.week = undefined;
+        programData.phases = undefined;
+      } else {
+        programData.phases = inputResult.data.phases;
+        programData.week = undefined;
+        programData.alternatingWeeks = undefined;
+      }
+      batch.set(userProgramRef, programData);
+    }
+
+    await batch.commit();
+    return programsToCopy.length;
   }
 }
