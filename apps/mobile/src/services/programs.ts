@@ -26,6 +26,7 @@ type ProgramFirestoreData = {
   phases?: ProgramPhase[];
   createdAt: Timestamp;
   updatedAt: Timestamp;
+  isCustom: boolean;
 };
 
 export class ProgramsService {
@@ -58,6 +59,7 @@ export class ProgramsService {
       type: inputResult.data.type,
       createdAt: now,
       updatedAt: now,
+      isCustom: true,
     };
 
     if (inputResult.data.type === 'simple') {
@@ -87,6 +89,7 @@ export class ProgramsService {
           description: data.description,
           createdAt: data.createdAt.toDate(),
           updatedAt: data.updatedAt.toDate(),
+          isCustom: data.isCustom,
         };
 
         let programData: Program;
@@ -146,6 +149,7 @@ export class ProgramsService {
       description: data.description,
       createdAt: data.createdAt.toDate(),
       updatedAt: data.updatedAt.toDate(),
+      isCustom: data.isCustom,
     };
 
     let programData: Program;
@@ -281,6 +285,7 @@ export class ProgramsService {
         type: inputResult.data.type,
         updatedAt: now,
         createdAt: now,
+        isCustom: false,
       };
 
       if (inputResult.data.type === 'simple') {

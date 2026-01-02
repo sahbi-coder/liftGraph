@@ -240,6 +240,7 @@ describe('ProgramsService', () => {
           week: programInput.week,
           createdAt: mockTimestamp,
           updatedAt: mockTimestamp,
+          isCustom: true,
         }),
       );
       expect(result).toBe('program1');
@@ -267,6 +268,7 @@ describe('ProgramsService', () => {
         expect.objectContaining({
           type: 'alternating',
           alternatingWeeks: programInput.alternatingWeeks,
+          isCustom: true,
         }),
       );
       expect(result).toBe('program1');
@@ -294,6 +296,7 @@ describe('ProgramsService', () => {
         expect.objectContaining({
           type: 'advanced',
           phases: programInput.phases,
+          isCustom: true,
         }),
       );
       expect(result).toBe('program1');
@@ -330,6 +333,7 @@ describe('ProgramsService', () => {
             name: 'Program 1',
             description: 'First program',
             type: 'simple',
+            isCustom: true,
             week: {
               days: [
                 {
@@ -355,6 +359,7 @@ describe('ProgramsService', () => {
             name: 'Program 2',
             description: 'Second program',
             type: 'alternating',
+            isCustom: false,
             alternatingWeeks: [
               {
                 days: [
@@ -426,6 +431,7 @@ describe('ProgramsService', () => {
             name: 'Valid Program',
             description: 'Valid',
             type: 'simple',
+            isCustom: true,
             week: {
               days: [
                 {
@@ -494,6 +500,7 @@ describe('ProgramsService', () => {
           name: 'Test Program',
           description: 'A test program',
           type: 'simple',
+          isCustom: true,
           week: {
             days: [
               {
@@ -540,6 +547,7 @@ describe('ProgramsService', () => {
           name: 'Alternating Program',
           description: 'An alternating program',
           type: 'alternating',
+          isCustom: true,
           alternatingWeeks: [
             {
               days: [
@@ -602,6 +610,7 @@ describe('ProgramsService', () => {
           name: 'Advanced Program',
           description: 'An advanced program',
           type: 'advanced',
+          isCustom: true,
           phases: [
             {
               name: 'Phase 1',
@@ -674,6 +683,7 @@ describe('ProgramsService', () => {
           name: 'Invalid Program',
           description: 'Missing week',
           type: 'simple',
+          isCustom: true,
           createdAt,
           updatedAt,
         }),
@@ -701,6 +711,7 @@ describe('ProgramsService', () => {
           name: 'Invalid Program',
           description: 'Missing alternatingWeeks',
           type: 'alternating',
+          isCustom: true,
           createdAt,
           updatedAt,
         }),
@@ -728,6 +739,7 @@ describe('ProgramsService', () => {
           name: 'Invalid Program',
           description: 'Missing phases',
           type: 'advanced',
+          isCustom: true,
           createdAt,
           updatedAt,
         }),

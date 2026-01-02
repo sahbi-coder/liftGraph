@@ -42,6 +42,7 @@ describe('ProgramDetailsScreen', () => {
       name: 'Simple Training Program',
       description: 'A simple weekly program',
       type: 'simple',
+      isCustom: true,
       week: {
         name: 'Week 1',
         days: [
@@ -281,6 +282,7 @@ describe('ProgramDetailsScreen', () => {
       name: 'Alternating Training Program',
       description: 'A program with alternating weeks',
       type: 'alternating',
+      isCustom: true,
       alternatingWeeks: [
         {
           name: 'Week A',
@@ -545,6 +547,7 @@ describe('ProgramDetailsScreen', () => {
       name: 'Advanced Training Program',
       description: 'A multi-phase advanced program',
       type: 'advanced',
+      isCustom: true,
       phases: [
         {
           name: 'Phase 1: Strength',

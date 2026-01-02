@@ -91,6 +91,7 @@ export const SimpleProgramSchema = z.object({
   week: ProgramWeekSchema,
   createdAt: z.date(),
   updatedAt: z.date(),
+  isCustom: z.boolean(),
 });
 
 export const AlternatingProgramSchema = z.object({
@@ -99,6 +100,7 @@ export const AlternatingProgramSchema = z.object({
   description: z.string(),
   type: z.literal('alternating'),
   alternatingWeeks: z.tuple([ProgramWeekSchema, ProgramWeekSchema]),
+  isCustom: z.boolean(),
 });
 
 export const AdvancedProgramSchema = z.object({
@@ -107,6 +109,7 @@ export const AdvancedProgramSchema = z.object({
   description: z.string(),
   type: z.literal('advanced'),
   phases: z.array(ProgramPhaseSchema).min(1, 'At least one phase is required'),
+  isCustom: z.boolean(),
 });
 
 export const ProgramSchema: z.ZodDiscriminatedUnion<

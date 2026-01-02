@@ -75,6 +75,7 @@ describe('EditProgramScreen', () => {
     name: 'My Training Program',
     description: 'A comprehensive training program',
     type: 'simple',
+    isCustom: true,
     week: {
       days: [
         {
@@ -105,6 +106,7 @@ describe('EditProgramScreen', () => {
     name: 'My Alternating Program',
     description: 'An alternating training program',
     type: 'alternating',
+    isCustom: true,
     alternatingWeeks: [
       {
         days: [
@@ -156,6 +158,7 @@ describe('EditProgramScreen', () => {
     name: 'My Advanced Program',
     description: 'An advanced training program',
     type: 'advanced',
+    isCustom: true,
     phases: [
       {
         name: 'Strength Phase',
