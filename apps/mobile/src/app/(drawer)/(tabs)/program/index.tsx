@@ -13,6 +13,10 @@ export default function ProgramHome() {
 
   const { programs, isLoading, isError, refetch } = useUserPrograms();
 
+  // Separate programs into custom and default
+  const customPrograms = programs?.filter((p) => p.isCustom === true) ?? [];
+  const defaultPrograms = programs?.filter((p) => p.isCustom === false) ?? [];
+
   const handleCreateProgram = useCallback(() => {
     router.push('/(drawer)/(tabs)/program/create');
   }, [router]);
@@ -64,25 +68,11 @@ export default function ProgramHome() {
       </YStack>
     );
   }
-  if (!programs || programs.length === 0) {
-    return (
-      <YStack
-        flex={1}
-        backgroundColor={colors.darkerGray}
-        justifyContent="center"
-        alignItems="center"
-        padding="$4"
-      >
-        <Text color="$textPrimary" fontSize="$5" textAlign="center">
-          {t('program.noPrograms')}
-        </Text>
-      </YStack>
-    );
-  }
 
   return (
     <ProgramHomeScreen
-      programs={programs}
+      customPrograms={customPrograms}
+      defaultPrograms={defaultPrograms}
       onCreateProgram={handleCreateProgram}
       onProgramPress={handleProgramPress}
     />

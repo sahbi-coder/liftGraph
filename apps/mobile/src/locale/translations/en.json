@@ -230,6 +230,8 @@
     "failedToLoadPrograms": "Failed to load programs",
     "manageYourTrainingPrograms": "Manage your training programs",
     "noProgramsYet": "No programs yet. Create your first program to get started!",
+    "myPrograms": "My Programs",
+    "defaultPrograms": "Default Programs",
     "exerciseMustHaveValidSet": "Exercise \"{{name}}\" must have at least one valid set.",
     "phaseMustHaveWeek": "Phase \"{{name}}\" must have at least one week.",
     "dayNameRequired": "Day name is required for Day {{index}}.",

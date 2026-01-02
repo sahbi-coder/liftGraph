@@ -230,6 +230,8 @@
     "failedToLoadPrograms": "Échec du chargement des programmes",
     "manageYourTrainingPrograms": "Gérez vos programmes d'entraînement",
     "noProgramsYet": "Aucun programme pour le moment. Créez votre premier programme pour commencer!",
+    "myPrograms": "Mes Programmes",
+    "defaultPrograms": "Programmes par Défaut",
     "exerciseMustHaveValidSet": "L'exercice \"{{name}}\" doit avoir au moins une série valide.",
     "phaseMustHaveWeek": "La phase \"{{name}}\" doit avoir au moins une semaine.",
     "dayNameRequired": "Le nom du jour est requis pour le Jour {{index}}.",
