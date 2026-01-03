@@ -1,17 +1,3 @@
-/* eslint-disable import/first */
-// All mocks must be defined BEFORE any imports that might use them
-// Mock useProgram hook
-jest.mock('@/hooks/program/useProgram', () => ({
-  useProgram: jest.fn(),
-}));
-
-// Mock workout prefill context - must include all functions as jest.fn() to match testSetup
-jest.mock('@/contexts/workoutPrefillContext', () => ({
-  getWorkoutPrefillData: jest.fn(() => null),
-  clearWorkoutPrefillData: jest.fn(),
-  setWorkoutPrefillData: jest.fn(),
-}));
-
 // Import testSetup FIRST to ensure mocks are hoisted before any other imports
 import { mockPush, mockBack, createTestWrapper, resetAllMocks } from '../../testSetup';
 
@@ -24,6 +10,16 @@ import type { Program } from '@/services';
 const expoRouter = jest.requireMock('expo-router');
 expoRouter.useLocalSearchParams.mockReturnValue({ id: 'test-program-id' });
 
+jest.mock('@/hooks/program/useProgram', () => ({
+  useProgram: jest.fn(),
+}));
+
+// Mock workout prefill context - must include all functions as jest.fn() to match testSetup
+jest.mock('@/contexts/workoutPrefillContext', () => ({
+  getWorkoutPrefillData: jest.fn(() => null),
+  clearWorkoutPrefillData: jest.fn(),
+  setWorkoutPrefillData: jest.fn(),
+}));
 describe('ProgramDetailsScreen', () => {
   const TestWrapper = createTestWrapper();
   const { useProgram } = require('@/hooks/program/useProgram');

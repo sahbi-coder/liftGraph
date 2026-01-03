@@ -1,8 +1,8 @@
 import { renderHook, act } from '@testing-library/react-native';
 import { useExerciseSelection } from './useExerciseSelection';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { setExercisePickerCallback } from '@/contexts/exercisePickerContext';
-
 // Mock dependencies
 jest.mock('expo-router', () => ({
   useRouter: jest.fn(),
@@ -11,6 +11,28 @@ jest.mock('expo-router', () => ({
 jest.mock('@/contexts/exercisePickerContext', () => ({
   setExercisePickerCallback: jest.fn(),
 }));
+
+jest.mock('@react-native-async-storage/async-storage', () => {
+  const mockStorage: Record<string, string> = {};
+  return {
+    __esModule: true,
+    default: {
+      getItem: jest.fn((key: string) => Promise.resolve(mockStorage[key] || null)),
+      setItem: jest.fn((key: string, value: string) => {
+        mockStorage[key] = value;
+        return Promise.resolve();
+      }),
+      removeItem: jest.fn((key: string) => {
+        delete mockStorage[key];
+        return Promise.resolve();
+      }),
+      clear: jest.fn(() => {
+        Object.keys(mockStorage).forEach((key) => delete mockStorage[key]);
+        return Promise.resolve();
+      }),
+    },
+  };
+});
 
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 const mockSetExercisePickerCallback = setExercisePickerCallback as jest.MockedFunction<
@@ -27,6 +49,10 @@ describe('useExerciseSelection', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseRouter.mockReturnValue(mockRouter as any);
+    // Reset AsyncStorage mocks to return null (no persisted data)
+    // The mock is already set up to return promises, just reset the return values
+    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
+    (AsyncStorage.setItem as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe('initialization', () => {

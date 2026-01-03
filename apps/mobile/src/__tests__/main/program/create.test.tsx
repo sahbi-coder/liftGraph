@@ -1,18 +1,3 @@
-/* eslint-disable import/first */
-// All mocks must be defined BEFORE any imports that might use them
-
-// Only mock hooks that make API calls
-// Set up default mock that returns isSaving: false
-// This will be overridden in beforeEach with a smarter mock
-jest.mock('@/hooks/program/useProgramSave', () => ({
-  useProgramSave: jest.fn(() => ({
-    handleSave: jest.fn(),
-    isSaving: false,
-  })),
-}));
-
-// Import testSetup FIRST to ensure mocks are hoisted before any other imports
-// Note: expo-router is already mocked in testSetup.tsx
 import {
   createTestWrapper,
   resetAllMocks,
@@ -24,6 +9,12 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
 import CreateProgramScreen from '@/app/(drawer)/(tabs)/program/create';
 
+jest.mock('@/hooks/program/useProgramSave', () => ({
+  useProgramSave: jest.fn(() => ({
+    handleSave: jest.fn(),
+    isSaving: false,
+  })),
+}));
 describe('CreateProgramScreen', () => {
   const TestWrapper = createTestWrapper();
   const { useProgramSave } = require('@/hooks/program/useProgramSave');

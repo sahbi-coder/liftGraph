@@ -1,24 +1,10 @@
-/* eslint-disable import/first */
-// All mocks must be defined BEFORE any imports that might use them
+import { createTestWrapper, resetAllMocks } from '../../testSetup';
+import { useLocalSearchParams } from 'expo-router';
 
-// Only mock hooks that make API calls
-// Set up default mock that returns isSaving: false
-// This will be overridden in beforeEach with a smarter mock
-jest.mock('@/hooks/program/useProgramSave', () => ({
-  useProgramSave: jest.fn(() => ({
-    handleSave: jest.fn(),
-    isSaving: false,
-  })),
-}));
-
-// Mock useProgram hook
-jest.mock('@/hooks/program/useProgram', () => ({
-  useProgram: jest.fn(() => ({
-    program: null,
-    isLoading: false,
-    isError: false,
-  })),
-}));
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
+import EditProgramScreen from '@/app/(drawer)/(tabs)/program/edit';
+import type { Program } from '@/domain/program';
 
 // Mock useAlertModal to prevent infinite loops in useEffect
 // Create stable mock functions that won't cause re-renders
@@ -51,15 +37,21 @@ jest.mock('@/hooks/common/useAlertModal', () => ({
   useAlertModal: jest.fn(() => mockAlertModalReturn),
 }));
 
-// Import testSetup FIRST to ensure mocks are hoisted before any other imports
-// Note: expo-router is already mocked in testSetup.tsx
-import { createTestWrapper, resetAllMocks } from '../../testSetup';
-import { useLocalSearchParams } from 'expo-router';
+// Mock dependencies
+jest.mock('@/hooks/program/useProgram', () => ({
+  useProgram: jest.fn(() => ({
+    program: null,
+    isLoading: false,
+    isError: false,
+  })),
+}));
 
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
-import EditProgramScreen from '@/app/(drawer)/(tabs)/program/edit';
-import type { Program } from '@/domain/program';
+jest.mock('@/hooks/program/useProgramSave', () => ({
+  useProgramSave: jest.fn(() => ({
+    handleSave: jest.fn(),
+    isSaving: false,
+  })),
+}));
 
 describe('EditProgramScreen', () => {
   const TestWrapper = createTestWrapper();
