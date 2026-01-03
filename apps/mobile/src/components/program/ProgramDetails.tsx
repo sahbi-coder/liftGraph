@@ -284,11 +284,7 @@ export function ProgramDetails({
                       <Text color={colors.niceOrange} fontSize="$6" fontWeight="700">
                         {t('common.week')} {weekIndex + 1}
                       </Text>
-                      {phase.weeks.length > 1 && (
-                        <Text color="$textSecondary" fontSize="$3">
-                          ({t('common.of')} {phase.weeks.length} {t('common.weeks')})
-                        </Text>
-                      )}
+
                       {week.name && (
                         <Text color="$textSecondary" fontSize="$3">
                           ({week.name})

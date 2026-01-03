@@ -37,7 +37,7 @@ function WeeklyFrequencyChart({ workouts: _workouts }: WeeklyFrequencyChartProps
     handleApplyCustomRange,
   } = useDateRangeFilter({
     workouts: _workouts,
-    defaultFilter: 'month',
+    defaultFilter: '3months',
   });
 
   const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
