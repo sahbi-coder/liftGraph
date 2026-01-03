@@ -41,6 +41,7 @@ function Estimated1RMChart({ workouts: _workouts }: Estimated1RMChartProps) {
     defaultExercise: { id: 'squat', name: t('exercise.squat') },
     exercisePickerPath: '/(tabs)/progress/exercises',
     filterByLoad: true, // Only show weighted exercises for estimated 1RM chart
+    persistenceKey: 'estimated-1rm',
   });
 
   // Build e1RM series for the selected exercise from workout data

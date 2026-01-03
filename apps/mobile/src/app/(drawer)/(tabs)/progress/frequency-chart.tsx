@@ -43,6 +43,7 @@ function WeeklyFrequencyChart({ workouts: _workouts }: WeeklyFrequencyChartProps
   const { selectedExercise, handleOpenExercisePicker } = useExerciseSelection({
     defaultExercise: { id: 'squat', name: t('exercise.squat') },
     exercisePickerPath: '/(tabs)/progress/exercises',
+    persistenceKey: 'frequency-chart',
   });
 
   // Build weekly frequency data for the selected exercise

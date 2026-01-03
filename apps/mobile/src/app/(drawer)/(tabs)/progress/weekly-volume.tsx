@@ -51,6 +51,7 @@ function WeeklyVolumeChart({ workouts: _workouts }: WeeklyVolumeChartProps) {
     defaultExercise: { id: 'squat', name: t('exercise.squat') },
     exercisePickerPath: '/(tabs)/progress/exercises',
     filterByLoad: true, // Only show weighted exercises for volume chart
+    persistenceKey: 'weekly-volume',
   });
 
   // Build weekly volume data for the selected exercise

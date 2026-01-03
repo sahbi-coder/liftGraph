@@ -29,6 +29,7 @@ function IntensityDistributionChart({ workouts: _workouts }: IntensityDistributi
     defaultExercise: { id: 'squat', name: t('exercise.squat') },
     exercisePickerPath: '/(tabs)/progress/exercises',
     filterByLoad: true, // Only show weighted exercises for intensity distribution chart
+    persistenceKey: 'intensity-distribution',
   });
 
   const {
