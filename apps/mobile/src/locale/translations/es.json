@@ -409,7 +409,7 @@
     "json": "JSON (.json)",
     "jsonDescription": "Para desarrolladores y usuarios avanzados",
     "exportYourTrainingData": "Exportar tus Datos de Entrenamiento",
-    "exportDescription": "Descarga tu historial completo de entrenamientos, récords personales y estadísticas de entrenamiento en varios formatos para respaldo o análisis.",
+    "exportDescription": "Exporta los datos de tus entrenamientos en formato sin procesar. El archivo exportado contiene los datos sin procesar completos de tus entrenamientos.",
     "selectDataTypes": "Seleccionar Tipos de Datos",
     "exportFormat": "Formato de Exportación",
     "dateRange": "Rango de Fechas",

@@ -409,7 +409,7 @@
     "json": "JSON (.json)",
     "jsonDescription": "For developers and advanced users",
     "exportYourTrainingData": "Export Your Training Data",
-    "exportDescription": "Download your complete workout history, personal records, and training statistics in various formats for backup or analysis purposes.",
+    "exportDescription": "Export your workout data in raw format. The exported file contains the complete raw data of your workouts.",
     "selectDataTypes": "Select Data Types",
     "exportFormat": "Export Format",
     "dateRange": "Date Range",

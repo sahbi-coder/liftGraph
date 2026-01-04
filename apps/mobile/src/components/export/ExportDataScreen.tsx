@@ -1,16 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { ScrollView, Modal, TouchableOpacity, Alert } from 'react-native';
+import { ScrollView, Modal, TouchableOpacity } from 'react-native';
 import { YStack, XStack, Text, Button, Input } from 'tamagui';
-import Feather from '@expo/vector-icons/Feather';
-import {
-  Dumbbell,
-  Trophy,
-  TrendingUp,
-  Calendar as CalendarIcon,
-  FileSpreadsheet,
-  FileText,
-  Code,
-} from '@tamagui/lucide-icons';
+import { FileSpreadsheet, FileText, Code } from '@tamagui/lucide-icons';
 import dayjs from 'dayjs';
 
 import { colors } from '@/theme/colors';
@@ -19,7 +10,6 @@ import type { Workout } from '@/services';
 import { exportWorkouts, type ExportFormat } from '@/utils/export';
 import { useTranslation } from '@/hooks/common/useTranslation';
 
-type DataType = 'workoutHistory' | 'personalRecords' | 'progressTracking' | 'trainingPrograms';
 type DateRangePreset = 'last30Days' | 'last6Months' | 'allTime' | 'custom';
 
 type ExportDataScreenProps = {
@@ -28,9 +18,7 @@ type ExportDataScreenProps = {
 
 export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
   const { t } = useTranslation();
-  const [selectedDataTypes, setSelectedDataTypes] = useState(
-    new Set(['workoutHistory', 'personalRecords']),
-  );
+
   const [exportFormat, setExportFormat] = useState<ExportFormat>('xlsx');
   const [dateRangePreset, setDateRangePreset] = useState<DateRangePreset>('allTime');
   const [fromDate, setFromDate] = useState<string | null>(null);
@@ -38,18 +26,6 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
   const [isFromDatePickerVisible, setIsFromDatePickerVisible] = useState(false);
   const [isToDatePickerVisible, setIsToDatePickerVisible] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
-
-  const toggleDataType = useCallback((type: DataType) => {
-    setSelectedDataTypes((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(type)) {
-        newSet.delete(type);
-      } else {
-        newSet.add(type);
-      }
-      return newSet;
-    });
-  }, []);
 
   const handleDateRangePreset = useCallback((preset: DateRangePreset) => {
     setDateRangePreset(preset);
@@ -88,59 +64,14 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
   }, [toDate]);
 
   const handleExport = useCallback(async () => {
-    if (selectedDataTypes.size === 0) {
-      Alert.alert(t('exportData.noDataSelected'), t('exportData.selectAtLeastOneDataType'));
-      return;
-    }
-
     setIsExporting(true);
     try {
-      // For now, we only export workout history in raw format
-      // Other data types can be added later
-      if (selectedDataTypes.has('workoutHistory')) {
-        await exportWorkouts(workouts, exportFormat, fromDate, toDate);
-        Alert.alert(t('exportData.success'), t('exportData.workoutDataExportedSuccessfully'));
-      } else {
-        Alert.alert(t('exportData.notImplemented'), t('exportData.onlyWorkoutHistoryAvailable'));
-      }
-    } catch (error) {
-      console.error('Export error:', error);
-      Alert.alert(t('exportData.exportFailed'), t('exportData.failedToExportData'));
+      await exportWorkouts(workouts, exportFormat, fromDate, toDate);
+    } catch {
     } finally {
       setIsExporting(false);
     }
-  }, [workouts, selectedDataTypes, exportFormat, fromDate, toDate, t]);
-
-  const dataTypes = [
-    {
-      id: 'workoutHistory' as const,
-      label: t('exportData.workoutHistory'),
-      description: t('exportData.workoutHistoryDescription'),
-      icon: Dumbbell,
-      color: colors.niceOrange,
-    },
-    {
-      id: 'personalRecords' as const,
-      label: t('exportData.personalRecords'),
-      description: t('exportData.personalRecordsDescription'),
-      icon: Trophy,
-      color: colors.niceOrange,
-    },
-    {
-      id: 'progressTracking' as const,
-      label: t('exportData.progressTracking'),
-      description: t('exportData.progressTrackingDescription'),
-      icon: TrendingUp,
-      color: colors.niceOrange,
-    },
-    {
-      id: 'trainingPrograms' as const,
-      label: t('exportData.trainingPrograms'),
-      description: t('exportData.trainingProgramsDescription'),
-      icon: CalendarIcon,
-      color: colors.niceOrange,
-    },
-  ];
+  }, [workouts, exportFormat, fromDate, toDate, t]);
 
   const exportFormats = [
     {
@@ -202,56 +133,6 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
               </Text>
             </YStack>
           </XStack>
-
-          {/* SELECT DATA TYPES */}
-          <YStack space="$3">
-            <Text color={colors.white} fontSize="$6" fontWeight="600" textTransform="uppercase">
-              {t('exportData.selectDataTypes')}
-            </Text>
-            <YStack space="$3">
-              {dataTypes.map((type) => {
-                const IconComponent = type.icon;
-                const isSelected = selectedDataTypes.has(type.id);
-                return (
-                  <TouchableOpacity
-                    key={type.id}
-                    onPress={() => toggleDataType(type.id)}
-                    activeOpacity={0.7}
-                  >
-                    <XStack
-                      backgroundColor={colors.darkGray}
-                      borderRadius="$3"
-                      padding="$4"
-                      space="$3"
-                      alignItems="center"
-                    >
-                      <IconComponent size={24} color={type.color} />
-                      <YStack flex={1} space="$1">
-                        <Text color={colors.white} fontSize="$5" fontWeight="500">
-                          {type.label}
-                        </Text>
-                        <Text color={colors.midGray} fontSize="$4">
-                          {type.description}
-                        </Text>
-                      </YStack>
-                      <XStack
-                        width={24}
-                        height={24}
-                        borderRadius={4}
-                        borderWidth={2}
-                        borderColor={isSelected ? colors.niceOrange : colors.midGray}
-                        backgroundColor={isSelected ? colors.niceOrange : 'transparent'}
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        {isSelected && <Feather name="check" size={16} color={colors.white} />}
-                      </XStack>
-                    </XStack>
-                  </TouchableOpacity>
-                );
-              })}
-            </YStack>
-          </YStack>
 
           {/* EXPORT FORMAT */}
           <YStack space="$3">
@@ -359,7 +240,7 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
                   color={colors.white}
                   onPress={() => handleDateRangePreset('last30Days')}
                   borderRadius="$3"
-                  padding="$3"
+                  padding="$2"
                 >
                   <Text fontSize="$4" fontWeight="500" color={colors.white}>
                     {t('exportData.last30Days')}
@@ -373,21 +254,23 @@ export function ExportDataScreen({ workouts }: ExportDataScreenProps) {
                   color={colors.white}
                   onPress={() => handleDateRangePreset('last6Months')}
                   borderRadius="$3"
-                  padding="$3"
+                  padding="$2"
                 >
                   <Text fontSize="$4" fontWeight="500" color={colors.white}>
                     {t('exportData.last6Months')}
                   </Text>
                 </Button>
+              </XStack>
+              <XStack space="$3" justifyContent="center">
                 <Button
-                  flex={1}
+                  flex={0.5}
                   backgroundColor={
                     dateRangePreset === 'allTime' ? colors.niceOrange : colors.darkGray
                   }
                   color={colors.white}
                   onPress={() => handleDateRangePreset('allTime')}
                   borderRadius="$3"
-                  padding="$3"
+                  padding="$2"
                 >
                   <Text fontSize="$4" fontWeight="500" color={colors.white}>
                     {t('exportData.allTime')}
